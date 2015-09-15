@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <title>Connexion à France-IOI</title>
+   <style>
+   body {
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 14px;
+   }
+   .loginButton {
+      width:70px;
+      vertical-align:bottom;
+      margin:3px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+   }
+   .buttonLink {
+      text-decoration: none;
+   }
+   p.center {
+      text-align:center;
+   }
+   .tiny {
+      font-size:8pt;
+      margin:0pt;
+   }
+   input.center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+   }
+   </style>
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   <script src="config.js.php"></script>
+   <script src="translation.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+   <script src="https://code.angularjs.org/1.3.10/i18n/angular-locale_fr-fr.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-sanitize.min.js"></script>
+   <script src="loginManager.js"></script>
+   </head>
+   <body ng-app="login" ng-controller="LoginCtrl" id="LoginCtrl">
+      <div id="fb-root"></div>
+      <div ng-show="step == 'notConnected'">
+         <p class="center">Se connecter avec :</p>
+         <a href="#" ng-click="loginWith($event, 'facebook')" class="buttonLink">
+            <img src="login_facebook.png" title="Login with Facebook" class="loginButton" />
+         </a>
+         <a href="#" ng-click="loginWith($event, 'google')" class="buttonLink">
+            <img src="login_google.png" title="Login with Google" class="loginButton" />
+         </a>
+         <a href="#" ng-click="loginWith($event, 'password')" class="buttonLink">
+            <img src="login_franceioi.png" title="Login with France-IOI"  class="loginButton" />
+         </a>
+         <!--<p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>-->
+      </div>
+      <div ng-show="step == 'connected'">
+         <input class="center" type='button' ng-click='logout()' value="Se déconnecter">
+         <!--<input class="center" type='button' ng-click='properties()' value="Préférences">-->
+      </div>
+      <div ng-show="step == 'recover'">
+         <div ng-show="mailSent">
+            <p><strong>Un email vous a été envoyé avec vos identifiants.</strong></p>
+            <p><strong>Si vous ne recevez pas de email, contactez-nous en suivant le lien 'Nous contacter' dans le menu ou en écrivant directement à <a href="mailto:info@france-ioi.org">info@france-ioi.org</a>.</strong></p>
+         </div>
+         <div ng-show="!mailSent">
+            <p><strong>Si vous avez déjà eu un compte sur France-IOI, vous ne devez surtout pas en recréer un deuxième, sinon vous risquez d'être considéré comme tricheur et banni de France-IOI. Le formulaire suivant vous permet de récupérer votre compte à l'aide de votre e-mail. Si vous n'arrivez pas à récupérer votre compte par ce moyen, il vous faut contacter l'administrateur via le lien "nous contacter" accessible depuis le menu.</strong></p>
+            <p>Renseigner un des deux champs suivants&nbsp;:</p>
+            <form>
+               <div class="form-group">
+                  <label for="recoverLogin">Login&nbsp;:</label>
+                  <input type="text" class="form-control" id="recoverLogin">
+               </div>
+               <div class="form-group">
+                  <label for="recoverEmail">E-mail&nbsp;:</label>
+                  <input type="text" class="form-control" id="recoverEmail">
+               </div>
+               <button ng-click="recoverPassword();" type="submit" class="btn btn-default">Recevoir un email permettant de récupérer son compte</button>
+            </form>
+         </div>
+      </div>
+      <div ng-show="step == 'recovered'">
+         <p ng-show="recoverLoading">Chargement...</p>
+         <p ng-show="!recoverLoading && !recoverError">Votre nouveau mot de passe est {{recoverPassword}}, vous pouvez le changer en vous loggant et en cliquant sur "Propriétés".</p>
+         <p ng-show="!recoverLoading && recoverError">Désolé, le lien que vous avez suivi n'est plus valide, merci de répéter l'opération de récupération de compte depuis le début.</p>
+      </div>
+      <div ng-show="step == 'properties'">
+         <p>L'adresse Email est très importante pour nous permettre de vous contacter.
+         <form>
+            <div class="form-group">
+               <label for="newEmail">Adresse e-mail :</label>
+               <input type="password" ng-model="session.sEmail" class="form-control" id="newEmail">
+            </div>
+            <button type="submit" class="btn btn-default">Mettre à jour mon adresse e-mail</button>
+         </form>
+         <div ng-if="session.hasPassword">
+            Identité Login/Mot de passe :
+         </div>
+         <div ng-if="!session.hasPassword">
+            Créer une Identité Login/Mot de passe :
+         </div>
+         <form>
+            <div class="form-group">
+               <label for="newPassword">Nouveau mot de passe :</label>
+               <input type="password" class="form-control" id="newPassword">
+            </div>
+            <div class="form-group">
+               <label for="newPasswordConf">Nouveau mot de passe (confirmation) :</label>
+               <input type="password" class="form-control" id="newPasswordConf">
+            </div>
+            <button ng-click="sendNewPassword();" type="submit" class="btn btn-default">Mettre à jour mon mot de passe</button>
+         </form>
+         <div ng-if="session.hasGoogle">
+            Une identité Google est associée à ce compte.
+            <button ng-click="removeGoogle();" type="submit" class="btn btn-default">La supprimer</button>
+         </div>
+         <div ng-if="!session.hasGoogle">
+            Associer une identité Google à ce compte:
+            <a href="#" ng-click="openerLoginWith($event, 'google')" class="buttonLink">
+               <img src="login_google.png" title="Login with Google" style="width:70px;">
+            </a>
+         </div>
+         <div ng-if="session.hasFacebook">
+            Une identité Facebook est associée à ce compte.
+            <button ng-click="removeFacebook();" type="submit" class="btn btn-default">La supprimer</button>
+         </div>
+         <div ng-if="!session.hasFacebook">
+            Associer une identité Facebook à ce compte:
+            <a href="#" ng-click="openerLoginWith($event, 'facebook')" class="buttonLink">
+               <img src="login_facebook.png" title="Login with Facebook" style="width:70px;">
+            </a>
+         </div>
+      </div>
+      <div ng-show="step == 'login'">
+         Votre login france-ioi : <input ng-model="login" type="text" /><br/>
+         Votre mot de passe france-ioi : <input ng-model="password1" type="password" /><br/>
+         <input type="button" ng-click="passwordLogin()" value="Se connecter" /><br/>
+         <p>
+         Vous n'avez pas encore de compte sur France-IOI ? <input type="button" ng-click="step = 'newUser'" value="Créer un compte" />
+         </p>
+         <p>
+      </div>
+      <div ng-show="step == 'newLogin'">
+         Vous vous connectez pour la première fois. Choisissez un login :<br/>
+         <input type="text" ng-model="login"/><br/>
+         <input type="button" value="Enregistrer" ng-click="submitNewLogin()"/>
+      </div>
+      <div ng-show="step == 'newUser'">
+         Si vous disposez d'un compte google ou facebook, utilisez les pour vous connecter facilement :<br/>
+         <a href="#" ng-click="openerLoginWith($event, 'facebook')" class="buttonLink">
+            <img src="login_facebook.png" title="Login with Facebook" class="loginButton" />
+         </a>
+         <a href="#" ng-click="openerLoginWith($event, 'google')" class="buttonLink">
+            <img src="login_google.png" title="Login with Google" class="loginButton" />
+         </a>
+         </p>
+         <p>
+         Sinon, vous pouvez créer un identifiant et un mot de passe directement sur France-IOI :
+         <br/>
+         Votre nouveau login france-ioi : <input type="text" ng-model="login"/><br/>
+         Votre adresse email : <input ng-model="email" type="text" /><br/>
+         Votre mot de passe : <input ng-model="password1" type="password" /><br/>
+         Confirmation du mot de passe : <input ng-model="password2" type="password" /><br/>
+         <input type="button" value="Créer" ng-click="createUser()" />
+      </div>
+      <p style="color:red">{{ session.sErrorMessage }}</p>
+   </body>
+</html>

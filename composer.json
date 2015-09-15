@@ -1,0 +1,10 @@
+{
+   "require": {
+      "guzzlehttp/guzzle": "*",
+      "aws/aws-sdk-php": "*",
+      "namshi/jose": "3.0.0",
+      "google/apiclient": "*",
+      "facebook/php-sdk-v4": "*",
+      "doctrine/cache": "1.3.*"
+   }
+}
