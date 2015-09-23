@@ -39,8 +39,10 @@ function connect() {
 
 function connect_dynamoDB($config) {
    $client = DynamoDbClient::factory(array(
-      'key'    => $config->aws->key,
-      'secret' => $config->aws->secret,
+      'credentials' => array(
+           'key'    => $config->aws->key,
+           'secret' => $config->aws->secret
+       ),
       'region' => $config->aws->region,
       'version' => '2012-08-10'
    ));
@@ -54,8 +56,6 @@ if ($config->aws->dynamoSessions == true) {
    if (!isset($noSessions) || !$noSessions) {
       $sessionHandler = SessionHandler::fromClient($dynamoDB, array(
          'table_name'       => 'sessions',
-         'locking_strategy' => 'pessimistic',
-         'consistent_read'  => true,
       ));
       $sessionHandler->register();
    }
