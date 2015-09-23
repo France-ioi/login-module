@@ -2,7 +2,7 @@
 
 error_reporting(E_ALL);
 use Aws\DynamoDb\DynamoDbClient;
-use Aws\DynamoDb\Session\SessionHandler;
+use Aws\DynamoDb\SessionHandler;
 require_once __DIR__.'/config.php';
 require_once dirname(__FILE__).'/vendor/autoload.php';
 
@@ -52,8 +52,7 @@ if ($config->aws->dynamoSessions == true) {
    // registering the dynamodb session handler performs some useless operations
    // in session!
    if (!isset($noSessions) || !$noSessions) {
-      $sessionHandler = SessionHandler::factory(array(
-         'dynamodb_client'  => $dynamoDB,
+      $sessionHandler = SessionHandler::fromClient($dynamoDb, array(
          'table_name'       => 'sessions',
          'locking_strategy' => 'pessimistic',
          'consistent_read'  => true,
