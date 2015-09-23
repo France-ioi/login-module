@@ -32,7 +32,7 @@
       font-size:8pt;
       margin:0pt;
    }
-   input.center {
+   button.center {
       display: block;
       margin-left: auto;
       margin-right: auto;
@@ -67,7 +67,7 @@
          <!--<p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>-->
       </div>
       <div ng-show="step == 'connected'">
-         <input class="center" type='button' ng-click='logout()' value="Se déconnecter">
+         <button ng-click='logout()' class="center btn btn-info">Se déconnecter</button>
          <!--<input class="center" type='button' ng-click='properties()' value="Préférences">-->
       </div>
       <div ng-show="step == 'recover'">
