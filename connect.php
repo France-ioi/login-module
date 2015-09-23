@@ -42,6 +42,7 @@ function connect_dynamoDB($config) {
       'key'    => $config->aws->key,
       'secret' => $config->aws->secret,
       'region' => $config->aws->region,
+      'version' => '2012-08-10'
    ));
    return $client;
 }
