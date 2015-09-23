@@ -52,7 +52,7 @@ if ($config->aws->dynamoSessions == true) {
    // registering the dynamodb session handler performs some useless operations
    // in session!
    if (!isset($noSessions) || !$noSessions) {
-      $sessionHandler = SessionHandler::fromClient($dynamoDb, array(
+      $sessionHandler = SessionHandler::fromClient($dynamoDB, array(
          'table_name'       => 'sessions',
          'locking_strategy' => 'pessimistic',
          'consistent_read'  => true,
