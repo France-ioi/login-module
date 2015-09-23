@@ -1,0 +1,12 @@
+{
+  "name": "login-module",
+  "version": "0.1.0",
+  "homepage": "https://github.com/France-ioi/login-module",
+  "authors": [
+    "France-IOI"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap-social": "~4.10.1"
+  }
+}
