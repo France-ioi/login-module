@@ -7,6 +7,7 @@
    <style>
    body {
       background-color:transparent !important;
+      padding:10px;
    }
    .loginButton {
       width:70px;
@@ -31,6 +32,21 @@
    .tiny {
       font-size:8pt;
       margin:0pt;
+   }
+   .googlefacebookbuttons {
+      display: -webkit-flex;
+      display:flex;
+      -webkit-flex-direction: row;
+      -webkit-justify-content: space-around;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+   }
+   .googlefacebookbutton {
+      flex: 0 0 150px;
+      -webkit-flex: 0 0 150px;
    }
    button.center {
       display: block;
@@ -87,7 +103,7 @@
                   <label for="recoverEmail">E-mail&nbsp;:</label>
                   <input type="text" class="form-control" id="recoverEmail">
                </div>
-               <button ng-click="recoverPassword();" type="submit" class="btn btn-default">Recevoir un email permettant de récupérer son compte</button>
+               <button class="btn btn-info" ng-click="recoverPassword();" type="submit" class="btn btn-info">Recevoir un email permettant de récupérer son compte</button>
             </form>
          </div>
       </div>
@@ -103,7 +119,7 @@
                <label for="newEmail">Adresse e-mail :</label>
                <input type="password" ng-model="session.sEmail" class="form-control" id="newEmail">
             </div>
-            <button type="submit" class="btn btn-default">Mettre à jour mon adresse e-mail</button>
+            <button class="btn btn-info" type="submit" class="btn btn-info">Mettre à jour mon adresse e-mail</button>
          </form>
          <div ng-if="session.hasPassword">
             Identité Login/Mot de passe :
@@ -120,13 +136,13 @@
                <label for="newPasswordConf">Nouveau mot de passe (confirmation) :</label>
                <input type="password" class="form-control" id="newPasswordConf">
             </div>
-            <button ng-click="sendNewPassword();" type="submit" class="btn btn-default">Mettre à jour mon mot de passe</button>
+            <button class="btn btn-info" ng-click="sendNewPassword();" type="submit" class="btn btn-info">Mettre à jour mon mot de passe</button>
          </form>
          <div ng-if="session.hasGoogle">
             Une identité Google est associée à ce compte.
-            <button ng-click="removeGoogle();" type="submit" class="btn btn-default">La supprimer</button>
+            <button class="btn btn-info" ng-click="removeGoogle();" type="submit" class="btn btn-info">La supprimer</button>
          </div>
-         <div ng-if="!session.hasGoogle">
+         <div ng-if="!session.hasGoogle && !session.hasFacebook">
             Associer une identité Google à ce compte:
             <a href="#" ng-click="openerLoginWith($event, 'google')" class="buttonLink">
                <img src="login_google.png" title="Login with Google" style="width:70px;">
@@ -134,9 +150,9 @@
          </div>
          <div ng-if="session.hasFacebook">
             Une identité Facebook est associée à ce compte.
-            <button ng-click="removeFacebook();" type="submit" class="btn btn-default">La supprimer</button>
+            <button class="btn btn-info" ng-click="removeFacebook();" type="submit" class="btn btn-info">La supprimer</button>
          </div>
-         <div ng-if="!session.hasFacebook">
+         <div ng-if="!session.hasFacebook && !session.hasGoogle">
             Associer une identité Facebook à ce compte:
             <a href="#" ng-click="openerLoginWith($event, 'facebook')" class="buttonLink">
                <img src="login_facebook.png" title="Login with Facebook" style="width:70px;">
@@ -144,36 +160,61 @@
          </div>
       </div>
       <div ng-show="step == 'login'">
-         Votre login france-ioi : <input ng-model="login" type="text" /><br/>
-         Votre mot de passe france-ioi : <input ng-model="password1" type="password" /><br/>
-         <input type="button" ng-click="passwordLogin()" value="Se connecter" /><br/>
-         <p>
-         Vous n'avez pas encore de compte sur France-IOI ? <input type="button" ng-click="step = 'newUser'" value="Créer un compte" />
-         </p>
-         <p>
+         <form>
+            <div class="form-group">
+              <label for="login">Votre login :</label>
+              <input type="text" class="form-control" id="login" ng-model="login" placeholder="Login">
+            </div>
+            <div class="form-group">
+              <label for="password1">Votre mot de passe :</label>
+              <input type="text" class="form-control" id="password1" ng-model="password1" placeholder="Mot de passe">
+            </div>
+            <button class="btn btn-primary" ng-click="passwordLogin()">Se connecter</button>
+            <button class="btn btn-success" ng-click="step = 'newUser'">Créer un compte</button>
+         </form>
       </div>
       <div ng-show="step == 'newLogin'">
-         Vous vous connectez pour la première fois. Choisissez un login :<br/>
-         <input type="text" ng-model="login"/><br/>
-         <input type="button" value="Enregistrer" ng-click="submitNewLogin()"/>
+         <form>
+            <div class="form-group">
+              <label for="login">Choisissez un login france-ioi :</label>
+              <input type="text" class="form-control" id="login" ng-model="login" placeholder="Login">
+            </div>
+            <button class="btn btn-info" ng-click="submitNewLogin()">Enregistrer</button>
+         </form>
       </div>
       <div ng-show="step == 'newUser'">
-         Si vous disposez d'un compte google ou facebook, utilisez les pour vous connecter facilement :<br/>
-         <a href="#" ng-click="openerLoginWith($event, 'facebook')" class="buttonLink">
-            <img src="login_facebook.png" title="Login with Facebook" class="loginButton" />
-         </a>
-         <a href="#" ng-click="openerLoginWith($event, 'google')" class="buttonLink">
-            <img src="login_google.png" title="Login with Google" class="loginButton" />
-         </a>
-         </p>
-         <p>
-         Sinon, vous pouvez créer un identifiant et un mot de passe directement sur France-IOI :
-         <br/>
-         Votre nouveau login france-ioi : <input type="text" ng-model="login"/><br/>
-         Votre adresse email : <input ng-model="email" type="text" /><br/>
-         Votre mot de passe : <input ng-model="password1" type="password" /><br/>
-         Confirmation du mot de passe : <input ng-model="password2" type="password" /><br/>
-         <input type="button" value="Créer" ng-click="createUser()" />
+         <p>Utiliser un <strong>login tierce</strong> :</p>
+         <div class="googlefacebookbuttons">
+            <a class="btn btn-social btn-facebook googlefacebookbutton" ng-click="openerLoginWith($event, 'facebook')">
+              <i class="fa fa-facebook"></i>
+              Facebook
+            </a>
+            <a class="btn btn-social btn-google googlefacebookbutton" ng-click="openerLoginWith($event, 'google')">
+              <i class="fa fa-google-plus"></i>
+              Google+
+            </a>
+         </div>
+         <p>ou <strong>créer un identifiant</strong> :</p>
+         <form>
+            <div class="form-group">
+              <label for="login">Votre nouveau login france-ioi :</label>
+              <input type="text" class="form-control" id="login" ng-model="login" placeholder="Login">
+            </div>
+            <div class="form-group">
+              <label for="password">Votre mot de passe :</label>
+              <input type="text" class="form-control" id="password" ng-model="password1" placeholder="Mot de passe">
+            </div>
+            <div class="form-group">
+              <label for="password2">Confirmation du mot de passe :</label>
+              <input type="text" class="form-control" id="password2" ng-model="password2" placeholder="Mot de passe">
+            </div>
+            <div class="form-group">
+              <label for="email">Votre adresse email :</label>
+              <input type="text" class="form-control" id="email" ng-model="email" placeholder="Email">
+            </div>
+            <p ng-hide="email">L'adresse E-mail n'est pas obligatoire mais est vivement conseillée. Si vous ne la remplissez pas, il vous sera impossible de retrouver votre compte en cas de perte de votre mot de passe.</p>
+            <button class="btn btn-info" ng-click="createUser()">Créer mon compte</button>
+         </form>
       </div>
       <p style="color:red">{{ session.sErrorMessage }}</p>
    </body>
