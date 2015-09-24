@@ -15,8 +15,6 @@ $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login
 
 session_start();
 
-file_put_contents('/tmp/sessions2', json_encode($_SESSION));
-
 $params = array("sLanguage", "idUser", "sLogin", "sEmail", "sProvider", "hasFacebook", "hasPassword", "hasGoogle");
 $jsSession = array();
 
