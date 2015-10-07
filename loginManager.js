@@ -173,6 +173,8 @@ angular.module('login', [])
             $scope.interval = $interval($scope.refreshSession, 60000);
          }
       };
+      // I like global variables
+      window.scope_setInterval = $scope.setInterval;
 
       $scope.submitNewLogin = function() {
          loginManager.createAccount($scope.login, "", "");
@@ -246,7 +248,7 @@ var loginManager = {
             login: login,
             token: token
          });
-         $scope.setInterval();
+         scope_setInterval();
       }
    },
 
