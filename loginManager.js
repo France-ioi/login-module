@@ -107,7 +107,7 @@ function postLoginMessage(request, content) {
 var session;
 
 angular.module('login', [])
-   .controller('LoginCtrl', function($scope, $http, $timeout) {
+   .controller('LoginCtrl', function($scope, $http, $timeout, $interval) {
       $scope.step = "";
       $scope.session = session;
       loginManager.scope = $scope;
@@ -142,8 +142,37 @@ angular.module('login', [])
                });
                //            $("#logoutButton").show();
             }
+            $scope.setInterval();
          }
       });
+
+      $scope.refreshSession = function() {
+         var infosTimeZone = checkTimeZone();
+         var url = config.selfBaseUrl + "session.php?sTimeZoneOffset=" + infosTimeZone.offset + "&bDLS=" + infosTimeZone.bDLS;
+         $http.get(url).success(function(data) {
+            if (data.idUser != $scope.session.idUser) {
+               session = data;
+               $scope.session = data;
+               if ((session.idUser === -1) || (session.idUser === undefined)) {
+                  $scope.step = "notConnected";
+                  postLoginMessage('notlogged', null);
+               } else {
+                  $scope.step = "connected";
+                  postLoginMessage('login', {
+                     login: session.sLogin,
+                     token: session.sToken
+                  });
+               }
+            }
+         });
+      };
+
+      $scope.interval = null;
+      $scope.setInterval = function() {
+         if (!$scope.interval) {
+            $scope.interval = $interval($scope.refreshSession, 60000);
+         }
+      };
 
       $scope.submitNewLogin = function() {
          loginManager.createAccount($scope.login, "", "");
@@ -217,6 +246,7 @@ var loginManager = {
             login: login,
             token: token
          });
+         $scope.setInterval();
       }
    },
 
