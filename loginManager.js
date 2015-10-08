@@ -169,9 +169,9 @@ angular.module('login', [])
 
       $scope.interval = null;
       $scope.setInterval = function() {
-         if (!$scope.interval) {
-            $scope.interval = $interval($scope.refreshSession, 60000);
-         }
+//         if (!$scope.interval) {
+//            $scope.interval = $interval($scope.refreshSession, 60000);
+//         }
       };
       // I like global variables
       window.scope_setInterval = $scope.setInterval;
