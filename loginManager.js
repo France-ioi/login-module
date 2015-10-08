@@ -389,6 +389,7 @@ var loginManager = {
          alert(translate("passwords_different"));
          return;
       }
+      if (!email) {email = '';}
       this.createAccount(login, email, password1);
    },
 
@@ -505,7 +506,7 @@ var loginManager = {
    },
 
    openLoginPopup: function(url) {
-      this.popup = window.open(url, "loginPopup", "height=555, width=420, toolbar=yes, menubar=yes, scrollbars=no, resizable=no, location=no, directories=no, status=no");
+      this.popup = window.open(url, "loginPopup", "height=555, width=510, toolbar=yes, menubar=yes, scrollbars=no, resizable=no, location=no, directories=no, status=no");
    },
 
    urlLoginWithOpenID: function(provider, reauthenticate) {
