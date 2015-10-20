@@ -150,28 +150,29 @@ angular.module('login', [])
          var infosTimeZone = checkTimeZone();
          var url = config.selfBaseUrl + "session.php?sTimeZoneOffset=" + infosTimeZone.offset + "&bDLS=" + infosTimeZone.bDLS;
          $http.get(url).success(function(data) {
-            if (data.idUser != $scope.session.idUser) {
-               session = data;
-               $scope.session = data;
-               if ((session.idUser === -1) || (session.idUser === undefined)) {
-                  $scope.step = "notConnected";
-                  postLoginMessage('notlogged', null);
-               } else {
-                  $scope.step = "connected";
-                  postLoginMessage('login', {
-                     login: session.sLogin,
-                     token: session.sToken
-                  });
-               }
-            }
+              // we just want to refresh the session, not handle differences, each client must handle differences himself
+//            if (data.idUser != $scope.session.idUser) {
+//               session = data;
+//               $scope.session = data;
+//               if ((session.idUser === -1) || (session.idUser === undefined)) {
+//                  $scope.step = "notConnected";
+//                  postLoginMessage('notlogged', null);
+//               } else {
+//                  $scope.step = "connected";
+//                  postLoginMessage('login', {
+//                     login: session.sLogin,
+//                     token: session.sToken
+//                  });
+//               }
+//            }
          });
       };
 
       $scope.interval = null;
       $scope.setInterval = function() {
-//         if (!$scope.interval) {
-//            $scope.interval = $interval($scope.refreshSession, 60000);
-//         }
+         if (!$scope.interval) {
+            $scope.interval = $interval($scope.refreshSession, 600000);
+         }
       };
       // I like global variables
       window.scope_setInterval = $scope.setInterval;
