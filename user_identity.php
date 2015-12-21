@@ -14,7 +14,13 @@ if (!$server->verifyResourceRequest($request, $response)) {
     $response->send();
     die;
 }
-echo json_encode(array(
-  'success' => true,
-  'message' => 'You accessed my APIs!'
-));
+$user_id = $token['user_id'];
+
+$stmt = $db->prepare("SELECT `id`, `sLogin` FROM `users` WHERE `id` = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetchObject();
+
+echo json_encode([
+  'id' => $user_id,
+  'sLogin' => $user->sLogin
+]);
