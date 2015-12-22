@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<iframe src="login.html" seamless frameBorder=0 ></iframe>
+<script type="text/javascript">
+(function () {
+
+  window.addEventListener('message', function (e) {
+    var message = JSON.parse(e.data);
+    if (message.source === 'loginModule' && message.request === 'login') {
+      var query = getQuery();
+      var content = message.content;
+      window.location.href = query.afterLogin + '&jwt=' + content.token;
+      return;
+    }
+  }, false);
+
+  function getQuery () {
+    var result = {};
+    var pairs = window.location.search.substring(1).split('&');
+    for (var i = 0; i < pairs.length; i++) {
+        var pair = pairs[i].split('=');
+        result[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+    }
+    return result;
+  }
+
+}());
+</script>
