@@ -61,27 +61,25 @@ if (!empty($_POST)) {
 // GET request
 //
 
-// If the user is not logged in, redirect to authorise.html to display the
+// If the user is not logged in, redirect to authorize.html to display the
 // login form and redirect back here once the user has logged in.
 if (!$have_user_id) {
-  header('Location: authorise.html?'.http_build_query([
+  header('Location: authorize.html?'.http_build_query([
     'afterLogin' => $_SERVER['REQUEST_URI']
   ]));
   die;
 }
 
-// Skip showing the authorisation form to the logged-in user if they have
-// already authorised the client for the requested scopes.
-$already_authorised = true;
-
-
-if ($_GET['approval_prompt'] != 'force' && $already_authorised) {
+// Skip showing the authorization form to the logged-in user if they have
+// already authorized the client for the requested scopes.
+$approval_prompt = array_key_exists('approval_prompt', $_GET) ? $_GET['approval_prompt'] : '';
+if ($already_authorized && $approval_prompt != 'force') {
   $server->handleAuthorizeRequest($request, $response, true, $user_id);
   $response->send();
   die();
 }
 
-// Show the authorisation form to the user.
+// Show the authorization form to the user.
 $client_data = $server->getStorage('client')->getClientDetails($client_id);
 $client_title = $client_data['title'];
 $user_login = $login_session["sLogin"];
