@@ -1,7 +1,8 @@
 <?php
 
-// Require connect.php in case sessions are stored in DynamoDB?
-require_once __DIR__.'/connect.php';
+require_once __DIR__.'/config.php';
+require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__.'/lib/session.php';
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
   http_response_code(405);
@@ -9,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
   die;
 }
 
-session_start();
 session_unset();
 session_regenerate_id(true);
 

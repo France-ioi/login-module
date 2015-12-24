@@ -1,16 +1,13 @@
 <?php
 
-require_once(__DIR__."/connect.php");
-require_once(__DIR__."/oauth_server.php");
+require_once __DIR__.'/config.php';
+require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__."/lib/connect.php";
+require_once __DIR__."/lib/session.php";
+require_once __DIR__."/lib/oauth_server.php";
 
 $db = connect();
 
-// Check the session and test whether the user is logged in.
-session_start();
-$login_session = array();
-if (array_key_exists('modules', $_SESSION) &&
-    array_key_exists('login', $_SESSION['modules']))
-  $login_session = $_SESSION['modules']['login'];
 $have_user_id = array_key_exists('idUser', $login_session);
 $user_id = $have_user_id ? $login_session["idUser"] : null;
 

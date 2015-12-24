@@ -1,10 +1,7 @@
 <?php
 
-error_reporting(E_ALL);
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\SessionHandler;
-require_once __DIR__.'/config.php';
-require_once dirname(__FILE__).'/vendor/autoload.php';
 
 function connect() {
    global $config;
@@ -60,4 +57,3 @@ if ($config->aws->dynamoSessions == true) {
       $sessionHandler->register();
    }
 }
-

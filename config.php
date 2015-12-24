@@ -3,6 +3,8 @@
 // Do not modify this file, but override the configuration
 // in a config_local.php file based on config_local_template.php
 
+error_reporting(E_ALL);
+
 $config = (object) array();
 
 $config->db = (object) array();
