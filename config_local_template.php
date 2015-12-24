@@ -14,3 +14,5 @@ $config->login_module->name = 'name in the jws token';
 $config->login_module->private_key = "";
 
 $config->selfBaseUrl = 'path/to/login.html';
+$config->cookieHost = 'example.com';
+

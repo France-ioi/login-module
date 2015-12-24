@@ -37,6 +37,7 @@ $config->Google0Auth2->realm = '';
 
 $config->timezone = ini_get('date.timezone');
 $config->selfBaseUrl = 'https://loginaws.algorea.org/';
+$config->cookieHost = 'loginaws.algorea.org';
 
 // variables shared with javascript
 $config->shared = (object) array();
