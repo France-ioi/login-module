@@ -15,10 +15,14 @@ session_regenerate_id(true);
 
 header('Content-Type: application/json');
 
-// TODO: if the user was authenticated with their Google+ account,
-// return {"provider":"google"}.
+$hasFacebook = false;
+$hasGoogle = false;
 
-// TODO: if the user was authenticated with their Facebook account,
-// return {"provider":"facebook"}.
+if (array_key_exists('hasGoogle', $login_session)) {
+	$hasGoogle = $login_session['hasGoogle'];
+}
+if (array_key_exists('hasFacebook', $login_session)) {
+	$hasFacebook = $login_session['hasFacebook'];
+}
 
-echo '{}';
+echo json_encode(['hasFacebook' => $hasFacebook, 'hasGoogle' => $hasGoogle]);

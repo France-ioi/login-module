@@ -47,7 +47,11 @@ function facebookLogout () {
         cookie:  true,  // enable cookies to allow the server to access the session
         xfbml:   false  // parse XFBML
       });
-      FB.logout();
+      FB.getLoginStatus(function(response) {
+        FB.logout(function() {
+          $('#facebook-logout').hide();
+        });
+      });
     };
     (function(d, s, id) {
        var js, fjs = d.getElementsByTagName(s)[0];
@@ -63,14 +67,13 @@ function facebookLogout () {
   $.post('logout.php', function (result) {
     $('#message').text('Vous avez été déconnecté de votre compte France-IOI.');
 
-    if (result.provider === 'google')
+    if (result.hasGoogle)
       googleLogout();
 
-    if (result.provider === 'facebook')
+    if (result.hasFacebook)
       facebookLogout();
 
   }, 'json');
-
 
 }());
 </script>
