@@ -533,9 +533,14 @@ var loginManager = {
    loginWith: function(provider) {
       this.accessProvider = provider;
       var url;
+      var that = this;
       if (provider === "facebook") {
          if (!this.loggedOnFacebook) {
-            FB.login();
+            FB.login(function(response) {
+               if (response.authResponse) {
+                  that.connectLoggedFacebookUser();
+               }
+            });
          } else {
             this.connectLoggedFacebookUser();
          }
