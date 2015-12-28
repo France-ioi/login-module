@@ -56,7 +56,9 @@ function consoleLog(message) {
 
 function getUrlVars() {
    var vars = {};
-   var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+   var endIndex = window.location.href.indexOf('#');
+   endIndex = endIndex == -1 ? undefined : endIndex;
+   var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1, endIndex).split('&');
    for (var i = 0; i < hashes.length; i++) {
       var hash = hashes[i].split('=');
       vars[hash[0]] = hash[1];
