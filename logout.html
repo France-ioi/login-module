@@ -22,6 +22,9 @@
     </button>
   </div>
 
+  <div id="error-message" style="display:none; color: red;">
+  </div>
+
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -38,29 +41,35 @@ function googleLogout() {
 function facebookLogout () {
   $('#facebook-logout').show();
   $('#facebook-logout button').click(function () {
-    // Set up the FB SDK async init callback.
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId:   config.Facebook.appId, // App ID
-        version: 'v2.2',
-        status:  false, // check login status
-        cookie:  true,  // enable cookies to allow the server to access the session
-        xfbml:   false  // parse XFBML
-      });
-      FB.getLoginStatus(function(response) {
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
         FB.logout(function() {
           $('#facebook-logout').hide();
         });
-      });
-    };
-    (function(d, s, id) {
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) return;
-       js = d.createElement(s); js.id = id;
-       js.src = "//connect.facebook.net/fr_FR/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+      } else {
+        $('#error-message').html('Désolé, nous n\'avons pas pu vous déconnecter automatiquement de Facebook car votre navigateur bloque les cookies tiers. Pour vous déconnecter, merci d\'aller directement sur <a href="https://www.facebook.com">facebook.com</a>.');
+        $('#error-message').show();
+        $('#facebook-logout').hide();
+      }
+    });
   });
+  // Set up the FB SDK async init callback.
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId:   config.Facebook.appId, // App ID
+      version: 'v2.2',
+      status:  false, // check login status
+      cookie:  true,  // enable cookies to allow the server to access the session
+      xfbml:   false  // parse XFBML
+    });
+  };
+  (function(d, s, id) {
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/fr_FR/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
 }
 (function () {
 
