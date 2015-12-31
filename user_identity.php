@@ -18,16 +18,22 @@ if (!$server->verifyResourceRequest($request, $response)) {
 }
 $user_id = $token['user_id'];
 
-$stmt = $db->prepare("SELECT `id`, `sLogin` FROM `users` WHERE `id` = :user_id");
+$stmt = $db->prepare("SELECT `id`, `sLogin`, `sFirstName`, `sLastName` FROM `users` WHERE `id` = :user_id");
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetchObject();
 
-// TODO: $badges should contain a list of the user's badges (string used, for
-// example, to indicate that the user has qualified for some competition).
-$badges = [];
+$stmt = $db->prepare("SELECT `badge` FROM `user_badges` WHERE `idUser` = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+$badges = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+if (false /* interroger la base castor */)
+  $badges[] = 'alkindi2015_tour2';
 
 echo json_encode([
   'id' => $user_id,
   'sLogin' => $user->sLogin,
+  'sFirstName' => $user->sFirstName,
+  'sLastName' => $user->sLastName,
   'badges' => $badges
 ]);
+
