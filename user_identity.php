@@ -22,11 +22,11 @@ $stmt = $db->prepare("SELECT `id`, `sLogin`, `sFirstName`, `sLastName` FROM `use
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetchObject();
 
-$stmt = $db->prepare("SELECT `badge` FROM `user_badges` WHERE `idUser` = :user_id");
+$stmt = $db->prepare("SELECT `sBadge` FROM `user_badges` WHERE `idUser` = :user_id");
 $stmt->execute(['user_id' => $user_id]);
 $badges = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
-if (false /* interroger la base castor */)
+if (false /* TODO: interroger la base castor */)
   $badges[] = 'alkindi2015_tour2';
 
 echo json_encode([
