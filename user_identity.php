@@ -22,7 +22,12 @@ $stmt = $db->prepare("SELECT `id`, `sLogin` FROM `users` WHERE `id` = :user_id")
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetchObject();
 
+// TODO: $badges should contain a list of the user's badges (string used, for
+// example, to indicate that the user has qualified for some competition).
+$badges = [];
+
 echo json_encode([
   'id' => $user_id,
-  'sLogin' => $user->sLogin
+  'sLogin' => $user->sLogin,
+  'badges' => $badges
 ]);
