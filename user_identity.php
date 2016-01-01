@@ -26,11 +26,8 @@ $stmt = $db->prepare("SELECT `sBadge` FROM `user_badges` WHERE `idUser` = :user_
 $stmt->execute(['user_id' => $user_id]);
 $badges = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
-if (false /* TODO: interroger la base castor */)
-  $badges[] = 'alkindi2015_tour2';
-
 echo json_encode([
-  'id' => $user_id,
+  'idUser' => $user_id,
   'sLogin' => $user->sLogin,
   'sFirstName' => $user->sFirstName,
   'sLastName' => $user->sLastName,
