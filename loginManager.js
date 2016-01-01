@@ -56,7 +56,9 @@ function consoleLog(message) {
 
 function getUrlVars() {
    var vars = {};
-   var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+   var endIndex = window.location.href.indexOf('#');
+   endIndex = endIndex == -1 ? undefined : endIndex;
+   var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1, endIndex).split('&');
    for (var i = 0; i < hashes.length; i++) {
       var hash = hashes[i].split('=');
       vars[hash[0]] = hash[1];
@@ -232,6 +234,7 @@ angular.module('login', [])
 var loginManager = {
    accessToken: "",
    accessProvider: "",
+   loggedOnFacebook: false,
 
    logged: function(login, token, provider) {
       if (typeof selfTarget !== "undefined") { // If used on france-ioi's website TODO: find a better way to check that
@@ -496,10 +499,6 @@ var loginManager = {
                loginManager.logoutFromProvider(provider);
                this.accessProvider = '';
                scope.session.sProvider = '';
-            } else if (provider == 'facebook') {
-               FB.api({
-                  method: 'Auth.revokeAuthorization'
-               }, function() {});
             }
          }
          postLoginMessage('logout', null);
@@ -536,8 +535,17 @@ var loginManager = {
    loginWith: function(provider) {
       this.accessProvider = provider;
       var url;
+      var that = this;
       if (provider === "facebook") {
-         FB.login();
+         if (!this.loggedOnFacebook) {
+            FB.login(function(response) {
+               if (response.authResponse) {
+                  that.connectLoggedFacebookUser();
+               }
+            });
+         } else {
+            this.connectLoggedFacebookUser();
+         }
          //$('#loginbutton,#feedbutton').removeAttr('disabled');
          //FB.getLoginStatus(updateStatusCallback);
          return;
@@ -598,7 +606,7 @@ var loginManager = {
       }, 'json');
    },
 
-   loggedOnFacebook: function() {
+   connectLoggedFacebookUser:  function() {
       var that = this;
       FB.api('/me', function() {
          $.ajax({
@@ -658,7 +666,7 @@ window.fbAsyncInit = function() {
          // The response object is returned with a status field that lets the app know the current
          // login status of the person. In this case, we're handling the situation where they
          // have logged in to the app.
-         loginManager.loggedOnFacebook();
+         loginManager.loggedOnFacebook = true;
       } else if (response.status === 'not_authorized') {
          // In this case, the person is logged into Facebook, but not into the app, so we call
          // FB.login() to prompt them to do so.

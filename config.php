@@ -3,6 +3,8 @@
 // Do not modify this file, but override the configuration
 // in a config_local.php file based on config_local_template.php
 
+error_reporting(E_ALL);
+
 $config = (object) array();
 
 $config->db = (object) array();
@@ -35,6 +37,7 @@ $config->Google0Auth2->realm = '';
 
 $config->timezone = ini_get('date.timezone');
 $config->selfBaseUrl = 'https://loginaws.algorea.org/';
+$config->cookieHost = 'loginaws.algorea.org';
 
 // variables shared with javascript
 $config->shared = (object) array();

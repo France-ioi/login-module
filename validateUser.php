@@ -20,20 +20,17 @@
  *
  */
 
-header("Access-Control-Allow-Origin: *");
+// XXX is this needed?
+// header("Access-Control-Allow-Origin: *");
 
-// server should keep session data for AT LEAST 1 hour
-ini_set('session.gc_maxlifetime', 3600);
-// each client should remember their session id for EXACTLY 1 hour
-session_set_cookie_params(3600);
-
-require_once(__DIR__."/connect.php");
-require_once(__DIR__."/translate.inc.php");
-require_once(__DIR__."/shared/TokenGenerator.php");
+require_once __DIR__.'/config.php';
+require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__."/lib/session.php";
+require_once __DIR__."/lib/connect.php";
+require_once __DIR__."/translate.inc.php";
+require_once __DIR__."/shared/TokenGenerator.php";
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
-
-session_start();
 
 function isValidUsername($sName) {
    return preg_match("/^[a-z0-9_\.-]{3,15}$/", $sName);

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet" type="text/css" />
+
+<div style="width: 350px">
+
+  <p id="message">Déconnexion en cours...</p>
+
+  <div id="google-logout" style="display: none">
+    <button type="button" class="btn btn-block btn-social btn-google">
+      <i class="fa fa-google-plus"></i>
+      me déconnecter aussi de Google+
+    </a>
+  </div>
+
+  <div id="facebook-logout" style="display: none">
+    <button type="button" class="btn btn-block btn-social btn-facebook">
+      <i class="fa fa-facebook"></i>
+      me déconnecter aussi de Facebook
+    </button>
+  </div>
+
+  <div id="error-message" style="display:none; color: red;">
+  </div>
+
+  <button type="button" class="btn btn-primary" onclick="window.close()">
+    Fermer
+  </button>
+
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="config.js.php"></script>
+<script type="text/javascript">
+function googleLogout() {
+  $('#google-logout').show();
+  $('#google-logout button').click(function (event) {
+    event.preventDefault();
+    window.open('https://accounts.google.com/Logout', "loginPopup",
+    "height=555, width=510, toolbar=yes, menubar=yes, scrollbars=no, resizable=no, location=no, directories=no, status=no, modal=yes, alwaysRaised=yes");
+  });
+}
+function facebookLogout () {
+  $('#facebook-logout').show();
+  $('#facebook-logout button').click(function () {
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        FB.logout(function() {
+          $('#facebook-logout').hide();
+        });
+      } else {
+        $('#error-message').html('Désolé, nous n\'avons pas pu vous déconnecter automatiquement de Facebook car votre navigateur bloque les cookies tiers. Pour vous déconnecter, merci d\'aller directement sur <a href="https://www.facebook.com">facebook.com</a>.');
+        $('#error-message').show();
+        $('#facebook-logout').hide();
+      }
+    });
+  });
+  // Set up the FB SDK async init callback.
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId:   config.Facebook.appId, // App ID
+      version: 'v2.2',
+      status:  false, // check login status
+      cookie:  true,  // enable cookies to allow the server to access the session
+      xfbml:   false  // parse XFBML
+    });
+  };
+  (function(d, s, id) {
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/fr_FR/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+}
+(function () {
+
+  $.post('logout.php', function (result) {
+    $('#message').text('Vous avez été déconnecté de votre compte France-ioi.');
+
+    if (result.hasGoogle)
+      googleLogout();
+
+    if (result.hasFacebook)
+      facebookLogout();
+
+  }, 'json');
+
+}());
+</script>
