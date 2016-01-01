@@ -49,5 +49,11 @@ CREATE TABLE `user_authorized_clients` (
   `scope` varchar(2000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE oauth_access_tokens MODIFY COLUMN `user_id` int(11) NOT NULL;
+ALTER TABLE oauth_refresh_tokens MODIFY COLUMN `user_id` int(11) NOT NULL;
+ALTER TABLE oauth_authorization_codes MODIFY COLUMN `user_id` int(11) NOT NULL;
+ALTER TABLE user_authorized_clients MODIFY COLUMN `user_id` int(11) NOT NULL;
+CREATE INDEX `ix_user_authorized_clients` USING btree ON `user_authorized_clients` (`user_id`);
+
 INSERT INTO `oauth_scopes` VALUES ('*',1);
 
