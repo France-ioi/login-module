@@ -3,6 +3,8 @@
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\SessionHandler;
 
+require_once __DIR__.'/../vendor/autoload.php';
+
 function connect() {
    global $config;
    $host = $config->db->host;
