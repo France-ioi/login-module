@@ -81,6 +81,7 @@ $client_data = $server->getStorage('client')->getClientDetails($client_id);
 $client_title = $client_data['title'];
 $user_login = $login_session["sLogin"];
 echo('<!DOCTYPE html>
+<meta charset="utf-8">
 <form method="POST">
   <p>Autoriser '.htmlspecialchars($client_title).' à accéder à votre compte '.htmlspecialchars($user_login).' ?</p>
   <button type="submit" name="authorized" value="yes">Oui</button>
