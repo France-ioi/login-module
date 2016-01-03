@@ -55,5 +55,9 @@ ALTER TABLE oauth_authorization_codes MODIFY COLUMN `user_id` int(11) NOT NULL;
 ALTER TABLE user_authorized_clients MODIFY COLUMN `user_id` int(11) NOT NULL;
 CREATE INDEX `ix_user_authorized_clients` USING btree ON `user_authorized_clients` (`user_id`);
 
+ALTER TABLE `oauth_clients` DROP PRIMARY KEY;
+ALTER TABLE `oauth_clients` ADD COLUMN `id` SERIAL PRIMARY KEY;
+CREATE INDEX `ix_oauth_clients__user_id` USING btree ON `oauth_clients` (`user_id`);
+
 INSERT INTO `oauth_scopes` VALUES ('*',1);
 
