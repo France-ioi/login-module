@@ -310,7 +310,14 @@ function updatePassword($db, $newPassword) {
       echo json_encode(array('success' => false, 'error' => 'you must be logged in to change password', 'newPassword' => $newPassword));
       return;
    }
-   updateSaltAndPasswordMD5ForPassword($db, $_SESSION['modules']['login']["idUser"], $newPassword);
+   if (isset($_SESSION['modules']['login']["idUserRecovered"])) {
+      updateSaltAndPasswordMD5ForPassword($db, $_SESSION['modules']['login']["idUserRecovered"], $newPassword);
+      $stmt = $db->prepare('update users set sRecover=NULL where id = :id;');
+      $stmt->execute(array('id' => $_SESSION['modules']['login']["idUserRecovered"]));
+      unset($_SESSION['modules']['login']["idUserRecovered"]);
+   } else {
+      updateSaltAndPasswordMD5ForPassword($db, $_SESSION['modules']['login']["idUser"], $newPassword);   
+   }
    echo json_encode(array('success' => true));
 }
 
@@ -324,6 +331,34 @@ function randomPassword() {
          $sPass .= chr(ord('A') + $x - 26);
    }
    return $sPass;
+}
+
+function customSendMail($to, $mailTitle, $mailBody) {
+   global $config;
+   if (!$config->email->bSendMailForReal) {
+      return null;
+   }
+   $message = Swift_Message::newInstance();
+   $message->setSubject($mailTitle);
+   $message->setFrom($config->email->sEmailSender);
+   $message->setTo($to);
+   $message->setBody($mailBody);
+   $transport = Swift_SmtpTransport::newInstance($config->email->smtpHost, $config->email->smtpPort);
+   $transport->setUsername($config->email->smtpUsername);
+   $transport->setPassword($config->email->smtpPassword);
+   $transport->setEncryption($config->email->smtpEncryption);
+   $mailer = Swift_Mailer::newInstance($transport);
+   $error = '';
+   $failures = [];
+   try {
+      $result = $mailer->send($message);
+   } catch (Exception $e) {
+      $error = ' '.$e->getMessage();
+   }
+   if ($failures) {
+      $error .= 'address '.$failures[0].' was rejected';
+   }
+   return $error;
 }
 
 function recoverPassword($db) {
@@ -357,7 +392,7 @@ function recoverPassword($db) {
       return;
    }
    if (!$user->sEmail) {
-      echo json_encode(array('success'=>false, 'error' => 'L\'utilisateur demandé n\'avait pas enregistré d\'adresse email.'));
+      echo json_encode(array('success'=>false, 'error' => 'L\'utilisateur demandé n\'a pas enregistré d\'adresse email.'));
       return;
    }
    // TODO: faire un check sur sLastLoginDate
@@ -368,10 +403,9 @@ function recoverPassword($db) {
    $stmt->execute(array('sRecover' => $recoverCode, 'id' => $user->id));
    $mailBody = "Bonjour,\n\nVotre identifiant est $sLogin.\n\nCliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n https://loginaws.algorea.org/login.html?sLogin=$sLogin&sRecover=$recoverCode \n\nLe webmaster France-IOI";
    $mailTitle = "Récupération de compte sur France-IOI";
-   //$mailHeaders = "From: info@france-ioi.org"."\r\n";
-   $resMail = mail('chonyi@rimay.net'/*$user->sEmail*/, $mailTitle, $mailBody, $mailHeaders);
-   if (!$resMail) {
-      echo json_encode(array('success' => false, 'error' => 'Problème lors de l\'envoi du mail.'));
+   $mailError = customSendMail($user->sEmail, $mailTitle, $mailBody);
+   if ($mailError) {
+      echo json_encode(array('success' => false, 'error' => 'Problème lors de l\'envoi du mail: '.$mailError.'.'));
       return;
    }
    echo json_encode(array('success' => true));
@@ -392,12 +426,13 @@ function checkRecoverCode($db) {
       echo json_encode(array('success' => false, 'error' => 'Le code est erroné ou trop vieux.'));
       return;
    }
-   $newPassword = randomPassword();
-   $newPasswordMd5 = md5($newPassword);
-   $query = 'update users set sPasswordMd5 = :sPasswordMd5, sRecover = NULL where id=:id';
-   $stmt = $db->prepare($query);
-   $stmt->execute(array('sPasswordMd5'=>$newPasswordMd5, 'id'=>$user->id));
-   echo json_encode(array('success'=>true, 'newPassword'=>$newPassword));
+   if (isset($_SESSION['modules'])) {
+      $_SESSION['modules']['login'] = array();
+   } else {
+      $_SESSION['modules'] = array('login' => array());
+   }
+   $_SESSION['modules']['login']["idUserRecovered"] = $user->id;
+   echo json_encode(array('success'=>true));
 }
 
 $db = connect();

@@ -80,7 +80,7 @@
            <i class="fa fa-key"></i>
            Mot de passe
          </a>
-         <!--<p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>-->
+         <p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>
       </div>
       <div ng-show="step == 'connected'">
          <button ng-click='logout()' class="center btn btn-info">Se déconnecter</button>
@@ -88,11 +88,13 @@
       </div>
       <div ng-show="step == 'recover'">
          <div ng-show="mailSent">
-            <p><strong>Un email vous a été envoyé avec vos identifiants.</strong></p>
-            <p><strong>Si vous ne recevez pas de email, contactez-nous en suivant le lien 'Nous contacter' dans le menu ou en écrivant directement à <a href="mailto:info@france-ioi.org">info@france-ioi.org</a>.</strong></p>
+            <p><strong>Un email vous a été envoyé avec un code vous permettant de choisir un nouveau mot de passe.</strong></p>
+            <p>Si vous ne recevez pas de email, contactez-nous en suivant le lien 'Nous contacter' dans le menu ou en écrivant directement à <a href="mailto:info@france-ioi.org">info@france-ioi.org</a>.</p>
+            <p>Vous pouvez maintenant fermer cette fenêtre.</p>
          </div>
          <div ng-show="!mailSent">
-            <p><strong>Si vous avez déjà eu un compte sur France-IOI, vous ne devez surtout pas en recréer un deuxième, sinon vous risquez d'être considéré comme tricheur et banni de France-IOI. Le formulaire suivant vous permet de récupérer votre compte à l'aide de votre e-mail. Si vous n'arrivez pas à récupérer votre compte par ce moyen, il vous faut contacter l'administrateur via le lien "nous contacter" accessible depuis le menu.</strong></p>
+            <p><strong>Si vous avez déjà eu un compte sur France-IOI, vous ne devez surtout pas en recréer un deuxième, sinon vous risquez d'être considéré comme tricheur et banni de France-IOI.</strong></p>
+            <p>Le formulaire suivant vous permet de récupérer votre compte à l'aide de votre e-mail. Si vous n'avez pas enregistré d'e-mail lors de la création de votre compte, il est malheureusement impossible de le récupérer.</p><p>Si vous aviez bien enregistré un e-mail et que vous n'arrivez pas à récupérer votre compte par ce moyen, il vous faut contacter l'administrateur via le lien "nous contacter" accessible depuis le menu.</p>
             <p>Renseigner un des deux champs suivants&nbsp;:</p>
             <form>
                <div class="form-group">
@@ -107,9 +109,25 @@
             </form>
          </div>
       </div>
+      <div ng-show="step == 'recoveredPasswordChanged'">
+         <p ng-show="recoverPasswordChangeLoading">Chargement...</p>
+         <p ng-show="!recoverPasswordChangeError && !recoverPasswordChangeLoading">Votre nouveau mot de passe est enregistré, vous pouvez fermer cette fenêtre et vous connecter normalement.</p>
+         <p ng-show="recoverPasswordChangeError">Désolé, un problème a été rencontré lors du changement de mot de passe, veuillez contacter le support.</p>
+      </div>
       <div ng-show="step == 'recovered'">
          <p ng-show="recoverLoading">Chargement...</p>
-         <p ng-show="!recoverLoading && !recoverError">Votre nouveau mot de passe est {{recoverPassword}}, vous pouvez le changer en vous loggant et en cliquant sur "Propriétés".</p>
+         <p ng-show="!recoverLoading && !recoverError">Veuillez choisir un nouveau mot de passe :</p>
+         <form ng-show="!recoverLoading && !recoverError">
+            <div class="form-group">
+               <label for="newPassword">Nouveau mot de passe :</label>
+               <input type="password" class="form-control" id="newPasswordRecovered">
+            </div>
+            <div class="form-group">
+               <label for="newPasswordConf">Nouveau mot de passe (confirmation) :</label>
+               <input type="password" class="form-control" id="newPasswordConfRecovered">
+            </div>
+            <button class="btn btn-info" ng-click="sendNewPassword(true);" type="submit" class="btn btn-info">Mettre à jour mon mot de passe</button>
+         </form>
          <p ng-show="!recoverLoading && recoverError">Désolé, le lien que vous avez suivi n'est plus valide, merci de répéter l'opération de récupération de compte depuis le début.</p>
       </div>
       <div ng-show="step == 'properties'">

@@ -218,15 +218,16 @@ angular.module('login', [])
       $scope.apply = function(f) {
          $timeout(function(){$scope.$apply(f);});
       };
-      $scope.sendNewPassword = function() {
-         var newPassword = $('#newPassword').val();
-         var newPasswordConf = $('#newPasswordConf').val();
+      $scope.sendNewPassword = function(fromRecovered) {
+         var suffix = fromRecovered ? 'Recovered' : '';
+         var newPassword = $('#newPassword'+suffix).val();
+         var newPasswordConf = $('#newPasswordConf'+suffix).val();
          if (!newPassword || newPassword != newPasswordConf) {
             alert('Les mots de passe sont différents');
          } else if (newPassword.length < 6) {
             alert('le mot de passe doit faire au moins 6 caractères');
          } else {
-            loginManager.updatePassword(newPassword);
+            loginManager.updatePassword(newPassword, fromRecovered);
          }
       };
    });
@@ -408,14 +409,25 @@ var loginManager = {
       }
    },
 
-   updatePassword: function(newPassword) {
+   updatePassword: function(newPassword, fromRecovered) {
+      var scope = angular.element("#LoginCtrl").scope();
+      if (fromRecovered) {
+         scope.step = 'recoveredPasswordChanged';
+         scope.recoverPasswordChangeLoading = true;
+         scope.recoverPasswordChangeError = false;
+      }
       $.get(config.selfBaseUrl + 'validateUser.php', {action: 'updatePassword', newPassword: newPassword}, function(res) {
          if (!res.success) {
             alert("Erreur : " + res.error);
             return;
          }
+         if (fromRecovered) {
+            scope.$apply(function() {
+               scope.recoverPasswordChangeLoading = false;
+            });
+            return;
+         }
          session.hasPassword = false;
-         var scope = angular.element("#LoginCtrl").scope();
          scope.apply(function() {
             scope.session.hasPassword = true;
          });
@@ -582,7 +594,6 @@ var loginManager = {
          scope.apply(function() {
             scope.recoverLoading = false;
             scope.recoverError = !res.success;
-            scope.recoverPassword = res.newPassword;
          });
       }, 'json');
    },

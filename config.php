@@ -44,6 +44,17 @@ $config->shared = (object) array();
 $config->shared->Google0Auth2 = (object) array();
 $config->shared->Facebook = (object) array();
 
+//Email
+$config->email = (object) array();
+$config->email->bSendMailForReal = false;
+$config->email->sEmailSender = '';
+$config->email->smtpHost = '';
+$config->email->smtpPort = '587';
+$config->email->smtpEncryption = 'tls';
+$config->email->smtpUsername = '';
+$config->email->smtpPassword = 'PASSWORD';
+
+
 if (is_readable(__DIR__.'/config_local.php')) {
    include_once __DIR__.'/config_local.php';
 }
