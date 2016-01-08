@@ -518,7 +518,7 @@ var loginManager = {
    },
 
    openLoginPopup: function(url) {
-      if(typeof(window.loginPopup) != 'undefined' && !window.loginPopup.closed){
+      if(typeof(window.loginPopup) != 'undefined'){
          window.loginPopup.close();
       }
       this.popup = window.open(url, "loginPopup", "height=555, width=510, toolbar=yes, menubar=yes, scrollbars=no, resizable=no, location=no, directories=no, status=no");
