@@ -17,8 +17,14 @@
       margin-left: auto;
       margin-right: auto;
    }
-   .initialView {
+   .initialViewSmall {
       width: 160px;
+      margin-left: auto;
+      margin-right:auto;
+      background: transparent;
+   }
+   .initialViewBig {
+      width: 300px;
       margin-left: auto;
       margin-right:auto;
       background: transparent;
@@ -32,6 +38,11 @@
    .tiny {
       font-size:8pt;
       margin:0pt;
+   }
+   .loginbuttonBig {
+      width: 240px;
+      margin-left:auto;
+      margin-right:auto;
    }
    .googlefacebookbuttons {
       display: -webkit-flex;
@@ -66,8 +77,28 @@
    </head>
    <body ng-app="login" ng-controller="LoginCtrl" id="LoginCtrl">
       <div id="fb-root"></div>
-      <div ng-show="step == 'notConnected'" class="initialView">
-         <p class="center">Se connecter avec :</p>
+      <div ng-show="step == 'notConnected' && largeMode" class="initialViewBig">
+         <p class="center">Vous pouvez choisir de vous connecter avec :</p>
+         <a class="btn btn-block btn-social btn-openid loginbuttonBig" ng-click="loginWith($event, 'password')">
+           <i class="fa fa-key"></i>
+           Un login et un mot de passe
+         </a>
+         <a class="btn btn-block btn-social btn-facebook loginbuttonBig" ng-click="loginWith($event, 'facebook')">
+           <i class="fa fa-facebook"></i>
+           Un compte Facebook
+         </a>
+         <a class="btn btn-block btn-social btn-google loginbuttonBig" ng-click="loginWith($event, 'google')">
+           <i class="fa fa-google-plus"></i>
+           Un compte Google+
+         </a>
+         <p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>
+      </div>
+      <div  ng-show="step == 'notConnected' && !largeMode" class="initialViewSmall">
+         <p class="center">Se connecter par :</p>
+         <a class="btn btn-block btn-social btn-openid" ng-click="loginWith($event, 'password')">
+           <i class="fa fa-key"></i>
+           Mot de passe
+         </a>
          <a class="btn btn-block btn-social btn-facebook" ng-click="loginWith($event, 'facebook')">
            <i class="fa fa-facebook"></i>
            Facebook
@@ -75,10 +106,6 @@
          <a class="btn btn-block btn-social btn-google" ng-click="loginWith($event, 'google')">
            <i class="fa fa-google-plus"></i>
            Google+
-         </a>
-         <a class="btn btn-block btn-social btn-openid" ng-click="loginWith($event, 'password')">
-           <i class="fa fa-key"></i>
-           Mot de passe
          </a>
          <p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>
       </div>

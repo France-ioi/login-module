@@ -115,6 +115,9 @@ angular.module('login', [])
       loginManager.scope = $scope;
       loadSession($scope, $http).then(function() {
          var params = getUrlVars();
+         if (params.large === "1") {
+            $scope.largeMode = true;
+         }
          if (params.login === "1") {
             $scope.step = "login";
             $("#loginForm").show();
