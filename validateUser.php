@@ -74,13 +74,14 @@ function validateUserFacebook($db, $sIdentity) {
    global $tokenGenerator;
    $_SESSION['modules']['login']["identity"] = $sIdentity;
    //$query = "SELECT `id`, `sPasswordMd5`, `google_id`, `google_id_old`, `sLogin` FROM `users` WHERE `facebook_id` = :sIdentity";
-   $query = "SELECT `id`, `sPasswordMd5`, `sOpenIdIdentity`, `sLogin` FROM `users` WHERE `sOpenIdIdentity` = :sIdentity";
+   $query = "SELECT `id`, `sPasswordMd5`, `sOpenIdIdentity`, `sLogin`, `bIsAdmin` FROM `users` WHERE `sOpenIdIdentity` = :sIdentity";
    $stmt = $db->prepare($query);
    $stmt->execute(array("sIdentity" => $sIdentity));
    if (/* not logged */!isset($_SESSION['modules']['login']['idUser'])) {
       if ($user = $stmt->fetchObject()) {
          $_SESSION['modules']['login']["idUser"] = $user->id;
          $_SESSION['modules']['login']["sLogin"] = $user->sLogin;
+         $_SESSION['modules']['login']["bIsAdmin"] = $user->bIsAdmin;
          $_SESSION['modules']['login']["hasPassword"] = !!$user->sPasswordMd5;
          //$_SESSION['modules']['login']["hasGoogle"] = ($user->google_id || $user->google_id_old);
          $_SESSION['modules']['login']["hasGoogle"] = false;
@@ -123,7 +124,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
    global $tokenGenerator;
    $_SESSION['modules']['login']["identity"] = $sOldIdentity;//$sIdentity
    //$query = "SELECT `id`, `sPasswordMd5`, `facebook_id`, `sLogin` FROM `users` WHERE `google_id` = :sIdentity or `google_id_old` = :sOldIdentity";
-   $query = "SELECT `id`, `sPasswordMd5`, `sOpenIdIdentity`, `sLogin` FROM `users` WHERE `sOpenIdIdentity` = :sOldIdentity";
+   $query = "SELECT `id`, `sPasswordMd5`, `sOpenIdIdentity`, `bIsAdmin`, `sLogin` FROM `users` WHERE `sOpenIdIdentity` = :sOldIdentity";
    $stmt = $db->prepare($query);
    //$stmt->execute(array("sIdentity" => $sIdentity, 'sOldIdentity' => $sOldIdentity));
    $stmt->execute(array('sOldIdentity' => $sOldIdentity));
@@ -131,6 +132,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
       if ($user = $stmt->fetchObject()) {
          $_SESSION['modules']['login']["idUser"] = $user->id;
          $_SESSION['modules']['login']["sLogin"] = $user->sLogin;
+         $_SESSION['modules']['login']["bIsAdmin"] = $user->bIsAdmin;
          $_SESSION['modules']['login']["hasPassword"] = !!$user->sPasswordMd5;
          $_SESSION['modules']['login']["hasGoogle"] = true;
          //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
@@ -245,7 +247,7 @@ function updateSaltAndPasswordMD5ForPassword($db, $userId, $sPassword) {
 function validateLoginUser($db, $sLogin, $sPassword) {
    global $tokenGenerator;
    //$query = "SELECT `id`, `sLogin`, `facebook_id`, `google_id`, `google_id_old`, `sEmail`, `sPasswordMd5`, `sSalt` FROM `users` WHERE `sLogin` = :sLogin";
-   $query = "SELECT `id`, `sLogin`, `sOpenIdIdentity`, `sEmail`, `sPasswordMd5`, `sSalt` FROM `users` WHERE `sLogin` = :sLogin";
+   $query = "SELECT `id`, `sLogin`, `sOpenIdIdentity`, `sEmail`, `sPasswordMd5`, `bIsAdmin`, `sSalt` FROM `users` WHERE `sLogin` = :sLogin";
    $stmt = $db->prepare($query);
    $stmt->execute(array("sLogin" => strtolower($sLogin)));
    $user = $stmt->fetchObject();
@@ -268,8 +270,8 @@ function validateLoginUser($db, $sLogin, $sPassword) {
       $_SESSION['modules'] = array('login' => array());
    }
    $_SESSION['modules']['login']["idUser"] = $user->id;
-   error_log("User : ".json_encode($user)." for login : ".$sLogin);
    $_SESSION['modules']['login']["sLogin"] = $user->sLogin;
+   $_SESSION['modules']['login']["bIsAdmin"] = $user->bIsAdmin;
    $_SESSION['modules']['login']["sProvider"] = "password";
    $_SESSION['modules']['login']["hasPassword"] = true;
    //$_SESSION['modules']['login']["hasGoogle"] = ($user->google_id || $user->google_id_old);
@@ -361,9 +363,7 @@ function customSendMail($to, $mailTitle, $mailBody) {
    return $error;
 }
 
-function recoverPassword($db) {
-   $recoverLogin = $_GET['recoverLogin'];
-   $recoverEmail = $_GET['recoverEmail'];
+function getRecoverLink($db, $recoverEmail, $recoverLogin, $failIfNoEmail = true) {
    if (!$recoverLogin && !$recoverEmail) {
       echo json_encode(array('successs' => false, 'error' => 'Vous devez spécifier un login ou une adresse email'));
    }
@@ -391,7 +391,7 @@ function recoverPassword($db) {
       echo json_encode(array('success'=>false, 'error' => 'L\'utilisateur demandé n\'avait pas de mot de passe et s\'authentifiait par une autre méthode.'));
       return;
    }
-   if (!$user->sEmail) {
+   if (!$user->sEmail && $failIfNoEmail) {
       echo json_encode(array('success'=>false, 'error' => 'L\'utilisateur demandé n\'a pas enregistré d\'adresse email.'));
       return;
    }
@@ -401,7 +401,17 @@ function recoverPassword($db) {
    $query = 'update users set sRecover=:sRecover where id = :id;';
    $stmt = $db->prepare($query);
    $stmt->execute(array('sRecover' => $recoverCode, 'id' => $user->id));
-   $mailBody = "Bonjour,\n\nVotre identifiant est $sLogin.\n\nCliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n https://loginaws.algorea.org/login.html?sLogin=$sLogin&sRecover=$recoverCode \n\nLe webmaster France-IOI";
+   $link = 'https://loginaws.algorea.org/login.html?sLogin='.$sLogin.'&sRecover='.$recoverCode;
+   return $link;
+}
+
+function recoverPassword($db) {
+   $recoverLink = getRecoverLink($db, $_GET['recoverEmail'], $_GET['recoverLogin']);
+   if (!$recoverLink) {
+      echo json_encode(array('success' => false, 'error' => 'Impossible de générer le code !'));
+      return;
+   }
+   $mailBody = "Bonjour,\n\nVotre identifiant est $sLogin.\n\nCliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n $recoverLink \n\nLe webmaster France-IOI";
    $mailTitle = "Récupération de compte sur France-IOI";
    $mailError = customSendMail($user->sEmail, $mailTitle, $mailBody);
    if ($mailError) {
