@@ -116,23 +116,18 @@
       <div ng-show="step == 'recover'">
          <div ng-show="mailSent">
             <p><strong>Un email vous a été envoyé avec un code vous permettant de choisir un nouveau mot de passe.</strong></p>
-            <p>Si vous ne recevez pas de email, contactez-nous en suivant le lien 'Nous contacter' dans le menu ou en écrivant directement à <a href="mailto:info@france-ioi.org">info@france-ioi.org</a>.</p>
+            <p>Si vous ne recevez pas de email, contactez-nous en écrivant directement à <a href="mailto:info@france-ioi.org">info@france-ioi.org</a>.</p>
             <p>Vous pouvez maintenant fermer cette fenêtre.</p>
          </div>
          <div ng-show="!mailSent">
-            <p><strong>Si vous avez déjà eu un compte sur France-IOI, vous ne devez surtout pas en recréer un deuxième, sinon vous risquez d'être considéré comme tricheur et banni de France-IOI.</strong></p>
-            <p>Le formulaire suivant vous permet de récupérer votre compte à l'aide de votre e-mail. Si vous n'avez pas enregistré d'e-mail lors de la création de votre compte, il est malheureusement impossible de le récupérer.</p><p>Si vous aviez bien enregistré un e-mail et que vous n'arrivez pas à récupérer votre compte par ce moyen, il vous faut contacter l'administrateur via le lien "nous contacter" accessible depuis le menu.</p>
-            <p>Renseigner un des deux champs suivants&nbsp;:</p>
+            <p><strong>Si vous avez déjà un compte, vous ne devez surtout pas en recréer un deuxième, sinon vous risquez d'être considéré comme tricheur et banni.</strong></p>
+            <p>Le formulaire suivant vous permet de récupérer votre compte à l'aide de votre e-mail. Si vous n'avez pas enregistré d'e-mail lors de la création de votre compte, il est malheureusement impossible de le récupérer.</p><p>Si vous aviez bien enregistré un e-mail et que vous n'arrivez pas à récupérer votre compte par ce moyen, vous pouvez contacter <a href="mailto:info@france-ioi.org">info@france-ioi.org</a>.</p>
+            <p>Renseignez votre e-mail&nbsp;:</p>
             <form>
                <div class="form-group">
-                  <label for="recoverLogin">Login&nbsp;:</label>
-                  <input type="text" class="form-control" id="recoverLogin">
-               </div>
-               <div class="form-group">
-                  <label for="recoverEmail">E-mail&nbsp;:</label>
                   <input type="text" class="form-control" id="recoverEmail">
                </div>
-               <button class="btn btn-info" ng-click="recoverPassword();" type="submit" class="btn btn-info">Recevoir un email permettant de récupérer son compte</button>
+               <button class="btn btn-info" ng-click="recoverPassword();" type="submit" class="btn btn-info">Recevoir un e-mail permettant de récupérer son compte</button>
             </form>
          </div>
       </div>
