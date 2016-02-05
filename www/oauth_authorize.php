@@ -1,10 +1,10 @@
 <?php
 
-require_once __DIR__.'/config.php';
-require_once __DIR__.'/vendor/autoload.php';
-require_once __DIR__."/lib/connect.php";
-require_once __DIR__."/lib/session.php";
-require_once __DIR__."/lib/oauth_server.php";
+require_once __DIR__.'/../config.php';
+require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__."/../lib/connect.php";
+require_once __DIR__."/../lib/session.php";
+require_once __DIR__."/../lib/oauth_server.php";
 
 $db = connect();
 

@@ -8,11 +8,11 @@
 // XXX Security issue, should not be needed:
 // header("Access-Control-Allow-Origin: *");
 
-require_once __DIR__.'/config.php';
-require_once __DIR__.'/lib/connect.php';
-require_once __DIR__.'/lib/session.php';
+require_once __DIR__.'/../config.php';
+require_once __DIR__.'/../lib/connect.php';
+require_once __DIR__.'/../lib/session.php';
 
-require_once(dirname(__FILE__)."/shared/TokenGenerator.php");
+require_once(dirname(__FILE__)."/../shared/TokenGenerator.php");
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
 

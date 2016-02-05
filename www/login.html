@@ -80,6 +80,11 @@
            <i class="fa fa-key"></i>
            Mot de passe
          </a>
+         </a>
+         <a class="btn btn-block btn-social btn-vimeo" ng-click="loginWith($event, 'saml')">
+           <i class="fa fa-cubes"></i>
+           Saml (établissements scolaires)
+         </a>
          <!--<p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>-->
       </div>
       <div ng-show="step == 'connected'">
@@ -214,6 +219,21 @@
             </div>
             <p ng-hide="email">L'adresse E-mail n'est pas obligatoire mais est vivement conseillée. Si vous ne la remplissez pas, il vous sera impossible de retrouver votre compte en cas de perte de votre mot de passe.</p>
             <button class="btn btn-info" ng-click="createUser()">Créer mon compte</button>
+         </form>
+      </div>
+      <div ng-show="step == 'newLoginFromSaml'">
+         <p>Vous êtes bien connecté sur France IOI.</p>
+         <form>
+            <div class="form-group">
+              <label for="login">Choisissez un login :</label>
+              <input type="text" class="form-control" id="loginSaml" ng-model="login" placeholder="Login">
+            </div>
+            <div class="form-group">
+              <label for="email">Votre adresse email :</label>
+              <input type="text" class="form-control" id="emailSaml" ng-model="email" placeholder="Email">
+            </div>
+            <p ng-hide="email">L'adresse E-mail n'est pas obligatoire mais est vivement conseillée. Si vous ne la remplissez pas, il vous sera impossible de retrouver votre compte en cas de perte de votre mot de passe.</p>
+            <button class="btn btn-info" ng-click="submitNewLogin()">Enregistrer</button>
          </form>
       </div>
       <p style="color:red">{{ session.sErrorMessage }}</p>

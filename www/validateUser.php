@@ -23,12 +23,12 @@
 // XXX is this needed?
 // header("Access-Control-Allow-Origin: *");
 
-require_once __DIR__.'/config.php';
-require_once __DIR__.'/vendor/autoload.php';
-require_once __DIR__."/lib/session.php";
-require_once __DIR__."/lib/connect.php";
-require_once __DIR__."/translate.inc.php";
-require_once __DIR__."/shared/TokenGenerator.php";
+require_once __DIR__.'/../config.php';
+require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__."/../lib/session.php";
+require_once __DIR__."/../lib/connect.php";
+require_once __DIR__."/../translate.inc.php";
+require_once __DIR__."/../shared/TokenGenerator.php";
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
 
@@ -84,6 +84,7 @@ function validateUserFacebook($db, $sIdentity) {
          $_SESSION['modules']['login']["hasPassword"] = !!$user->sPasswordMd5;
          //$_SESSION['modules']['login']["hasGoogle"] = ($user->google_id || $user->google_id_old);
          $_SESSION['modules']['login']["hasGoogle"] = false;
+         $_SESSION['modules']['login']["hasSaml"] = false;
          $_SESSION['modules']['login']["hasFacebook"] = true;
          $token_params = array(
             "idUser" => $user->id,
@@ -135,6 +136,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
          $_SESSION['modules']['login']["hasGoogle"] = true;
          //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
          $_SESSION['modules']['login']["hasFacebook"] = false;
+         $_SESSION['modules']['login']["hasSaml"] = false;
          $token_params = array(
             "idUser" => $user->id,
             "sLogin" => $user->sLogin,
@@ -268,13 +270,13 @@ function validateLoginUser($db, $sLogin, $sPassword) {
       $_SESSION['modules'] = array('login' => array());
    }
    $_SESSION['modules']['login']["idUser"] = $user->id;
-   error_log("User : ".json_encode($user)." for login : ".$sLogin);
    $_SESSION['modules']['login']["sLogin"] = $user->sLogin;
    $_SESSION['modules']['login']["sProvider"] = "password";
    $_SESSION['modules']['login']["hasPassword"] = true;
    //$_SESSION['modules']['login']["hasGoogle"] = ($user->google_id || $user->google_id_old);
    //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
    $_SESSION['modules']['login']["hasGoogle"] = false;
+   $_SESSION['modules']['login']["hasSaml"] = false;
    $_SESSION['modules']['login']["hasFacebook"] = false;
    $token_params = array(
       //"sLanguage" => $user->sDefaultLanguage,

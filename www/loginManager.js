@@ -129,6 +129,8 @@ angular.module('login', [])
          } else if (params.newUser === "1") {
             $scope.step = "newLogin";
             $("#newLoginForm").show();
+         } else if (params.newUserFromSaml === "1") {
+            $scope.step = "newLoginFromSaml";
          } else if (params.close === "1") {
             window.close();
          } else if (!loginManager.handleOAuthData()) {
@@ -180,7 +182,8 @@ angular.module('login', [])
       window.scope_setInterval = $scope.setInterval;
 
       $scope.submitNewLogin = function() {
-         loginManager.createAccount($scope.login, "", "");
+         var email = $scope.email ? $scope.email : '';
+         loginManager.createAccount($scope.login, email, "");
       };
       $scope.recoverPassword = function() {
          loginManager.recoverPassword();
@@ -553,6 +556,8 @@ var loginManager = {
          url = this.urlLoginWithOpenID('google', false);
       } else if (provider === "password") {
          url = this.urlLoginWithPassword(false);
+      } else if (provider === "saml") {
+         url = config.selfBaseUrl + "saml.php?login=1";
       } else {
          this.setErrorMessage("Invalid login provider : " + provider);
          return;
