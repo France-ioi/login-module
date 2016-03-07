@@ -99,7 +99,11 @@ function loadSession($scope, $http) {
 var parent_url = decodeURIComponent(document.location.hash.replace(/^#/, ''));
 
 function postLoginMessage(request, content) {
-   parent.postMessage(JSON.stringify({
+   var target = window.parent;
+   if (window.parent == window.self) {
+      target = window.opener;
+   }
+   target.postMessage(JSON.stringify({
       source: 'loginModule',
       content: content,
       request: request
@@ -111,12 +115,20 @@ var session;
 angular.module('login', [])
    .controller('LoginCtrl', function($scope, $http, $timeout, $interval) {
       $scope.step = "";
+      $scope.autoLogout = false;
+      $scope.popupMode = false;
       $scope.session = session;
       loginManager.scope = $scope;
       loadSession($scope, $http).then(function() {
          var params = getUrlVars();
          if (params.large === "1") {
             $scope.largeMode = true;
+         }
+         if (params.autoLogout === '1') {
+            $scope.autoLogout = true;
+         }
+         if (params.mode === "popup") {
+            $scope.popupMode = true;
          }
          if (params.login === "1") {
             $scope.step = "login";
@@ -141,11 +153,17 @@ angular.module('login', [])
                //            $("#loginButtons").show();
             } else {
                $scope.step = "connected";
-               postLoginMessage('login', {
-                  login: session.sLogin,
-                  token: session.sToken
-               });
-               //            $("#logoutButton").show();
+               if ($scope.autoLogout) {
+                  $scope.logout();
+               } else {
+                  postLoginMessage('login', {
+                     login: session.sLogin,
+                     token: session.sToken
+                  });
+                  if (popupMode) {
+                     window.close();
+                  }
+               }
             }
             $scope.setInterval();
          }
@@ -256,7 +274,11 @@ var loginManager = {
             login: login,
             token: token
          });
-         scope_setInterval();
+         if(loginManager.scope.popupMode) {
+            window.close();
+         } else {
+            scope_setInterval();
+         }
       }
    },
 
@@ -509,14 +531,19 @@ var loginManager = {
             scope.step = "notConnected";
          });
          var provider = session.sProvider ? session.sProvider : this.accessProvider;
+         var loggingoutfromprovider = false;
          if (provider && provider !== "password") {
             if (confirm(translate("logout_from_provider", [provider]))) {
                loginManager.logoutFromProvider(provider);
+               loggingoutfromprovider = true;
                this.accessProvider = '';
                scope.session.sProvider = '';
             }
          }
          postLoginMessage('logout', null);
+         if (loginManager.scope.popupMode && !loggingoutfromprovider) {
+            window.close();
+         }
       });
    },
 
