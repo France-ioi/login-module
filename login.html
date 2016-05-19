@@ -81,7 +81,7 @@
          <p class="center">Vous pouvez choisir de vous connecter avec :</p>
          <a class="btn btn-block btn-social btn-openid loginbuttonBig" ng-click="loginWith($event, 'password')">
            <i class="fa fa-key"></i>
-           Un login et un mot de passe
+           Un identifiant et un mot de passe
          </a>
          <a class="btn btn-block btn-social btn-facebook loginbuttonBig" ng-click="loginWith($event, 'facebook')">
            <i class="fa fa-facebook"></i>
@@ -202,7 +202,7 @@
       <div ng-show="step == 'login'">
          <form>
             <div class="form-group">
-              <label for="login">Votre login :</label>
+              <label for="login">Votre identifiant :</label>
               <input type="text" class="form-control" id="login" ng-model="login" placeholder="Login">
             </div>
             <div class="form-group">
@@ -216,7 +216,7 @@
       <div ng-show="step == 'newLogin'">
          <form>
             <div class="form-group">
-              <label for="login">Choisissez un login :</label>
+              <label for="login">Choisissez un identifiant :</label>
               <input type="text" class="form-control" id="login" ng-model="login" placeholder="Login">
             </div>
             <button class="btn btn-info" ng-click="submitNewLogin()">Enregistrer</button>
@@ -237,7 +237,7 @@
          <p>ou <strong>créer un identifiant</strong> :</p>
          <form>
             <div class="form-group">
-              <label for="login">Votre nouveau login :</label>
+              <label for="login">Votre nouvel identifiant :</label>
               <input type="text" class="form-control" id="login" ng-model="login" placeholder="Login">
             </div>
             <div class="form-group">
