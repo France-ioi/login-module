@@ -4,6 +4,7 @@
 require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 use Namshi\JOSE\JWS;
+use Namshi\JOSE\SimpleJWS;
 
 /**
  * Generates task token
@@ -28,7 +29,8 @@ class TokenGenerator
     */
    private function encodeToken($params)
    {
-      $jws  = new JWS('RS512');
+      //$jws  = new JWS('RS512');
+      $jws  = new SimpleJWS(['alg' => 'RS512']);
       $jws->setPayload($params);
       $jws->sign($this->privateKey);
       return $jws->getTokenString();

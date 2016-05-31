@@ -54,3 +54,19 @@ ALTER TABLE `users`
 
  ALTER TABLE `users`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
+
+CREATE TABLE IF NOT EXISTS `auths` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `public_key` varchar(500) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `users_auths` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idUser` bigint(20) NOT NULL,
+  `idAuth` bigint(20) NOT NULL,
+  `authStr` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
