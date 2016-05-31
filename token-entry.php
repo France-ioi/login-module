@@ -11,6 +11,9 @@ require_once __DIR__.'/lib/session.php';
 $db = connect();
 
 $redirectUrl = isset($_GET['redirectUrl']) ? $_GET['redirectUrl'] : null;
+if (!$redirectUrl) {
+	die('missing redirectUrl param');
+}
 
 $token = isset($_GET['sToken']) ? $_GET['sToken'] : null;
 if (!$token) {
@@ -26,7 +29,7 @@ $stmt = $db->prepare('SELECT ID, public_key, name from auths where name = :name;
 $stmt->execute(['name' => $platformName]);
 $authData = $stmt->fetch();
 if (!$authData) {
-	die('cannot find platform named '.$platformName);	
+	die('cannot find platform named '.$platformName);
 }
 
 $tokenParser = new TokenParser($authData['public_key'], $platformName, 'public');
@@ -69,7 +72,7 @@ function genLogin($db, $firstName, $lastName, $prefix) {
    $stmt = $db->prepare($query);
    $firstName = stripAccents($firstName);
    $lastName = stripAccents($lastName);
-   $base = $prefix.strtolower(mb_substr($firstName, 0, 1, 'UTF-8')).strtolower(mb_substr($lastName, 0, 10, 'UTF-8'));
+   $base = $prefix.strtolower(mb_substr($lastName, 0, 10, 'UTF-8')).strtolower(mb_substr($firstName, 0, 1, 'UTF-8'));
    while(true) {
       $login = $base;
       for ($pos = 0; $pos < 3; $pos++) {
@@ -112,7 +115,7 @@ function getUser($db, $loginData, $authData) {
 			'sLogin' => $login
 		]);
 		$idUser = $db->lastInsertId();
-		$user = ['sLogin' => $login, 'id' => $idUser];
+		$user = ['sLogin' => $login, 'id' => $idUser, 'bIsAdmin' => 0];
 	} else if (!$user && $userAuth) {
 		$idUser = $userAuth['idUser'];
 		$stmt = $db->prepare('select users.* from users where ID = :idUser');
@@ -151,12 +154,35 @@ function getUserToken($db, $user, $tokenGenerator) {
 
 $user = getUser($db, $tokenParams['loginData'], $authData);
 
-var_export($user);
+if (isset($_SESSION['modules'])) {
+  $_SESSION['modules']['login'] = array();
+} else {
+  $_SESSION['modules'] = array('login' => array());
+}
+$_SESSION['modules']['login']["idUser"] = $user['id'];
+$_SESSION['modules']['login']["sLogin"] = $user['sLogin'];
+$_SESSION['modules']['login']["bIsAdmin"] = $user['bIsAdmin'];
+$_SESSION['modules']['login']["sProvider"] = "lti";
+$_SESSION['modules']['login']["hasPassword"] = false;
+$_SESSION['modules']['login']["hasGoogle"] = false;
+$_SESSION['modules']['login']["hasFacebook"] = false;
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
 
-$token = getUserToken($db, $user, $tokenGenerator);
+$loginToken = getUserToken($db, $user, $tokenGenerator);
 
-echo json_encode($tokenParams);
+$redirectUrl = $redirectUrl . (strpos($redirectUrl, '?') === false ? '?' : '&') . 'loginToken=' . $loginToken;
 
-echo $token;
+?>
+
+<!doctype html>
+<html>
+   <head>
+   <script>
+   	window.top.location.href = "<?= $redirectUrl ?>";
+   	//console.error("<?= $redirectUrl ?>");
+   </script>
+   </head>
+   <body>
+   </body>
+</html>
