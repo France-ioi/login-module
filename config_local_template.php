@@ -15,4 +15,3 @@ $config->login_module->private_key = "";
 
 $config->selfBaseUrl = 'path/to/login.html';
 $config->cookieHost = 'example.com';
-

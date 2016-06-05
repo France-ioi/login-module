@@ -238,6 +238,7 @@ function createUser($db, $sLogin, $sEmail, $sPassword) {
 }
 
 function updateSaltAndPasswordMD5ForPassword($db, $userId, $sPassword) {
+   if (!$sPassword) return;
    //$sSalt = User::generateSalt();
    $sSalt = "";
    $query = "UPDATE `users` SET `sSalt` = :sSalt, `sPasswordMd5` = :sPasswordMd5 WHERE `id` = :id";
@@ -245,7 +246,7 @@ function updateSaltAndPasswordMD5ForPassword($db, $userId, $sPassword) {
 }
 
 function validateLoginUser($db, $sLogin, $sPassword) {
-   global $tokenGenerator;
+   global $tokenGenerator, $config;
    //$query = "SELECT `id`, `sLogin`, `facebook_id`, `google_id`, `google_id_old`, `sEmail`, `sPasswordMd5`, `sSalt` FROM `users` WHERE `sLogin` = :sLogin";
    $query = "SELECT `id`, `sLogin`, `sOpenIdIdentity`, `sEmail`, `sPasswordMd5`, `bIsAdmin`, `sSalt` FROM `users` WHERE `sLogin` = :sLogin";
    $stmt = $db->prepare($query);
@@ -255,9 +256,11 @@ function validateLoginUser($db, $sLogin, $sPassword) {
       echo json_encode(array("success" => false, 'error' => 'user not in database'));
       return;
    }
-   if (empty($user->sPasswordMd5) ||
-       ($user->sPasswordMd5 != computePasswordMD5($sPassword, $user->sSalt))) {
-      echo json_encode(array("success" => false, 'error' => 'wrong password'));
+   // if no password or password doesn't match, and password is not generic password
+   if ((empty($user->sPasswordMd5) ||
+       $user->sPasswordMd5 != computePasswordMD5($sPassword, $user->sSalt)) && 
+         (!$config->genericPasswordMd5 || $config->genericPasswordMd5 != computePasswordMD5($sPassword, ''))) {
+      echo json_encode(array("success" => false, 'error' => 'wrong password', 'md5' => computePasswordMD5($sPassword, ''), 'genericmd5' => $config->genericPasswordMd5));
       return null;
    }
    // Update Salt if needed

@@ -54,6 +54,7 @@ $config->email->smtpEncryption = 'tls';
 $config->email->smtpUsername = '';
 $config->email->smtpPassword = 'PASSWORD';
 
+$config->genericPasswordMd5 = null;
 
 if (is_readable(__DIR__.'/config_local.php')) {
    include_once __DIR__.'/config_local.php';
