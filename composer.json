@@ -1,4 +1,8 @@
 {
+   "repositories": [{
+      "type": "vcs",
+      "url": "https://github.com/France-ioi/oauth2-basicauth"
+   }],
    "require": {
       "guzzlehttp/guzzle": "*",
       "aws/aws-sdk-php": "*",
@@ -13,6 +17,8 @@
       "php": ">=5.4.0",
       "lib-openssl": "*",
       "lib-curl": "*",
-      "spomky-labs/jose": "2.0.*@beta"
+      "spomky-labs/jose": "2.0.*@beta",
+      "league/oauth2-client": "^1.4",
+      "France-ioi/oauth2-basicauth": "@dev"
    }
 }
