@@ -39,14 +39,32 @@ $provider = new \League\OAuth2\Client\Provider\BasicAuthProvider([
     'scopes'                  => 'authenticate'
 ]);
 
+function getAuthStr($loginData) {
+    if (isset($loginData['nickName']) && $loginData['nickName']) {
+        return $loginData['nickName'];
+    } elseif (isset($loginData['eMail']) && $loginData['eMail']) {
+        return $loginData['eMail'];
+    } else {
+        die('cannot find a proper way of identifiying user in the login data '.json_encode($loginData));
+    }
+}
+
+function loginTaken($login) {
+    global $db;
+    $stmt = $db->prepare('select ID from users where sLogin = :login;');
+    $stmt->execute(['login' => $login]);
+    return !!$stmt->fetch();
+}
+
 function getUser($db, $loginData, $authId) {
+    global $authId;
     if (!$loginData) {
         die('no loginData passed to getUser');
     }
-    $eMail = $loginData['email'];
+    $eMail = isset($loginData['eMail']) ? $loginData['eMail'] : '';
     $user = null;
-    if (!$eMail) {
-        $stmt = $db->prepare('select users.* where sEmail = :eMail');
+    if ($eMail) {
+        $stmt = $db->prepare('select * from users where sEmail = :eMail');
         $stmt->execute(['eMail' => $eMail]);
         $user = $stmt->fetch();
     }
@@ -55,29 +73,51 @@ function getUser($db, $loginData, $authId) {
     $stmt->execute(['idAuth' => $authId, 'authStr' => $authStr]);
     $userAuth = $stmt->fetch();
     if (!$user && !$userAuth) {
-        // TODO: what if !firstName or !lastName ?
-        $login = genLogin($db, $loginData['firstName'], $loginData['lastName'], 'ups_');
-        $stmt = $db->prepare("INSERT INTO `users` (`sLogin`, `sEmail`, `sSalt`, `sPasswordMd5`, `sFirstName`, `sLastName`, `sRegistrationDate`, `sLastLoginDate`) ".
-         "VALUES (:sLogin, :sEmail, '', '', :firstName, :lastName, NOW(), NOW())");
+        $login = null;
+        if (!isset($loginData['nickName'])) {
+            $login = genLogin($db, $loginData['firstName'], $loginData['lastName'], 'pms_');
+        } else {
+            $login = $loginData['nickName'];
+            if (loginTaken($login)) {
+                error_log('auth id '.$authId.' transmitted a login already taken: '.$login);
+                if (loginTaken('pms_'.$login)) {
+                    error_log('pms_'.$login.' taken too!');
+                    // TODO: what if !firstName or !lastName ?
+                    $login = genLogin($db, $loginData['firstName'], $loginData['lastName'], 'pms_');
+                } else {
+                    $login = 'pms_'.$login;
+                }
+            }
+        }
+        $sSex = null;
+        if (isset($loginData['gender'])) {
+            $sSex = $loginData['gender'] == 'm' ? 'Male' : 'Female';
+        }
+        $stmt = $db->prepare("INSERT INTO `users` (`sLogin`, `sEmail`, `sSalt`, `sPasswordMd5`, `sFirstName`, `sLastName`, `sRegistrationDate`, `sLastLoginDate`, `sBirthDate`, `sSex`) ".
+         "VALUES (:sLogin, :sEmail, '', '', :firstName, :lastName, NOW(), NOW(), :sBirthDate, :sSex);");
         $stmt->execute([
             'firstName' => $loginData['firstName'],
             'lastName' => $loginData['lastName'],
-            'sEmail' => $loginData['email'],
-            'sLogin' => $login
+            'sEmail' => $eMail,
+            'sLogin' => $login,
+            'sBirthDate' => $loginData['dateOfBirth'],
+            'sSex' => $sSex
         ]);
         $idUser = $db->lastInsertId();
         $user = ['sLogin' => $login, 'id' => $idUser, 'bIsAdmin' => 0];
     } else if (!$user && $userAuth) {
         $idUser = $userAuth['idUser'];
-        $stmt = $db->prepare('select users.* from users where ID = :idUser');
+        $stmt = $db->prepare('select * from users where ID = :idUser');
         $stmt->execute(['idUser' => $idUser]);
         $user = $stmt->fetch();
         if (!$user) {
             error_log('users_auths id '.$userAuth['ID'].' points to unexisitng user '.$userAuth['idUser']);
             die('user_auth does not correspond to any user');
+        } else {
+            // TODO: maybe update the users fields here?
         }
     } else { // user
-        $idUser = $user['ID'];
+        $idUser = $user['id'];
         if ($userAuth && ($user['id'] != $userAuth['idUser'])) {
             error_log('email '.$user['email'].' corresponds to user '.$user['id'].', but user_auth '.$userAuth['ID'].' points to user'.$userAuth['idUser']);
             die('email corresponds to an user, but user_auth points to a different user');
@@ -87,7 +127,7 @@ function getUser($db, $loginData, $authId) {
         $stmt = $db->prepare('INSERT INTO `users_auths` (`idUser`, `idAUth`, `authStr`) VALUES (:idUser, :idAuth, :authStr);');
         $stmt->execute([
             'idUser' => $idUser,
-            'idAuth' => $authData['ID'],
+            'idAuth' => $authId,
             'authStr' => $authStr
         ]);
     }
@@ -104,8 +144,8 @@ function getUserToken($db, $user, $tokenGenerator) {
 }
 
 function finishLogin($resourceOwner) {
-    global $db, $config;
-    $user = getUser($db, $tokenParams['loginData'], $authData);
+    global $db, $config, $providerInfos;
+    $user = getUser($db, $resourceOwner, $providerInfos);
 
     if (isset($_SESSION['modules'])) {
       $_SESSION['modules']['login'] = array();
@@ -123,22 +163,37 @@ function finishLogin($resourceOwner) {
     $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
 
     $loginToken = getUserToken($db, $user, $tokenGenerator);
+    
+    if ($redirectUrl) {
+        $redirectUrl = $redirectUrl . (strpos($redirectUrl, '?') === false ? '?' : '&') . 'loginToken=' . $loginToken;
+    }
 
-    $redirectUrl = $redirectUrl . (strpos($redirectUrl, '?') === false ? '?' : '&') . 'loginToken=' . $loginToken;
+    $user['sPasswordMd5'] = null;
+    $user['sSalt'] = null;
 
     ?>
 
-    <!doctype html>
-    <html>
-       <head>
-       <script>
-        window.top.location.href = "<?= $redirectUrl ?>";
-        //console.error("<?= $redirectUrl ?>");
-       </script>
-       </head>
-       <body>
-       </body>
-    </html>
+<!doctype html>
+<html>
+   <head>
+   <script>
+    var redirectUrl = <?= json_encode($redirectUrl); ?>;
+    var user = <?= json_encode($user); ?>;
+    var token = <?= json_encode($loginToken); ?>;
+    if (redirectUrl) {
+        window.top.location.href = redirectUrl;
+    } else if (window.opener) {
+        window.opener.loginManager.logged(user.sLogin, token);
+        window.close();
+    } else {
+        console.error('I don\'t know what to do!');
+    }
+    //console.error("<?= $redirectUrl ?>");
+   </script>
+   </head>
+   <body>
+   </body>
+</html>
 
     <?php
 }
@@ -162,9 +217,6 @@ if (!isset($_GET['code'])) {
 // Check given state against previously stored one to mitigate CSRF attack
 } elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
 
-    var_dump($_SESSION);
-    var_dump($_GET['state']);
-    var_dump($_GET['state'] !== $_SESSION['oauth2state']);
     unset($_SESSION['oauth2state']);
     exit('Invalid state');
 
@@ -177,28 +229,11 @@ if (!isset($_GET['code'])) {
             'code' => $_GET['code']
         ]);
 
-        // We have an access token, which we may use in authenticated
-        // requests against the service provider's API.
-        echo $accessToken->getToken() . "\n";
-        echo $accessToken->getRefreshToken() . "\n";
-        echo $accessToken->getExpires() . "\n";
-        echo ($accessToken->hasExpired() ? 'expired' : 'not expired') . "\n";
-
         // Using the access token, we may look up details about the
         // resource owner.
         $resourceOwner = $provider->getResourceOwner($accessToken);
 
-        var_export($resourceOwner->toArray());
-        //finishLogin($resourceOwner);
-
-        // The provider provides a way to get an authenticated API request for
-        // the service, using the access token; it returns an object conforming
-        // to Psr\Http\Message\RequestInterface.
-        // $request = $provider->getAuthenticatedRequest(
-        //     'GET',
-        //     'http://brentertainment.com/oauth2/lockdin/resource',
-        //     $accessToken
-        // );
+        finishLogin($resourceOwner->toArray());
 
     } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
 
