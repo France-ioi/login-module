@@ -115,12 +115,14 @@ var session;
 angular.module('login', [])
    .controller('LoginCtrl', function($scope, $http, $timeout, $interval) {
       $scope.step = "";
+      $scope.hasPMS = false;
       $scope.autoLogout = false;
       $scope.popupMode = false;
       $scope.session = session;
       loginManager.scope = $scope;
       loadSession($scope, $http).then(function() {
          var params = getUrlVars();
+         console.error(params);
          if (params.large === "1") {
             $scope.largeMode = true;
          }
@@ -129,6 +131,10 @@ angular.module('login', [])
          }
          if (params.mode === "popup") {
             $scope.popupMode = true;
+         }
+         if (params.hasPMS === "1") {
+            $scope.hasPMS = true;
+            console.error('ok');
          }
          if (params.login === "1") {
             $scope.step = "login";
@@ -160,7 +166,7 @@ angular.module('login', [])
                      login: session.sLogin,
                      token: session.sToken
                   });
-                  if (popupMode) {
+                  if ($scope.popupMode) {
                      window.close();
                   }
                }
@@ -547,11 +553,15 @@ var loginManager = {
       });
    },
 
-   openLoginPopup: function(url) {
+   openLoginPopup: function(url, provider) {
       if(typeof(window.loginPopup) != 'undefined'){
          window.loginPopup.close();
       }
-      this.popup = window.open(url, "loginPopup", "height=555, width=510, toolbar=yes, menubar=yes, scrollbars=no, resizable=no, location=no, directories=no, status=no");
+      var width=510;
+      if (provider == 'pms') {
+         width=768;
+      }
+      this.popup = window.open(url, "loginPopup", "height=555, width="+width+", toolbar=yes, menubar=yes, scrollbars=no, resizable=no, location=no, directories=no, status=no");
       this.popup.focus();
    },
 
@@ -599,11 +609,13 @@ var loginManager = {
          url = this.urlLoginWithOpenID('google', false);
       } else if (provider === "password") {
          url = this.urlLoginWithPassword(false);
+      } else if (provider === "pms") {
+         url = config.selfBaseUrl+'oauth2-client.php?authId=5';
       } else {
          this.setErrorMessage("Invalid login provider : " + provider);
          return;
       }
-      this.openLoginPopup(url);
+      this.openLoginPopup(url, provider);
    },
 
    properties: function() {

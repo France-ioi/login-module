@@ -107,6 +107,10 @@
            <i class="fa fa-google-plus"></i>
            Google+
          </a>
+         <a ng-if="hasPMS" class="btn btn-block btn-social btn-yahoo" ng-click="loginWith($event, 'pms')">
+           <i class="fa fa-university"></i>
+           PMS
+         </a>
          <p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>
       </div>
       <div ng-show="step == 'connected'">

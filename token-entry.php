@@ -93,7 +93,7 @@ function getUser($db, $loginData, $authData) {
 			die('user_auth does not correspond to any user');
 		}
 	} else { // user
-		$idUser = $user['ID'];
+		$idUser = $user['id'];
 		if ($userAuth && ($user['id'] != $userAuth['idUser'])) {
 			error_log('email '.$user['email'].' corresponds to user '.$user['id'].', but user_auth '.$userAuth['ID'].' points to user'.$userAuth['idUser']);
 			die('email corresponds to an user, but user_auth points to a different user');
@@ -140,13 +140,26 @@ $loginToken = getUserToken($db, $user, $tokenGenerator);
 
 $redirectUrl = $redirectUrl . (strpos($redirectUrl, '?') === false ? '?' : '&') . 'loginToken=' . $loginToken;
 
+$user['sPasswordMd5'] = null;
+$user['sSalt'] = null;
+
 ?>
 
 <!doctype html>
 <html>
    <head>
    <script>
-   	window.top.location.href = "<?= $redirectUrl ?>";
+    var redirectUrl = <?= json_encode($redirectUrl); ?>;
+    var user = <?= json_encode($user); ?>;
+    var token = <?= json_encode($loginToken); ?>;
+    if (redirectUrl) {
+   		window.top.location.href = redirectUrl;
+    } else if (window.opener) {
+    	window.opener.loginManager.logged(user.sLogin, token);
+    	window.close();
+    } else {
+    	console.error('I don\'t know what to do!');
+    }
    	//console.error("<?= $redirectUrl ?>");
    </script>
    </head>
