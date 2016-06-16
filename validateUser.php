@@ -563,13 +563,12 @@ if (isset($_GET['action'])) {
       $id_token = $id_token['id_token'];
       // decoding and verifying signature of JWT token
       $token_infos = $client->verifyIdToken($id_token);
-      $token_infos = $token_infos->getAttributes();
       // now we can have our old id (that was not obvious!):
-      $openid_id = $token_infos['payload']['openid_id'];
+      $openid_id = $token_infos['openid_id'];
       // the new id is in the "sub" field
-      $sub = $token_infos['payload']['sub'];
+      $sub = $token_infos['sub'];
       if(!isset($_SESSION['modules']['login']['sEmail']) || !$_SESSION['modules']['login']['sEmail']) {
-         $_SESSION['modules']['login']["sEmail"] = $token_infos['payload']['email'];
+         $_SESSION['modules']['login']["sEmail"] = $token_infos['email'];
       }
       $_SESSION['modules']['login']["sProvider"] = "google";
       $loginParams = validateUserGoogle($db, $sub, $openid_id);
