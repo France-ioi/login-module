@@ -122,7 +122,6 @@ angular.module('login', [])
       loginManager.scope = $scope;
       loadSession($scope, $http).then(function() {
          var params = getUrlVars();
-         console.error(params);
          if (params.large === "1") {
             $scope.largeMode = true;
          }
@@ -141,6 +140,8 @@ angular.module('login', [])
             $("#loginForm").show();
          } else if (params.properties === "1") {
             $scope.step = "properties";
+         } else if (params.changePass === "1") {
+            $scope.step = "changePass";
          } else if (params.recover === "1") {
             $scope.step = "recover";
          } else if (params.sRecover) {
@@ -239,22 +240,41 @@ angular.module('login', [])
       $scope.logout = function() {
          loginManager.logout();
       };
+      $scope.openPasswordChange = function() {
+         $scope.step = 'changePass';
+      },
+      $scope.changePassDone = function() {
+         if ($scope.popupMode) {
+            window.close();
+         } else {
+            $scope.step = 'connected';
+         }
+      },
       $scope.properties = function() {
          loginManager.properties();
       };
       $scope.apply = function(f) {
          $timeout(function(){$scope.$apply(f);});
       };
-      $scope.sendNewPassword = function(fromRecovered) {
-         var suffix = fromRecovered ? 'Recovered' : '';
+      $scope.sendNewPassword = function(from) {
+         var suffix = '';
+         if (from == 'recovered') {
+            suffix = 'Recovered';
+         } else if (from == 'changePass') {
+            suffix = 'ChangePass';
+         }
          var newPassword = $('#newPassword'+suffix).val();
          var newPasswordConf = $('#newPasswordConf'+suffix).val();
+         var oldPassword;
+         if (from == 'changePass') {
+            oldPassword = $('#oldPassword'+suffix).val();
+         }
          if (!newPassword || newPassword != newPasswordConf) {
             alert('Les mots de passe sont différents');
          } else if (newPassword.length < 6) {
             alert('le mot de passe doit faire au moins 6 caractères');
          } else {
-            loginManager.updatePassword(newPassword, fromRecovered);
+            loginManager.updatePassword(newPassword, from, oldPassword);
          }
       };
    });
@@ -440,23 +460,34 @@ var loginManager = {
       }
    },
 
-   updatePassword: function(newPassword, fromRecovered) {
+   updatePassword: function(newPassword, from, oldPassword) {
       var scope = angular.element("#LoginCtrl").scope();
-      if (fromRecovered) {
+      if (from == 'recovered') {
          scope.step = 'recoveredPasswordChanged';
          scope.recoverPasswordChangeLoading = true;
          scope.recoverPasswordChangeError = false;
+      } else if (from == 'changePass') {
+         scope.changePassLoading = true;
       }
-      $.get(config.selfBaseUrl + 'validateUser.php', {action: 'updatePassword', newPassword: newPassword}, function(res) {
+      $.get(config.selfBaseUrl + 'validateUser.php', {action: 'updatePassword', newPassword: newPassword, oldPassword: oldPassword}, function(res) {
          if (!res.success) {
+            scope.$apply(function() {
+               scope.recoverPasswordChangeLoading = false;
+               scope.changePassLoading = false;
+            });
             alert("Erreur : " + res.error);
             return;
          }
-         if (fromRecovered) {
+         if (from == "recovered") {
             scope.$apply(function() {
                scope.recoverPasswordChangeLoading = false;
             });
             return;
+         } else if (from == 'changePass') {
+            scope.$apply(function() {
+               scope.changePassLoading = false;
+               scope.step = 'changePassDone';
+            });
          }
          session.hasPassword = false;
          scope.apply(function() {

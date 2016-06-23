@@ -115,6 +115,7 @@
       </div>
       <div ng-show="step == 'connected'">
          <button ng-click='logout()' class="center btn btn-info">Se déconnecter</button>
+         <p class="tiny center"><a href="" ng-click="openPasswordChange();">Changer mon mot de passe</a></p>
          <!--<input class="center" type='button' ng-click='properties()' value="Préférences">-->
       </div>
       <div ng-show="step == 'recover'">
@@ -135,6 +136,28 @@
             </form>
          </div>
       </div>
+      <div ng-show="step == 'changePass'">
+         <p ng-if="changePassLoading">Chargement...</p>
+         <p>Veuillez choisir un nouveau mot de passe :</p>
+         <form>
+            <div class="form-group">
+               <label for="oldPassword">Ancien mot de passe :</label>
+               <input type="password" class="form-control" id="oldPasswordChangePass" name="oldPassword">
+            </div>
+            <div class="form-group">
+               <label for="newPassword">Nouveau mot de passe :</label>
+               <input type="password" class="form-control" id="newPasswordChangePass" name="newPassword">
+            </div>
+            <div class="form-group">
+               <label for="newPasswordConf">Nouveau mot de passe (confirmation) :</label>
+               <input type="password" class="form-control" id="newPasswordConfChangePass" name="newPasswordConf">
+            </div>
+            <button class="btn btn-info" ng-click="sendNewPassword('changePass');" type="submit" class="btn btn-info">Mettre à jour mon mot de passe</button>
+         </form>
+      </div>
+      <div ng-show="step == 'changePassDone'">
+        <p>Votre mot de passe a bien été changé ! <button class="btn btn-info" ng-click="changePassDone();">Fermer</button></p>
+      </div>
       <div ng-show="step == 'recoveredPasswordChanged'">
          <p ng-show="recoverPasswordChangeLoading">Chargement...</p>
          <p ng-show="!recoverPasswordChangeError && !recoverPasswordChangeLoading">Votre nouveau mot de passe est enregistré, vous pouvez fermer cette fenêtre et vous connecter normalement.</p>
@@ -152,7 +175,7 @@
                <label for="newPasswordConf">Nouveau mot de passe (confirmation) :</label>
                <input type="password" class="form-control" id="newPasswordConfRecovered">
             </div>
-            <button class="btn btn-info" ng-click="sendNewPassword(true);" type="submit" class="btn btn-info">Mettre à jour mon mot de passe</button>
+            <button class="btn btn-info" ng-click="sendNewPassword('recovered');" type="submit" class="btn btn-info">Mettre à jour mon mot de passe</button>
          </form>
          <p ng-show="!recoverLoading && recoverError">Désolé, le lien que vous avez suivi n'est plus valide, merci de répéter l'opération de récupération de compte depuis le début.</p>
       </div>
@@ -161,7 +184,7 @@
          <form>
             <div class="form-group">
                <label for="newEmail">Adresse e-mail :</label>
-               <input type="password" ng-model="session.sEmail" class="form-control" id="newEmail">
+               <input type="text" ng-model="session.sEmail" class="form-control" id="newEmail">
             </div>
             <button class="btn btn-info" type="submit" class="btn btn-info">Mettre à jour mon adresse e-mail</button>
          </form>

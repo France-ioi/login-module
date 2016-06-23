@@ -310,10 +310,25 @@ if (get_magic_quotes_gpc()) {
     unset($process);
 }
 
-function updatePassword($db, $newPassword) {
+function updatePassword($db, $newPassword, $oldPassword) {
    if (!isset($_SESSION) || !isset($_SESSION['modules']['login']) || !$newPassword) {
       echo json_encode(array('success' => false, 'error' => 'you must be logged in to change password', 'newPassword' => $newPassword));
       return;
+   }
+   if ($oldPassword) {
+      $query = "SELECT `id`, `sPasswordMd5`, `sSalt` FROM `users` WHERE `id` = :id";
+      $stmt = $db->prepare($query);
+      $stmt->execute(array("id" => $_SESSION['modules']['login']["idUser"]));
+      $user = $stmt->fetchObject();
+      if (!$user) {
+         echo json_encode(array("success" => false, 'error' => 'you have not been found in the database, this should not happen!'));
+         return;
+      }
+      $computedMd5 = computePasswordMD5($oldPassword, $user->sSalt);
+      if (empty($user->sPasswordMd5) || $user->sPasswordMd5 != $computedMd5) {
+         echo json_encode(array("success" => false, 'error' => 'The old password you entered is not correct', 'userMd5' => $user->sPasswordMd5, 'computedMd5' => $computedMd5));
+         return;
+      }
    }
    if (isset($_SESSION['modules']['login']["idUserRecovered"])) {
       updateSaltAndPasswordMD5ForPassword($db, $_SESSION['modules']['login']["idUserRecovered"], $newPassword);
@@ -456,7 +471,7 @@ $db = connect();
  */
 if (isset($_GET['action'])) {
    if ($_GET['action'] == 'updatePassword') {
-      updatePassword($db, $_GET['newPassword']);
+      updatePassword($db, $_GET['newPassword'], $_GET['oldPassword']);
    } else if ($_GET['action'] == 'removeGoogle') {
       removeGoogle($db);
    } else if ($_GET['action'] == 'removeFacebook') {
