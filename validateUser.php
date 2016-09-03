@@ -431,7 +431,7 @@ function recoverPassword($db) {
       return;
    }
    $sLogin = $user->sLogin;
-   $mailBody = "Bonjour,\n\nNous avons reçu une demande de récupération de mot de passe pour votre identifiant $sLogin. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message, sinon vous pouvez cliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n $recoverLink \n\n-- \nLe webmaster France-IOI";
+   $mailBody = "(Ce message est envoyé automatiquement, merci de ne pas y répondre.)\n\nBonjour,\n\nNous avons reçu une demande de récupération de mot de passe pour votre identifiant $sLogin. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message, sinon vous pouvez cliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n $recoverLink \n\n-- \nLe webmaster France-IOI";
    $mailTitle = "Récupération de compte sur France-IOI";
    $mailError = customSendMail($user->sEmail, $mailTitle, $mailBody);
    if ($mailError) {
