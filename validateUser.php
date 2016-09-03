@@ -420,16 +420,18 @@ function getRecoverLink($db, $recoverEmail, $recoverLogin, $failIfNoEmail = true
    $stmt = $db->prepare($query);
    $stmt->execute(array('sRecover' => $recoverCode, 'id' => $user->id));
    $link = 'https://loginaws.algorea.org/login.html?sLogin='.$sLogin.'&sRecover='.$recoverCode;
-   return $link;
+   return [$link, $user];
 }
 
 function recoverPassword($db) {
-   $recoverLink = getRecoverLink($db, $_GET['recoverEmail'], $_GET['recoverLogin']);
+   $recoverLogin = isset($_GET['recoverLogin']) ? $_GET['recoverLogin'] : null;
+   list($recoverLink, $user) = getRecoverLink($db, $_GET['recoverEmail'], $recoverLogin);
    if (!$recoverLink) {
       echo json_encode(array('success' => false, 'error' => 'Impossible de générer le code !'));
       return;
    }
-   $mailBody = "Bonjour,\n\nVotre identifiant est $sLogin.\n\nCliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n $recoverLink \n\nLe webmaster France-IOI";
+   $sLogin = $user->sLogin;
+   $mailBody = "Bonjour,\n\nNous avons reçu une demande de récupération de mot de passe pour votre identifiant $sLogin. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message, sinon vous pouvez cliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n $recoverLink \n\n-- \nLe webmaster France-IOI";
    $mailTitle = "Récupération de compte sur France-IOI";
    $mailError = customSendMail($user->sEmail, $mailTitle, $mailBody);
    if ($mailError) {
