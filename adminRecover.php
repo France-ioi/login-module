@@ -23,7 +23,7 @@ if (!isset($_SESSION) || !isset($_SESSION['modules']) || !isset($_SESSION['modul
 
 $recoverLink = null;
 if ($_POST['login'] || $_POST['email']) {
-   $recoverLink = getRecoverLink($db, $_POST['email'], $_POST['login'], false);
+   list($recoverLink, $user) = getRecoverLink($db, $_POST['email'], $_POST['login'], false);
 }
 
 if ($recoverLink) {

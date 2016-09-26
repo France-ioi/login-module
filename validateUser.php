@@ -382,6 +382,7 @@ function customSendMail($to, $mailTitle, $mailBody) {
 }
 
 function getRecoverLink($db, $recoverEmail, $recoverLogin, $failIfNoEmail = true) {
+   global $config;
    if (!$recoverLogin && !$recoverEmail) {
       echo json_encode(array('successs' => false, 'error' => 'Vous devez spécifier un login ou une adresse email'));
    }
@@ -419,7 +420,7 @@ function getRecoverLink($db, $recoverEmail, $recoverLogin, $failIfNoEmail = true
    $query = 'update users set sRecover=:sRecover where id = :id;';
    $stmt = $db->prepare($query);
    $stmt->execute(array('sRecover' => $recoverCode, 'id' => $user->id));
-   $link = 'https://loginaws.algorea.org/login.html?sLogin='.$sLogin.'&sRecover='.$recoverCode;
+   $link = $config->selfBaseUrl.'login.html?sLogin='.$sLogin.'&sRecover='.$recoverCode;
    return [$link, $user];
 }
 
