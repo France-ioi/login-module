@@ -643,11 +643,10 @@ var loginManager = {
          // for simplicity's sake (the code has grown in complexity quite a lot with the IE bug),
          // we don't send messages when the user logs out, we suppose the platform already knows
          // (and asked it)
-         //postLoginMessage('logout', null, function() {
-            if (loginManager.scope.popupMode && !loggingoutfromprovider) {
-               closeAfterMessage();
-            }
-         //});
+         postLoginMessage('logout', null, function() {});
+         if (loginManager.scope.popupMode && !loggingoutfromprovider) {
+            closeAfterMessage();
+         }
       });
    },
 
