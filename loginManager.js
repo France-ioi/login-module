@@ -61,7 +61,7 @@ function getUrlVars() {
    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1, endIndex).split('&');
    for (var i = 0; i < hashes.length; i++) {
       var hash = hashes[i].split('=');
-      vars[hash[0]] = hash[1];
+      vars[hash[0]] = decodeURIComponent(hash[1]);
    }
    return vars;
 }
@@ -98,16 +98,77 @@ function loadSession($scope, $http) {
 // for browsers not supporting parent url simply
 var parent_url = decodeURIComponent(document.location.hash.replace(/^#/, ''));
 
-function postLoginMessage(request, content) {
+// here we do a few things to work around the incapacity of IE to talk to
+// its popups
+var channelToParent = null;
+var potentialCommunicationImpossibility = true;
+function getChannelToParent(callback) {
+   if (channelToParent) {
+      callback(channelToParent); 
+      return;
+   }
+   channelToParent = Channel.build({
+      window: window.opener,
+      origin: "*",
+      scope: "loginModule",
+      onReady: function() {
+         callback(channelToParent);
+      }
+   });
+}
+
+if (window.opener) {
+   getChannelToParent(function() {
+      potentialCommunicationImpossibility = false;
+   });
+}
+
+var lastrequest = null; // for the unfamous IE hack
+var lastcontent = null;
+
+function postLoginMessage(request, content, callback) {
+   lastrequest = request;
+   lastcontent = content;
    var target = window.parent;
    if (window.parent == window.self) {
+      // postMessage doesn't work for popups in IE11
       target = window.opener;
+      if (!target) return;
+      if (potentialCommunicationImpossibility) {
+         callback();
+      }
+      getChannelToParent(function() {
+         channelToParent.call({
+            method: "loginMessage",
+            params: {request: request, content: content},
+            success: function(v) {
+               callback();
+            },
+            error: function(v) {
+               callback();
+            }
+         });
+      });
+   } else {
+      target.postMessage(JSON.stringify({
+         source: 'loginModule',
+         content: content,
+         request: request
+      }), '*');
+      callback();
    }
-   target.postMessage(JSON.stringify({
-      source: 'loginModule',
-      content: content,
-      request: request
-   }), '*');
+}
+
+// the IE hack
+function closeAfterMessage() {
+   if (potentialCommunicationImpossibility && loginManager.scope.fallbackReturnUrl && lastrequest == "login") {
+      var newUrl = loginManager.scope.fallbackReturnUrl;
+      newUrl += '?request='+encodeURIComponent(lastrequest);
+      newUrl += '&content='+encodeURIComponent(JSON.stringify(lastcontent));
+      window.location.replace(newUrl);
+   } else {
+      window.close();
+   }
 }
 
 var session;
@@ -133,8 +194,8 @@ angular.module('login', [])
          }
          if (params.hasPMS === "1") {
             $scope.hasPMS = true;
-            console.error('ok');
          }
+         $scope.fallbackReturnUrl = params.fallbackReturnUrl;
          if (params.login === "1") {
             $scope.step = "login";
             $("#loginForm").show();
@@ -156,7 +217,7 @@ angular.module('login', [])
          } else if (!loginManager.handleOAuthData()) {
             if ((session.idUser === -1) || (session.idUser === undefined)) {
                $scope.step = "notConnected";
-               postLoginMessage('notlogged', null);
+               postLoginMessage('notlogged', null, function() {});
                //            $("#loginButtons").show();
             } else {
                $scope.step = "connected";
@@ -166,10 +227,11 @@ angular.module('login', [])
                   postLoginMessage('login', {
                      login: session.sLogin,
                      token: session.sToken
+                  }, function() {
+                     if ($scope.popupMode) {
+                        closeAfterMessage();
+                     }
                   });
-                  if ($scope.popupMode) {
-                     window.close();
-                  }
                }
             }
             $scope.setInterval();
@@ -299,12 +361,13 @@ var loginManager = {
          postLoginMessage('login', {
             login: login,
             token: token
+         }, function() {
+            if (loginManager.scope.popupMode) {
+               closeAfterMessage();
+            } else {
+               scope_setInterval();
+            }
          });
-         if(loginManager.scope.popupMode) {
-            window.close();
-         } else {
-            scope_setInterval();
-         }
       }
    },
 
@@ -577,10 +640,14 @@ var loginManager = {
                scope.session.sProvider = '';
             }
          }
-         postLoginMessage('logout', null);
-         if (loginManager.scope.popupMode && !loggingoutfromprovider) {
-            window.close();
-         }
+         // for simplicity's sake (the code has grown in complexity quite a lot with the IE bug),
+         // we don't send messages when the user logs out, we suppose the platform already knows
+         // (and asked it)
+         //postLoginMessage('logout', null, function() {
+            if (loginManager.scope.popupMode && !loggingoutfromprovider) {
+               closeAfterMessage();
+            }
+         //});
       });
    },
 
