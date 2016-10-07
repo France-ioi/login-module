@@ -7,6 +7,14 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "bootstrap-social": "~4.10.1"
+    "bootstrap-social": "~4.10.1",
+    "angular": "latest",
+    "angular-bootstrap": "latest",
+    "angular-i18n": "latest",
+    "angular-sanitize": "latest",
+    "fontawesome": "~4.6.3",
+    "bootstrap": "latest",
+    "jquery": "1.*",
+    "jschannel": "https://github.com/France-ioi/jschannel.git#01f53a1"
   }
 }
