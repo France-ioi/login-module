@@ -632,7 +632,7 @@ var loginManager = {
          });
          var provider = session.sProvider ? session.sProvider : this.accessProvider;
          var loggingoutfromprovider = false;
-         if (provider && provider !== "password") {
+         if (provider && (provider == 'facebook' || provider == 'google')) {
             if (confirm(translate("logout_from_provider", [provider]))) {
                loginManager.logoutFromProvider(provider);
                loggingoutfromprovider = true;

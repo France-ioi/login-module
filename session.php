@@ -16,19 +16,26 @@ require_once(dirname(__FILE__)."/shared/TokenGenerator.php");
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
 
-$params = array("sLanguage", "idUser", "sLogin", "sEmail", "sProvider", "hasFacebook", "hasPassword", "hasGoogle");
-$jsSession = array();
+$sessionParams = array("sLanguage", "idUser", "sLogin", "sEmail", "sProvider", "hasFacebook", "hasPassword", "hasGoogle");
+$tokenParamNames = array("idUser", "sLogin", "sEmail", "sFirstName", "sLastName", "aBadges");
+$tokenParams = [];
+$jsSession = [];
 
 if (isset($_SESSION['modules']) && isset($_SESSION['modules']['login'])) {
-   foreach ($params as $param) {
+   foreach ($sessionParams as $param) {
       if (isset($_SESSION['modules']['login'][$param])) {
          $jsSession[$param] = $_SESSION['modules']['login'][$param];
+      }
+   }
+   foreach ($tokenParamNames as $param) {
+      if (isset($_SESSION['modules']['login'][$param])) {
+         $tokenParams[$param] = $_SESSION['modules']['login'][$param];
       }
    }
 }
 
 if (!empty($jsSession)) {
-   $token = $tokenGenerator->generateToken($jsSession);
+   $token = $tokenGenerator->generateToken($tokenParams);
    $jsSession['sToken'] = $token;
 }
 
