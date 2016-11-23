@@ -96,6 +96,10 @@
       </div>
       <div  ng-show="step == 'notConnected' && !largeMode" class="initialViewSmall">
          <p class="center">Se connecter par :</p>
+         <a ng-if="hasPMS" class="btn btn-block btn-social btn-yahoo" ng-click="loginWith($event, 'pms')">
+           <i class="fa fa-university"></i>
+           PMS
+         </a>
          <a class="btn btn-block btn-social btn-openid" ng-click="loginWith($event, 'password')">
            <i class="fa fa-key"></i>
            Mot de passe
@@ -107,10 +111,6 @@
          <a class="btn btn-block btn-social btn-google" ng-click="loginWith($event, 'google')">
            <i class="fa fa-google-plus"></i>
            Google+
-         </a>
-         <a ng-if="hasPMS" class="btn btn-block btn-social btn-yahoo" ng-click="loginWith($event, 'pms')">
-           <i class="fa fa-university"></i>
-           PMS
          </a>
          <p class="tiny center"><a href="" ng-click="openPasswordRecovery();">Mot de passe oublié ?</a></p>
       </div>
