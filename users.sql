@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `users` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `idUserGodfather` int(11) DEFAULT NULL,
   `sOpenIdIdentity` varchar(255) DEFAULT NULL COMMENT 'User''s Open Id Identity',
   `sLogin` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
@@ -60,8 +60,18 @@ CREATE TABLE IF NOT EXISTS `auths` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `public_key` varchar(500) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `client_id` varchar(50) DEFAULT NULL,
+  `client_password` varchar(100) DEFAULT NULL,
+  `urlAuthorize` varchar(150) DEFAULT NULL,
+  `urlAccessToken` varchar(150) DEFAULT NULL,
+  `urlResourceOwnerDetails` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `auths` (`public_key`, `name`, `client_id`, `client_password`, `urlAuthorize`, `urlAccessToken`, `urlResourceOwnerDetails`) VALUES
+('', 'facebook', NULL, NULL, NULL, NULL, NULL),
+('', 'google', NULL, NULL, NULL, NULL, NULL),
+('', 'password', NULL, NULL, NULL, NULL, NULL);
 
 CREATE TABLE IF NOT EXISTS `users_auths` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -70,3 +80,11 @@ CREATE TABLE IF NOT EXISTS `users_auths` (
   `authStr` varchar(100) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `user_badges` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idUser` int(11) NOT NULL,
+  `sBadge` varchar(63) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_user_badges_idUser` (`idUser`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
