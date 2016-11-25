@@ -126,7 +126,7 @@ function getUser($db, $loginData, $providerInfos) {
             die('user_auth does not correspond to any user');
         } else {
             // TODO: update only set fields?
-            $stmt = $db->prepare("update `users` set `sEmail` = :sEmail, `sFirstName` = :sFirstName, `sLastName` = :sLastName, `sLastLoginDate` = NOW(), `sBirthDate` = :sBirthDate, `sSex` = :sSex, `sZipCode` = :sZipCode, `sCity` = :sCity, `sAddress` = :sAddress where ID = :idUser;");
+            $stmt = $db->prepare("update `users` set `sEmail` = :sEmail, `sFirstName` = :sFirstName, `sLastName` = :sLastName, `sLastLoginDate` = NOW(), `sBirthDate` = :sBirthDate, `sSex` = :sSex, `sZipCode` = :sZipCode, `sCity` = :sCity, `sAddress` = :sAddress where id = :idUser;");
             $stmt->execute([
                 'idUser' => $idUser,
                 'sFirstName' => (isset($loginData['firstName']) ? $loginData['firstName'] : null),
@@ -146,7 +146,7 @@ function getUser($db, $loginData, $providerInfos) {
             die('email corresponds to an user, but user_auth points to a different user');
         }
         // TODO: update only set fields?
-        $stmt = $db->prepare("update `users` set `sEmail` = :sEmail, `sFirstName` = :sFirstName, `sLastName` = :sLastName, `sLastLoginDate` = NOW(), `sBirthDate` = :sBirthDate, `sSex` = :sSex, `sZipCode` = :sZipCode, `sCity` = :sCity, `sAddress` = :sAddress where ID = :idUser;");
+        $stmt = $db->prepare("update `users` set `sEmail` = :sEmail, `sFirstName` = :sFirstName, `sLastName` = :sLastName, `sLastLoginDate` = NOW(), `sBirthDate` = :sBirthDate, `sSex` = :sSex, `sZipCode` = :sZipCode, `sCity` = :sCity, `sAddress` = :sAddress where id = :idUser;");
         $stmt->execute([
             'idUser' => $idUser,
             'sFirstName' => (isset($loginData['firstName']) ? $loginData['firstName'] : null),
