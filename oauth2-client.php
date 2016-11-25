@@ -56,7 +56,7 @@ function loginTaken($login) {
     return !!$stmt->fetch();
 }
 
-function getUser($db, $loginData, $authId) {
+function getUser($db, $loginData, $providerInfos) {
     global $authId;
     if (!$loginData) {
         die('no loginData passed to getUser');
@@ -72,6 +72,17 @@ function getUser($db, $loginData, $authId) {
     $stmt = $db->prepare('select users_auths.* from users_auths where idAuth = :idAuth and authStr = :authStr;');
     $stmt->execute(['idAuth' => $authId, 'authStr' => $authStr]);
     $userAuth = $stmt->fetch();
+    $sSex = null;
+    if (isset($loginData['gender'])) {
+        $sSex = $loginData['gender'] == 'm' ? 'Male' : 'Female';
+    }
+    $sAddress = '';
+    if (isset($loginData['street1'])) {
+        $sAddress = $loginData['street1'];
+    }
+    if (isset($loginData['street2'])) {
+        $sAddress .= $loginData['street2'];
+    }
     if (!$user && !$userAuth) {
         $login = null;
         if (!isset($loginData['nickName'])) {
@@ -89,22 +100,22 @@ function getUser($db, $loginData, $authId) {
                 }
             }
         }
-        $sSex = null;
-        if (isset($loginData['gender'])) {
-            $sSex = $loginData['gender'] == 'm' ? 'Male' : 'Female';
-        }
-        $stmt = $db->prepare("INSERT INTO `users` (`sLogin`, `sEmail`, `sSalt`, `sPasswordMd5`, `sFirstName`, `sLastName`, `sRegistrationDate`, `sLastLoginDate`, `sBirthDate`, `sSex`) ".
-         "VALUES (:sLogin, :sEmail, '', '', :firstName, :lastName, NOW(), NOW(), :sBirthDate, :sSex);");
+
+        $stmt = $db->prepare("INSERT INTO `users` (`sLogin`, `sEmail`, `sSalt`, `sPasswordMd5`, `sFirstName`, `sLastName`, `sRegistrationDate`, `sLastLoginDate`, `sBirthDate`, `sSex`, `sZipCode`, `sCity`, `sAddress`) ".
+         "VALUES (:sLogin, :sEmail, '', '', :firstName, :lastName, NOW(), NOW(), :sBirthDate, :sSex, :sZipCode, :sCity, :sAddress);");
         $stmt->execute([
-            'firstName' => $loginData['firstName'],
-            'lastName' => $loginData['lastName'],
+            'firstName' => (isset($loginData['firstName']) ? $loginData['firstName'] : null),
+            'lastName' => (isset($loginData['lastName']) ? $loginData['lastName'] : null),
             'sEmail' => $eMail,
+            'sBirthDate' => (isset($loginData['dateOfBirth']) ? $loginData['dateOfBirth'] : null),
             'sLogin' => $login,
-            'sBirthDate' => $loginData['dateOfBirth'],
-            'sSex' => $sSex
+            'sSex' => $sSex,
+            'sZipCode' => (isset($loginData['zip']) ? $loginData['zip'] : null),
+            'sCity' => (isset($loginData['city']) ? $loginData['city'] : null),
+            'sAddress' => $sAddress,
         ]);
         $idUser = $db->lastInsertId();
-        $user = ['sLogin' => $login, 'id' => $idUser, 'bIsAdmin' => 0];
+        $user = ['sLogin' => $login, 'id' => $idUser, 'bIsAdmin' => 0, 'sEmail' => $eMail, 'sFirstName' => $loginData['firstName'], 'sLastName' => $loginData['lastName']];
     } else if (!$user && $userAuth) {
         $idUser = $userAuth['idUser'];
         $stmt = $db->prepare('select * from users where ID = :idUser');
@@ -114,7 +125,19 @@ function getUser($db, $loginData, $authId) {
             error_log('users_auths id '.$userAuth['ID'].' points to unexisitng user '.$userAuth['idUser']);
             die('user_auth does not correspond to any user');
         } else {
-            // TODO: maybe update the users fields here?
+            // TODO: update only set fields?
+            $stmt = $db->prepare("update `users` set `sEmail` = :sEmail, `sFirstName` = :sFirstName, `sLastName` = :sLastName, `sLastLoginDate` = NOW(), `sBirthDate` = :sBirthDate, `sSex` = :sSex, `sZipCode` = :sZipCode, `sCity` = :sCity, `sAddress` = :sAddress where ID = :idUser;");
+            $stmt->execute([
+                'idUser' => $idUser,
+                'sFirstName' => (isset($loginData['firstName']) ? $loginData['firstName'] : null),
+                'sLastName' => (isset($loginData['lastName']) ? $loginData['lastName'] : null),
+                'sEmail' => $eMail,
+                'sBirthDate' => (isset($loginData['dateOfBirth']) ? $loginData['dateOfBirth'] : null),
+                'sSex' => $sSex,
+                'sZipCode' => (isset($loginData['zip']) ? $loginData['zip'] : null),
+                'sCity' => (isset($loginData['city']) ? $loginData['city'] : null),
+                'sAddress' => $sAddress,
+            ]);
         }
     } else { // user
         $idUser = $user['id'];
@@ -122,30 +145,76 @@ function getUser($db, $loginData, $authId) {
             error_log('email '.$user['email'].' corresponds to user '.$user['id'].', but user_auth '.$userAuth['ID'].' points to user'.$userAuth['idUser']);
             die('email corresponds to an user, but user_auth points to a different user');
         }
+        // TODO: update only set fields?
+        $stmt = $db->prepare("update `users` set `sEmail` = :sEmail, `sFirstName` = :sFirstName, `sLastName` = :sLastName, `sLastLoginDate` = NOW(), `sBirthDate` = :sBirthDate, `sSex` = :sSex, `sZipCode` = :sZipCode, `sCity` = :sCity, `sAddress` = :sAddress where ID = :idUser;");
+        $stmt->execute([
+            'idUser' => $idUser,
+            'sFirstName' => (isset($loginData['firstName']) ? $loginData['firstName'] : null),
+            'sLastName' => (isset($loginData['lastName']) ? $loginData['lastName'] : null),
+            'sEmail' => $eMail,
+            'sBirthDate' => (isset($loginData['dateOfBirth']) ? $loginData['dateOfBirth'] : null),
+            'sSex' => $sSex,
+            'sZipCode' => (isset($loginData['zip']) ? $loginData['zip'] : null),
+            'sCity' => (isset($loginData['city']) ? $loginData['city'] : null),
+            'sAddress' => $sAddress,
+        ]);
     }
     if (!$userAuth) {
-        $stmt = $db->prepare('INSERT INTO `users_auths` (`idUser`, `idAUth`, `authStr`) VALUES (:idUser, :idAuth, :authStr);');
-        $stmt->execute([
+        $userAuth = [
             'idUser' => $idUser,
             'idAuth' => $authId,
             'authStr' => $authStr
-        ]);
+        ];
+        $stmt = $db->prepare('INSERT INTO `users_auths` (`idUser`, `idAUth`, `authStr`) VALUES (:idUser, :idAuth, :authStr);');
+        $stmt->execute($userAuth);
+        $userAuth['ID'] = $db->lastInsertId();
     }
+    fillBadges($user, $loginData, $providerInfos);
     return $user;
 }
 
-function getUserToken($db, $user, $tokenGenerator) {
+function fillBadges($user, $loginData, $providerInfos) {
+    // this function hardcodes many things, I'm not sure how it could be done otherwise
+    $sBadge = null;
+    if ($providerInfos['name'] == 'PMS') {
+        if (isset($loginData['schoolId']) && $loginData['schoolId'] && isset($loginData['schoolClass']) && $loginData['schoolClass']) {
+            $sBadge = 'groups://PMS/'.$loginData['schoolId'].'/'.$loginData['schoolClass'].'/member';
+        }
+    }
+    if ($sBadge) {
+        $stmt = $db->prepare('SELECT id from `user_badges` where `idUser` = :idUser and sBadge = :sBadge;');
+        $stmt->execute(['idUser' => $user['id'], 'sBadge' => $sBadge]);
+        $idBadge = $stmt->fetchColumn();
+        if (!$idBadge) {
+            $stmt = $db->prepare('INSERT INTO `user_badges` (`idUser`, `sBadge`) VALUES (:idUser, :sBadge);');
+            $stmt->execute(['idUser' => $user['id'], 'sBadge' => $sBadge]);
+        }
+    }
+}
+
+function getBadges($db, $user) {
+    $stmt = $db->prepare('select sBadge from user_badges where idUser = :idUser;');
+    $stmt->execute(['idUser' => $user['id']]);
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
+
+function getUserToken($db, $user, $tokenGenerator, $badges) {
     $tokenParams = [
         "idUser" => $user['id'],
-        "sLogin" => $user['sLogin']
+        "sLogin" => $user['sLogin'],
+        "sEmail" => $user['sEmail'],
+        "sFirstName" => $user['sFirstName'],
+        "sLastName" => $user['sLastName'],
+        //"aBadges" => $badges
     ];
     $token = $tokenGenerator->generateToken($tokenParams);
     return $token;
 }
 
 function finishLogin($resourceOwner) {
-    global $db, $config, $providerInfos;
+    global $db, $config, $providerInfos, $redirectUrl;
     $user = getUser($db, $resourceOwner, $providerInfos);
+    $badges = getBadges($db, $user);
 
     if (isset($_SESSION['modules'])) {
       $_SESSION['modules']['login'] = array();
@@ -154,15 +223,19 @@ function finishLogin($resourceOwner) {
     }
     $_SESSION['modules']['login']["idUser"] = $user['id'];
     $_SESSION['modules']['login']["sLogin"] = $user['sLogin'];
+    $_SESSION['modules']['login']["sEmail"] = $user['sEmail'];
+    $_SESSION['modules']['login']["sFirstName"] = $user['sFirstName'];
+    $_SESSION['modules']['login']["sLastName"] = $user['sLastName'];
+    $_SESSION['modules']['login']["aBadges"] = $badges;
     $_SESSION['modules']['login']["bIsAdmin"] = $user['bIsAdmin'];
-    $_SESSION['modules']['login']["sProvider"] = "lti";
+    $_SESSION['modules']['login']["sProvider"] = "oauth";
     $_SESSION['modules']['login']["hasPassword"] = false;
     $_SESSION['modules']['login']["hasGoogle"] = false;
     $_SESSION['modules']['login']["hasFacebook"] = false;
 
     $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
 
-    $loginToken = getUserToken($db, $user, $tokenGenerator);
+    $loginToken = getUserToken($db, $user, $tokenGenerator, $badges);
     
     if ($redirectUrl) {
         $redirectUrl = $redirectUrl . (strpos($redirectUrl, '?') === false ? '?' : '&') . 'loginToken=' . $loginToken;
