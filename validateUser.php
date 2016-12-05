@@ -74,7 +74,7 @@ function validateUserFacebook($db, $sIdentity) {
    global $tokenGenerator;
    $_SESSION['modules']['login']["identity"] = $sIdentity;
    //$query = "SELECT `id`, `sPasswordMd5`, `google_id`, `google_id_old`, `sLogin` FROM `users` WHERE `facebook_id` = :sIdentity";
-   $query = "SELECT `id`, `sPasswordMd5`, `sOpenIdIdentity`, `sLogin`, `bIsAdmin` FROM `users` WHERE `sOpenIdIdentity` = :sIdentity";
+   $query = "SELECT $ FROM `users` WHERE `sOpenIdIdentity` = :sIdentity";
    $stmt = $db->prepare($query);
    $stmt->execute(array("sIdentity" => $sIdentity));
    if (/* not logged */!isset($_SESSION['modules']['login']['idUser'])) {
@@ -86,10 +86,16 @@ function validateUserFacebook($db, $sIdentity) {
          //$_SESSION['modules']['login']["hasGoogle"] = ($user->google_id || $user->google_id_old);
          $_SESSION['modules']['login']["hasGoogle"] = false;
          $_SESSION['modules']['login']["hasFacebook"] = true;
+         $_SESSION['modules']['login']["sFirstName"] = $user->sFirstName;
+         $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
+         $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
          $token_params = array(
             "idUser" => $user->id,
             "sLogin" => $user->sLogin,
-            "sProvider" => 'facebook'
+            "sProvider" => 'facebook',
+            "sFirstName" => $user->sFirstName,
+            "sLastName" => $user->sLastName,
+            "sStudentId" => $user->sStudentId
          );
          $token = $tokenGenerator->generateToken($token_params);
          $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);
@@ -124,7 +130,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
    global $tokenGenerator;
    $_SESSION['modules']['login']["identity"] = $sOldIdentity;//$sIdentity
    //$query = "SELECT `id`, `sPasswordMd5`, `facebook_id`, `sLogin` FROM `users` WHERE `google_id` = :sIdentity or `google_id_old` = :sOldIdentity";
-   $query = "SELECT `id`, `sPasswordMd5`, `sOpenIdIdentity`, `bIsAdmin`, `sLogin` FROM `users` WHERE `sOpenIdIdentity` = :sOldIdentity";
+   $query = "SELECT * FROM `users` WHERE `sOpenIdIdentity` = :sOldIdentity";
    $stmt = $db->prepare($query);
    //$stmt->execute(array("sIdentity" => $sIdentity, 'sOldIdentity' => $sOldIdentity));
    $stmt->execute(array('sOldIdentity' => $sOldIdentity));
@@ -134,17 +140,23 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
          $_SESSION['modules']['login']["sLogin"] = $user->sLogin;
          $_SESSION['modules']['login']["bIsAdmin"] = $user->bIsAdmin;
          $_SESSION['modules']['login']["hasPassword"] = !!$user->sPasswordMd5;
+         $_SESSION['modules']['login']["sFirstName"] = $user->sFirstName;
+         $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
+         $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
          $_SESSION['modules']['login']["hasGoogle"] = true;
          //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
          $_SESSION['modules']['login']["hasFacebook"] = false;
          $token_params = array(
             "idUser" => $user->id,
             "sLogin" => $user->sLogin,
-            "sProvider" => 'google'
+            "sProvider" => 'google',
+            "sFirstName" => $user->sFirstName,
+            "sLastName" => $user->sLastName,
+            "sStudentId" => $user->sStudentId
          );
          $token = $tokenGenerator->generateToken($token_params);
          $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);
-         return array('login' => $user->sLogin, 'token' => $token);
+         return array('login' => $user->sLogin, 'token' => $token, 'userData' => $user);
       }
       return array('login' => '', 'token' => null, 'provider' => 'google', 'hasGoogle' => false, 'hasFacebook' => false, 'hasPassword' => false);
    } else {
@@ -234,7 +246,7 @@ function createUser($db, $sLogin, $sEmail, $sPassword) {
       "sProvider" => $_SESSION['modules']['login']["sProvider"]
    );
    $token = $tokenGenerator->generateToken($token_params);
-   return array("success" => true, "login" => $sLogin, 'token' => $token, 'provider' => 'password');
+   return array("success" => true, "login" => $sLogin, 'token' => $token, 'provider' => 'password', 'loginData' => $_SESSION['modules']['login']);
 }
 
 function updateSaltAndPasswordMD5ForPassword($db, $userId, $sPassword) {
@@ -248,7 +260,7 @@ function updateSaltAndPasswordMD5ForPassword($db, $userId, $sPassword) {
 function validateLoginUser($db, $sLogin, $sPassword) {
    global $tokenGenerator, $config;
    //$query = "SELECT `id`, `sLogin`, `facebook_id`, `google_id`, `google_id_old`, `sEmail`, `sPasswordMd5`, `sSalt` FROM `users` WHERE `sLogin` = :sLogin";
-   $query = "SELECT `id`, `sLogin`, `sOpenIdIdentity`, `sEmail`, `sPasswordMd5`, `bIsAdmin`, `sSalt` FROM `users` WHERE `sLogin` = :sLogin";
+   $query = "SELECT * FROM `users` WHERE `sLogin` = :sLogin";
    $stmt = $db->prepare($query);
    $stmt->execute(array("sLogin" => strtolower($sLogin)));
    $user = $stmt->fetchObject();
@@ -275,6 +287,9 @@ function validateLoginUser($db, $sLogin, $sPassword) {
    $_SESSION['modules']['login']["idUser"] = $user->id;
    $_SESSION['modules']['login']["sLogin"] = $user->sLogin;
    $_SESSION['modules']['login']["bIsAdmin"] = $user->bIsAdmin;
+   $_SESSION['modules']['login']["sFirstName"] = $user->sFirstName;
+   $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
+   $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
    $_SESSION['modules']['login']["sProvider"] = "password";
    $_SESSION['modules']['login']["hasPassword"] = true;
    //$_SESSION['modules']['login']["hasGoogle"] = ($user->google_id || $user->google_id_old);
@@ -286,12 +301,15 @@ function validateLoginUser($db, $sLogin, $sPassword) {
       "idUser" => $_SESSION['modules']['login']["idUser"],
       "sLogin" => $_SESSION['modules']['login']["sLogin"],
       "sEmail" => $user->sEmail,
-      "sProvider" => $_SESSION['modules']['login']["sProvider"]
+      "sProvider" => $_SESSION['modules']['login']["sProvider"],
+      "sFirstName" => $_SESSION['modules']['login']["sFirstName"],
+      "sLastName" => $_SESSION['modules']['login']["sLastName"],
+      "sStudentId" => $_SESSION['modules']['login']["sStudentId"],
     );
    $token = $tokenGenerator->generateToken($token_params);
    $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);
    //echo json_encode(array("success" => true, "login" => $_GET["login"], 'token' => $token, 'provider' => 'password', 'hasPassword' => true, 'hasFacebook' => !!$user->facebook_id, 'hasGoogle' => ($user->google_id || $user->google_id_old)));
-   echo json_encode(array("success" => true, "login" => $_GET["login"], 'token' => $token, 'provider' => 'password', 'hasPassword' => true, 'hasFacebook' => false, 'hasGoogle' =>false));
+   echo json_encode(array("success" => true, "login" => $_GET["login"], 'token' => $token, 'provider' => 'password', 'hasPassword' => true, 'hasFacebook' => false, 'hasGoogle' =>false, 'loginData' => $_SESSION['modules']['login']));
 }
 
 if (get_magic_quotes_gpc()) {
@@ -532,7 +550,7 @@ if (isset($_GET['action'])) {
    if (isset($loginParams['token']) && $loginParams['token']) {
       // Yes: return the infos
       $_SESSION['modules']['login']["sEmail"] = $email;
-      echo json_encode(array("success" => true, "login" => $loginParams['login'], 'token' => $loginParams['token'], 'provider' => 'facebook', 'loginParams'=>$loginParams));
+      echo json_encode(array("success" => true, "login" => $loginParams['login'], 'token' => $loginParams['token'], 'provider' => 'facebook', 'loginParams'=>$loginParams, 'session' => $_SESSION['modules']['login']));
    } elseif (isset($loginParams['success']) /* case of adding Facebook identity */) {
       echo json_encode(array("success" => $loginParams['success'], 'addingId'=>true, 'error' => $loginParams['error']));
    } else {
@@ -573,7 +591,10 @@ if (isset($_GET['action'])) {
       // getting access token. Access token is a JSON string with several parts,
       // including a field "access_token" (which is confusing)
       $_SESSION['access_token'] = $client->getAccessToken();
-      $id_token = json_decode($_SESSION['access_token'], true);
+      $id_token = $_SESSION['access_token'];
+      if (gettype($id_token) == "string") {
+         $id_token = json_decode($_SESSION['access_token'], true);
+      }
       // id_token here is a JWT signed by Google, containing some infos. As we have
       // set our scope to "openid" and also because we have set "openid.realm" in
       // the query url (see loginManager.js), this token will contain a "openid_id"
@@ -604,6 +625,7 @@ if (isset($_GET['action'])) {
       <html>
          <head>
             <script>
+            var loginData = ".json_encode($_SESSION['modules']['login'], JSON_UNESCAPED_UNICODE).";
             ";
             if (isset($loginParams['sucess'])) {
                if ($loginParams['success']) {
@@ -612,7 +634,7 @@ if (isset($_GET['action'])) {
                   echo 'opener.loginManager.googleAdded(false, '.$loginParams['error'].');';
                }
             } else if ($validated) {
-               echo "opener.loginManager.logged('".$loginParams['login']."', '".$loginParams['token']."');";
+               echo "opener.loginManager.logged('".$loginParams['login']."', '".$loginParams['token']."', 'google', loginData);";
             } else {
                echo "opener.loginManager.loginFailed()";
             }

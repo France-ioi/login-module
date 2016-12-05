@@ -40,7 +40,7 @@ function getMessageFromPopup(event)  {
    var message = JSON.parse(event.data);
    } catch (e) {return;}
    if (message.action === 'logged') {
-      loginManager.logged(message.login, message.token, message.provider);
+      loginManager.logged(message.login, message.token, message.provider, message.loginData);
    } else if (message.action === 'loginFailed') {
       loginManager.loginFailed();
    }
@@ -173,6 +173,16 @@ function closeAfterMessage() {
 
 var session;
 
+function checkAgainstRequired(infos, requiredFields) {
+   for (var i = 0; i < requiredFields.length; i++) {
+      var requiredField = requiredFields[i];
+      if (!infos[requiredField]) {
+         return false;
+      }
+   }
+   return true;
+}
+
 angular.module('login', [])
    .controller('LoginCtrl', function($scope, $http, $timeout, $interval) {
       $scope.step = "";
@@ -180,11 +190,18 @@ angular.module('login', [])
       $scope.autoLogout = false;
       $scope.popupMode = false;
       $scope.session = session;
+      $scope.infos = {};
       loginManager.scope = $scope;
       loadSession($scope, $http).then(function() {
+         $scope.infos.sFirstName = session.sFirstName;
+         $scope.infos.sLastName = session.sLastName;
+         $scope.infos.sStudentId = session.sStudentId;
          var params = getUrlVars();
          if (params.large === "1") {
             $scope.largeMode = true;
+         }
+         if (params.requiredFields) {
+            $scope.requiredFields = params.requiredFields.split(',');
          }
          if (params.autoLogout === '1') {
             $scope.autoLogout = true;
@@ -205,6 +222,8 @@ angular.module('login', [])
             $scope.step = "changePass";
          } else if (params.recover === "1") {
             $scope.step = "recover";
+         } else if (params.setInfos === "1") {
+            $scope.step = "infos";
          } else if (params.sRecover) {
             $scope.step = "recovered";
             $scope.recoverLoading = true;
@@ -224,19 +243,58 @@ angular.module('login', [])
                if ($scope.autoLogout) {
                   $scope.logout();
                } else {
-                  postLoginMessage('login', {
-                     login: session.sLogin,
-                     token: session.sToken
-                  }, function() {
-                     if ($scope.popupMode) {
-                        closeAfterMessage();
-                     }
-                  });
+                  if ($scope.requiredFields && !checkAgainstRequired($scope.infos, $scope.requiredFields)) {
+                     $scope.infosError = null;
+                     $scope.step = 'infos';
+                  } else {
+                     postLoginMessage('login', {
+                        login: session.sLogin,
+                        token: session.sToken
+                     }, function() {
+                        if ($scope.popupMode) {
+                           closeAfterMessage();
+                        }
+                     });
+                  }
                }
             }
             $scope.setInterval();
          }
       });
+
+      $scope.changeInfos = function() {
+         if ($scope.requiredFields) {
+            var missingFields = [];
+            for (var i = 0; i < $scope.requiredFields.length; i++) {
+               var requiredField = $scope.requiredFields[i];
+               if (!$scope.infos[requiredField]) {
+                  missingFields.push(requiredField);
+               }
+            }
+            if (missingFields.length) {
+               $scope.infosError = 'Champs obligatoires non-renseignés : '+missingFields.join(', ');
+               return;
+            }
+         }
+         $.ajax({
+            url: config.selfBaseUrl + "updateInfos.php",
+            context: document.body,
+            dataType: 'json',
+            method: 'POST',
+            data: {infos: $scope.infos},
+            success: function(data) {
+               session = data;
+               postLoginMessage('login', {
+                  login: session.sLogin,
+                  token: session.sToken
+               }, function() {
+                  if ($scope.popupMode) {
+                     closeAfterMessage();
+                  }
+               });
+            }
+         });
+      }
 
       $scope.refreshSession = function() {
          var infosTimeZone = checkTimeZone();
@@ -346,28 +404,46 @@ var loginManager = {
    accessProvider: "",
    loggedOnFacebook: false,
 
-   logged: function(login, token, provider) {
+   logged: function(login, token, provider, loginData) {
+      session = loginData;
+      loginManager.scope.session = loginData;
+      loginManager.scope.infos = {
+         sFirstName: loginData.sFirstName,
+         sLastName: loginData.sLastName,
+         sStudentId: loginData.sStudentId
+      };
       if (typeof selfTarget !== "undefined") { // If used on france-ioi's website TODO: find a better way to check that
          window.location.href = config.selfBaseUrl + selfTarget;
       } else {
          this.accessToken = token;
          this.accessProvider = provider;
          var scope = angular.element("#LoginCtrl").scope();
-         scope.apply(function() {
-            scope.step = "connected";
-            scope.session.sLogin = login;
-            scope.session.sProvider = provider;
-         });
-         postLoginMessage('login', {
-            login: login,
-            token: token
-         }, function() {
-            if (loginManager.scope.popupMode) {
-               closeAfterMessage();
-            } else {
-               scope_setInterval();
-            }
-         });
+         scope.session = loginData;
+         scope.infos = {
+            sFirstName: loginData.sFirstName,
+            sLastName: loginData.sLastName,
+            sStudentId: loginData.sStudentId
+         };
+         if (scope.requiredFields && !checkAgainstRequired(scope.infos, scope.requiredFields)) {
+            scope.$apply(function() {
+               scope.infosError = null;
+               scope.step = 'infos';
+            });
+         } else {
+            scope.$apply(function() {
+               scope.step = "connected";
+            });
+            postLoginMessage('login', {
+               login: login,
+               token: token
+            }, function() {
+               if (loginManager.scope.popupMode) {
+                  closeAfterMessage();
+               } else {
+                  scope_setInterval();
+               }
+            });
+         }
       }
    },
 
@@ -412,7 +488,7 @@ var loginManager = {
             }
          } else {
             //refWindow.loginManager.logged(login, token, data.provider);
-            refWindow.postMessage(JSON.stringify({action: "logged", login: login, token: token, provider: data.provider}), '*');
+            refWindow.postMessage(JSON.stringify({action: "logged", login: login, token: token, provider: data.provider, loginData: data.loginData}), '*');
             if (window.opener) {
                var params = getUrlVars();
                if (params.properties !== '1') {
@@ -490,11 +566,11 @@ var loginManager = {
             data = $.parseJSON(data);
             if (data.success) {
                if (window.opener) {
-                  window.opener.postMessage(JSON.stringify({action: "logged", login: data.login, token: data.token, provider: 'password'}), '*');
-                  //window.opener.loginManager.logged(data.login, data.token, 'password');
+                  window.opener.postMessage(JSON.stringify({action: "logged", login: data.login, token: data.token, provider: 'password', loginData: data.loginData}), '*');
+                  //window.opener.loginManager.logged(data.login, data.token, 'password', data.loginData);
                   window.close();
                } else {
-                  loginManager.logged(data.login, data.token, 'password');
+                  loginManager.logged(data.login, data.token, 'password', data.loginData);
                }
             } else {
                alert("Erreur : " + data.error);

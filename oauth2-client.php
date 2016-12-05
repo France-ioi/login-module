@@ -205,7 +205,8 @@ function getUserToken($db, $user, $tokenGenerator, $badges) {
         "sEmail" => $user['sEmail'],
         "sFirstName" => $user['sFirstName'],
         "sLastName" => $user['sLastName'],
-        //"aBadges" => $badges
+        "sLastName" => $user['sStudentId'],
+        "aBadges" => $badges
     ];
     $token = $tokenGenerator->generateToken($tokenParams);
     return $token;
@@ -226,6 +227,7 @@ function finishLogin($resourceOwner) {
     $_SESSION['modules']['login']["sEmail"] = $user['sEmail'];
     $_SESSION['modules']['login']["sFirstName"] = $user['sFirstName'];
     $_SESSION['modules']['login']["sLastName"] = $user['sLastName'];
+    $_SESSION['modules']['login']["sStudentId"] = $user['sStudentId'];
     $_SESSION['modules']['login']["aBadges"] = $badges;
     $_SESSION['modules']['login']["bIsAdmin"] = $user['bIsAdmin'];
     $_SESSION['modules']['login']["sProvider"] = "oauth";
@@ -253,10 +255,11 @@ function finishLogin($resourceOwner) {
     var redirectUrl = <?= json_encode($redirectUrl); ?>;
     var user = <?= json_encode($user); ?>;
     var token = <?= json_encode($loginToken); ?>;
+    var loginData = <?= json_encode($_SESSION['modules']['login'], JSON_UNESCAPED_UNICODE); ?>;
     if (redirectUrl) {
         window.top.location.href = redirectUrl;
     } else if (window.opener) {
-        window.opener.loginManager.logged(user.sLogin, token);
+        window.opener.loginManager.logged(user.sLogin, token, 'pms', loginData);
         window.close();
     } else {
         console.error('I don\'t know what to do!');
