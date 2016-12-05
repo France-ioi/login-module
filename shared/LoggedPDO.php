@@ -47,10 +47,10 @@ class LoggedPDO extends PDO
             $totalTime += $entry['time'];
             $s .= $domain ."\t". str_pad($entry['time'], 9,  " ", STR_PAD_LEFT) . "\t" . md5($entry['query']) ."\t".  date('Y/m/d-H:i') ."\t". $entry['query'].  "\t" .  $_SERVER["REQUEST_URI"] . "\n";
         }
-        file_put_contents(realpath(dirname(__FILE__))."/log.txt", $s, FILE_APPEND);
+        file_put_contents(realpath(dirname(__FILE__))."/../logs/log.txt", $s, FILE_APPEND);
         
         $s = $domain  ."\t". str_pad($totalTime, 9,  " ", STR_PAD_LEFT)  . "\t" . count(self::$log) . "\t" .  $_SERVER["REQUEST_URI"] . "\n";
-        file_put_contents(realpath(dirname(__FILE__))."/logTotal.txt", $s, FILE_APPEND);
+        file_put_contents(realpath(dirname(__FILE__))."/../logs/logTotal.txt", $s, FILE_APPEND);
     }
 }
 
