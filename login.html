@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
    <head>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -64,6 +64,9 @@
       margin-left: auto;
       margin-right: auto;
    }
+   [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      display: none !important;
+   }
    </style>
    <script src="bower_components/jquery/dist/jquery.min.js"></script>
    <script src="config.js.php"></script>
@@ -71,12 +74,15 @@
    <script src="bower_components/angular/angular.min.js"></script>
    <script src="bower_components/angular-i18n/angular-locale_fr-fr.js"></script>
    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+   <script src="bower_components/i18next/i18next.min.js"></script>
+   <script src="bower_components/i18next-xhr-backend/i18nextXHRBackend.min.js"></script>
+   <script src="bower_components/ng-i18next/dist/ng-i18next.min.js"></script>
    <script src="bower_components/jschannel/src/jschannel.js"></script>
    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
    <link href="bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet" type="text/css" />
    <script src="loginManager.js"></script>
    </head>
-   <body ng-app="login" ng-controller="LoginCtrl" id="LoginCtrl">
+   <body ng-controller="LoginCtrl" id="LoginCtrl" ng-cloak>
       <div id="fb-root"></div>
       <div ng-show="step == 'notConnected' && largeMode" class="initialViewBig">
          <p class="center">Vous pouvez choisir de vous connecter avec :</p>

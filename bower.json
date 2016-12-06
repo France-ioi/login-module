@@ -15,6 +15,9 @@
     "fontawesome": "~4.6.3",
     "bootstrap": "latest",
     "jquery": "1.*",
-    "jschannel": "https://github.com/France-ioi/jschannel.git#01f53a1"
+    "jschannel": "https://github.com/France-ioi/jschannel.git#01f53a1",
+    "i18next": "latest",
+    "ng-i18next": "^1.0.2",
+    "i18next-xhr-backend": "^1.2.0"
   }
 }

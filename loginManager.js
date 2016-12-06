@@ -183,7 +183,7 @@ function checkAgainstRequired(infos, requiredFields) {
    return true;
 }
 
-angular.module('login', [])
+angular.module('login', ['jm.i18next'])
    .controller('LoginCtrl', function($scope, $http, $timeout, $interval) {
       $scope.step = "";
       $scope.hasPMS = false;
@@ -917,3 +917,29 @@ window.fbAsyncInit = function() {
       }
    });
 };
+
+var urlVars = getUrlVars();
+var lang = config.defaultLanguage;
+if (urlVars.lang) {
+   lang = urlVars.lang;
+}
+var customStrings = config.customStringsName;
+if (urlVars.customStrings) {
+   customStrings = urlVars.customStrings;
+}
+window.i18next.use(window.i18nextXHRBackend);
+window.i18next.init({
+ 'lng': lang,
+ 'fallbackLng': ['en'],
+ 'fallbackNS': 'algorea',
+ 'debug': true,
+ 'ns': customStrings ? [customStrings, 'login'] : ['login'],
+ 'backend' : {
+   'allowMultiLoading' : false,
+   'loadPath' : '/i18n/{{lng}}/{{ns}}.json'
+ }
+});
+window.i18next.on('initialized', function (options) {
+ window.i18nextOptions = options;
+ angular.bootstrap(document, ['login']);
+});

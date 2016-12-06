@@ -44,6 +44,10 @@ $config->shared = (object) array();
 $config->shared->Google0Auth2 = (object) array();
 $config->shared->Facebook = (object) array();
 
+// Language and custom strings:
+$config->shared->defaultLanguage = 'fr';
+$config->shared->customStringsName = null;
+
 //Email
 $config->email = (object) array();
 $config->email->bSendMailForReal = false;
