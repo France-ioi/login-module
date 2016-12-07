@@ -205,7 +205,7 @@ function getUserToken($db, $user, $tokenGenerator, $badges) {
         "sEmail" => $user['sEmail'],
         "sFirstName" => $user['sFirstName'],
         "sLastName" => $user['sLastName'],
-        "sLastName" => $user['sStudentId'],
+        "sStudentId" => $user['sStudentId'],
         "aBadges" => $badges
     ];
     $token = $tokenGenerator->generateToken($tokenParams);
