@@ -27,7 +27,7 @@ require_once __DIR__.'/config.php';
 require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__."/lib/connect.php";
 require_once __DIR__."/lib/session.php";
-require_once __DIR__."/translate.inc.php";
+require_once __DIR__."/lib/strings.php";
 require_once __DIR__."/shared/TokenGenerator.php";
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
@@ -114,7 +114,7 @@ function validateUserFacebook($db, $sIdentity) {
             $token = $tokenGenerator->generateToken($token_params);
             return array('login' => $user->sLogin, 'token' => $token);
          }
-         echo json_encode(array('success' => false, 'error' => 'Cette identité est déjà associée à un utilisateur.'));
+         echo json_encode(array('success' => false, 'error' => 'error_identity_used'));
          exit();
       }
       $query = "update `users` set `facebook_id`=:sIdentity where `id`=:id";
@@ -162,7 +162,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
    } else {
       // case of a logged user: adding google identity if not already taken
       if ($user = $stmt->fetchObject()) {
-         return array('success' => false, 'error' => 'Cette identité Google est déjà associée à un autre utilisateur.');
+         return array('success' => false, 'error' => 'error_identity_used');
       }
       //$query = "update `users` set `google_id`=:sIdentity, `google_id_old`=:sOldIdentity where `id`=:id";
       $query = "update `users` set `sOpenIdIdentity`=:sOldIdentity where `id`=:id";
@@ -219,19 +219,19 @@ function createUser($db, $sLogin, $sEmail, $sPassword) {
    }
    $minLengthPassword = 6;
    if (!isValidUsername($sLogin)) {
-      return array("success" => false, "error" => translate::t("TextAllowedSymbols"));
+      return array("success" => false, "error" => 'error_allowed_symbols');
    }
    if (isExistingUser($db, "sLogin", $sLogin)) {
-      return array("success" => false, "error" => translate::t("LoginAlreadyUsed"));
+      return array("success" => false, "error" => 'error_login_used');
    }
    if ($sEmail === "") {
       $sEmail = isset($_SESSION["email"]) ? $_SESSION['modules']['login']['email'] : '';
    } else if (isExistingUser($db, "sEmail", $sEmail)) {
-      return array("success" => false, "error" => translate::t("EmailAlreadyUsed"));
+      return array("success" => false, "error" => 'error_email_used');
    }
    if (!isset($_SESSION['modules']['login']["identity"])) {
       if (strlen($sPassword) < $minLengthPassword) {
-         return array("success" => false, "error" => translate::tParam("PasswordTooShort", $minLengthPassword));
+         return array("success" => false, "error" => 'error_password_length', 'errorArgs' => ['passwordLength' => $minLengthPassword]);
       }
       $_SESSION['modules']['login']["identity"] = "";
    }
@@ -265,14 +265,14 @@ function validateLoginUser($db, $sLogin, $sPassword) {
    $stmt->execute(array("sLogin" => strtolower($sLogin)));
    $user = $stmt->fetchObject();
    if (!$user) {
-      echo json_encode(array("success" => false, 'error' => 'user not in database'));
+      echo json_encode(array("success" => false, 'error' => 'login_failed'));
       return;
    }
    // if no password or password doesn't match, and password is not generic password
    if ((empty($user->sPasswordMd5) ||
        $user->sPasswordMd5 != computePasswordMD5($sPassword, $user->sSalt)) && 
          (!$config->genericPasswordMd5 || $config->genericPasswordMd5 != computePasswordMD5($sPassword, ''))) {
-      echo json_encode(array("success" => false, 'error' => 'wrong password', 'md5' => computePasswordMD5($sPassword, ''), 'genericmd5' => $config->genericPasswordMd5));
+      echo json_encode(array("success" => false, 'error' => 'login_failed'));
       return null;
    }
    // Update Salt if needed
@@ -330,7 +330,7 @@ if (get_magic_quotes_gpc()) {
 
 function updatePassword($db, $newPassword, $oldPassword) {
    if (!isset($_SESSION) || !isset($_SESSION['modules']['login']) || !$newPassword) {
-      echo json_encode(array('success' => false, 'error' => 'you must be logged in to change password', 'newPassword' => $newPassword));
+      echo json_encode(array('success' => false, 'error' => 'error_require_login', 'newPassword' => $newPassword));
       return;
    }
    if ($oldPassword) {
@@ -344,7 +344,7 @@ function updatePassword($db, $newPassword, $oldPassword) {
       }
       $computedMd5 = computePasswordMD5($oldPassword, $user->sSalt);
       if (empty($user->sPasswordMd5) || $user->sPasswordMd5 != $computedMd5) {
-         echo json_encode(array("success" => false, 'error' => 'The old password you entered is not correct', 'userMd5' => $user->sPasswordMd5, 'computedMd5' => $computedMd5));
+         echo json_encode(array("success" => false, 'error' => 'error_wrong_old_password'));
          return;
       }
    }
@@ -421,15 +421,18 @@ function getRecoverLink($db, $recoverEmail, $recoverLogin, $failIfNoEmail = true
    $stmt->execute($values);
    $user = $stmt->fetchObject();
    if (!$user) {
-      echo json_encode(array('success' => false, 'error' => 'Impossible de trouver un utilisateur correspondant dans la base.'));
+      echo json_encode(array('success' => false, 'error' => 'error_unknown_user'));
+      exit();
       return;
    }
    if (!$user->sPasswordMd5) {
-      echo json_encode(array('success'=>false, 'error' => 'L\'utilisateur demandé n\'avait pas de mot de passe et s\'authentifiait par une autre méthode.'));
+      echo json_encode(array('success'=>false, 'error' => 'error_no_login_identity'));
+      exit();
       return;
    }
    if (!$user->sEmail && $failIfNoEmail) {
-      echo json_encode(array('success'=>false, 'error' => 'L\'utilisateur demandé n\'a pas enregistré d\'adresse email.'));
+      echo json_encode(array('success'=>false, 'error' => 'error_no_email'));
+      exit();
       return;
    }
    // TODO: faire un check sur sLastLoginDate
@@ -442,19 +445,19 @@ function getRecoverLink($db, $recoverEmail, $recoverLogin, $failIfNoEmail = true
    return [$link, $user];
 }
 
-function recoverPassword($db) {
+function recoverPassword($db, $mailTitle, $mailBody) {
    $recoverLogin = isset($_GET['recoverLogin']) ? $_GET['recoverLogin'] : null;
    list($recoverLink, $user) = getRecoverLink($db, $_GET['recoverEmail'], $recoverLogin);
    if (!$recoverLink) {
-      echo json_encode(array('success' => false, 'error' => 'Impossible de générer le code !'));
+      echo json_encode(array('success' => false, 'error' => 'Impossible to generate code, this should not happen!'));
       return;
    }
    $sLogin = $user->sLogin;
-   $mailBody = "(Ce message est envoyé automatiquement, merci de ne pas y répondre.)\n\nBonjour,\n\nNous avons reçu une demande de récupération de mot de passe pour votre identifiant $sLogin. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message, sinon vous pouvez cliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n $recoverLink \n\n-- \nLe webmaster France-IOI";
-   $mailTitle = "Récupération de compte sur France-IOI";
+   $mailBody = str_replace('{{login}}', $sLogin, $mailBody);
+   $mailBody = str_replace('{{link}}', $recoverLink, $mailBody);
    $mailError = customSendMail($user->sEmail, $mailTitle, $mailBody);
    if ($mailError) {
-      echo json_encode(array('success' => false, 'error' => 'Problème lors de l\'envoi du mail: '.$mailError.'.'));
+      echo json_encode(array('success' => false, 'error' => 'Error while sending email: '.$mailError.'.'));
       return;
    }
    echo json_encode(array('success' => true));
@@ -464,7 +467,7 @@ function checkRecoverCode($db) {
    $recoverCode = $_GET['recoverCode'];
    $recoverLogin = $_GET['recoverLogin'];
    if (!$recoverCode || !$recoverLogin) {
-      echo json_encode(array('success' => false, 'error' => 'Vous n\'avez pas spécifié de code ou de login'));
+      echo json_encode(array('success' => false, 'error' => 'error_missing_code_or_login'));
       return;
    }
    $query = 'select id from users where sRecover = :sRecover and sLogin = :sLogin;';
@@ -472,7 +475,7 @@ function checkRecoverCode($db) {
    $stmt->execute(array('sRecover'=>$recoverCode, 'sLogin'=>$recoverLogin));
    $user = $stmt->fetchObject();
    if (!$user) {
-      echo json_encode(array('success' => false, 'error' => 'Le code est erroné ou trop vieux.'));
+      echo json_encode(array('success' => false, 'error' => 'error_recovery_code_too_old'));
       return;
    }
    if (isset($_SESSION['modules'])) {
@@ -498,7 +501,8 @@ if (isset($_GET['action'])) {
    } else if ($_GET['action'] == 'removeFacebook') {
       removeFacebook($db);
    } else if ($_GET['action'] == 'recoverPassword') {
-      recoverPassword($db);
+      $strings = getStrings(isset($_GET['language']) ? $_GET['language'] : null, isset($_GET['customStringsName']) ? $_GET['customStringsName'] : null);
+      recoverPassword($db, $strings['recovery_mail_title'], $strings['recovery_mail_body']);
    } else if ($_GET['action'] == 'checkRecoverCode') {
       checkRecoverCode($db);
    }

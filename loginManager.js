@@ -95,6 +95,10 @@ function loadSession($scope, $http) {
    });
 }
 
+function translateError(ajaxData) {
+   return window.i18next.t(ajaxData.error, ajaxData.errorArgs);
+}
+
 // for browsers not supporting parent url simply
 var parent_url = decodeURIComponent(document.location.hash.replace(/^#/, ''));
 
@@ -184,7 +188,7 @@ function checkAgainstRequired(infos, requiredFields) {
 }
 
 angular.module('login', ['jm.i18next'])
-   .controller('LoginCtrl', function($scope, $http, $timeout, $interval) {
+   .controller('LoginCtrl', function($scope, $http, $timeout, $interval, $i18next) {
       $scope.step = "";
       $scope.hasPMS = false;
       $scope.autoLogout = false;
@@ -272,7 +276,7 @@ angular.module('login', ['jm.i18next'])
                }
             }
             if (missingFields.length) {
-               $scope.infosError = 'Champs obligatoires non-renseignés : '+missingFields.join(', ');
+               $scope.infosError = $i18next.t('missing_fields')+missingFields.join(', ');
                return;
             }
          }
@@ -390,9 +394,9 @@ angular.module('login', ['jm.i18next'])
             oldPassword = $('#oldPassword'+suffix).val();
          }
          if (!newPassword || newPassword != newPasswordConf) {
-            alert('Les mots de passe sont différents');
+            alert($i18next.t('passwords_different'));
          } else if (newPassword.length < 6) {
-            alert('le mot de passe doit faire au moins 6 caractères');
+            alert($i18next.t('error_password_length', {passwordLength: 6}));
          } else {
             loginManager.updatePassword(newPassword, from, oldPassword);
          }
@@ -461,7 +465,7 @@ var loginManager = {
 
    loginFailed: function() {
       setTimeout(function() {
-         loginManager.setErrorMessage(translate("login_failed"));
+         loginManager.setErrorMessage(i18next.t("login_failed"));
       }, 100);
    },
 
@@ -498,7 +502,7 @@ var loginManager = {
          }
       } else {
          if (data.error) {
-            console.error(data.error);
+            console.error(translateError(data));
          }
          if (closeIfFailed) {
             refWindow.postMessage(JSON.stringify({action: "loginFailed"}), '*');
@@ -573,7 +577,7 @@ var loginManager = {
                   loginManager.logged(data.login, data.token, 'password', data.loginData);
                }
             } else {
-               alert("Erreur : " + data.error);
+               alert(translateError(data));
             }
          }
       }).done(function() {});
@@ -581,7 +585,7 @@ var loginManager = {
 
    createUser: function(login, email, password1, password2) {
       if (password1 !== password2) {
-         alert(translate("passwords_different"));
+         alert(i18next.t("passwords_different"));
          return;
       }
       if (!email) {email = '';}
@@ -614,7 +618,7 @@ var loginManager = {
                scope.recoverPasswordChangeLoading = false;
                scope.changePassLoading = false;
             });
-            alert("Erreur : " + res.error);
+            alert(translateError(res));
             return;
          }
          if (from == "recovered") {
@@ -637,16 +641,16 @@ var loginManager = {
 
    removeGoogle: function() {
       if (!session.hasGoogle){
-         alert('Vous n\'avez pas d\'identité Google à supprimer');
+         alert(i18next.t('no_entitity_to_remove', {identityName: 'Google'}));
          return;
       }
       if (!session.hasPassword && !session.hasFacebook){
-         alert('Vous ne pouvez pas supprimer votre identité Google car vous n\'avez pas d\'autre moyen de vous identifier à votre compte.');
+         alert(i18next.t('cannot_remove_identity', {identityName: 'Google'}));
          return;
       }
       $.get(config.selfBaseUrl + 'validateUser.php', {action: 'removeGoogle'}, function(res) {
          if (!res.success) {
-            alert("Erreur : " + res.error);
+            alert(translateError(res));
             return;
          }
          session.hasGoogle = false;
@@ -659,16 +663,16 @@ var loginManager = {
 
    removeFacebook: function() {
       if (!session.hasFacebook){
-         alert('Vous n\'avez pas d\'identité Facebook à supprimer');
+         alert(i18next.t('no_entitity_to_remove', {identityName: 'Facebook'}));
          return;
       }
       if (!session.hasPassword && !session.hasGoogle){
-         alert('Vous ne pouvez pas supprimer votre identité Facebook car vous n\'avez pas d\'autre moyen de vous identifier à votre compte.');
+         alert(i18next.t('cannot_remove_identity', {identityName: 'Facebook'}));
          return false;
       }
       $.get(config.selfBaseUrl + 'validateUser.php', {action: 'removeFacebook'}, function(res) {
          if (!res.success) {
-            alert("Erreur : " + res.error);
+            alert(translateError(res));
             return;
          }
          session.hasFacebook = false;
@@ -684,7 +688,7 @@ var loginManager = {
 
    googleAdded: function(success, error) {
       if (error) {
-         alert('Erreur: '+error);
+         alert(error);
          return;
       }
       session.hasGoogle = true;
@@ -709,7 +713,7 @@ var loginManager = {
          var provider = session.sProvider ? session.sProvider : this.accessProvider;
          var loggingoutfromprovider = false;
          if (provider && (provider == 'facebook' || provider == 'google')) {
-            if (confirm(translate("logout_from_provider", [provider]))) {
+            if (confirm(i18next.t("logout_from_provider", {identityName: provider}))) {
                loginManager.logoutFromProvider(provider);
                loggingoutfromprovider = true;
                this.accessProvider = '';
@@ -800,10 +804,10 @@ var loginManager = {
    },
 
    checkRecoverCode: function(recoverCode, recoverLogin) {
-      $.get(config.selfBaseUrl + 'validateUser.php', {action: 'checkRecoverCode', recoverLogin: recoverLogin, recoverCode: recoverCode}, function(res) {
+      $.get(config.selfBaseUrl + 'validateUser.php', {action: 'checkRecoverCode', recoverLogin: recoverLogin, recoverCode: recoverCode, language: window.language, customStringsName: window.customStringsName}, function(res) {
          var scope = angular.element("#LoginCtrl").scope();
          if (!res.success) {
-            alert("Erreur : " + res.error);
+            alert(translateError(res));
             scope.apply(function() {
                scope.recoverLoading = false;
                scope.recoverError = !res.success;
@@ -827,7 +831,7 @@ var loginManager = {
       $.get(config.selfBaseUrl + 'validateUser.php', {action: 'recoverPassword', recoverLogin: recoverLogin, recoverEmail: recoverEmail}, function(res) {
          scope.recoverLoading = false;
          if (!res.success) {
-            alert("Erreur : " + res.error);
+            alert(translateError(res));
             return;
          }
          scope.apply(function() {
@@ -852,7 +856,7 @@ var loginManager = {
                      FB.logout(function() {
                         consoleLog("you are now logged out of facebook");
                      });
-                     alert('Erreur: '+dataObject.error);
+                     alert(translateError(dataObject));
                      return;
                   }
                   if(that.popup && !that.popup.closed){
@@ -918,28 +922,35 @@ window.fbAsyncInit = function() {
    });
 };
 
-var urlVars = getUrlVars();
-var lang = config.defaultLanguage;
-if (urlVars.lang) {
-   lang = urlVars.lang;
+function i18ninit() {
+   var urlVars = getUrlVars();
+   var lang = config.defaultLanguage;
+   if (urlVars.lang) {
+      lang = urlVars.lang;
+   }
+   window.language = lang;
+   var customStrings = config.customStringsName;
+   if (urlVars.customStrings) {
+      customStrings = urlVars.customStrings;
+   }
+   window.customStringsName = customStrings;
+   window.i18next.use(window.i18nextXHRBackend);
+   window.i18next.init({
+    'lng': lang,
+    'fallbackLng': ['fr'],
+    'debug': true,
+    'ns': customStrings ? [customStrings, 'login'] : ['login'],
+    'fallbackNS':'login',
+    'backend' : {
+      'allowMultiLoading' : false,
+      'loadPath' : '/i18n/{{lng}}/{{ns}}.json'
+    }
+   });
+   window.i18next.on('initialized', function (options) {
+    window.i18nextOptions = options;
+    console.error(window.i18nextOptions);
+    angular.bootstrap(document, ['login']);
+   });
 }
-var customStrings = config.customStringsName;
-if (urlVars.customStrings) {
-   customStrings = urlVars.customStrings;
-}
-window.i18next.use(window.i18nextXHRBackend);
-window.i18next.init({
- 'lng': lang,
- 'fallbackLng': ['en'],
- 'fallbackNS': 'algorea',
- 'debug': true,
- 'ns': customStrings ? [customStrings, 'login'] : ['login'],
- 'backend' : {
-   'allowMultiLoading' : false,
-   'loadPath' : '/i18n/{{lng}}/{{ns}}.json'
- }
-});
-window.i18next.on('initialized', function (options) {
- window.i18nextOptions = options;
- angular.bootstrap(document, ['login']);
-});
+
+i18ninit();
