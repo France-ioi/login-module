@@ -89,7 +89,8 @@ function preventDefault(event) {
 function loadSession($scope, $http) {
    var infosTimeZone = checkTimeZone();
    var url = config.selfBaseUrl + "session.php?sTimeZoneOffset=" + infosTimeZone.offset + "&bDLS=" + infosTimeZone.bDLS;
-   return $http.get(url).success(function(data) {
+   return $http.get(url).then(function(response) {
+      var data = response.data;
       session = data;
       $scope.session = session;
    });
@@ -303,7 +304,7 @@ angular.module('login', ['jm.i18next'])
       $scope.refreshSession = function() {
          var infosTimeZone = checkTimeZone();
          var url = config.selfBaseUrl + "session.php?sTimeZoneOffset=" + infosTimeZone.offset + "&bDLS=" + infosTimeZone.bDLS;
-         $http.get(url).success(function(data) {
+         $http.get(url).then(function(data) {
               // we just want to refresh the session, not handle differences, each client must handle differences himself
 //            if (data.idUser != $scope.session.idUser) {
 //               session = data;
