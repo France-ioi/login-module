@@ -9,6 +9,8 @@
  *
  */
 
+var debugMode = false;
+
 function checkTimeZone() {
    var rightNow = new Date();
    var date1 = new Date(rightNow.getFullYear(), 0, 1, 0, 0, 0, 0);
@@ -170,9 +172,9 @@ function closeAfterMessage() {
       var newUrl = loginManager.scope.fallbackReturnUrl;
       newUrl += '?request='+encodeURIComponent(lastrequest);
       newUrl += '&content='+encodeURIComponent(JSON.stringify(lastcontent));
-      window.location.replace(newUrl);
+      if (!debugMode) window.location.replace(newUrl);
    } else {
-      window.close();
+      if (!debugMode) window.close();
    }
 }
 
@@ -237,7 +239,7 @@ angular.module('login', ['jm.i18next'])
             $scope.step = "newLogin";
             $("#newLoginForm").show();
          } else if (params.close === "1") {
-            window.close();
+            if (!debugMode) window.close();
          } else if (!loginManager.handleOAuthData()) {
             if ((session.idUser === -1) || (session.idUser === undefined)) {
                $scope.step = "notConnected";
@@ -370,7 +372,7 @@ angular.module('login', ['jm.i18next'])
       },
       $scope.changePassDone = function() {
          if ($scope.popupMode) {
-            window.close();
+            if (!debugMode) window.close();
          } else {
             $scope.step = 'connected';
          }
@@ -497,7 +499,7 @@ var loginManager = {
             if (window.opener) {
                var params = getUrlVars();
                if (params.properties !== '1') {
-                  window.close();
+                  if (!debugMode) window.close();
                }
             }
          }
@@ -507,7 +509,7 @@ var loginManager = {
          }
          if (closeIfFailed) {
             refWindow.postMessage(JSON.stringify({action: "loginFailed"}), '*');
-            window.close();
+            if (!debugMode) window.close();
          } else {
             loginManager.loginFailed();
          }
@@ -573,7 +575,7 @@ var loginManager = {
                if (window.opener) {
                   window.opener.postMessage(JSON.stringify({action: "logged", login: data.login, token: data.token, provider: 'password', loginData: data.loginData}), '*');
                   //window.opener.loginManager.logged(data.login, data.token, 'password', data.loginData);
-                  window.close();
+                  if (!debugMode) window.close();
                } else {
                   loginManager.logged(data.login, data.token, 'password', data.loginData);
                }
@@ -949,7 +951,6 @@ function i18ninit() {
    });
    window.i18next.on('initialized', function (options) {
     window.i18nextOptions = options;
-    console.error(window.i18nextOptions);
     angular.bootstrap(document, ['login']);
    });
 }
