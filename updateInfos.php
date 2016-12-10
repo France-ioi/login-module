@@ -4,7 +4,6 @@ require_once __DIR__.'/config.php';
 require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__."/lib/connect.php";
 require_once __DIR__."/lib/session.php";
-require_once __DIR__."/translate.inc.php";
 require_once __DIR__."/shared/TokenGenerator.php";
 
 if (!isset($login_session['idUser']) || !$login_session['idUser']) {
