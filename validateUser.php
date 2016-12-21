@@ -27,21 +27,13 @@ require_once __DIR__.'/config.php';
 require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__."/lib/connect.php";
 require_once __DIR__."/lib/session.php";
+require_once __DIR__."/lib/account.php";
+require_once __DIR__."/lib/loginString.php";
 require_once __DIR__."/lib/strings.php";
+require_once __DIR__."/lib/badge.php";
 require_once __DIR__."/shared/TokenGenerator.php";
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
-
-function isValidUsername($sName) {
-   return preg_match("/^[a-z0-9_\.-]{3,15}$/", $sName);
-}
-
-function isExistingUser($db, $fieldName, $sValue) {
-   $query = "SELECT `id` FROM `users` WHERE `".$fieldName."` = :sValue";
-   $stmt = $db->prepare($query);
-   $stmt->execute(array("sValue" => $sValue));
-   return ($stmt->fetchObject() !== FALSE);
-}
 
 function requireLogged() {
    if (!isset($_SESSION) || !isset($_SESSION['modules']) || !isset($_SESSION['modules']['login']) || !isset($_SESSION['modules']['login']['idUser'])) {
@@ -89,13 +81,15 @@ function validateUserFacebook($db, $sIdentity) {
          $_SESSION['modules']['login']["sFirstName"] = $user->sFirstName;
          $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
          $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
+         addBadgesInSession();
          $token_params = array(
             "idUser" => $user->id,
             "sLogin" => $user->sLogin,
             "sProvider" => 'facebook',
             "sFirstName" => $user->sFirstName,
             "sLastName" => $user->sLastName,
-            "sStudentId" => $user->sStudentId
+            "sStudentId" => $user->sStudentId,
+            "aBadges" => $_SESSION['modules']['login']['aBadges']
          );
          $token = $tokenGenerator->generateToken($token_params);
          $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);
@@ -146,6 +140,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
          $_SESSION['modules']['login']["hasGoogle"] = true;
          //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
          $_SESSION['modules']['login']["hasFacebook"] = false;
+         addBadgesInSession();
          $token_params = array(
             "idUser" => $user->id,
             "sLogin" => $user->sLogin,
@@ -156,7 +151,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
          );
          $token = $tokenGenerator->generateToken($token_params);
          $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);
-         return array('login' => $user->sLogin, 'token' => $token, 'userData' => $user);
+         return array('login' => $user->sLogin, 'token' => $token, 'userData' => $user, 'loginData' => $_SESSION['modules']['login']);
       }
       return array('login' => '', 'token' => null, 'provider' => 'google', 'hasGoogle' => false, 'hasFacebook' => false, 'hasPassword' => false);
    } else {
@@ -171,45 +166,6 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
       $_SESSION['modules']['login']['hasGoogle'] = true;
       return array('success'=>true);
    }
-}
-
-function createAccount($db, $sLogin, $sEmail, $sOpenIdIdentity, $sPassword, $provider)
-{
-   //$openIdField = $provider.'_id';
-   $openIdField = 'sOpenIdIdentity';
-   $aValues = array(
-      'sLogin' => $sLogin,
-      'sEmail' => strtolower($sEmail),
-      'sOpenIdIdentity' => $sOpenIdIdentity,
-      'sSalt' => "",
-      'sPasswordMd5' => ""
-   );
-   if ($aValues['sOpenIdIdentity'] == '')
-   {
-      //$sSalt = User::generateSalt();
-      $sSalt = "";
-      $aValues['sSalt'] = $sSalt;
-      $aValues['sPasswordMd5'] = computePasswordMD5($sPassword, $sSalt);
-   }
-   if ($provider && $provider != "password") {
-      $query = "INSERT INTO `users` (`sLogin`, `sEmail`, `".$openIdField."`, `sSalt`, `sPasswordMd5`, `sRegistrationDate`, `sLastLoginDate`) ".
-         "VALUES (:sLogin, :sEmail, :sOpenIdIdentity, :sSalt, :sPasswordMd5, NOW(), NOW())";
-   } else {
-      $query = "INSERT INTO `users` (`sLogin`, `sEmail`, `sSalt`, `sPasswordMd5`, `sRegistrationDate`, `sLastLoginDate`) ".
-         "VALUES (:sLogin, :sEmail, :sSalt, :sPasswordMd5, NOW(), NOW())";
-      unset($aValues['sOpenIdIdentity']);
-      $_SESSION['modules']['login']["hasPassword"] = true;
-   }
-   $db->prepare($query)->execute($aValues);
-   return $db->lastInsertId();
-}
-
-function generateSalt() {
-   return  md5(uniqid(rand(), true));
-}
-
-function computePasswordMD5($sPassword, $sSalt) {
-   return md5($sPassword.$sSalt);
 }
 
 function createUser($db, $sLogin, $sEmail, $sPassword) {
@@ -296,6 +252,7 @@ function validateLoginUser($db, $sLogin, $sPassword) {
    //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
    $_SESSION['modules']['login']["hasGoogle"] = false;
    $_SESSION['modules']['login']["hasFacebook"] = false;
+   addBadgesInSession();
    $token_params = array(
       //"sLanguage" => $user->sDefaultLanguage,
       "idUser" => $_SESSION['modules']['login']["idUser"],
@@ -304,6 +261,7 @@ function validateLoginUser($db, $sLogin, $sPassword) {
       "sProvider" => $_SESSION['modules']['login']["sProvider"],
       "sFirstName" => $_SESSION['modules']['login']["sFirstName"],
       "sLastName" => $_SESSION['modules']['login']["sLastName"],
+      "aBadges" => $_SESSION['modules']['login']["aBadges"],
       "sStudentId" => $_SESSION['modules']['login']["sStudentId"],
     );
    $token = $tokenGenerator->generateToken($token_params);

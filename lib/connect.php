@@ -4,6 +4,7 @@ use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\SessionHandler;
 
 require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../config.php';
 
 function connect() {
    global $config;

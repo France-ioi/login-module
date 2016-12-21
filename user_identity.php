@@ -49,5 +49,5 @@ echo json_encode([
   'sLogin' => $user->sLogin,
   'sFirstName' => $user->sFirstName,
   'sLastName' => $user->sLastName,
-  'badges' => $badges
+  'aBadges' => $badges
 ]);

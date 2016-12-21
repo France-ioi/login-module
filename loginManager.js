@@ -190,6 +190,19 @@ function checkAgainstRequired(infos, requiredFields) {
    return true;
 }
 
+function checkAgainstRequiredBadge(session, requiredBadge) {
+   if (!session || !requiredBadge) {
+      return true;
+   }
+   if (!session.aBadges) return false;
+   for (var i = 0; i < session.aBadges.length; i++) {
+      if (session.aBadges[i] == requiredBadge) {
+         return true;
+      }
+   }
+   return false;
+}
+
 angular.module('login', ['jm.i18next'])
    .controller('LoginCtrl', function($scope, $http, $timeout, $interval, $i18next) {
       $scope.step = "";
@@ -198,6 +211,7 @@ angular.module('login', ['jm.i18next'])
       $scope.popupMode = false;
       $scope.session = session;
       $scope.infos = {};
+      $scope.badgeInfos = {};
       loginManager.scope = $scope;
       loadSession($scope, $http).then(function() {
          $scope.infos.sFirstName = session.sFirstName;
@@ -210,6 +224,14 @@ angular.module('login', ['jm.i18next'])
          if (params.requiredFields) {
             $scope.requiredFields = params.requiredFields.split(',');
          }
+         // not sure about the way to specify multiple required badges with their types
+         if (params.requiredBadge) {
+            $scope.requiredBadge = params.requiredBadge;
+            $scope.requiredBadgeType = $scope.requiredBadgeType ? $scope.requiredBadgeType : 'code';
+            if (params.badgeCode) {
+               $scope.badgeInfos.code = params.badgeCode;
+            }
+         }
          if (params.autoLogout === '1') {
             $scope.autoLogout = true;
          }
@@ -221,8 +243,11 @@ angular.module('login', ['jm.i18next'])
          }
          $scope.fallbackReturnUrl = params.fallbackReturnUrl;
          if (params.login === "1") {
-            $scope.step = "login";
-            $("#loginForm").show();
+            if ($scope.requiredBadge) {
+               $scope.step = "badgeOrNormal";
+            } else {
+               $scope.step = "login";
+            }
          } else if (params.properties === "1") {
             $scope.step = "properties";
          } else if (params.changePass === "1") {
@@ -237,14 +262,21 @@ angular.module('login', ['jm.i18next'])
             loginManager.checkRecoverCode(params.sRecover, params.sLogin);
          } else if (params.newUser === "1") {
             $scope.step = "newLogin";
-            $("#newLoginForm").show();
          } else if (params.close === "1") {
             if (!debugMode) window.close();
          } else if (!loginManager.handleOAuthData()) {
             if ((session.idUser === -1) || (session.idUser === undefined)) {
-               $scope.step = "notConnected";
-               postLoginMessage('notlogged', null, function() {});
-               //            $("#loginButtons").show();
+               if ($scope.requiredBadge) {
+                  if ($scope.badgeInfos.code) {
+                     $scope.step = 'badgeCreationConfirm';
+                     $scope.submitBadgeInfos();
+                  } else {
+                     $scope.step = "notConnected";
+                  }
+               } else {
+                  $scope.step = "notConnected";
+                  postLoginMessage('notlogged', null, function() {});
+               }
             } else {
                $scope.step = "connected";
                if ($scope.autoLogout) {
@@ -253,6 +285,11 @@ angular.module('login', ['jm.i18next'])
                   if ($scope.requiredFields && !checkAgainstRequired($scope.infos, $scope.requiredFields)) {
                      $scope.infosError = null;
                      $scope.step = 'infos';
+                     $scope.$applyAsync();
+                  } else if ($scope.requiredBadge && !checkAgainstRequiredBadge($scope.session, $scope.requiredBadge)) {
+                     $scope.step = 'badgeInfos';
+                     $scope.autoVerifyBadgeFromUrl();
+                     $scope.$applyAsync();
                   } else {
                      postLoginMessage('login', {
                         login: session.sLogin,
@@ -268,6 +305,118 @@ angular.module('login', ['jm.i18next'])
             $scope.setInterval();
          }
       });
+
+      $scope.autoVerifyBadgeFromUrl = function() {
+         if ($scope.badgeInfos.code) {
+            $scope.submitBadgeInfos();
+         }
+      };
+
+      $scope.submitBadgeInfos = function() {
+         $scope.badgeError = null;
+         if (!$scope.requiredBadge) {
+            //?
+            return;
+         }
+         if ($scope.requiredBadgeType == 'code') {
+            if (!$scope.badgeInfos.code) {
+               $scope.badgeError = 'missing_code';
+            }            
+         } else {
+            console.error('unknown badge verification type!');
+            return;
+         }
+         var action = 'getInfos';
+         if ($scope.session && $scope.session.idUser) {
+            action = 'attachBadge';
+         }
+         $scope.badgeLoading = true;
+         $.ajax({
+            url: config.selfBaseUrl + "badgeApi.php",
+            context: document.body,
+            dataType: 'json',
+            method: 'POST',
+            data: {action: action, badgeUrl: $scope.requiredBadge, verifInfos: $scope.badgeInfos, verifType: $scope.requiredBadgeType},
+            success: function(data) {
+               if (!data.success) {
+                  $scope.badgeLoading = false;
+                  $scope.badgeError = translateError(data);
+                  $scope.$applyAsync();
+                  return;
+               }
+               $scope.badgeInfos = {};
+               if ($scope.session && $scope.session.idUser) {
+                  loadSession($scope, $http).then(function() {
+                     $scope.badgeLoading = false;
+                     $scope.step = "connected";
+                     postLoginMessage('login', {
+                        login: session.sLogin,
+                        token: session.sToken
+                     }, function() {
+                        if ($scope.popupMode) {
+                           closeAfterMessage();
+                        }
+                     });
+                     $scope.$applyAsync();
+                  });
+               } else {
+                  $scope.badgeLoading = false;
+                  $scope.step = "badgeCreationConfirm";
+                  $scope.infos = data.userInfos;
+                  $scope.infos.sPassword = $scope.badgeInfos.code;
+                  $scope.infos.sPasswordConfirm = $scope.badgeInfos.code;
+               }
+               $scope.$applyAsync();
+            }
+         });
+      }
+
+      $scope.confirmCreationFromBadge = function() {
+         $scope.badgeError = null;
+         if (!$scope.requiredBadge || ($scope.session && $scope.session.idUser)) {
+            //?
+            return;
+         }
+         if ($scope.requiredBadgeType == 'code') {
+            if (!$scope.badgeInfos.code) {
+               $scope.badgeError = 'missing_code';
+            }         
+         } else {
+            console.error('unknown badge verification type!');
+            return;
+         }
+         $scope.badgeLoading = true;
+         $.ajax({
+            url: config.selfBaseUrl + "badgeApi.php",
+            context: document.body,
+            dataType: 'json',
+            method: 'POST',
+            data: {action: 'confirmAccountCreation', badgeUrl: $scope.requiredBadge, verifInfos: $scope.badgeInfos, verifType: $scope.requiredBadgeType, userInfos: $scope.infos},
+            success: function(data) {
+               if (!data.success) {
+                  $scope.badgeLoading = false;
+                  $scope.badgeError = translateError(data);
+                  $scope.$applyAsync();
+                  return;
+               }
+               loadSession($scope, $http).then(function() {
+                  $scope.badgeLoading = false;
+                  $scope.badgeInfos = {};
+                  $scope.step = "connected";
+                  postLoginMessage('login', {
+                     login: session.sLogin,
+                     token: session.sToken
+                  }, function() {
+                     if ($scope.popupMode) {
+                        closeAfterMessage();
+                     }
+                  });
+                  $scope.$applyAsync();
+               });
+               $scope.$applyAsync();
+            }
+         });
+      }
 
       $scope.changeInfos = function() {
          if ($scope.requiredFields) {
@@ -435,6 +584,12 @@ var loginManager = {
             scope.$apply(function() {
                scope.infosError = null;
                scope.step = 'infos';
+            });
+         } else if (scope.requiredBadge && !checkAgainstRequiredBadge(scope.session, scope.requiredBadge)) {
+            scope.$apply(function() {
+               scope.badgeError = null;
+               scope.step = 'badgeInfos';
+               scope.autoVerifyBadgeFromUrl();
             });
          } else {
             scope.$apply(function() {

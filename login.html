@@ -95,6 +95,15 @@
          <a class="btn btn-block btn-social btn-google loginbuttonBig" ng-click="loginWith($event, 'google')">
            <i class="fa fa-google-plus"></i> <span ng-i18next="with_google"></span>
          </a>
+         <form ng-if="requiredBadge" style="width: 240px; margin-left: auto; padding-top: 10px; margin-right: auto; padding-bottom: 10px;">
+            <div class="form-group">
+               <label for="badgeCode" ng-i18next="badge_code_input"></label>
+               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
+            </div>
+            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button" style="width:100%"></button>
+         </form>
+         <p ng-show="badgeError">{{badgeError}}</p>
+         <p ng-show="badgeLoading" ng-i18next="loading"></p>
          <p class="tiny center"><a href="" ng-click="openPasswordRecovery();" ng-i18next="forgotten_password"></a></p>
       </div>
       <div  ng-show="step == 'notConnected' && !largeMode" class="initialViewSmall">
@@ -114,6 +123,15 @@
            <i class="fa fa-google-plus"></i>
            Google+
          </a>
+         <form ng-if="requiredBadge">
+            <div class="form-group">
+               <label for="badgeCode" ng-i18next="badge_code_input"></label>
+               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
+            </div>
+            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button" style="width:100%"></button>
+         </form>
+         <p ng-show="badgeError">{{badgeError}}</p>
+         <p ng-show="badgeLoading" ng-i18next="loading"></p>
          <p class="tiny center"><a href="" ng-click="openPasswordRecovery();" ng-i18next="forgotten_password"></a></p>
       </div>
       <div ng-show="step == 'connected'">
@@ -156,10 +174,84 @@
       <div ng-show="step == 'changePassDone'">
         <p><span ng-i18next="new_password_done"></span> <button class="btn btn-info" ng-click="changePassDone();" ng-i18next="close"></button></p>
       </div>
+      <div ng-show="step == 'badgeOrNormal'">
+         <p ng-i18next="badgeOrNormal_intro"></p>
+         <button class="btn btn-info" ng-click="step = 'notConnected';" class="btn btn-info" ng-i18next="normal_login_button"></button><br><br>
+         <form>
+            <div class="form-group">
+               <label for="badgeCode" ng-i18next="badge_code_input"></label>
+               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
+            </div>
+            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button"></button>
+         </form>
+         <p ng-show="badgeError">{{badgeError}}</p>
+         <p ng-show="badgeLoading" ng-i18next="loading"></p>
+      </div>
+      <div ng-show="step == 'badgeInfos'">
+         <p ng-i18next="badgeInfos_intro"></p>
+         <form>
+            <div class="form-group">
+               <label for="badgeCode" ng-i18next="badge_code_input"></label>
+               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
+            </div>
+            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button"></button>
+         </form>
+         <p ng-show="badgeError">{{badgeError}}</p>
+         <p ng-show="badgeLoading" ng-i18next="loading"></p>
+      </div>
+      <div ng-show="step == 'badgeCreationConfirm'">
+         <p ng-i18next="badgeCreationConfirm_intro"></p>
+         <form>
+            <div class="form-group">
+               <label for="badgeCode" ng-i18next="badge_code_input"></label>
+               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
+            </div>
+            <div class="form-group">
+              <label for="login" ng-i18next="infos_firstName"></label>
+              <input type="text" class="form-control" id="infos-firstName" ng-model="infos.sFirstName" placeholder="{{'infos_firstName_placeholder' | i18next}}">
+            </div>
+            <div class="form-group">
+              <label for="login" ng-i18next="infos_lastName"></label>
+              <input type="text" class="form-control" id="infos-lastName" ng-model="infos.sLastName" placeholder="{{'infos_lastName_placeholder' | i18next}}">
+            </div>
+           <div class="form-group">
+              <label class="radio-inline"><input type="radio" ng-model="infos.sSex" ng-value="'Male'">{{'infos_sSex_m' | i18next}}</label>
+              <label class="radio-inline"><input type="radio" ng-model="infos.sSex" ng-value="'Female'">{{'infos_sSex_f' | i18next}}</label>
+            </div>
+            <div class="form-group">
+              <label for="login" ng-i18next="infos_email"></label>
+              <input type="text" class="form-control" id="infos-email" ng-model="infos.sEmail" placeholder="{{'infos_email_placeholder' | i18next}}">
+            </div>
+            <div class="form-group">
+               <label for="sLogin" ng-i18next="infos_login"></label>
+               <input type="text" class="form-control" id="sLogin" ng-model="infos.sLogin">
+            </div>
+            <div class="form-group">
+               <label for="newPassword" ng-i18next="new_password"></label>
+               <input type="password" class="form-control" id="newPassword" ng-model="infos.sPassword">
+            </div>
+            <div class="form-group">
+               <label for="newPasswordConf" ng-i18next="new_password_confirm"></label>
+               <input type="password" class="form-control" id="newPasswordConf" ng-model="infos.sPasswordConfirm">
+            </div>
+            <button class="btn btn-info" ng-click="confirmCreationFromBadge();" class="btn btn-info" ng-i18next="createFromBadge_button"></button>
+         </form>
+         <p ng-show="badgeError">{{badgeError}}</p>
+         <p ng-show="badgeLoading" ng-i18next="loading"></p>
+      </div>
       <div ng-show="step == 'recoveredPasswordChanged'">
-         <p ng-show="recoverPasswordChangeLoading" ng-i18next="loading"></p>
-         <p ng-show="!recoverPasswordChangeError && !recoverPasswordChangeLoading" ng-i18next="recover_password_ok"></p>
-         <p ng-show="recoverPasswordChangeError" ng-i18next="recover_password_nok"></p>
+         <form ng-show="!recoverLoading && !recoverError">
+            <div class="form-group">
+               <label for="newPassword" ng-i18next="new_password"></label>
+               <input type="password" class="form-control" id="newPasswordRecovered">
+            </div>
+            <div class="form-group">
+               <label for="newPasswordConf" ng-i18next="new_password_confirm"></label>
+               <input type="password" class="form-control" id="newPasswordConfRecovered">
+            </div>
+            <button class="btn btn-info" ng-click="createFromBadge('recovered');" type="submit" class="btn btn-info" ng-i18next="createFromBadge_ok"></button>
+         </form>
+         <p ng-show="recoverLoading" ng-i18next="loading"></p>
       </div>
       <div ng-show="step == 'recovered'">
          <p ng-show="recoverLoading" ng-i18next="loading"></p>

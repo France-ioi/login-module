@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `user_badges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idUser` int(11) NOT NULL,
   `sBadge` varchar(63) NOT NULL,
+  `jBadgeInfos` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_user_badges_idUser` (`idUser`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

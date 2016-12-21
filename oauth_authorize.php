@@ -58,12 +58,16 @@ if (!empty($_POST)) {
 // GET request
 //
 
+$get_query = ['afterLogin' => $_SERVER['REQUEST_URI']];
+
+if (isset($_GET['required_badge'])) {
+  $get_query['requiredBadge'] = $_GET['required_badge'];
+}
+
 // If the user is not logged in, redirect to authorize.html to display the
 // login form and redirect back here once the user has logged in.
 if (!$have_user_id) {
-  header('Location: authorize.html?'.http_build_query([
-    'afterLogin' => $_SERVER['REQUEST_URI']
-  ]));
+  header('Location: authorize.html?'.http_build_query($get_query));
   die;
 }
 
