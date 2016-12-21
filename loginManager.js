@@ -416,7 +416,21 @@ angular.module('login', ['jm.i18next'])
                $scope.$applyAsync();
             }
          });
-      }
+      };
+
+      $scope.forceLogin = function() {
+         postLoginMessage('login', {
+            login: session.sLogin,
+            token: session.sToken
+         }, function() {
+            if ($scope.popupMode) {
+               closeAfterMessage();
+            }
+         });
+         $scope.badgeLoading = false;
+         $scope.badgeInfos = {};
+         $scope.step = "connected";
+      };
 
       $scope.changeInfos = function() {
          if ($scope.requiredFields) {

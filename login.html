@@ -194,7 +194,8 @@
                <label for="badgeCode" ng-i18next="badge_code_input"></label>
                <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
             </div>
-            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button"></button>
+            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button"></button><br>
+            <button class="btn btn-info" ng-click="forceLogin();" class="btn btn-info" ng-i18next="forceLogin_button" style="margin-top:10px;"></button>
          </form>
          <p ng-show="badgeError">{{badgeError}}</p>
          <p ng-show="badgeLoading" ng-i18next="loading"></p>
