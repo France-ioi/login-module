@@ -3,12 +3,8 @@
 require_once __DIR__.'/connect.php';
 
 function verifyCode($badgeUrl, $code) {
-	$verifUrl = $badgeUrl.'/verifyCode';
+	$verifyUrl = $badgeUrl.'/verifyCode';
 	$code = trim($code);
-
-	// tmp:
-	//$verifyUrl = 'http://badges.concours-alkindi.fr/verifyCode.php?badgeName=qualification_tour2';
-	//$verifyUrl = 'http://eroux.fr/bebras-platform/badgeInterface/verifyCode.php?badgeName=test';
 
 	$post_request = ['code' => $code];
 
@@ -91,9 +87,6 @@ function updateBadgeInfos($idUser, $badgeUrl, $badgeInfos, $verifType) {
 	}
 
 	$updateInfosUrl = $badgeUrl.'/updateInfos';
-	// tmp:
-	//$updateInfosUrl = 'http://badges.concours-alkindi.fr/updateInfos.php?badgeName=qualification_tour2';
-	//$updateInfosUrl = 'http://eroux.fr/bebras-platform/badgeInterface/updateInfos.php?badgeName=test';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $updateInfosUrl);
