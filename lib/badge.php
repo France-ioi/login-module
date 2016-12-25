@@ -3,13 +3,12 @@
 require_once __DIR__.'/connect.php';
 
 function verifyCode($badgeUrl, $code) {
-	$verifyUrl = $badgeUrl.'/verifyCode';
 	$code = trim($code);
 
-	$post_request = ['code' => $code];
+	$post_request = ['action' => 'verifyCode', 'code' => $code];
 
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $verifyUrl);
+	curl_setopt($ch, CURLOPT_URL, $badgeUrl);
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_request));
@@ -79,17 +78,16 @@ function addBadge($idUser, $badge, $badgeInfos, $verifType) {
 function updateBadgeInfos($idUser, $badgeUrl, $badgeInfos, $verifType) {
 	global $db;
 	if (!$idUser || !$badgeUrl || !$badgeInfos || !$verifType || !isset($badgeInfos['code'])) return ['success' => false, 'error' => 'missing argument'];
-	$post_data = null;
+	$post_data = ['action' => 'updateInfos'];
 	if ($verifType == 'code') {
-		$post_data = ['userInfos' => ['idUser' => $idUser, 'code' => $badgeInfos['code']]];
+		$post_data['idUser'] = $idUser;
+		$post_data['code'] = $badgeInfos['code'];
 	} else {
 		return ['success' => false, 'error' => 'unknown verification type: '.$verifType];
 	}
 
-	$updateInfosUrl = $badgeUrl.'/updateInfos';
-
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $updateInfosUrl);
+	curl_setopt($ch, CURLOPT_URL, $badgeUrl);
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
