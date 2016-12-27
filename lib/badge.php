@@ -46,6 +46,8 @@ function isBadgeRegistered($badgeUrl, $verifInfos, $verifType) {
 		if (!$verifInfos || !isset($verifInfos['code'])) {
 			return ['success' => false, 'error' => 'missing code'];
 		}
+		// WARNING: the serialization of $verifInfos into $jBadgeInfos *must* be unique
+		//          in order to be able to perform textual comparisons in SQL
 		$code = trim($verifInfos['code']);
 		$jBadgeInfos = json_encode(['code' => $code], JSON_UNESCAPED_UNICODE);
 		$stmt = $db->prepare("select user_badges.idUser, users.sLogin from user_badges
