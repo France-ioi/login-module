@@ -58,16 +58,28 @@ if (!empty($_POST)) {
 // GET request
 //
 
-$get_query = ['afterLogin' => $_SERVER['REQUEST_URI']];
-
-if (isset($_GET['required_badge'])) {
-  $get_query['requiredBadge'] = $_GET['required_badge'];
-}
-
-// If the user is not logged in, redirect to authorize.html to display the
-// login form and redirect back here once the user has logged in.
+// If the user is not logged in, display the login form and reload this script
+// once the user has logged in.
 if (!$have_user_id) {
-  header('Location: authorize.html?'.http_build_query($get_query));
+  // $afterLogin = $_SERVER['REQUEST_URI'];
+  $loginQuery = ['large' => '1'];
+  if (array_key_exists('required_badge', $_GET)) {
+    $loginQuery['requiredBadge'] = $_GET['required_badge'];
+  }
+  $loginUrl = 'login.html?'.http_build_query($loginQuery);
+  echo('<!DOCTYPE html>
+  <meta charset="utf-8">
+  <iframe src="'.htmlspecialchars($loginUrl).'" id="loginIframe" frameBorder="0" style="margin: 10px; height: 400px; width: 400px;"></iframe>
+  <script type="text/javascript">
+  (function () {
+    window.addEventListener("message", function (e) {
+      var message = JSON.parse(e.data);
+      if (message.source === "loginModule" && message.request === "login") {
+        window.location.reload();
+      }
+    }, false);
+  }());
+  </script>');
   die;
 }
 
