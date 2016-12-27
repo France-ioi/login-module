@@ -29,7 +29,7 @@ loginIframe.src = iframeUrl;
     if (message.source === 'loginModule' && message.request === 'login') {
       var query = getQuery();
       var content = message.content;
-      window.location.href = query.afterLogin + '&jwt=' + content.token;
+      window.location.href = query.afterLogin;
       return;
     }
   }, false);
