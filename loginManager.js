@@ -322,12 +322,13 @@ angular.module('login', ['jm.i18next'])
 
       $scope.iDontHaveThisBadge = function() {
          $scope.badgeLoading = true;
+         var badge = $scope.requiredBadge;
          $.ajax({
             url: config.selfBaseUrl + "badgeApi.php",
             context: document.body,
             dataType: 'json',
             method: 'POST',
-            data: {action: 'iDontHaveThisBadge', badgeUrl: $scope.requiredBadge},
+            data: {action: 'iDontHaveThisBadge', badgeUrl: badge},
             success: function(data) {
                if (!data.success) {
                   $scope.badgeLoading = false;
