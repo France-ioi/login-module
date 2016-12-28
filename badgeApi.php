@@ -154,7 +154,7 @@ function confirmAccountCreation($badgeUrl, $verifInfos, $verifType, $userInfos) 
    	$_SESSION['modules']['login']["sLastName"] = $userInfos['sLastName'];
    	$_SESSION['modules']['login']["sEmail"] = $userInfos['sEmail'];
    	$_SESSION['modules']['login']["aBadges"] = [$badgeUrl];
-   	addBadge($_SESSION['modules']['login']["idUser"], $badgeUrl, $verifInfos, $verifType);
+   	addBadge($idUser, $badgeUrl, $verifInfos, $verifType);
    	$updateOk = updateBadgeInfos($idUser, $badgeUrl, $verifInfos, $verifType);
    	echo json_encode($updateOk);
 }

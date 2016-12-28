@@ -60,7 +60,7 @@ function isBadgeRegistered($badgeUrl, $verifInfos, $verifType) {
 		}
 		return ['success' => true, 'result' => $res];
 	} else {
-		return ['success' => false, 'error' => 'unknown verif type '.$verifType];	
+		return ['success' => false, 'error' => 'unknown verif type '.$verifType];
 	}
 }
 
@@ -78,7 +78,6 @@ function addBadge($idUser, $badge, $badgeInfos, $verifType) {
 }
 
 function updateBadgeInfos($idUser, $badgeUrl, $badgeInfos, $verifType) {
-	global $db;
 	if (!$idUser || !$badgeUrl || !$badgeInfos || !$verifType || !isset($badgeInfos['code'])) return ['success' => false, 'error' => 'missing argument'];
 	$post_data = ['action' => 'updateInfos'];
 	if ($verifType == 'code') {
