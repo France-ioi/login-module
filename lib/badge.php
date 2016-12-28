@@ -133,16 +133,32 @@ function addBadgesInSession() {
 	$_SESSION['modules']['login']['aNotBadges'] = $notBadges;
 }
 
-function verifyAndAddBadge($badgeUrl, $verifInfos, $verifType) {
-	if (!isset($_SESSION['modules']['login']['idUser'])) {
-		return ['success' => false, 'error' => 'adding badge on unlogged user, this should not happen!'];
-	}
+function verifyAndAddBadge($idUser, $badgeUrl, $verifInfos, $verifType) {
 	$verifData = verifyBadge($badgeUrl, $verifInfos, $verifType);
 	if (!$verifData['success']) {
 		return $verifData;
 	}
-	addBadge($_SESSION['modules']['login']['idUser'], $badgeUrl, $verifInfos, $verifType);
-	$infos = updateBadgeInfos($_SESSION['modules']['login']['idUser'], $badgeUrl, $verifInfos, $verifType);
-	addBadgesInSession();
-	return $infos;
+	addBadge($idUser, $badgeUrl, $verifInfos, $verifType);
+	return updateBadgeInfos($idUser, $badgeUrl, $verifInfos, $verifType);
+}
+
+function attachBadge($idUser, $badgeUrl, $verifInfos, $verifType) {
+	if ($verifType != 'code') {
+		return ['success' => false, 'error' => '0:unknown verification type: '.$verifType];
+	}
+	if (!isset($verifInfos['code']) || !$verifInfos['code']) {
+		return ['success' => false, 'error' => 'missing badge code'];
+	}
+	$badgeRegistered = isBadgeRegistered($badgeUrl, $verifInfos, $verifType);
+	if (!$badgeRegistered['success']) {
+		return $badgeRegistered;
+	}
+	if ($badgeRegistered['result'] != false) {
+		if ($badgeRegistered['result']['idUser'] == $idUser) {
+			return ['success' => false, 'error' => 'error_code_registered_already'];
+		} else {
+			return ['success' => false, 'error' => 'error_code_used', 'errorArgs' => ['login' => $badgeRegistered['result']['sLogin']]];
+		}
+	}
+	return verifyAndAddBadge($idUser, $badgeUrl, $verifInfos, $verifType);
 }

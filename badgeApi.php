@@ -24,38 +24,6 @@ function getInfos($badgeUrl, $verifInfos, $verifType) {
 	echo json_encode($res);
 }
 
-function attachBadge($badgeUrl, $verifInfos, $verifType) {
-	global $db;
-	if (!isset($_SESSION['modules']['login']['idUser'])) {
-		echo json_encode(['success' => false, 'error' => 'you must be logged in to attach a badge to your account!']);
-		exit();
-	}
-	if ($verifType != 'code') {
-		echo json_encode(['success' => false, 'error' => '0:unknown verification type: '.$verifType]);
-		exit();
-	}
-	if (!isset($verifInfos['code']) || !$verifInfos['code']) {
-		echo json_encode(['success' => false, 'error' => 'missing badge code']);
-		exit();
-	}
-	$badgeRegistered = isBadgeRegistered($badgeUrl, $verifInfos, $verifType);
-	if (!$badgeRegistered['success']) {
-		echo json_encode($badgeRegistered);
-		exit();
-	}
-	if ($badgeRegistered['result'] != false) {
-		if ($badgeRegistered['result']['idUser'] == $_SESSION['modules']['login']['idUser']) {
-			echo json_encode(['success' => false, 'error' => 'error_code_registered_already']);
-			exit();	
-		} else {
-			echo json_encode(['success' => false, 'error' => 'error_code_used', 'errorArgs' => ['login' => $badgeRegistered['result']['sLogin']]]);
-			exit();	
-		}
-	}
-	$infos = verifyAndAddBadge($badgeUrl, $verifInfos, $verifType);
-	echo json_encode($infos);
-}
-
 function iDontHaveThisBadge($badgeUrl) {
 	global $db;
 	if (!isset($_SESSION['modules']['login']['idUser'])) {
@@ -183,7 +151,16 @@ if ($_POST['action'] == 'getInfos') {
 		echo json_encode(['success' => false, 'error' => 'missing argument']);
 		exit();
 	}
-	attachBadge($_POST['badgeUrl'], $_POST['verifInfos'], $_POST['verifType']);
+	if (!isset($_SESSION['modules']['login']['idUser'])) {
+		echo json_encode(['success' => false, 'error' => 'adding badge on unlogged user, this should not happen!']);
+		exit();
+	}
+	$idUser = $_SESSION['modules']['login']['idUser'];
+	$result = attachBadge($idUser, $_POST['badgeUrl'], $_POST['verifInfos'], $_POST['verifType']);
+	if ($result['success']) {
+		addBadgesInSession();
+	}
+	echo json_encode($result);
 } elseif ($_POST['action'] == 'iDontHaveThisBadge') {
 	if (!isset($_POST['badgeUrl']) || !$_POST['badgeUrl']) {
 		echo json_encode(['success' => false, 'error' => 'missing argument']);
