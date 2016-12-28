@@ -194,15 +194,18 @@ function checkAgainstRequiredBadge(session, requiredBadge) {
    if (!session || !requiredBadge) {
       return true;
    }
-   if (!session.aBadges) return false;
-   for (var i = 0; i < session.aNotBadges.length; i++) {
-      if (session.aNotBadges[i] == requiredBadge) {
-         return true;
+   if (session.aNotBadges) {
+      for (var i = 0; i < session.aNotBadges.length; i++) {
+         if (session.aNotBadges[i] == requiredBadge) {
+            return true;
+         }
       }
    }
-   for (var i = 0; i < session.aBadges.length; i++) {
-      if (session.aBadges[i] == requiredBadge) {
-         return true;
+   if (session.aBadges) {
+      for (var i = 0; i < session.aBadges.length; i++) {
+         if (session.aBadges[i] == requiredBadge) {
+            return true;
+         }
       }
    }
    return false;
