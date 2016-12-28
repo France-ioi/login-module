@@ -195,6 +195,11 @@ function checkAgainstRequiredBadge(session, requiredBadge) {
       return true;
    }
    if (!session.aBadges) return false;
+   for (var i = 0; i < session.aNotBadges.length; i++) {
+      if (session.aNotBadges[i] == requiredBadge) {
+         return true;
+      }
+   }
    for (var i = 0; i < session.aBadges.length; i++) {
       if (session.aBadges[i] == requiredBadge) {
          return true;
@@ -240,6 +245,9 @@ angular.module('login', ['jm.i18next'])
          }
          if (params.hasPMS === "1") {
             $scope.hasPMS = true;
+         }
+         if (params.beInsistentWithBadge === "1") {
+            $scope.beInsistentWithBadge = true;
          }
          $scope.fallbackReturnUrl = params.fallbackReturnUrl;
          if (params.login === "1") {
@@ -310,6 +318,28 @@ angular.module('login', ['jm.i18next'])
          if ($scope.badgeInfos.code) {
             $scope.submitBadgeInfos();
          }
+      };
+
+      $scope.iDontHaveThisBadge = function() {
+         $scope.badgeLoading = true;
+         $.ajax({
+            url: config.selfBaseUrl + "badgeApi.php",
+            context: document.body,
+            dataType: 'json',
+            method: 'POST',
+            data: {action: 'iDontHaveThisBadge', badgeUrl: $scope.requiredBadge},
+            success: function(data) {
+               if (!data.success) {
+                  $scope.badgeLoading = false;
+                  $scope.badgeError = translateError(data);
+                  $scope.$applyAsync();
+                  $scope.forceLogin();
+                  return;
+               }
+               $scope.session.aNotBadges.push(badge);
+               $scope.forceLogin();
+            }
+         });
       };
 
       $scope.submitBadgeInfos = function() {
@@ -419,6 +449,10 @@ angular.module('login', ['jm.i18next'])
       };
 
       $scope.forceLogin = function() {
+         $scope.badgeLoading = false;
+         $scope.badgeInfos = {};
+         $scope.step = "connected";
+         $scope.$applyAsync();
          postLoginMessage('login', {
             login: session.sLogin,
             token: session.sToken
@@ -427,9 +461,6 @@ angular.module('login', ['jm.i18next'])
                closeAfterMessage();
             }
          });
-         $scope.badgeLoading = false;
-         $scope.badgeInfos = {};
-         $scope.step = "connected";
       };
 
       $scope.changeInfos = function() {

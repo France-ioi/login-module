@@ -40,7 +40,7 @@ if (!$user) {
   die();
 }
 
-$stmt = $db->prepare("SELECT `sBadge` FROM `user_badges` WHERE `idUser` = :user_id");
+$stmt = $db->prepare("SELECT `sBadge` FROM `user_badges` WHERE `idUser` = :user_id and bDoNotPossess = 0");
 $stmt->execute(['user_id' => $query_user_id]);
 $badges = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 

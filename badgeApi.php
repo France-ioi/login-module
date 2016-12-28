@@ -56,6 +56,30 @@ function attachBadge($badgeUrl, $verifInfos, $verifType) {
 	echo json_encode($infos);
 }
 
+function iDontHaveThisBadge($badgeUrl) {
+	global $db;
+	if (!isset($_SESSION['modules']['login']['idUser'])) {
+		echo json_encode(['success' => false, 'error' => 'you must be logged in to attach a badge to your account!']);
+		exit();
+	}
+
+	$stmt = $db->prepare('select * from user_badges where idUser = :idUser and sBadge = :sBadge;');
+	$stmt->execute(['idUser' => $_SESSION['modules']['login']['idUser'], 'sBadge' => $badgeUrl]);
+	$res = $stmt->fetch();
+	if ($res) {
+		if (!intval($res['bDoNotPossess'])) {
+			echo json_encode(['success' => false, 'error' => 'you already have this badge!']);	
+		} else {
+			echo json_encode(['success' => false, 'error' => 'you already said you did not have this badge']);
+		}
+		exit();
+	}
+	$stmt = $db->prepare('insert into user_badges (idUser, sBadge, bDoNotPossess) values (:idUser, :sBadge, 1);');
+	$stmt->execute(['idUser' => $_SESSION['modules']['login']['idUser'], 'sBadge' => $badgeUrl]);
+	$_SESSION['modules']['login']['aNotBadges'][] = $badgeUrl;
+	echo json_encode(['success' => true]);
+}
+
 function confirmAccountCreation($badgeUrl, $verifInfos, $verifType, $userInfos) {
 	global $db;
 	if (isset($_SESSION['modules']['login']['idUser'])) {
@@ -160,6 +184,12 @@ if ($_POST['action'] == 'getInfos') {
 		exit();
 	}
 	attachBadge($_POST['badgeUrl'], $_POST['verifInfos'], $_POST['verifType']);
+} elseif ($_POST['action'] == 'iDontHaveThisBadge') {
+	if (!isset($_POST['badgeUrl']) || !$_POST['badgeUrl']) {
+		echo json_encode(['success' => false, 'error' => 'missing argument']);
+		exit();
+	}
+	iDontHaveThisBadge($_POST['badgeUrl'], $_POST['verifInfos'], $_POST['verifType']);
 } else {
 	echo json_encode(['success' => false, 'error' => 'unknown action action']);
 }

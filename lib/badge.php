@@ -118,9 +118,20 @@ function addBadgesInSession() {
 	if (!isset($_SESSION['modules']['login']['idUser'])) {
 		return;
 	}
-	$stmt = $db->prepare('select user_badges.sBadge from user_badges where idUser = :idUser;');
+	$stmt = $db->prepare('select user_badges.sBadge, user_badges.bDoNotPossess from user_badges where idUser = :idUser;');
 	$stmt->execute(['idUser' => $_SESSION['modules']['login']['idUser']]);
-	$_SESSION['modules']['login']['aBadges'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+	$allBadges = $stmt->fetchAll();
+	$aBadges = [];
+	$notBadges = [];
+	foreach ($allBadges as $badge) {
+		if (!intval($badge['bDoNotPossess'])) {
+			$aBadges[] = $badge['sBadge'];
+		} else {
+			$notBadges[] = $badge['sBadge'];
+		}
+	}
+	$_SESSION['modules']['login']['aBadges'] = $aBadges;
+	$_SESSION['modules']['login']['aNotBadges'] = $notBadges;
 }
 
 function verifyAndAddBadge($badgeUrl, $verifInfos, $verifType) {
