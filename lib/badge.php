@@ -29,6 +29,62 @@ function verifyCode($badgeUrl, $code) {
 	return ['success' => true, 'userInfos' => $server_output];
 }
 
+
+function removeByCode($badgeUrl, $code) {
+	$code = trim($code);
+
+	$post_request = ['action' => 'removeByCode', 'code' => $code];
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $badgeUrl);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_request));
+
+	$server_output = curl_exec ($ch);
+
+	curl_close ($ch);
+
+	try {
+	   $server_output = json_decode($server_output, true);
+	} catch(Exception $e) {
+	   return array('success' => false, 'error' => 'cannot read badge json return: '.$e->getMessage());
+	}
+
+	if (!$server_output) {
+		return ['success' => false, 'error' => 'error_badge_code_invalid'];	
+	}
+	return ['success' => true];
+}
+
+function removeUserBadges($idUser) {
+	global $db;
+	$stmt = $db->prepare('select * from user_badges where idUser = :idUser and bDoNotPossess = 0;');
+	$stmt->execute(['idUser' => $idUser]);
+	$badges = $stmt->fetchAll();
+	foreach ($badges as $badge) {
+		// TODO: what if the jBadgeInfos is not a code?
+		$jBadgeInfos = $badge['jBadgeInfos'];
+		if($jBadgeInfos) {
+			try {
+				$decBadgeInfos = json_decode($jBadgeInfos, true);
+			} catch(Exception $e) {
+				return array('success' => false, 'error' => 'cannot read badge json infos: '.$e->getMessage());
+			}
+			if (!$decBadgeInfos['code']) {
+				return array('success' => false, 'error' => 'cannot read badge code from json infos');
+			}
+			$badgeRemovalInfos = removeByCode($badge['sBadge'], $decBadgeInfos['code']);
+			if (!$badgeRemovalInfos['success']) {
+				return $badgeRemovalInfos;
+			}
+		}
+	}
+	$stmt = $db->prepare('delete user_badges from user_badges where idUser = :idUser;');
+	$stmt->execute(['idUser' => $idUser]);
+	return ['success' => true];
+}
+
 function verifyBadge($badgeUrl, $verifInfos, $verifType) {
 	if ($verifType == 'code') {
 		if (!$verifInfos || !isset($verifInfos['code'])) {

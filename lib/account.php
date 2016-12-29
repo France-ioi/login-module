@@ -1,5 +1,22 @@
 <?php
 
+require_once __DIR__.'/badge.php';
+
+function removeAccount($idUser) {
+   global $db;
+   if (!isset($_SESSION['modules']['login']['idUser']) || $_SESSION['modules']['login']['bIsAdmin'] != 1) {
+      return ['success' => false, 'error' => 'only admins can do that!'];
+   }
+   $badgeRemovalInfos = removeUserBadges($idUser);
+   if (!$badgeRemovalInfos['success']) {
+      return $badgeRemovalInfos;
+   }
+   $stmt = $db->prepare('delete users_auths from users_auths where idUser = :idUser;');
+   $stmt->execute(['idUser' => $idUser]);
+   $stmt = $db->prepare('delete users from users where id = :idUser;');
+   $stmt->execute(['idUser' => $idUser]);
+   return ['success' => true];
+}
 
 function generateSalt() {
    return  md5(uniqid(rand(), true));
