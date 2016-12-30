@@ -1,9 +1,10 @@
 {
+	"intro": "",
 	"login_failed": "Échec d'authentification",
 	"passwords_different": "Les deux mots de passe sont différents",
 	"logout_from_provider": "Voulez vous aussi vous déconnecter de {{identityName}} ?",
 	"connect_with": "Vous pouvez choisir de vous connecter avec :",
-	"with_password": "Un identifiant et un mot de passe",
+	"with_password": "Un mot de passe",
 	"with_facebook": "Un compte Facebook",
 	"with_google": "Un compte Google+",
 	"forgotten_password": "Mot de passe oublié ?",

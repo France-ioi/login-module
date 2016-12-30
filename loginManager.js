@@ -1142,17 +1142,19 @@ function i18ninit() {
    }
    window.customStringsName = customStrings;
    window.i18next.use(window.i18nextXHRBackend);
-   window.i18next.init({
-    'lng': lang,
-    'fallbackLng': ['fr'],
-    'debug': true,
-    'ns': customStrings ? [customStrings, 'login'] : ['login'],
-    'fallbackNS':'login',
-    'backend' : {
-      'allowMultiLoading' : false,
-      'loadPath' : '/i18n/{{lng}}/{{ns}}.json'
-    }
-   });
+   var options = {
+      'lng': lang,
+      'fallbackLng': ['fr'],
+      'debug': true,
+      'ns': customStrings ? [customStrings, 'login'] : ['login'],
+      'defaultNS': customStrings ? customStrings : login,
+      'fallbackNS':'login',
+      'backend' : {
+         'allowMultiLoading' : false,
+         'loadPath' : '/i18n/{{lng}}/{{ns}}.json'
+      }
+   };
+   window.i18next.init(options);
    window.i18next.on('initialized', function (options) {
     window.i18nextOptions = options;
     angular.bootstrap(document, ['login']);

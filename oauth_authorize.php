@@ -62,10 +62,14 @@ if (!empty($_POST)) {
 // once the user has logged in.
 if (!$have_user_id) {
   // $afterLogin = $_SERVER['REQUEST_URI'];
-  $loginQuery = ['large' => '1'];
+  $loginQuery = ['large' => '1', 'customStrings' => 'alkindi'];
   if (array_key_exists('required_badge', $_GET)) {
     $loginQuery['requiredBadge'] = $_GET['required_badge'];
   }
+  if (array_key_exists('custom_strings', $_GET)) {
+    $loginQuery['customStrings'] = $_GET['custom_strings'];
+  }
+
   $loginUrl = 'login.html?'.http_build_query($loginQuery);
   echo('<!DOCTYPE html>
   <meta charset="utf-8">

@@ -84,6 +84,7 @@
    <body ng-controller="LoginCtrl" id="LoginCtrl" ng-cloak>
       <div id="fb-root"></div>
       <div ng-show="step == 'notConnected' && largeMode" class="initialViewBig">
+         <div ng-i18next="[html]intro"></div>
          <p class="center" ng-i18next="connect_with"></p>
          <a class="btn btn-block btn-social btn-openid loginbuttonBig" ng-click="loginWith($event, 'password')">
            <i class="fa fa-key"></i> <span  ng-i18next="with_password"></span>
@@ -95,6 +96,7 @@
          <a class="btn btn-block btn-social btn-google loginbuttonBig" ng-click="loginWith($event, 'google')">
            <i class="fa fa-google-plus"></i> <span ng-i18next="with_google"></span>
          </a>
+         <br>
          <form ng-if="requiredBadge" style="width: 240px; margin-left: auto; padding-top: 10px; margin-right: auto; padding-bottom: 10px;">
             <div class="form-group">
                <label for="badgeCode" ng-i18next="badge_code_input"></label>
@@ -107,6 +109,7 @@
          <p class="tiny center"><a href="" ng-click="openPasswordRecovery();" ng-i18next="forgotten_password"></a></p>
       </div>
       <div  ng-show="step == 'notConnected' && !largeMode" class="initialViewSmall">
+         <div ng-i18next="[html]intro"></div>
          <p class="center" ng-i18next="connect_with_short"></p>
          <a ng-if="hasPMS" class="btn btn-block btn-social btn-yahoo" ng-click="loginWith($event, 'pms')">
            <i class="fa fa-university"></i>
