@@ -73,7 +73,7 @@ if (!$have_user_id) {
   $loginUrl = 'login.html?'.http_build_query($loginQuery);
   echo('<!DOCTYPE html>
   <meta charset="utf-8">
-  <iframe src="'.htmlspecialchars($loginUrl).'" id="loginIframe" frameBorder="0" style="margin: 10px; height: 400px; width: 400px;"></iframe>
+  <iframe src="'.htmlspecialchars($loginUrl).'" id="loginIframe" frameBorder="0" style="margin: 10px; height: 500px; width: 400px;"></iframe>
   <script type="text/javascript">
   (function () {
     window.addEventListener("message", function (e) {
