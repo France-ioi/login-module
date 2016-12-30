@@ -1147,7 +1147,7 @@ function i18ninit() {
       'fallbackLng': ['fr'],
       'debug': true,
       'ns': customStrings ? [customStrings, 'login'] : ['login'],
-      'defaultNS': customStrings ? customStrings : login,
+      'defaultNS': customStrings ? customStrings : 'login',
       'fallbackNS':'login',
       'backend' : {
          'allowMultiLoading' : false,
