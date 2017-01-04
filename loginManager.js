@@ -331,16 +331,17 @@ angular.module('login', ['jm.i18next'])
       }
 
       $scope.checkLoginAvailable = function() {
+         console.error('test');
          if (!$scope.infos.sLogin) {
             console.error('no login provided');
             return;
          }
-         var reg = new RegExp('/^[a-z0-9_\.-]{3,15}$/');
+         var reg = new RegExp('^[a-z0-9_\.-]{3,15}$');
          if (!reg.test($scope.infos.sLogin)) {
-            $scope.loginCheckData = $i18next.t("error_allowed_symbols");
+            $scope.formValues.loginCheckData = $i18next.t("error_allowed_symbols");
             return;
          }
-         $scope.loginCheckData = $i18next.t('login_available_loading');
+         $scope.formValues.loginCheckData = $i18next.t('login_available_loading');
          $.ajax({
             url: config.selfBaseUrl + "login-available.php",
             context: document.body,
@@ -349,9 +350,9 @@ angular.module('login', ['jm.i18next'])
             data: {nickname2check: $scope.infos.sLogin},
             success: function(data) {
                if(data != 'TRUE') {
-                  $scope.loginCheckData = $i18next.t("error_login_used");
+                  $scope.formValues.loginCheckData = $i18next.t("error_login_used");
                } else {
-                  $scope.loginCheckData = $i18next.t("login_available");
+                  $scope.formValues.loginCheckData = $i18next.t("login_available");
                }
                $scope.$applyAsync();
             }
