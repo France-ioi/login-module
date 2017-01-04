@@ -206,10 +206,7 @@
       <div ng-show="step == 'badgeCreationConfirm'">
          <p ng-i18next="badgeCreationConfirm_intro"></p>
          <form>
-            <div class="form-group">
-               <label for="badgeCode" ng-i18next="badge_code_input"></label>
-               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
-            </div>
+            <input type="hidden" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
             <div class="form-group">
               <label for="login" ng-i18next="infos_firstName"></label>
               <input type="text" class="form-control" id="infos-firstName" ng-model="infos.sFirstName" placeholder="{{'infos_firstName_placeholder' | i18next}}">
@@ -230,14 +227,20 @@
                <label for="sLogin" ng-i18next="infos_login"></label>
                <input type="text" class="form-control" id="sLogin" ng-model="infos.sLogin">
             </div>
-            <div class="form-group">
+            <button class="btn" ng-click="checkLoginAvailable()" ng-i18next="login_available_button"></button>
+            <p ng-if="loginCheckData">{{loginCheckData}}</p>
+            <p ng-i18next="badgeCreationConfirm_password_intro"></p>
+            <div class="form-group" ng-if="formValues.choosePassword">
                <label for="newPassword" ng-i18next="new_password"></label>
                <input type="password" class="form-control" id="newPassword" ng-model="infos.sPassword">
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-if="formValues.choosePassword">
                <label for="newPasswordConf" ng-i18next="new_password_confirm"></label>
                <input type="password" class="form-control" id="newPasswordConf" ng-model="infos.sPasswordConfirm">
             </div>
+            <button class="btn"  ng-if="!formValues.choosePassword" ng-click="choosePassword()" ng-i18next="badgeCreationConfirm_password_change_button"></button>
+            <button class="btn"  ng-if="formValues.choosePassword" ng-click="choosePasswordCancel()" ng-i18next="cancel"></button>
+            <br>
             <button class="btn btn-info" ng-click="confirmCreationFromBadge();" class="btn btn-info" ng-i18next="createFromBadge_button"></button>
          </form>
          <p ng-show="badgeError">{{badgeError}}</p>
