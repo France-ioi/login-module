@@ -220,6 +220,7 @@ angular.module('login', ['jm.i18next'])
       $scope.session = session;
       $scope.infos = {};
       $scope.badgeInfos = {};
+      $scope.formValues = {};
       loginManager.scope = $scope;
       loadSession($scope, $http).then(function() {
          $scope.infos.sFirstName = session.sFirstName;
@@ -317,6 +318,41 @@ angular.module('login', ['jm.i18next'])
          }
       });
 
+      $scope.choosePasswordCancel = function() {
+         $scope.formValues.choosePassword = false;
+         $scope.infos.sPassword = $scope.badgeInfos.code;
+         $scope.infos.sPasswordConfirm = $scope.badgeInfos.code;
+      }
+
+      $scope.choosePassword = function() {
+         $scope.formValues.choosePassword = true;
+         $scope.infos.sPassword = '';
+         $scope.infos.sPasswordConfirm = '';
+      }
+
+      $scope.checkLoginAvailable = function() {
+         if (!$scope.infos.sLogin) {
+            console.error('no login provided');
+            return;
+         }
+         $scope.loginCheckData = $i18next.t('login_available_loading');
+         $.ajax({
+            url: config.selfBaseUrl + "login-available.php",
+            context: document.body,
+            dataType: 'text',
+            method: 'GET',
+            data: {nickname2check: $scope.infos.sLogin},
+            success: function(data) {
+               if(data != 'TRUE') {
+                  $scope.loginCheckData = $i18next.t("error_login_used");
+               } else {
+                  $scope.loginCheckData = $i18next.t("login_available");
+               }
+               $scope.$applyAsync();
+            }
+         });
+      };
+
       $scope.autoVerifyBadgeFromUrl = function() {
          if ($scope.badgeInfos.code) {
             $scope.submitBadgeInfos();
@@ -378,9 +414,9 @@ angular.module('login', ['jm.i18next'])
                   $scope.$applyAsync();
                   return;
                }
-               $scope.badgeInfos = {};
                if ($scope.session && $scope.session.idUser) {
                   loadSession($scope, $http).then(function() {
+                     $scope.badgeInfos = {};
                      $scope.badgeLoading = false;
                      $scope.step = "connected";
                      postLoginMessage('login', {
