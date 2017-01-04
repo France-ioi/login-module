@@ -241,7 +241,7 @@
             <button class="btn"  ng-if="!formValues.choosePassword" ng-click="choosePassword()" ng-i18next="badgeCreationConfirm_password_change_button"></button>
             <button class="btn"  ng-if="formValues.choosePassword" ng-click="choosePasswordCancel()" ng-i18next="cancel"></button>
             <br>
-            <button class="btn btn-info" ng-click="confirmCreationFromBadge();" class="btn btn-info" ng-i18next="createFromBadge_button"></button>
+            <button class="btn btn-info" ng-click="confirmCreationFromBadge();" class="btn btn-info" ng-i18next="badgeCreationConfirm_validate_button"></button>
          </form>
          <p ng-show="badgeError">{{badgeError}}</p>
          <p ng-show="badgeLoading" ng-i18next="loading"></p>

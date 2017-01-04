@@ -335,6 +335,11 @@ angular.module('login', ['jm.i18next'])
             console.error('no login provided');
             return;
          }
+         var reg = new RegExp('/^[a-z0-9_\.-]{3,15}$/');
+         if (!reg.test($scope.infos.sLogin)) {
+            $scope.loginCheckData = $i18next.t("error_allowed_symbols");
+            return;
+         }
          $scope.loginCheckData = $i18next.t('login_available_loading');
          $.ajax({
             url: config.selfBaseUrl + "login-available.php",

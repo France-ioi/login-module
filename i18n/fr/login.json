@@ -70,7 +70,7 @@
 	"no_entitity_to_remove": "Vous n'avez pas d'identité {{identityName}} à supprimer",
 	"cannot_remove_identity": "Vous ne pouvez pas supprimer votre identité {{identityName}} car vous n'avez pas d'autre moyen de vous identifier à votre compte.",
 	"error_identity_used": "Cette identité est déjà associée à un utilisateur.",
-	"error_allowed_symbols": "Les caractères suivants uniquement sont autorisés dans le nom d'utilisateur : lettres minuscules non accentuées, chiffres, '.', '_' et '-'. De plus, le nom doit faire entre 3 et 15 caractères.",
+	"error_allowed_symbols": "Erreur : les caractères suivants uniquement sont autorisés dans le nom d'utilisateur : lettres minuscules non accentuées, chiffres, '.', '_' et '-'. De plus, le nom doit faire entre 3 et 15 caractères.",
 	"error_login_used": "Ce nom d'utilisateur est déjà utilisé. Merci d'en choisir un autre ou de récupérer votre compte existant en cliquant sur récupération dans le menu.",
 	"error_email_used": "Cet email est déjà utilisé. Attention, vous n'avez strictement pas le droit d'avoir deux comptes. Si vous avez déjà un compte, déconnectez-vous puis cliquez sur 'Mot de passe oublié ?'.",
 	"error_password_length": "Le mot de passe doit faire au moins {{passwordLength}} caractères",
@@ -96,6 +96,7 @@
 	"createFromBadge_button": "Vérifier le code",
 	"badgeCreationConfirm_intro": "Vous pouvez maintenant créer un compte:",
 	"forceLogin_button": "Je n'ai pas de code",
-	"badgeCreationConfirm_password_intro": "Le mot de passe de votre compte est par défaut votre code de qualification",
+	"badgeCreationConfirm_password_intro": "Le mot de passe de votre compte est par défaut votre code de qualification.",
+	"badgeCreationConfirm_validate_button": "Valider",
 	"badgeCreationConfirm_password_change_button": "Choisir un autre mot de passe"
 }
