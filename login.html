@@ -6,43 +6,70 @@
    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
    <style>
    body {
-      background-color:transparent !important;
-      padding:10px;
+      background-color: transparent;
    }
-   .loginButton {
-      width:70px;
-      vertical-align:bottom;
-      margin:3px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+   body > div {
+      padding: 10px;
    }
-   .initialViewSmall {
-      width: 160px;
-      margin-left: auto;
-      margin-right:auto;
-      background: transparent;
+   hr {
+      margin-top: 10px;
+      margin-bottom: 10px;
    }
-   .initialViewBig {
-      width: 300px;
-      margin-left: auto;
-      margin-right:auto;
-      background: transparent;
+   .tiny {
+      font-size: 11px;
+      margin: 0;
    }
-   .buttonLink {
-      text-decoration: none;
+   p {
+      margin: 10px 0;
    }
    p.center {
       text-align:center;
    }
-   .tiny {
-      font-size:8pt;
-      margin:0pt;
+   p.tiny {
+      margin: 5px 0;
    }
-   .loginbuttonBig {
-      width: 240px;
-      margin-left:auto;
+   .initialView {
+      margin-left: auto;
       margin-right:auto;
+      background: transparent;
+      padding: 0
+   }
+   .initialView .intro {
+      border-bottom: 1px solid #ccc;
+      font-size: 18px;
+      text-align: center;
+      padding: 10px;
+      box-shadow: 0px 1px 3px #ccc;
+      background-color: #f6f6f6;
+   }
+   .initialView .intro ul {
+      font-size: 14px;
+      text-align: left;
+      list-style-position: inside;
+      margin: 0 auto;
+      padding: 0;
+      width: 240px;
+   }
+   .showMoreButton {
+      text-align: right;
+      display: block;
+      margin: auto;
+      color: #777;
+      cursor: pointer;
+   }
+   .initialView .intro .showMoreButton {
+      width: 240px;
+   }
+   .viewSmall .stepContent {
+      width: 160px;
+      margin: 10px auto;
+   }
+   .viewLarge .stepContent {
+      width: 240px;
+      margin: 10px auto;
+   }
+   .buttonLink {
+      text-decoration: none;
    }
    .googlefacebookbuttons {
       display: -webkit-flex;
@@ -64,6 +91,22 @@
       margin-left: auto;
       margin-right: auto;
    }
+   form.badgeCodeInput {
+      margin: 20px auto 20px;
+      border: 1px double #aaa;
+      border-radius: 6px;
+      padding: 10px;
+      box-shadow: 0 0 6px #ccc;
+   }
+   .initialViewSmall form.badgeCodeInput {
+      width: 160px;
+   }
+   form.badgeCodeInput label {
+      font-weight: normal;
+   }
+   .initialViewBig form.badgeCodeInput {
+      width: 240px;
+   }
    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
       display: none !important;
    }
@@ -83,60 +126,79 @@
    </head>
    <body ng-controller="LoginCtrl" id="LoginCtrl" ng-cloak>
       <div id="fb-root"></div>
-      <div ng-show="step == 'notConnected' && largeMode" class="initialViewBig">
-         <div ng-i18next="[html]intro"></div>
-         <p class="center" ng-i18next="connect_with"></p>
-         <a class="btn btn-block btn-social btn-openid loginbuttonBig" ng-click="loginWith($event, 'password')">
-           <i class="fa fa-key"></i> <span  ng-i18next="with_password"></span>
-         </a>
-         <a class="btn btn-block btn-social btn-facebook loginbuttonBig" ng-click="loginWith($event, 'facebook')">
-           <i class="fa fa-facebook"></i> <span ng-i18next="with_facebook"></span>
-           
-         </a>
-         <a class="btn btn-block btn-social btn-google loginbuttonBig" ng-click="loginWith($event, 'google')">
-           <i class="fa fa-google-plus"></i> <span ng-i18next="with_google"></span>
-         </a>
-         <br>
-         <form ng-if="requiredBadge" style="width: 240px; margin-left: auto; padding-top: 10px; margin-right: auto; padding-bottom: 10px;">
-            <div class="form-group">
-               <label for="badgeCode" ng-i18next="badge_code_input" style="font-weight: 400;"></label>
-               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
+
+      <div ng-show="step == 'notConnected'" class="initialView" ng-class="largeMode ? 'viewLarge' : 'viewSmall'">
+         <div ng-if="largeMode" class="intro">
+            <div ng-i18next="[html]intro"></div>
+            <!--
+            TOGGLE DISPLAY MORE SITES
+            <div ng-if="viewMoreProvider" ng-i18next="[html]intro_more_sites"></div>
+            <span ng-click="viewMoreProvider = !viewMoreProvider" class="showMoreButton tiny">
+               <span ng-if="!viewMoreProvider" ng-i18next="viewMore_provider"></span>
+               <span ng-if="viewMoreProvider" ng-i18next="viewLess_provider"></span>
+            </span>
+
+            TODO:
+            * add string intro_more_sites to translation file.
+            * show button (span) only if there are more sites to display
+            -->
+         </div>
+         <div class="stepContent">
+            <p ng-i18next="{{largeMode ? 'connect_with' : 'connect_with_short'}}"></p>
+            <button ng-if="hasPMS" class="btn btn-block btn-social loginButton btn-yahoo" ng-click="loginWith($event, 'pms')">
+              <i class="fa fa-university"></i>
+              <span ng-i18next="{{largeMode ? 'with_PMS' : 'with_PMS_short'}}"></span>
+            </button>
+            <button class="btn btn-block btn-social loginButton btn-openid" ng-click="loginWith($event, 'password')">
+              <i class="fa fa-key"></i>
+              <span ng-i18next="{{largeMode ? 'with_password' : 'with_password_short'}}"></span>
+            </button>
+            <button class="btn btn-block btn-social loginButton btn-facebook" ng-click="loginWith($event, 'facebook')">
+              <i class="fa fa-facebook"></i>
+              <span ng-i18next="{{largeMode ? 'with_facebook' : 'with_facebook_short'}}"></span>
+            </button>
+            <button class="btn btn-block btn-social loginButton btn-google" ng-click="loginWith($event, 'google')">
+              <i class="fa fa-google-plus"></i>
+              <span ng-i18next="{{largeMode ? 'with_google' : 'with_google_short'}}"></span>
+            </button>
+            <!--
+            TOGGLE DISPLAY MORE LOGIN MODE
+            <div ng-if="viewMoreConnexionTools" style="margin-top:5px;">
+               <button class="btn btn-block btn-social loginButton btn-facebook" ng-click="loginWith($event, 'facebook')">
+                 <i class="fa fa-facebook"></i>
+                 <span ng-i18next="{{largeMode ? 'with_facebook' : 'with_facebook_short'}}"></span>
+               </button>
+               <button class="btn btn-block btn-social loginButton btn-google" ng-click="loginWith($event, 'google')">
+                 <i class="fa fa-google-plus"></i>
+                 <span ng-i18next="{{largeMode ? 'with_google' : 'with_google_short'}}"></span>
+               </button>
             </div>
-            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button" style="width:100%"></button>
-         </form>
-         <p ng-show="badgeError">{{badgeError}}</p>
-         <p ng-show="badgeLoading" ng-i18next="loading"></p>
-         <p class="tiny center"><a href="" ng-click="openPasswordRecovery();" ng-i18next="forgotten_password"></a></p>
+            <span ng-click="viewMoreConnexionTools = !viewMoreConnexionTools" class="showMoreButton tiny">
+               <span ng-if="!viewMoreConnexionTools" ng-i18next="viewMore_login_third_party"></span>
+               <span ng-if="viewMoreConnexionTools" ng-i18next="viewLess_login_third_party"></span>
+            </span>
+
+            TODO:
+            * show button (span) only if there are more login modes to display
+            -->
+
+            <!--
+            <p class="tiny center"><a href="#" ng-click="GO TO RECOVER LOGIN MODE" ng-i18next="login_recover_informations"></a></p>
+
+            TODO: add recover login mode step
+            -->
+            <form ng-if="requiredBadge" class="badgeCodeInput">
+               <div class="form-group">
+                  <label for="badgeCode" ng-i18next="badge_code_input"></label>
+                  <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code" ng-i18next="[placeholder]{{largeMode ? 'badge_code_input_placeholder' : ''}}">
+               </div>
+               <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button" style="width:100%"></button>
+            </form>
+            <p ng-show="badgeError">{{badgeError}}</p>
+            <p ng-show="badgeLoading" ng-i18next="loading"></p>
+         </div>
       </div>
-      <div  ng-show="step == 'notConnected' && !largeMode" class="initialViewSmall">
-         <div ng-i18next="[html]intro"></div>
-         <p class="center" ng-i18next="connect_with_short"></p>
-         <a ng-if="hasPMS" class="btn btn-block btn-social btn-yahoo" ng-click="loginWith($event, 'pms')">
-           <i class="fa fa-university"></i>
-           PMS
-         </a>
-         <a class="btn btn-block btn-social btn-openid" ng-click="loginWith($event, 'password')">
-           <i class="fa fa-key"></i> <span ng-i18next="with_password_short"></span>
-         </a>
-         <a class="btn btn-block btn-social btn-facebook" ng-click="loginWith($event, 'facebook')">
-           <i class="fa fa-facebook"></i>
-           Facebook
-         </a>
-         <a class="btn btn-block btn-social btn-google" ng-click="loginWith($event, 'google')">
-           <i class="fa fa-google-plus"></i>
-           Google+
-         </a>
-         <form ng-if="requiredBadge">
-            <div class="form-group">
-               <label for="badgeCode" ng-i18next="badge_code_input"></label>
-               <input type="text" class="form-control" id="badgeCode" ng-model="badgeInfos.code">
-            </div>
-            <button class="btn btn-info" ng-click="submitBadgeInfos();" class="btn btn-info" ng-i18next="createFromBadge_button" style="width:100%"></button>
-         </form>
-         <p ng-show="badgeError">{{badgeError}}</p>
-         <p ng-show="badgeLoading" ng-i18next="loading"></p>
-         <p class="tiny center"><a href="" ng-click="openPasswordRecovery();" ng-i18next="forgotten_password"></a></p>
-      </div>
+
       <div ng-show="step == 'connected'">
          <button ng-click='logout()' class="center btn btn-info" ng-i18next="logout"></button>
          <p class="tiny center"><a href="" ng-click="openPasswordChange();" ng-i18next="change_password"></a></p>
@@ -330,6 +392,7 @@
             </div>
             <button type="submit" class="btn btn-primary" ng-click="passwordLogin()" ng-i18next="login_button"></button>
             <button class="btn btn-success" ng-click="step = 'newUser'" ng-i18next="create_account_button"></button>
+            <p class="tiny"><a href="" ng-click="openPasswordRecovery();" ng-i18next="forgotten_password"></a></p>
          </form>
       </div>
       <div ng-show="step == 'infos'">
