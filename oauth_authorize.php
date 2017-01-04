@@ -62,7 +62,7 @@ if (!empty($_POST)) {
 // once the user has logged in.
 if (!$have_user_id) {
   // $afterLogin = $_SERVER['REQUEST_URI'];
-  $loginQuery = ['large' => '1', 'customStrings' => 'alkindi'];
+  $loginQuery = ['large' => '1', 'customStrings' => 'alkindi', 'requiredFields' => 'sFirstName,sLastName,sSex'];
   if (array_key_exists('required_badge', $_GET)) {
     $loginQuery['requiredBadge'] = $_GET['required_badge'];
   }

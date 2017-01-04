@@ -232,6 +232,9 @@ angular.module('login', ['jm.i18next'])
          }
          if (params.requiredFields) {
             $scope.requiredFields = params.requiredFields.split(',');
+            if ($scope.requiredFields.indexOf('sStudentId') != -1) {
+               $scope.askStudentId = true;
+            }
          }
          // not sure about the way to specify multiple required badges with their types
          if (params.requiredBadge) {
