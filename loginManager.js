@@ -226,6 +226,7 @@ angular.module('login', ['jm.i18next'])
          $scope.infos.sFirstName = session.sFirstName;
          $scope.infos.sLastName = session.sLastName;
          $scope.infos.sStudentId = session.sStudentId;
+         $scope.infos.sSex = session.sSex;
          var params = getUrlVars();
          if (params.large === "1") {
             $scope.largeMode = true;
@@ -660,7 +661,8 @@ var loginManager = {
       loginManager.scope.infos = {
          sFirstName: loginData.sFirstName,
          sLastName: loginData.sLastName,
-         sStudentId: loginData.sStudentId
+         sStudentId: loginData.sStudentId,
+         sSex: loginData.sSex
       };
       if (typeof selfTarget !== "undefined") { // If used on france-ioi's website TODO: find a better way to check that
          window.location.href = config.selfBaseUrl + selfTarget;
@@ -672,7 +674,8 @@ var loginManager = {
          scope.infos = {
             sFirstName: loginData.sFirstName,
             sLastName: loginData.sLastName,
-            sStudentId: loginData.sStudentId
+            sStudentId: loginData.sStudentId,
+            sSex: loginData.sSex,
          };
          if (scope.requiredFields && !checkAgainstRequired(scope.infos, scope.requiredFields)) {
             scope.$apply(function() {

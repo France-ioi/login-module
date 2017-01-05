@@ -18,17 +18,19 @@ if (!isset($_POST['infos']) || !count($_POST['infos'])) {
 
 $db = connect();
 
-$stmt = $db->prepare('update users set sFirstName = :sFirstName, sLastName = :sLastName, sStudentId = :sStudentId where id = :idUser;');
+$stmt = $db->prepare('update users set sFirstName = :sFirstName, sLastName = :sLastName, sStudentId = :sStudentId, sSex = :sSex where id = :idUser;');
 $stmt->execute([
 	'sFirstName' => $_POST['infos']['sFirstName'],
 	'sLastName' => $_POST['infos']['sLastName'],
 	'sStudentId' => $_POST['infos']['sStudentId'],
+	'sSex' => $_POST['infos']['sSex'],
 	'idUser' => $login_session['idUser']
 ]);
 
 $_SESSION['modules']['login']['sFirstName'] = $_POST['infos']['sFirstName'];
 $_SESSION['modules']['login']['sLastName'] = $_POST['infos']['sLastName'];
 $_SESSION['modules']['login']['sStudentId'] = $_POST['infos']['sStudentId'];
+$_SESSION['modules']['login']['sSex'] = $_POST['infos']['sSex'];
 
 // then return session with new token:
 

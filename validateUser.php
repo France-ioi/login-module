@@ -79,6 +79,7 @@ function validateUserFacebook($db, $sIdentity) {
          $_SESSION['modules']['login']["hasGoogle"] = false;
          $_SESSION['modules']['login']["hasFacebook"] = true;
          $_SESSION['modules']['login']["sFirstName"] = $user->sFirstName;
+         $_SESSION['modules']['login']["sSex"] = $user->sSex;
          $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
          $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
          addBadgesInSession();
@@ -87,6 +88,7 @@ function validateUserFacebook($db, $sIdentity) {
             "sLogin" => $user->sLogin,
             "sProvider" => 'facebook',
             "sFirstName" => $user->sFirstName,
+            "sSex" => $user->sSex,
             "sLastName" => $user->sLastName,
             "sStudentId" => $user->sStudentId,
             "aBadges" => $_SESSION['modules']['login']['aBadges']
@@ -136,6 +138,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
          $_SESSION['modules']['login']["hasPassword"] = !!$user->sPasswordMd5;
          $_SESSION['modules']['login']["sFirstName"] = $user->sFirstName;
          $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
+         $_SESSION['modules']['login']["sSex"] = $user->sSex;
          $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
          $_SESSION['modules']['login']["hasGoogle"] = true;
          //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
@@ -147,6 +150,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
             "sProvider" => 'google',
             "sFirstName" => $user->sFirstName,
             "sLastName" => $user->sLastName,
+            "sSex" => $user->sSex,
             "sStudentId" => $user->sStudentId
          );
          $token = $tokenGenerator->generateToken($token_params);
@@ -245,6 +249,7 @@ function validateLoginUser($db, $sLogin, $sPassword) {
    $_SESSION['modules']['login']["bIsAdmin"] = $user->bIsAdmin;
    $_SESSION['modules']['login']["sFirstName"] = $user->sFirstName;
    $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
+   $_SESSION['modules']['login']["sSex"] = $user->sSex;
    $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
    $_SESSION['modules']['login']["sProvider"] = "password";
    $_SESSION['modules']['login']["hasPassword"] = true;
@@ -261,6 +266,7 @@ function validateLoginUser($db, $sLogin, $sPassword) {
       "sProvider" => $_SESSION['modules']['login']["sProvider"],
       "sFirstName" => $_SESSION['modules']['login']["sFirstName"],
       "sLastName" => $_SESSION['modules']['login']["sLastName"],
+      "sSex" => $_SESSION['modules']['login']["sSex"],
       "aBadges" => $_SESSION['modules']['login']["aBadges"],
       "sStudentId" => $_SESSION['modules']['login']["sStudentId"],
     );

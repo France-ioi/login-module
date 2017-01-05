@@ -16,8 +16,8 @@ require_once(dirname(__FILE__)."/shared/TokenGenerator.php");
 
 $tokenGenerator = new TokenGenerator($config->login_module->name, $config->login_module->private_key);
 
-$sessionParams = array("sLanguage", "idUser", "sLogin", "sEmail", "sProvider", "hasFacebook", "hasPassword", "hasGoogle", "sFirstName", "sLastName", "sStudentId", "aBadges", "aNotBadges");
-$tokenParamNames = array("idUser", "sLogin", "sEmail", "sFirstName", "sLastName", "aBadges", "sStudentId");
+$sessionParams = array("sLanguage", "idUser", "sLogin", "sEmail", "sProvider", "hasFacebook", "hasPassword", "hasGoogle", "sFirstName", "sLastName", "sStudentId", "aBadges", "aNotBadges", "sSex");
+$tokenParamNames = array("idUser", "sLogin", "sEmail", "sFirstName", "sLastName", "aBadges", "sStudentId", "sSex");
 $tokenParams = [];
 $jsSession = [];
 
