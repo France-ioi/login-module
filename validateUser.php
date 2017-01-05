@@ -512,7 +512,7 @@ if (isset($_GET['action'])) {
    if (isset($loginParams['token']) && $loginParams['token']) {
       // Yes: return the infos
       $_SESSION['modules']['login']["sEmail"] = $email;
-      echo json_encode(array("success" => true, "login" => $loginParams['login'], 'token' => $loginParams['token'], 'provider' => 'facebook', 'loginParams'=>$loginParams, 'session' => $_SESSION['modules']['login']));
+      echo json_encode(array("success" => true, "login" => $loginParams['login'], 'token' => $loginParams['token'], 'provider' => 'facebook', 'loginParams'=>$loginParams, 'loginData' => $_SESSION['modules']['login']));
    } elseif (isset($loginParams['success']) /* case of adding Facebook identity */) {
       echo json_encode(array("success" => $loginParams['success'], 'addingId'=>true, 'error' => $loginParams['error']));
    } else {
