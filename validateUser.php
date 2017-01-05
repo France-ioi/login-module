@@ -66,7 +66,7 @@ function validateUserFacebook($db, $sIdentity) {
    global $tokenGenerator;
    $_SESSION['modules']['login']["identity"] = $sIdentity;
    //$query = "SELECT `id`, `sPasswordMd5`, `google_id`, `google_id_old`, `sLogin` FROM `users` WHERE `facebook_id` = :sIdentity";
-   $query = "SELECT $ FROM `users` WHERE `sOpenIdIdentity` = :sIdentity";
+   $query = "SELECT * FROM `users` WHERE `sOpenIdIdentity` = :sIdentity";
    $stmt = $db->prepare($query);
    $stmt->execute(array("sIdentity" => $sIdentity));
    if (/* not logged */!isset($_SESSION['modules']['login']['idUser'])) {
