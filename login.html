@@ -288,7 +288,7 @@
             <p ng-hide="infos.sEmail" ng-i18next="infos_email_warning"></p>
             <div class="form-group">
                <label for="sLogin" ng-i18next="ask_new_login"></label>
-               <input type="text" class="form-control" id="sLogin" ng-model="infos.sLogin" ng-keyup="formValues.loginCheckData = '';">
+               <input type="text" class="form-control" id="sLogin" ng-model="infos.sLogin" ng-keyup="formValues.loginCheckData = '';" placeholder="{{'login_placeholder' | i18next}}">
             </div>
             <button class="btn" ng-click="checkLoginAvailable()" ng-i18next="login_available_button"></button>
             <p ng-if="formValues.loginCheckData">{{formValues.loginCheckData}}</p>
@@ -448,8 +448,10 @@
          <form>
             <div class="form-group">
               <label for="login" ng-i18next="ask_new_login"></label>
-              <input type="text" class="form-control" id="login" ng-model="login" placeholder="{{'login_placeholder' | i18next}}">
+              <input type="text" class="form-control" id="sLogin" ng-model="infos.sLogin" ng-keyup="formValues.loginCheckData = '';" placeholder="{{'login_placeholder' | i18next}}">
             </div>
+            <button class="btn" ng-click="checkLoginAvailable()" ng-i18next="login_available_button"></button>
+            <p ng-if="formValues.loginCheckData">{{formValues.loginCheckData}}</p>
             <div class="form-group">
               <label for="password" ng-i18next="ask_password"></label>
               <input type="password" class="form-control" id="password" ng-model="password1" placeholder="{{'password_placeholder' | i18next}}">

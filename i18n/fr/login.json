@@ -86,6 +86,7 @@
 	"error_wrong_old_password": "L'ancien mot de passe fourni n'est pas correct",
 	"error_recovery_code_too_old": "Le code est erroné ou trop vieux.",
 	"error_missing_code_or_login": "Vous n'avez pas spécifié de code ou de login",
+	"error_missing_login_or_password": "Vous n'avez pas spécifié de login ou de mot de passe",
 	"error_no_email" : "L'utilisateur demandé n'a pas enregistré d'adresse email.",
 	"error_no_login_identity" : "L'utilisateur demandé n'avait pas de mot de passe et s'authentifiait par une autre méthode.",
 	"error_unknown_user": "Impossible de trouver un utilisateur correspondant dans la base.",

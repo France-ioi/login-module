@@ -59,7 +59,7 @@ function confirmAccountCreation($badgeUrl, $verifInfos, $verifType, $userInfos) 
 		exit();
 	}
 	if (!isset($verifInfos['code']) || !$verifInfos['code']) {
-		echo json_encode(['success' => false, 'error' => 'missing badge code']);
+		echo json_encode(['success' => false, 'error' => 'error_missing_badge_code']);
 		exit();
 	}
 	$badgeRegistered = isBadgeRegistered($badgeUrl, $verifInfos, $verifType);
@@ -77,7 +77,7 @@ function confirmAccountCreation($badgeUrl, $verifInfos, $verifType, $userInfos) 
 		exit();
 	}
 	if (!isset($userInfos['sLogin']) || !$userInfos['sLogin'] || !isset($userInfos['sPassword']) || !$userInfos['sPassword']) {
-		echo json_encode(['success' => false, 'error' => 'missing login or password']);
+		echo json_encode(['success' => false, 'error' => 'error_missing_login_or_password']);
 		exit();	
 	}
 	$userInfos['sLogin'] = trim($userInfos['sLogin']);
