@@ -122,14 +122,14 @@ function validateUserFacebook($db, $sIdentity) {
 }
 
 // function handling Google or Facebook auth
-function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
+function validateUserGoogle($db, $sIdentity, $sOldIdentity, $email) {
    global $tokenGenerator;
    $_SESSION['modules']['login']["identity"] = $sOldIdentity;//$sIdentity
    //$query = "SELECT `id`, `sPasswordMd5`, `facebook_id`, `sLogin` FROM `users` WHERE `google_id` = :sIdentity or `google_id_old` = :sOldIdentity";
-   $query = "SELECT * FROM `users` WHERE `sOpenIdIdentity` = :sOldIdentity";
+   $query = "SELECT * FROM `users` WHERE `sOpenIdIdentity` = :sIdentity or `sEmail` = :email";
    $stmt = $db->prepare($query);
    //$stmt->execute(array("sIdentity" => $sIdentity, 'sOldIdentity' => $sOldIdentity));
-   $stmt->execute(array('sOldIdentity' => $sOldIdentity));
+   $stmt->execute(array('sIdentity' => $sIdentity, 'email' => $email));
    if (/* not logged */!isset($_SESSION['modules']['login']['idUser'])) {
       if ($user = $stmt->fetchObject()) {
          $_SESSION['modules']['login']["idUser"] = $user->id;
@@ -155,6 +155,10 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity) {
          );
          $token = $tokenGenerator->generateToken($token_params);
          $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);
+         if ($user->sOpenIdIdentity != $sIdentity) {
+            $stmt = $db->prepare('UPDATE `users` SET `sOpenIdIdentity` = :sIdentity WHERE `id`= :idUser;');
+            $stmt->execute(['idUser' => $user->id, 'sIdentity' => $sIdentity]);
+         }
          return array('login' => $user->sLogin, 'token' => $token, 'userData' => $user, 'loginData' => $_SESSION['modules']['login']);
       }
       return array('login' => '', 'token' => null, 'provider' => 'google', 'hasGoogle' => false, 'hasFacebook' => false, 'hasPassword' => false);
@@ -578,7 +582,7 @@ if (isset($_GET['action'])) {
          $_SESSION['modules']['login']["sEmail"] = $token_infos['email'];
       }
       $_SESSION['modules']['login']["sProvider"] = "google";
-      $loginParams = validateUserGoogle($db, $sub, $openid_id);
+      $loginParams = validateUserGoogle($db, $sub, $openid_id, $token_infos['email']);
       if (isset($loginParams['login']) && $loginParams['login'] === "") {
          header('Location: login.html?newUser=1');
          exit();
