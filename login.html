@@ -312,18 +312,9 @@
          <p ng-show="badgeLoading" ng-i18next="loading"></p>
       </div>
       <div ng-show="step == 'recoveredPasswordChanged'">
-         <form ng-show="!recoverLoading && !recoverError">
-            <div class="form-group">
-               <label for="newPassword" ng-i18next="new_password"></label>
-               <input type="password" class="form-control" id="newPasswordRecovered">
-            </div>
-            <div class="form-group">
-               <label for="newPasswordConf" ng-i18next="new_password_confirm"></label>
-               <input type="password" class="form-control" id="newPasswordConfRecovered">
-            </div>
-            <button class="btn btn-info" ng-click="createFromBadge('recovered');" type="submit" class="btn btn-info" ng-i18next="createFromBadge_ok"></button>
-         </form>
-         <p ng-show="recoverLoading" ng-i18next="loading"></p>
+         <p ng-show="recoverPasswordChangeLoading" ng-i18next="loading"></p>
+         <p ng-show="!recoverPasswordChangeError && !recoverPasswordChangeLoading" ng-i18next="recover_password_ok"></p>
+         <p ng-show="recoverPasswordChangeError" ng-i18next="recover_password_nok"></p>
       </div>
       <div ng-show="step == 'recovered'">
          <p ng-show="recoverLoading" ng-i18next="loading"></p>
@@ -337,7 +328,7 @@
                <label for="newPasswordConf" ng-i18next="new_password_confirm"></label>
                <input type="password" class="form-control" id="newPasswordConfRecovered">
             </div>
-            <button class="btn btn-info" ng-click="sendNewPassword('recovered');" type="submit" class="btn btn-info" ng-i18next="new_password"></button>
+            <button class="btn btn-info" ng-click="sendNewPassword('recovered');" type="submit" class="btn btn-info" ng-i18next="new_password_button"></button>
          </form>
          <p ng-show="!recoverLoading && recoverError" ng-i18next="recover_link_nok"></p>
       </div>
