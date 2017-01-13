@@ -588,7 +588,7 @@ angular.module('login', ['jm.i18next'])
          loginManager.openPasswordRecovery();
       };
       $scope.createUser = function() {
-         loginManager.createUser($scope.login, $scope.email, $scope.password1, $scope.password2);
+         loginManager.createUser($scope.infos.sLogin, $scope.email, $scope.password1, $scope.password2);
       };
       $scope.removeGoogle = loginManager.removeGoogle;
       $scope.removeFacebook = loginManager.removeFacebook;
