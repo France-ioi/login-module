@@ -114,19 +114,25 @@ function getChannelToParent(callback) {
       callback(channelToParent); 
       return;
    }
-   channelToParent = Channel.build({
-      window: window.opener,
-      origin: "*",
-      scope: "loginModule",
-      onReady: function() {
-         callback(channelToParent);
-      }
-   });
+   try {
+      channelToParent = Channel.build({
+         window: window.opener,
+         origin: "*",
+         scope: "loginModule",
+         onReady: function() {
+            callback(channelToParent);
+         }
+      });
+   } catch (e) {
+      callback(null);
+   }
 }
 
 if (window.opener) {
-   getChannelToParent(function() {
-      potentialCommunicationImpossibility = false;
+   getChannelToParent(function(channel) {
+      if (channel) {
+         potentialCommunicationImpossibility = false;
+      }
    });
 }
 
