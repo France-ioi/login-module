@@ -1,8 +1,7 @@
 # Installation
 
-modify config
-    .env
-
-then run
-    install.sh
-
+1. Create config file **.env** using **.env.example**
+2. Then run
+```
+$ install.sh
+```
