@@ -1,5 +1,0 @@
-{
-    "login_failed": "Login failed",
-    "passwords_different": "The two passwords are different",
-    "logout_from_provider":  "Do you also want to disconnect from {{identityName}}?",
-}

@@ -1,3 +1,8 @@
-vendor/
-bower_components/
-config_local.php
+/vendor
+/node_modules
+/bower_components
+/public/build
+/.idea
+Homestead.json
+Homestead.yaml
+.env
