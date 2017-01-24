@@ -31,7 +31,18 @@ function request(method, url) {
 export default {
 
     getAuthDetails: function() {
-        return request('GET', '/oauth_server/authorization' + window.location.search)
+        if(token.check()) {
+            return request('GET', '/oauth_server/authorization' + window.location.search)
+        } else {
+            return new Promise((resolve, reject) => {
+                reject({
+                    error: {
+                        error: 'auth_required',
+                        error_description: ''
+                    }
+                })
+            })
+        }
     },
 
     authorize: function() {

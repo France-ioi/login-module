@@ -27,7 +27,7 @@ export default React.createClass({
             .catch((error) => {
                 this.setState({
                     auth_details: false,
-                    error: error,
+                    error,
                     is_fetching: false
                 })
             })
