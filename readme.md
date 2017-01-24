@@ -6,7 +6,3 @@ modify config
 then run
     install.sh
 
-# maintenance
-
-expired tokens cleaner:
-    php artisan passport:purge
