@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\OAuthServer;
 
-class ScopeUserProfileController
+use Authorizer;
+use App\User;
+
+class UserProfileController
 {
 
     public function show() {
-        $user = \App::user()->findOrFail(Authorizer::getResourceOwnerId());
+        $user = User::findOrFail(Authorizer::getResourceOwnerId());
         return response()->json($user);
     }
 

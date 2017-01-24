@@ -11,10 +11,7 @@ $app->group(['prefix' => 'oauth_server', 'namespace' => 'OAuthServer'], function
         $app->get('authorization', ['uses' => 'AuthorizationController@show', 'middleware' => 'check-authorization-params']);
         $app->post('authorization/authorize', ['uses' => 'AuthorizationController@authorize', 'middleware' => 'check-authorization-params']);
         $app->post('authorization/deny', ['uses' => 'AuthorizationController@deny', 'middleware' => 'check-authorization-params']);
-        $app->post('authorization/authorize_client', ['uses' => 'AuthorizationController@authorize_client', 'middleware' => 'check-authorization-params']);
-        //$app->post('logout', 'LogoutController@logout');
-        //$app->get('profile', ['middleware' => 'oauth:user_profile', 'uses' => 'ScopeUserProfileController@show']);
-        //$app->get('badge', ['middleware' => 'oauth:user_badges', 'uses' => 'ScopeUserBadgeController@show']);
+        $app->get('user_profile', 'UserProfileController@show');
     });
 });
 
