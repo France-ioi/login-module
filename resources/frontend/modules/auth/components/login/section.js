@@ -62,11 +62,14 @@ export default React.createClass({
 
                     <Panel title="Or sign up with">
                         <div className="row">
-                            <div className="col-xs-6">
+                            <div className="col-xs-4">
                                 <a className="btn btn-block btn-default" href={'/oauth_client/redirect/facebook' + window.location.search} onClick={()=>this.setState({is_fetching: true})}>Facebook</a>
                             </div>
-                            <div className="col-xs-6">
+                            <div className="col-xs-4">
                                 <a className="btn btn-block btn-default" href={'/oauth_client/redirect/google' + window.location.search} onClick={()=>this.setState({is_fetching: true})}>Google</a>
+                            </div>
+                            <div className="col-xs-4">
+                                <a className="btn btn-block btn-default" href={'/oauth_client/redirect/pms' + window.location.search} onClick={()=>this.setState({is_fetching: true})}>PMS</a>
                             </div>
                         </div>
                     </Panel>

@@ -17,9 +17,18 @@ class FacebookController extends \App\Http\Controllers\Controller
     }
 
 
+    private function getProvider() {
+        return new \Facebook\Facebook([
+            'app_id' => config('oauth_client.facebook.client_id'),
+            'app_secret' => config('oauth_client.facebook.client_secret'),
+            'default_graph_version' => 'v2.2',
+        ]);
+    }
+
+
     public function redirect(Request $request) {
-        $client = $this->getClient();
-        $helper = $client->getRedirectLoginHelper();
+        $provider = $this->getProvider();
+        $helper = $provider->getRedirectLoginHelper();
         $callback_url = route('oauth_client_callback_facebook').'?callback_params='.urlencode(json_encode($request->all()));
         $url = $helper->getLoginUrl($callback_url, ['public_profile', 'email']);
         return redirect($url);
@@ -28,9 +37,9 @@ class FacebookController extends \App\Http\Controllers\Controller
 
     public function callback(Request $request) {
         $callback_params = json_decode($request->get('callback_params'), true);
-        $client = $this->getClient();
-        if($token = $this->getToken($client, $request->get('code'))) {
-            if($graph = $this->getGraph($client, $token)) {
+        $provider = $this->getProvider();
+        if($token = $this->getToken($provider, $request->get('code'))) {
+            if($graph = $this->getGraph($provider, $token)) {
                 $user_data = [
                     'provider' => 'facebook',
                     'uid' => $graph->getField('id'),
@@ -44,17 +53,9 @@ class FacebookController extends \App\Http\Controllers\Controller
     }
 
 
-    private function getClient() {
-        return new \Facebook\Facebook([
-            'app_id' => config('oauth_client.facebook.client_id'),
-            'app_secret' => config('oauth_client.facebook.client_secret'),
-            'default_graph_version' => 'v2.2',
-        ]);
-    }
 
-
-    private function getToken($client, $code) {
-        $helper = $client->getRedirectLoginHelper();
+    private function getToken($provider, $code) {
+        $helper = $provider->getRedirectLoginHelper();
         try {
             $token = $helper->getAccessToken();
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
@@ -66,9 +67,9 @@ class FacebookController extends \App\Http\Controllers\Controller
     }
 
 
-    private function getGraph($client, $token) {
+    private function getGraph($provider, $token) {
         try {
-            $response = $client->get('/me?fields=id,name,email', $token);
+            $response = $provider->get('/me?fields=id,name,email', $token);
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
             return false;
         } catch(\Facebook\Exceptions\FacebookSDKException $e) {

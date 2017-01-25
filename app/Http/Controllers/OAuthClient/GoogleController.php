@@ -12,33 +12,34 @@ class GoogleController extends \App\Http\Controllers\Controller
 
     use OAuthFrontendClient, OAuthUserConnector;
 
-    private function getClient() {
-        $client = new \Google_Client();
-        $client->setClientId(config('oauth_client.google.client_id'));
-        $client->setClientSecret(config('oauth_client.google.client_secret'));
-        $client->setScopes(['openid', 'profile', 'email']);
-        $client->setRedirectUri(route('oauth_client_callback_google'));
-        return $client;
+
+    private function getProvider() {
+        $provider = new \Google_Client();
+        $provider->setClientId(config('oauth_client.google.client_id'));
+        $provider->setClientSecret(config('oauth_client.google.client_secret'));
+        $provider->setScopes(['openid', 'profile', 'email']);
+        $provider->setRedirectUri(route('oauth_client_callback_google'));
+        return $provider;
     }
 
 
     public function redirect(Request $request) {
-        $client = $this->getClient();
-        $client->setState(json_encode($request->all()));
-        $google_link = $client->createAuthUrl();
+        $provider = $this->getProvider();
+        $provider->setState(json_encode($request->all()));
+        $google_link = $provider->createAuthUrl();
         return redirect($google_link);
     }
 
 
     public function callback(Request $request) {
         $callback_params = json_decode($request->get('state'), true);
-        $client = $this->getClient();
-        $token = $client->fetchAccessTokenWithAuthCode($request->get('code'));
+        $provider = $this->getProvider();
+        $token = $provider->fetchAccessTokenWithAuthCode($request->get('code'));
         if(isset($token['error'])) {
             return $this->getFrontendRedirect($callback_params);
         }
-        $client->setAccessToken($token);
-        $token_data = $client->verifyIdToken();
+        $provider->setAccessToken($token);
+        $token_data = $provider->verifyIdToken();
 
         $user_data = [
             'provider' => 'google',
@@ -50,5 +51,3 @@ class GoogleController extends \App\Http\Controllers\Controller
     }
 
 }
-
-

@@ -12,7 +12,8 @@
         "facebook/graph-sdk" : "~5.0",
         "guzzlehttp/guzzle": "^6.2",
         "illuminate/mail": "^5.3",
-	"lucadegasperi/oauth2-server-laravel": "^5.0"
+	"lucadegasperi/oauth2-server-laravel": "^5.0",
+        "league/oauth2-client": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

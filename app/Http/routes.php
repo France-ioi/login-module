@@ -18,8 +18,10 @@ $app->group(['prefix' => 'oauth_server', 'namespace' => 'OAuthServer'], function
 $app->group(['prefix' => 'oauth_client', 'namespace' => 'OAuthClient'], function() use ($app) {
     $app->get('redirect/facebook', 'FacebookController@redirect');
     $app->get('redirect/google', 'GoogleController@redirect');
+    $app->get('redirect/pms', 'PMSController@redirect');
     $app->get('callback/facebook', ['as' => 'oauth_client_callback_facebook', 'uses' => 'FacebookController@callback']);
     $app->get('callback/google', ['as' => 'oauth_client_callback_google', 'uses' => 'GoogleController@callback']);
+    $app->get('callback/pms', ['as' => 'oauth_client_callback_pms', 'uses' => 'PMSController@callback']);
 });
 
 $app->get('[{page}]', 'FrontendController@show');
