@@ -9,7 +9,7 @@ class UserProfileController
 {
 
     public function show() {
-        $user = User::findOrFail(Authorizer::getResourceOwnerId());
+        $user = User::with('badges')->findOrFail(Authorizer::getResourceOwnerId());
         return response()->json($user);
     }
 

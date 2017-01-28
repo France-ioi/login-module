@@ -34,6 +34,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany('App\OAuthConnection');
     }
 
+    public function badges() {
+        return $this->hasMany('App\Badge');
+    }
+
     public function sendPasswordResetNotification($token)
     {
         Mail::send('emails.password', ['token' => $token], function($m) {

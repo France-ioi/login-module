@@ -46,7 +46,7 @@ export default React.createClass({
             <Loader is_fetching={this.state.is_fetching}>
                 <div>
                     <Panel title="Login">
-                        <Form values={this.state.values} setData={this.setData} data={this.state.data} errors={this.state.errors} onSubmit={this.submit}/>
+                        <Form values={this.state.values} setData={this.setData} data={this.state.data} errors={this.state.errors} submit={this.submit}/>
                     </Panel>
 
                     <Panel>
