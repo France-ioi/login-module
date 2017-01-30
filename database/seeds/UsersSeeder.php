@@ -15,15 +15,5 @@ class UsersSeeder extends Seeder
             'email' => 'test@test.test',
             'password' => $pwd_hash
         ]);
-
-
-        $profle = new \App\Profile([
-            'first_name' => 'first name',
-            'last_name' => 'last name',
-            'address' => 'address',
-            'zipcode' => 'zipcode',
-            'city' => 'city'
-        ]);
-        $user->profile()->save($profle);
     }
 }
