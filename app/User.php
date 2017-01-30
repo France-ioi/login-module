@@ -27,10 +27,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'badges'
     ];
 
-    public function profile() {
-        return $this->hasOne('App\Profile');
-    }
-
     public function oauth_connections() {
         return $this->hasMany('App\OAuthConnection');
     }
