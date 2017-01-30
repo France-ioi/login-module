@@ -1,14 +1,29 @@
 import gulp from 'gulp'
 import gutil from 'gulp-util'
+import sass from 'gulp-sass'
+import concat from 'gulp-concat'
+import uglify from 'gulp-uglify'
+import streamify from 'gulp-streamify'
+import gulpif from 'gulp-if'
+import cleancss from 'gulp-clean-css'
 import browserify from 'browserify'
 import babelify from 'babelify'
 import source from 'vinyl-source-stream'
 
+var is_production = !!gutil.env.production;
+if(is_production) {
+    process.env.NODE_ENV = 'production';
+}
+
+var path = {
+    app: './resources/frontend/',
+    build: './public/build/'
+}
 
 var app = {
     path: {
-        src: './resources/frontend/',
-        dst: './public/frontend'
+        src: path.app + 'js/',
+        dst: path.build
     },
     extension: '.js',
     entry: 'app.js',
@@ -23,6 +38,13 @@ var app = {
         'react-router',
         'js-cookie'
     ]
+}
+
+var styles = {
+    src: [
+        path.app + 'css/**/*.css'
+    ],
+    dst: 'app.css'
 }
 
 
@@ -47,6 +69,7 @@ gulp.task('build-app', () =>
         this.emit('end');
     })
     .pipe(source(app.entry))
+    .pipe(gulpif(is_production, streamify(uglify())))
     .pipe(gulp.dest(app.path.dst))
 )
 
@@ -58,16 +81,23 @@ gulp.task('build-lib', () =>
     .require(app.external)
     .bundle()
     .pipe(source(app.lib))
+    .pipe(gulpif(is_production, streamify(uglify())))
     .pipe(gulp.dest(app.path.dst))
 )
 
 
-gulp.task('watch', ['build-app', 'build-lib'], () =>
-    gulp.watch(app.path.src + '**/*' + app.extension, ['build-app'])
+gulp.task('build-styles', () =>
+    gulp
+        .src(styles.src)
+        .pipe(sass())
+        .pipe(gulpif(is_production, cleancss()))
+        .pipe(concat(styles.dst))
+        .pipe(gulp.dest(path.build))
 )
 
 
-gulp.task('build', ['build-app', 'build-lib'])
-
-
+gulp.task('watch', ['build-app', 'build-lib'], () => {
+    gulp.watch(app.path.src + '**/*' + app.extension, ['build-app'])
+})
+gulp.task('build', ['build-app', 'build-lib', 'build-styles'])
 gulp.task('default', ['watch'])

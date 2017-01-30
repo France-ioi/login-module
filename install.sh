@@ -1,5 +1,5 @@
-composer update
+composer install
 php artisan migrate:refresh --seed
 php artisan lm:client "frontend"
-npm update
-gulp build
+npm install
+gulp build --production
