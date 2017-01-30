@@ -11,6 +11,9 @@ trait OAuthFrontendClient
 
     private function issueAccessToken($user) {
         $client = \App\OAuthClient::where('name', 'frontend')->first();
+        if(!$client) {
+            return null;
+        }
         $params = [
             'username' => $user->email,
             'password' => $user->password,

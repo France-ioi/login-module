@@ -42,6 +42,10 @@ export default React.createClass({
         })
     },
 
+    navLogin: function() {
+        this.props.setSection('Login');
+    },
+
     render: function() {
         return (
             <Loader is_fetching={this.state.is_fetching}>
@@ -52,7 +56,7 @@ export default React.createClass({
                             <button className="btn btn-block btn-primary" onClick={()=>this.props.setSection('NewPassword')}>Continue</button>
                         </div>
                         :
-                        <Form values={this.state.values} setData={this.setData} data={this.state.data} errors={this.state.errors} submit={this.submit}/>
+                        <Form values={this.state.values} setData={this.setData} data={this.state.data} errors={this.state.errors} submit={this.submit} cancel={this.navLogin}/>
                     }
                 </Panel>
             </Loader>

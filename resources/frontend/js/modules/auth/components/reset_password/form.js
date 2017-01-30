@@ -11,6 +11,7 @@ export default React.createClass({
                     {this.props.errors.email && <span className="error">{this.props.errors.email}</span>}
                 </div>
                 <button className="btn btn-block btn-primary" type="submit">Continue</button>
+                <button className="btn btn-block btn-default" onClick={this.props.cancel}>Cancel</button>
             </form>
         )
     }
