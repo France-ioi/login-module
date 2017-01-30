@@ -1,4 +1,5 @@
 composer update
-php artisan migrate --db:seed
+php artisan migrate:refresh --seed
+php artisan lm:client "frontend"
 npm update
 gulp build

@@ -1,0 +1,2 @@
+php artisan lm:client "login-module-example-client.dev" "2TtBe7ZRvX1kL1scrsJvMHSGfQhRKXskD7RIOvY1" "WxdQFS9gkNfDnTdNMtB3hHI6AstmiI82fKyRftSV" "http://login-module-example-client.dev/oauth_callback.php"
+php artisan lm:client "login-module-example-client.mobydimk.space" "PT2M2BsY2FkTdVvO2Qg1UaEDupZH2PxQlFK7LzYG" "kufetZWaTkQz13nPxrG65EoXDB6nUZzTbxuADPbx" "http://login-module-example-client.mobydimk.space/oauth_callback.php"

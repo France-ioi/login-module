@@ -19,6 +19,8 @@ class CreateBadgesTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('url', 63);
+            $table->text('infos');
+            $table->tinyInteger('do_not_possess')->default(0);
         });
     }
 

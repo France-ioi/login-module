@@ -23,7 +23,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $visible = [
         'id',
-        'name'
+        'name',
+        'badges'
     ];
 
     public function profile() {

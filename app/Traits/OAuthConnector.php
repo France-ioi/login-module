@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\OAuthConnection;
 
-trait OAuthUserConnector
+trait OAuthConnector
 {
 
     private function getFrontendRedirect($callback_params, $token = false) {

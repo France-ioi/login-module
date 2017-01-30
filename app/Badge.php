@@ -9,12 +9,16 @@ class Badge extends Model
 
     protected $fillable = [
         'user_id',
-        'url'
+        'url',
+        'infos',
+        'do_not_possess'
     ];
 
     protected $visible = [
         'id',
-        'url'
+        'url',
+        'infos',
+        'do_not_possess'
     ];
 
     public function user() {

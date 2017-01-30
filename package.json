@@ -1,11 +1,9 @@
 {
-  "name": "login-module",
-  "version": "0.1.0",
-  "homepage": "",
-  "authors": [
-    "France-IOI"
-  ],
-  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "prod": "gulp build --production",
+    "dev": "gulp"
+  },
   "devDependencies": {
     "babel-core": "^6.3.26",
     "babel-plugin-transform-class-properties": "^6.3.13",

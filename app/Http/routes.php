@@ -1,5 +1,7 @@
 <?php
 
+$app->get('test', 'TestController@show');
+
 $app->post('login', 'LoginController@login');
 $app->post('registration', 'RegistrationController@register');
 $app->post('password/email', 'PasswordController@postEmail');

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\OAuthClient;
 
 use Request;
-use App\Traits\OAuthUserConnector;
+use App\Traits\OAuthConnector;
 use App\Traits\OAuthFrontendClient;
 use Arr;
 
 class PMSController extends \App\Http\Controllers\Controller
 {
 
-    use OAuthFrontendClient, OAuthUserConnector;
+    use OAuthFrontendClient, OAuthConnector;
 
 
     private function getProvider() {

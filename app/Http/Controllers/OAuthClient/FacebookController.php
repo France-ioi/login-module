@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\OAuthClient;
 
 use Request;
-use App\Traits\OAuthUserConnector;
+use App\Traits\OAuthConnector;
 use App\Traits\OAuthFrontendClient;
 
 class FacebookController extends \App\Http\Controllers\Controller
 {
 
-    use OAuthFrontendClient, OAuthUserConnector;
+    use OAuthFrontendClient, OAuthConnector;
 
     public function __construct()
     {
