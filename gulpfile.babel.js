@@ -32,10 +32,8 @@ var app = {
         'jschannel',
         'promise-polyfill',
         'whatwg-fetch',
-        'history',
         'react',
         'react-dom',
-        'react-router',
         'js-cookie'
     ]
 }

@@ -1,3 +1,2 @@
-import routes from './routes'
-
-export default { routes }
+import Authorization from './components/authorization'
+export default Authorization

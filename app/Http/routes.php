@@ -1,6 +1,7 @@
 <?php
 
-$app->get('test', 'TestController@show');
+//$app->get('test', 'TestController@show');
+$app->get('/', ['as' => 'frontend', 'uses' => 'FrontendController@show']);
 
 $app->post('login', 'LoginController@login');
 $app->post('registration', 'RegistrationController@register');
@@ -26,4 +27,3 @@ $app->group(['prefix' => 'oauth_client', 'namespace' => 'OAuthClient'], function
     $app->get('callback/pms', ['as' => 'oauth_client_callback_pms', 'uses' => 'PMSController@callback']);
 });
 
-$app->get('[{page}]', 'FrontendController@show');

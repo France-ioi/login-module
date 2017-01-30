@@ -10,7 +10,7 @@ trait OAuthConnector
 {
 
     private function getFrontendRedirect($callback_params, $token = false) {
-        $url = '/authorization?'
+        $url = route('frontend').'?'
             .http_build_query($callback_params)
             .($token ? '#token='.$token : '');
         return redirect($url);
