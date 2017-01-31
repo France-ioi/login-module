@@ -18,9 +18,9 @@ class PMSController extends \App\Http\Controllers\Controller
             'clientId' => config('oauth_client.pms.client_id'),
             'clientSecret' => config('oauth_client.pms.client_secret'),
             'redirectUri' => route('oauth_client_callback_pms'),
-            'urlAuthorize' => 'https://pms-dev.bwinf.de/app/PMS/wa/OAuth2/authorize', // TODO is it correct?
-            'urlAccessToken' => '', // TODO find value
-            'urlResourceOwnerDetails' => '', // TODO find value
+            'urlAuthorize' => 'https://pms-dev.bwinf.de/app/PMS/wa/OAuth2/authorize',
+            'urlAccessToken' => 'https://pms-dev.bwinf.de/wa/OAuth2/token',
+            'urlResourceOwnerDetails' => 'https://pms-dev.bwinf.de/wa/OAuth2/studentData',
             'scopes' => 'authenticate'
         ]);
     }
@@ -42,13 +42,22 @@ class PMSController extends \App\Http\Controllers\Controller
         try {
             $token = $provider->getAccessToken('authorization_code', [ 'code' => $request->get('code') ]);
             $owner = $provider->getResourceOwner($token)->toArray();
-
-            $name = Arr::get($owner, 'nickName');
             $user_data = [
                 'provider' => 'pms',
                 'uid' => Arr::get($owner, 'eMail'), //TODO need specs
-                'email' => Arr::get($token_data, 'eMail'),
-                'name' => empty($name) ? Arr::get($token_data, 'firstName').' '.Arr::get($token_data, 'lastName') : $name
+                'email' => Arr::get($owner, 'eMail'),
+                'name' => Arr::get($token_data, 'firstName').' '.Arr::get($token_data, 'lastName'),
+                'first_name' => Arr::get($owner, 'firstName'),
+                'last_name' => Arr::get($owner, 'lastName'),
+                'gender' => Arr::get($owner, 'gender'),
+                'birthday' => Arr::get($owner, 'dateOfBirth'),
+                'school_class' => Arr::get($owner, 'schoolClass'),
+                'school_id' => Arr::get($owner, 'schoolId'),
+                'street1' => Arr::get($owner, 'street1'),
+                'street2' => Arr::get($owner, 'street2'),
+                'zip' => Arr::get($owner, 'zip'),
+                'city' => Arr::get($owner, 'city'),
+                
             ];
             return $this->oauthConnect($callback_params, $user_data);
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
