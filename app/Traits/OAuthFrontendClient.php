@@ -8,6 +8,15 @@ use App\OAuthConnection;
 trait OAuthFrontendClient
 {
 
+    private function getFrontendRedirect($callback_params, $user = false) {
+        $url = route('frontend').'?'.http_build_query($callback_params);
+        if($user) {
+            $token = $this->issueAccessToken($user);
+            $url .= $token ? '#token='.$token['access_token'] : '';
+        }
+        return redirect($url);
+    }
+
 
     private function issueAccessToken($user) {
         $client = \App\OAuthClient::where('name', 'frontend')->first();

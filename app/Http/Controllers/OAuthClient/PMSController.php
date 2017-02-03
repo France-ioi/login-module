@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\OAuthClient;
 
 use Request;
-use App\Traits\OAuthConnector;
+use App\Traits\AuthConnector;
 use App\Traits\OAuthFrontendClient;
 use Arr;
+
 
 class PMSController extends \App\Http\Controllers\Controller
 {
 
-    use OAuthFrontendClient, OAuthConnector;
+    use OAuthFrontendClient, AuthConnector;
 
 
     private function getProvider() {
@@ -42,24 +43,24 @@ class PMSController extends \App\Http\Controllers\Controller
         try {
             $token = $provider->getAccessToken('authorization_code', [ 'code' => $request->get('code') ]);
             $owner = $provider->getResourceOwner($token)->toArray();
+
+            $address = Arr::get($owner, 'street1').' '.Arr::get($owner, 'street2');
             $user_data = [
                 'provider' => 'pms',
-                'uid' => Arr::get($owner, 'eMail'), //TODO need specs
-                'email' => Arr::get($owner, 'eMail'),
-                'name' => Arr::get($token_data, 'firstName').' '.Arr::get($token_data, 'lastName'),
+                'uid' => Arr::get($owner, 'nickName'), 
+                'email' => Arr::get($owner, 'eMail', null),
                 'first_name' => Arr::get($owner, 'firstName'),
                 'last_name' => Arr::get($owner, 'lastName'),
-                'gender' => Arr::get($owner, 'gender'),
+                'gender' => Arr::get($owner, 'gender', null),
                 'birthday' => Arr::get($owner, 'dateOfBirth'),
                 'school_class' => Arr::get($owner, 'schoolClass'),
                 'school_id' => Arr::get($owner, 'schoolId'),
-                'street1' => Arr::get($owner, 'street1'),
-                'street2' => Arr::get($owner, 'street2'),
+                'address' => $address,
                 'zip' => Arr::get($owner, 'zip'),
                 'city' => Arr::get($owner, 'city'),
-                
             ];
-            return $this->oauthConnect($callback_params, $user_data);
+            $user = $this->authConnect($user_data);
+            return $this->getFrontendRedirect($callback_params, $user);
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
             return $this->getFrontendRedirect($callback_params);
         }

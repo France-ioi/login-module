@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOAuthConnectionsTable extends Migration
+class CreateAuthConnectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateOAuthConnectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('oauth_connections', function (Blueprint $table) {
+        Schema::create('auth_connections', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->string('provider', 16);
@@ -30,6 +30,6 @@ class CreateOAuthConnectionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('oauth_connections');
+        Schema::drop('auth_connections');
     }
 }

@@ -11,7 +11,8 @@ class UsersSeeder extends Seeder
         \DB::table('users')->delete();
         $pwd_hash = Hash::make('123123');
         $user = \App\User::create([
-            'name' => 'test',
+            'first_name' => 'test',
+            'last_name' => 'test',
             'email' => 'test@test.test',
             'password' => $pwd_hash
         ]);

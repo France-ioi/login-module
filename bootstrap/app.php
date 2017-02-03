@@ -27,6 +27,7 @@ $app->configure('auth');
 $app->configure('mail');
 $app->configure('oauth2');
 $app->configure('oauth_client');
+$app->configure('login_module');
 
  $app->withFacades();
  $app->withEloquent();

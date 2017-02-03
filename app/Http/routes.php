@@ -7,6 +7,7 @@ $app->post('login', 'LoginController@login');
 $app->post('registration', 'RegistrationController@register');
 $app->post('password/email', 'PasswordController@postEmail');
 $app->post('password/reset', 'PasswordController@postReset');
+$app->get('lti', 'LTIController@login');
 
 $app->group(['prefix' => 'oauth_server', 'namespace' => 'OAuthServer'], function() use ($app) {
     $app->post('access_token', ['as' => 'access_token', 'uses' => 'AccessTokenController@issue']);
@@ -26,4 +27,3 @@ $app->group(['prefix' => 'oauth_client', 'namespace' => 'OAuthClient'], function
     $app->get('callback/google', ['as' => 'oauth_client_callback_google', 'uses' => 'GoogleController@callback']);
     $app->get('callback/pms', ['as' => 'oauth_client_callback_pms', 'uses' => 'PMSController@callback']);
 });
-

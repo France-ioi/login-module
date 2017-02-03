@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\OAuthClient;
 
 use Request;
-use App\Traits\OAuthConnector;
+use App\Traits\AuthConnector;
 use Arr;
 use App\Traits\OAuthFrontendClient;
 
 class GoogleController extends \App\Http\Controllers\Controller
 {
 
-    use OAuthFrontendClient, OAuthConnector;
+    use OAuthFrontendClient, AuthConnector;
 
 
     private function getProvider() {
@@ -45,9 +45,11 @@ class GoogleController extends \App\Http\Controllers\Controller
             'provider' => 'google',
             'uid' => Arr::get($token_data, 'sub'),
             'email' => Arr::get($token_data, 'email'),
-            'name' => Arr::get($token_data, 'given_name').' '.Arr::get($token_data, 'family_name')
+            'first_name' => Arr::get($token_data, 'given_name'),
+            'last_name' => Arr::get($token_data, 'family_name')
         ];
-        return $this->oauthConnect($callback_params, $user_data);
+        $user = $this->authConnect($user_data);
+        return $this->getFrontendRedirect($callback_params, $user);
     }
 
 }

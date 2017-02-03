@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\OAuthClient;
 
 use Request;
-use App\Traits\OAuthConnector;
+use App\Traits\AuthConnector;
 use App\Traits\OAuthFrontendClient;
 
 class FacebookController extends \App\Http\Controllers\Controller
 {
 
-    use OAuthFrontendClient, OAuthConnector;
+    use OAuthFrontendClient, AuthConnector;
 
     public function __construct()
     {
@@ -40,13 +40,16 @@ class FacebookController extends \App\Http\Controllers\Controller
         $provider = $this->getProvider();
         if($token = $this->getToken($provider, $request->get('code'))) {
             if($graph = $this->getGraph($provider, $token)) {
+                list($first_name, $last_name) = explode($graph->getField('name', ''));
                 $user_data = [
                     'provider' => 'facebook',
                     'uid' => $graph->getField('id'),
                     'email' => $graph->getField('email', ''),
-                    'name' => $graph->getField('name', '')
+                    'first_name' => $fist_name,
+                    'last_name' => $last_name
                 ];
-                return $this->oauthConnect($callback_params, $user_data);
+                $user = $this->authConnect($user_data);
+                return $this->getFrontendRedirect($callback_params, $user);
             }
         }
         return $this->getFrontendRedirect($callback_params);

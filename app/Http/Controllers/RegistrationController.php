@@ -14,6 +14,8 @@ class RegistrationController extends Controller
 
     private $validator_rules = [
         'email' => 'required|email|unique:users',
+        'first_name' => 'required',
+        'last_name' => 'required',
         'password' => 'required|confirmed',
         'password_confirmation' => 'required'
     ];

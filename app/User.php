@@ -16,19 +16,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable, CanResetPassword;
 
     protected $fillable = [
-        'name',
         'email',
+        'password',
+        'first_name',
+        'last_name',
+        'gender',
+        'address',
+        'city',
+        'zip',
+        'birthday'
+    ];
+
+    protected $hidden = [
         'password'
     ];
 
-    protected $visible = [
-        'id',
-        'name',
-        'badges'
-    ];
-
-    public function oauth_connections() {
-        return $this->hasMany('App\OAuthConnection');
+    public function auth_connections() {
+        return $this->hasMany('App\AuthConnection');
     }
 
     public function badges() {
@@ -39,7 +43,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         Mail::send('emails.password', ['token' => $token], function($m) {
             $m->from(config('mail.from.address'), config('mail.from.name'));
-            $m->to($this->email, $this->name)->subject('Password reset');
+            $name = $this->first_name.' '.$this->last_name;
+            $m->to($this->email, $name)->subject('Password reset');
         });
     }
 

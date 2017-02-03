@@ -11,6 +11,16 @@ export default React.createClass({
                     {this.props.errors.email && <span className="error">{this.props.errors.email}</span>}
                 </div>
                 <div className="form-group">
+                    <label>First name</label>
+                    <input type="text" className="form-control" value={this.props.data.first_name} onChange={(e)=>this.props.setData({ first_name: e.target.value})} autoComplete="off"/>
+                    {this.props.errors.first_name && <span className="error">{this.props.errors.first_name}</span>}
+                </div>                
+                <div className="form-group">
+                    <label>Last name</label>
+                    <input type="text" className="form-control" value={this.props.data.last_name} onChange={(e)=>this.props.setData({ last_name: e.target.value})} autoComplete="off"/>
+                    {this.props.errors.last_name && <span className="error">{this.props.errors.last_name}</span>}
+                </div>                
+                <div className="form-group">
                     <label>Password</label>
                     <input type="password" className="form-control" value={this.props.data.password} onChange={(e)=>this.props.setData({ password: e.target.value})} autoComplete="off"/>
                     {this.props.errors.password && <span className="error">{this.props.errors.password}</span>}

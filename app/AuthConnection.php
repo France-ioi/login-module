@@ -4,10 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OAuthConnection extends Model
+class AuthConnection extends Model
 {
-
-    protected $table = "oauth_connections";
 
     protected $fillable = [
         'provider',
