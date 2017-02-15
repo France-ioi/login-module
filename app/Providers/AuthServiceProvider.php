@@ -37,5 +37,12 @@ class AuthServiceProvider extends ServiceProvider
                 $app['config']['auth.providers.users.model']
             );
         });
+
+        $this->app['auth']->provider('login_module_email_provider', function($app) {
+            return new \App\LoginModuleAuth\EmailProvider(
+                $app['hash'],
+                $app['config']['auth.providers.emails.model']
+            );
+        });
     }
 }

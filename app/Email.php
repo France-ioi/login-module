@@ -3,9 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class Email extends Model
+class Email extends Model implements CanResetPasswordContract
 {
+
+    use CanResetPassword, Notifiable;
+
     protected $fillable = [
         'user_id',
         'email',

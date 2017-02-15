@@ -36,4 +36,14 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    protected function resetPassword($email, $password) {
+        $email->user->forceFill([
+            'password' => bcrypt($password),
+            'remember_token' => str_random(60),
+        ])->save();
+
+        $this->guard()->login($email->user);
+    }
+
 }
