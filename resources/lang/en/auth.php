@@ -16,7 +16,8 @@ return [
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
-    'email' => 'E-Mail address',
+    'login_or_email' => 'Login or Email',
+    'email' => 'Email address',
     'pwd' => 'Password',
     'pwd_confirm' => 'Confirm password',
     'remember_me' => 'Remember Me',
@@ -46,5 +47,5 @@ return [
     'change_pwd_header' => 'Password',
     'pwd_new' => 'New password',
     'btn_pwd_change' => 'Change password'
- 
+
 ];

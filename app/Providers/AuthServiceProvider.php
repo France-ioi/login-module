@@ -25,9 +25,17 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
         Passport::routes();
         Passport::tokensCan([
-            'account' => 'ID, Name, E-mail'
+            'account' => 'Account details' //TODO: replace by localization key?
         ]);
+
+        $this->app['auth']->provider('login_module_user_provider', function($app) {
+            return new \App\LoginModuleAuth\UserProvider(
+                $app['hash'],
+                $app['config']['auth.providers.users.model']
+            );
+        });
     }
 }

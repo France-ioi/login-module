@@ -16,7 +16,8 @@ return [
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Превышен лимит попыток. Пожалуйста попробуйте чере :seconds секунд.',
 
-    'email' => 'E-Mail адрес',
+    'login_or_email' => 'Логин или Email',
+    'email' => 'Email адрес',
     'pwd' => 'Пароль',
     'pwd_confirm' => 'Повторите пароль',
     'remember_me' => 'Запомнить меня',
@@ -46,5 +47,5 @@ return [
 
     'change_pwd_header' => 'Пароль',
     'pwd_new' => 'Новый пароль',
-    'btn_pwd_change' => 'Сменить пароль'    
+    'btn_pwd_change' => 'Сменить пароль'
 ];
