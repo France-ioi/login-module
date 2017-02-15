@@ -24,7 +24,7 @@ class UserProvider extends EloquentUserProvider
 
         if(strpos($credentials['login'], '@') === false) {
             $query->where('login', $credentials['login']);
-        } else if($email = \App\Email::where('email', $credentials['login'])->first()) {
+        } else if($email = \App\Email::where('email', $credentials['login'])->where('role', 'primary')->first()) {
             $query->where('id', $email->user_id);
         } else return;
 

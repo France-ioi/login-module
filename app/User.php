@@ -45,11 +45,16 @@ class User extends Authenticatable
 
 
     public function routeNotificationForMail() {
-        return $this->emails()->where('role', 'primary')->first()->email;
+        return $this->primary_email;
     }
 
 
     public function getEmailForPasswordReset() {
+        return $this->primary_email;
+    }
+
+
+    public function getPrimaryEmailAttribute() {
         return $this->emails()->where('role', 'primary')->first()->email;
     }
 
@@ -58,9 +63,11 @@ class User extends Authenticatable
         return $this->hasMany('App\AuthConnection');
     }
 
+
     public function emails() {
         return $this->hasMany('App\Email');
     }
+
 
     public function badges() {
         return $this->hasMany('App\Badge');
