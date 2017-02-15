@@ -14,7 +14,19 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'locale'
+        'language',
+        'first_name',
+        'last_name',
+        'country_code',
+        'address',
+        'city',
+        'zipcode',
+        'primary_phone',
+        'secondary_phone',
+        'role',
+        'birthday',
+        'presentation',
+        'picture'
     ];
 
     protected $hidden = [
@@ -25,10 +37,20 @@ class User extends Authenticatable
     ];
 
 
+    protected static function boot() {
+        static::creating(function($model) {
+            $model->last_login = new \DateTime();
+        });
+    }
+
+
     public function auth_connections() {
         return $this->hasMany('App\AuthConnection');
     }
 
+    public function emails() {
+        return $this->hasMany('App\Email');
+    }
 
     public function badges() {
         return $this->hasMany('App\Badge');

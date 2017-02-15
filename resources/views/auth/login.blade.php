@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.popup')
 
 @section('content')
     <div class="panel panel-default">
@@ -43,7 +43,7 @@
                     <div class="col-md-6 col-md-offset-4">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> 
+                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
                                 @lang('auth.remember_me')
                             </label>
                         </div>

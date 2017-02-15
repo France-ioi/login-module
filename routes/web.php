@@ -14,3 +14,12 @@ Route::get('/oauth_client/logout/{provider}', 'OAuthClientController@logout');
 Route::get('/lti', 'LTIController@login');
 
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function() {
+    Route::get('/', 'DashboardController@index');
+    Route::get('/users', 'UsersController@index');
+    Route::get('/users/{id}/password', 'UsersController@show_password');
+    Route::post('/users/{id}/password', 'UsersController@update_password');
+    Route::delete('/users/{id}', 'UsersController@delete');
+});

@@ -16,7 +16,7 @@ class Locale
 
     public function handle($request, Closure $next, $guard = null) {
         if(Auth::guard($guard)->check()) {
-            $locale = Auth::guard($guard)->user()->locale;
+            $locale = Auth::guard($guard)->user()->language;
         } else {
             $locale = session('locale');
         }

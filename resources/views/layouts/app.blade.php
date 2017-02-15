@@ -14,7 +14,7 @@
     <link href="/css/app.css" rel="stylesheet">
 </head>
 <body>
-    @include('layouts.navbar')
+    @yield('navigation')
     <div class="container">
         @yield('content')
     </div>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.popup')
 
 @section('content')
     @include('account.account_details')
