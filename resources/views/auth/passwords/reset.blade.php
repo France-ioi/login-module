@@ -52,7 +52,7 @@
                     <label for="password-confirm" class="col-md-4 control-label">
                         @lang('auth.pwd_confirm')
                     </label>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
 
                         @if ($errors->has('password_confirmation'))
@@ -64,11 +64,11 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-6 col-md-offset-4">
+                    <div class="col-md-8 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
                             @lang('auth.btn_pwd_reset')
                         </button>
-                        <a class="pull-right" href="{{ route('login') }}">
+                        <a class="btn btn-link" href="{{ route('login') }}">
                             @lang('auth.link_cancel')
                         </a>
                     </div>

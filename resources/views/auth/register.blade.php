@@ -12,7 +12,7 @@
                         @lang('auth.name')
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
                         @if ($errors->has('name'))
@@ -28,7 +28,7 @@
                         @lang('auth.email')
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
                         @if ($errors->has('email'))
@@ -44,7 +44,7 @@
                         @lang('auth.pwd')
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <input id="password" type="password" class="form-control" name="password" required>
 
                         @if ($errors->has('password'))
@@ -60,17 +60,17 @@
                         @lang('auth.pwd_confirm')
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-6 col-md-offset-4">
+                    <div class="col-md-8 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
                             @lang('auth.btn_register')
                         </button>
-                        <a class="pull-right" href="{{ route('login') }}">
+                        <a class="btn btn-link" href="{{ route('login') }}">
                             @lang('auth.link_cancel')
                         </a>
                     </div>

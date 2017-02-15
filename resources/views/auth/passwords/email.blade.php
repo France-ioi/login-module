@@ -18,7 +18,7 @@
                         @lang('auth.email')
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
                         @if ($errors->has('email'))
@@ -30,11 +30,11 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-6 col-md-offset-4">
+                    <div class="col-md-8 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
                             @lang('auth.btn_pwd_reset_email')
                         </button>
-                        <a class="pull-right" href="{{ route('login') }}">
+                        <a class="btn btn-link" href="{{ route('login') }}">
                             @lang('auth.link_cancel')
                         </a>
                     </div>
