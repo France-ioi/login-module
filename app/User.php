@@ -45,6 +45,11 @@ class User extends Authenticatable
     }
 
 
+    public function getSecondaryEmailAttribute() {
+        return $this->emails()->where('role', 'secondary')->first()->email;
+    }
+
+
     public function auth_connections() {
         return $this->hasMany('App\AuthConnection');
     }

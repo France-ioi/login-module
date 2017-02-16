@@ -3,23 +3,28 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Traits\ProfileCompletion;
 use Illuminate\Support\Facades\Auth;
 
-class Admin
+class ProfileCompleted
 {
+
+    use ProfileCompletion;
+
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  $guard
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if(Auth::guard($guard)->user()->admin) {
-            return $next($request);
+        $fields = $this->getProfileEmptyFields(Auth::guard($guard)->user());
+        if(count($fields) > 0) {
+            session()->put('url.intended', $request->fullUrl());
+            return redirect('/profile');
         }
-        abort(403, 'Unauthorized action.');
+        return $next($request);
     }
 }

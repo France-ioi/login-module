@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 class AccountController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-
     public function index(Request $request)
     {
         return view('account.index', [
@@ -30,6 +24,7 @@ class AccountController extends Controller
         \Auth::user()->update($request->only(['name', 'email']));
         return $this->getRedirectAfterUpdate($request);
     }
+
 
     public function update_password(Request $request) {
         $this->validate($request, [

@@ -53,6 +53,7 @@ class LoginController extends Controller
         ]);
     }
 
+
     public function logout(Request $request) {
         //TODO: active connections
         $this->guard()->logout();

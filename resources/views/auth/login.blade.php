@@ -8,33 +8,21 @@
                 {{ csrf_field() }}
 
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="login" class="col-md-4 control-label">
-                        @lang('auth.login_or_email')
-                    </label>
-
+                    <label for="login" class="col-md-4 control-label">@lang('auth.login_or_email')</label>
                     <div class="col-md-6">
                         <input id="login" type="text" class="form-control" name="login" value="{{ old('login') }}" required autofocus>
-
                         @if ($errors->has('login'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('login') }}</strong>
-                            </span>
+                            <span class="help-block">{{ $errors->first('login') }}</span>
                         @endif
                     </div>
                 </div>
 
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <label for="password" class="col-md-4 control-label">
-                        @lang('auth.pwd')
-                    </label>
-
+                    <label for="password" class="col-md-4 control-label">@lang('auth.pwd')</label>
                     <div class="col-md-6">
                         <input id="password" type="password" class="form-control" name="password" required>
-
                         @if ($errors->has('password'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
+                            <span class="help-block">{{ $errors->first('password') }}</span>
                         @endif
                     </div>
                 </div>

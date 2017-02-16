@@ -36,10 +36,8 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-
         $this->mapWebRoutes();
-
-        //
+        $this->remapPassportRoutes();
     }
 
     /**
@@ -70,4 +68,16 @@ class RouteServiceProvider extends ServiceProvider
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
     }
+
+    /**
+     * Remap authorization routes with profile_completed middleware
+     *
+     * @return void
+     */
+    protected function remapPassportRoutes() {
+        Route::middleware(['web', 'auth', 'profile_completed'])
+             ->namespace('\Laravel\Passport\Http\Controllers')
+             ->group(base_path('routes/passport.php'));
+    }
+
 }
