@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends \Laravel\Passport\Client
 {
 
+
+    protected $casts = [
+        'profile_fields' => 'array',
+        'auth_order' => 'array'
+    ];
+
+/*
+    public function setProfileFieldsAttribute(array $fields) {
+        $this->attributes['profile_fields'] = json_encode($fields);
+    }
+
     public function setProfileFieldsAttribute(array $fields) {
         $this->attributes['profile_fields'] = json_encode($fields);
     }
@@ -19,4 +30,5 @@ class Client extends \Laravel\Passport\Client
         }
         return $res;
     }
+*/
 }

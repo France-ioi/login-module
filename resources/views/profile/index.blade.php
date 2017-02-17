@@ -5,8 +5,7 @@
         <div class="panel-heading">Profile</div>
         <div class="panel-body">
             <form role="form" method="POST" action="{{ url('profile') }}">
-            {!! BootForm::openHorizontal(['xs' => [4, 8]])->action(url('/profile'))->post() !!}
-                {{ csrf_field() }}
+            {!! BootForm::horizontal() !!}
 
                 @if(isset($fields['primary_email']))
                     {!! BootForm::email('primary_email') !!}
@@ -17,11 +16,11 @@
                 @endif
 
                 @if(isset($fields['first_name']))
-                    {!! BootForm::text('First name', 'first_name') !!}
+                    {!! BootForm::text('first_name') !!}
                 @endif
 
                 @if(isset($fields['last_name']))
-                    {!! BootForm::text('Last name', 'last_name') !!}
+                    {!! BootForm::text('last_name') !!}
                 @endif
 
                 {!! BootForm::submit(trans('auth.btn_save')) !!}

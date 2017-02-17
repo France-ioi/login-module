@@ -3,13 +3,13 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Traits\ProfileCompletion;
 use Illuminate\Support\Facades\Auth;
+use Session;
+use App\LoginModule\Platform\Platform;
 
 class ProfileCompleted
 {
 
-    use ProfileCompletion;
 
     /**
      * Handle an incoming request.
@@ -20,11 +20,11 @@ class ProfileCompleted
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $fields = $this->getProfileEmptyFields(Auth::guard($guard)->user());
-        if(count($fields) > 0) {
-            session()->put('url.intended', $request->fullUrl());
-            return redirect('/profile');
+
+        if(Platform::profileFields(Auth::guard($guard)->user())->filled()) {
+            return $next($request);
         }
-        return $next($request);
+        Session::put('url.intended', $request->fullUrl());
+        return redirect('/profile');
     }
 }

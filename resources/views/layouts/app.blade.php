@@ -12,12 +12,12 @@
     </script>
     <title>{{ config('app.name') }}</title>
     <link href="/css/app.css" rel="stylesheet">
+    <script src="/js/app.js"></script>
 </head>
 <body>
     @yield('navigation')
     <div class="container">
         @yield('content')
     </div>
-    <script src="/js/app.js"></script>
 </body>
 </html>

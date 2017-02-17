@@ -22,7 +22,7 @@ class ProfileController extends Controller
 
     public function store(Request $request) {
         $fields = $this->getProfileEmptyFields(Auth::user());
-        $validation_rules = $this->getValidationRules($fields);
+        $validation_rules = $this->getProfileValidationRules($fields);
         $this->validate($request, $validation_rules);
         Auth::user()->fill($request->all());
         Auth::user()->save();

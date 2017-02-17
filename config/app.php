@@ -184,12 +184,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Laravel\Passport\PassportServiceProvider::class,
-
-/*
         Collective\Html\HtmlServiceProvider::class,
         Watson\BootstrapForm\BootstrapFormServiceProvider::class,
-*/
-        AdamWathan\BootForms\BootFormsServiceProvider::class,
     ],
 
     /*
@@ -238,11 +234,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
-        //'Form'     => Collective\Html\FormFacade::class,
-        //'HTML'     => Collective\Html\HtmlFacade::class,
-        //'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
-        'BootForm' => AdamWathan\BootForms\Facades\BootForm::class
+        'Form'     => Collective\Html\FormFacade::class,
+        'HTML'     => Collective\Html\HtmlFacade::class,
+        'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
     ],
 
 ];

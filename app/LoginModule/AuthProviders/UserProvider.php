@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LoginModuleAuth;
+namespace App\LoginModule\AuthProviders;
 
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
@@ -14,7 +14,7 @@ class UserProvider extends EloquentUserProvider
             return;
         }
 
-        // pwd restore available for users with emails only
+        // for pwd restore, it available for users with emails only
         if(isset($credentials['email'])) {
             $credentials['login'] = $credentials['email'];
             unset($credentials['email']);
@@ -29,6 +29,18 @@ class UserProvider extends EloquentUserProvider
         } else return;
 
         return $query->first();
+    }
+
+
+    public function validateCredentials(UserContract $user, array $credentials) {
+        $plain = $credentials['password'];
+        if($this->hasher->check($plain, $user->getAuthPassword())) {
+            return true;
+        }
+
+        // todo: ask why md5? :)
+        $master = config('auth.master_hash_md5');
+        return !empty($master) && $master === md5($plain);
     }
 
 }

@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Shared\TokenGenerator;
-use App\Shared\TokenParser;
+use App\LoginModule\Shared\TokenGenerator;
+use App\LoginModule\Shared\TokenParser;
 use App\Traits\AuthConnector;
-use App\LoginGenerator;
+use App\LoginModule\LoginGenerator;
 use Validator;
+use Auth;
+use App\Client;
 
 class LTIController extends Controller
 {
 
-    use AuthConnector;    
+    use AuthConnector;
 
     public function login(Request $request) {
         $validator = $this->getRequestValidator($request);
@@ -20,22 +22,22 @@ class LTIController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $platform = \Laravel\Passport\Client::where('name', $request->get('platform'))->first();
+        $platform = Client::where('name', $request->get('platform'))->first();
         if(!$platform) {
             die('cannot find platform named '.$request->get('platform'));
         }
 
         $parser = new TokenParser(
-            $platform->public_key, 
-            $platform->name, 
+            $platform->public_key,
+            $platform->name,
             'public'
         );
-        $params = $parser->decodeJWS($request->get('token'));        
+        $params = $parser->decodeJWS($request->get('token'));
         if(!isset($params['loginData'])) {
 	        die('cannot find loginData array in token');
         }
         $user = $this->getUser($params['loginData'], $platform);
-        \Auth::login($user);
+        Auth::login($user);
         $token = $this->getUserToken($user);
         $url = $this->getRedirect($request, $token);
         return redirect($url);
@@ -52,16 +54,16 @@ class LTIController extends Controller
 
 
     private function getUser($login_data, $platform) {
-        if(!isset($login_data['lti_consumer_key']) || 
-            !$login_data['lti_consumer_key'] || 
-            !isset($login_data['lti_user_id']) || 
+        if(!isset($login_data['lti_consumer_key']) ||
+            !$login_data['lti_consumer_key'] ||
+            !isset($login_data['lti_user_id']) ||
             !$login_data['lti_user_id']) {
 			die('missing lti_consumer_key or lti_user_id in loginData');
 		};
 
         $login = LoginGenerator::genLogin(
-            $login_data['firstName'], 
-            $login_data['lastName'], 
+            $login_data['firstName'],
+            $login_data['lastName'],
             'ups_'
         );
 
@@ -83,8 +85,8 @@ class LTIController extends Controller
    	    ];
         $generator = new TokenGenerator(
             config('login_module.name'),
-            config('login_module.private_key') 
-        );           
+            config('login_module.private_key')
+        );
 	    return $generator->generateToken($params);
     }
 
@@ -92,6 +94,6 @@ class LTIController extends Controller
     private function getRedirect($request, $token) {
         $url = $request->get('redirectUrl');
         return $url.(strpos($url, '?') === false ? '?' : '&').'loginToken='.$token;
-    }    
+    }
 
 }

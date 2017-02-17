@@ -2,6 +2,15 @@
 
 return [
 
+    'master_hash_md5' => env('AUTH_MASTER_HASH_MD5'),
+
+    'default_order' => [
+        'login',
+        'google',
+        'facebook',
+        'pms'
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -66,12 +75,12 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'login_module_user_provider', //'eloquent',
+            'driver' => 'login_module_user_provider',
             'model' => App\User::class,
         ],
 
         'emails' => [
-            'driver' => 'login_module_email_provider', //'eloquent',
+            'driver' => 'login_module_email_provider',
             'model' => App\Email::class,
         ]
         // 'users' => [

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use App\LoginModule\Platform\Platform;
 
 class LoginController extends Controller
 {
@@ -34,7 +35,7 @@ class LoginController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('guest', ['except' => ['logout', 'get_logout']]);
+        $this->middleware('guest', ['except' => ['logout', 'getLogout']]);
     }
 
 
@@ -43,7 +44,23 @@ class LoginController extends Controller
     }
 
 
-    public function get_logout(Request $request) {
+    public function showLoginForm()
+    {
+        $auth_order = Platform::authOrder()->get();
+        return view('auth.login', [
+            'auth_visible' => $auth_order,
+            'auth_hidden' => array_diff(config('auth.default_order'), $auth_order)
+        ]);
+    }
+
+
+    public function showLoginEmailForm()
+    {
+        return view('auth.login_email');
+    }
+
+
+    public function getLogout(Request $request) {
         if(!\Auth::check()) {
             return $this->getRedirectAfterLogout($request);
         }

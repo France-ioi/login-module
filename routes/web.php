@@ -1,7 +1,8 @@
 <?php
 
 Auth::routes();
-Route::get('/logout', 'Auth\LoginController@get_logout');
+Route::get('/logout', 'Auth\LoginController@getLogout');
+Route::get('/login_email', 'Auth\LoginController@showLoginEmailForm');
 
 Route::get('/oauth_client/redirect/{provider}', 'OAuthClientController@redirect');
 Route::get('/oauth_client/callback/{provider}', ['uses' => 'OAuthClientController@callback', 'as' => 'oauth_client_callback']);
@@ -15,8 +16,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/profile', 'ProfileController@update');
 
     Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
-    Route::post('/account/details', ['uses' => 'AccountController@update_account', 'as' => 'update_account']);
-    Route::post('/account/password', ['uses' => 'AccountController@update_password', 'as' => 'update_password']);
+    Route::post('/account/details', ['uses' => 'AccountController@updateAccount', 'as' => 'update_account']);
+    Route::post('/account/password', ['uses' => 'AccountController@updatePassword', 'as' => 'update_password']);
 });
 
 

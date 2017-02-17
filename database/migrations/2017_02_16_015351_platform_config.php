@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PlatformProfileFields extends Migration
+class PlatformConfig extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class PlatformProfileFields extends Migration
     {
         Schema::table('oauth_clients', function (Blueprint $table) {
             $table->text('profile_fields')->nallable();
+            $table->text('auth_order')->nallable();
         });
     }
 
@@ -27,6 +28,7 @@ class PlatformProfileFields extends Migration
     {
         Schema::table('oauth_clients', function (Blueprint $table) {
             $table->dropColumn('profile_fields');
+            $table->dropColumn('auth_order');
         });
     }
 }

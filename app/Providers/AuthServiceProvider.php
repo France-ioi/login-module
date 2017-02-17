@@ -32,14 +32,14 @@ class AuthServiceProvider extends ServiceProvider
         ]);
 
         $this->app['auth']->provider('login_module_user_provider', function($app) {
-            return new \App\LoginModuleAuth\UserProvider(
+            return new \App\LoginModule\AuthProviders\UserProvider(
                 $app['hash'],
                 $app['config']['auth.providers.users.model']
             );
         });
 
         $this->app['auth']->provider('login_module_email_provider', function($app) {
-            return new \App\LoginModuleAuth\EmailProvider(
+            return new \App\LoginModule\AuthProviders\EmailProvider(
                 $app['hash'],
                 $app['config']['auth.providers.emails.model']
             );

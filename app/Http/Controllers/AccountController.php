@@ -16,7 +16,7 @@ class AccountController extends Controller
     }
 
 
-    public function update_account(Request $request) {
+    public function updateAccount(Request $request) {
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.\Auth::user()->id
@@ -26,7 +26,7 @@ class AccountController extends Controller
     }
 
 
-    public function update_password(Request $request) {
+    public function updatePassword(Request $request) {
         $this->validate($request, [
             'password' => 'required|min:6|confirmed'
         ]);

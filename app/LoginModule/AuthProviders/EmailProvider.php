@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LoginModuleAuth;
+namespace App\LoginModule\AuthProviders;
 
 use Illuminate\Auth\EloquentUserProvider;
 
