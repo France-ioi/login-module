@@ -46,7 +46,8 @@
                 'provider' => 'google',
                 'uid' => array_get($token_data, 'sub'),
                 'email' => array_get($token_data, 'email'),
-                'name' => array_get($token_data, 'given_name').' '.array_get($token_data, 'family_name'),
+                'first_name' => array_get($token_data, 'given_name'),
+                'last_name' => array_get($token_data, 'family_name'),
                 'access_token' => $token['access_token']
             ];
         }

@@ -19,7 +19,7 @@ class Platform
     }
 
 
-    static function profileFields(\App\User $user) {
+    static function profileFields($user = null) {
         return new ProfileFields(self::getClient(), $user);
     }
 

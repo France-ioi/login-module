@@ -13,58 +13,67 @@ class ProfileFields
     protected $client;
     protected $user;
 
-    public function __construct(\App\Client $client, \App\User $user) {
+    public function __construct($client = null, $user = null) {
         $this->client = $client;
         $this->user = $user;
     }
 
 
     public function filled() {
-        return $this->getEmpty() === 0;
+        return count($this->getEmpty()) === 0;
     }
 
 
     public function getRequired() {
-        return $this->client->profile_fields;
+        return $this->client ? $this->client->profile_fields : [];
     }
 
 
     public function getEmpty() {
-        $res = [];
-        if($this->client) {
+        if(!$this->client) {
+            return [];
+        }
+        if($this->user) {
+            $res = [];
             foreach($this->client->profile_fields as $field) {
-                if(empty($user->$field)) {
+                if(empty($this->user->getAttribute($field))) {
                     $res[] = $field;
                 }
             }
+            return $res;
         }
-        return $res;
+        return $this->client->profile_fields;
     }
 
 
-    public function getValidationRules($filter = null) {
-        $res = [
+    public function getValidationRules() {
+        $all = [
             'login' => 'required|min:3|unique:users',
-            'language' => 'required|in:'.array_keys(config('app.locales')),
             'first_name' => 'required',
             'last_name' => 'required',
-            'country_code' => 'required|in:'.array_keys(config('countries')),
+            'primary_email'  => 'required|email|unique:emails,email',
+            'secondary_email'  => 'required|email|unique:emails,email',
+            'language' => 'required|in:'.implode(',', array_keys(config('app.locales'))),
+            'country_code' => 'required|in:'.implode(',', array_keys(trans('countries'))),
             'address' => 'required',
             'city' => 'required',
             'zipcode' => 'required',
             'primary_phone' => 'required',
             'secondary_phone' => 'required',
-            'role' => 'in:student,teacher,other',
-            'birthday'  => 'required|date',
+            'role' => 'in:'.implode(',', array_keys(trans('profile.roles'))),
+            'birthday'  => 'required|date_format:"Y-m-d"',
             'presentation'  => 'required',
-            'primary_email'  => 'required|email|unique:emails',
-            'secondary_email'  => 'required|email|different:primary_email|unique:emails',
         ];
 
-        if($filter) {
-            foreach($filter as $field) {
-                unset($res[$field]);
-            }
+        $required = $this->getEmpty();
+        $res = [];
+        foreach($required as $field) {
+            $res[$field] = $all[$field];
+        }
+
+        // bugfix for laravel validation bug
+        if(isset($res['primary_email']) && isset($res['secondary_phone'])) {
+            $res['secondary_phone'] = $res['secondary_phone'].'|different:primary_email';
         }
         return $res;
     }

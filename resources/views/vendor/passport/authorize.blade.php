@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.popup')
 
 @section('content')
     <div class="panel panel-default">
@@ -8,7 +8,7 @@
         <div class="panel-body passport-authorize">
             <!-- Introduction -->
             <p>
-                <strong>{{ $client->name }}</strong> 
+                <strong>{{ $client->name }}</strong>
                 @lang('passport.intoduction')
             </p>
 

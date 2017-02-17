@@ -43,6 +43,12 @@ class LoginController extends Controller
         return 'login';
     }
 
+    protected function authenticated(Request $request, $user)
+    {
+        $user->last_login = new \DateTime();
+        $user->save();
+    }
+
 
     public function showLoginForm()
     {

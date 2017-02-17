@@ -22,4 +22,13 @@ class Email extends Model implements CanResetPasswordContract
     public function user() {
         return $this->belongsTo('App\User');
     }
+
+    public function scopePrimary($q) {
+        return $q->where('role', 'primary');
+    }
+
+    public function scopeSecondary($q) {
+        return $q->where('role', 'secondary');
+    }
+
 }

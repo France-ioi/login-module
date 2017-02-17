@@ -4,7 +4,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.login_header')</div>
         <div class="panel-body">
-            {!! BootForm::horizontal(['route' => 'login']) !!}
+            {!! BootForm::open(['route' => 'login']) !!}
                 {!! BootForm::text('login', trans('auth.login_or_email')) !!}
                 {!! BootForm::password('password', trans('auth.pwd')) !!}
                 {!! BootForm::checkbox('remember_me', trans('auth.remember_me')) !!}
@@ -14,7 +14,7 @@
                     <a class="btn btn-link" href="{{ route('password.request') }}">
                         @lang('auth.link_reset_pwd')
                     </a>
-                    <a class="btn btn-link pull-right" href="{{ route('password.request') }}">
+                    <a class="btn btn-link pull-right" href="{{ route('register') }}">
                         @lang('auth.link_register')
                     </a>
                 </div>

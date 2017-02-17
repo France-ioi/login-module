@@ -23,6 +23,11 @@ class User extends Authenticatable
     ];
 
 
+    protected $appends = [
+        'primary_email',
+        'secondary_email'
+    ];
+
     protected static function boot() {
         static::creating(function($model) {
             $model->last_login = new \DateTime();
@@ -41,12 +46,14 @@ class User extends Authenticatable
 
 
     public function getPrimaryEmailAttribute() {
-        return $this->emails()->where('role', 'primary')->first()->email;
+        $primary = $this->emails()->primary()->first();
+        return $primary ? $primary->email : null;
     }
 
 
     public function getSecondaryEmailAttribute() {
-        return $this->emails()->where('role', 'secondary')->first()->email;
+        $secondary = $this->emails()->secondary()->first();
+        return $secondary ? $secondary->email : null;
     }
 
 

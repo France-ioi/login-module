@@ -71,11 +71,13 @@
             $client = $this->getClient();
             if($token = $this->getToken($client, $request->get('code'))) {
                 if($graph = $this->getGraph($client, $token)) {
+                    list($first_name, $last_name) = explode(' ', $graph->getField('name', ''), 2);
                     return  [
                         'provider' => 'facebook',
                         'uid' => $graph->getField('id'),
                         'email' => $graph->getField('email', ''),
-                        'name' => $graph->getField('name', ''),
+                        'first_name' => $first_name,
+                        'last_name' => $last_name,
                         'access_token' => $token->getValue()
                     ];
                 }

@@ -14,9 +14,11 @@ class ClientsSeeder extends Seeder
         'secret' => '1AtKfSc7KbgIo8GDCI31pA9laP7pFoBqSg3RtVHq',
         'profile_fields' => [
             'login',
-            'language',
+            'primary_email',
+            'secondary_email'
             'first_name',
             'last_name',
+            'language',
             'country_code',
             'address',
             'city',
@@ -26,8 +28,6 @@ class ClientsSeeder extends Seeder
             'role',
             'birthday',
             'presentation',
-            'primary_email',
-            'secondary_email'
         ],
         'auth_order' => [
             'login',

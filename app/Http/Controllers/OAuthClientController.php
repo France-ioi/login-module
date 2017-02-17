@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\OAuthClient\Manager;
-use App\Traits\AuthConnector;
+use App\LoginModule\AuthConnector;
 
 class OAuthClientController extends Controller
 {
 
-    use AuthConnector;
 
     public function redirect($provider) {
         $url = Manager::provider($provider)->getAuthorizationURL();
@@ -19,7 +18,7 @@ class OAuthClientController extends Controller
 
     public function callback($provider, Request $request) {
         if($user_data = Manager::provider($provider)->callback($request)) {
-            $user = $this->authConnect($user_data);
+            $user = AuthConnector::connect($user_data);
             \Auth::login($user);
             return redirect()->intended('account');
         }

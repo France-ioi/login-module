@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Email;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\LoginModule\Platform\Platform;
 
 class RegisterController extends Controller
 {
@@ -39,6 +41,16 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
+    public function showRegistrationForm()
+    {
+        $required = Platform::profileFields()->getRequired();
+        return view('auth.register', [
+            'login_required' => array_search('login', $required) !== false,
+            'email_required' => array_search('primary_email', $required) !== false,
+        ]);
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -47,11 +59,17 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        $all_rules = Platform::profileFields()->getValidationRules();
+        $reg_rules = [
+            'password' => 'required|min:6|confirmed'
+        ];
+        if($all_rules['login']) {
+            $reg_rules['login'] = $all_rules['login'];
+        }
+        if($all_rules['primary_email']) {
+            $reg_rules['primary_email'] = $all_rules['primary_email'];
+        }
+        return Validator::make($data, $reg_rules);
     }
 
     /**
@@ -63,12 +81,18 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $locale = session()->has('locale') ? session('locale') : '';
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+        $user = User::create([
+            'login' => $data['login'],
             'password' => bcrypt($data['password']),
-            'locale' => $locale
+            'language' => $locale
         ]);
+        if($data['primary_email']) {
+            $user->emails()->save(new Email([
+                'role' => 'primary',
+                'email' => $data['primary_email']
+            ]));
+        }
+        return $user;
     }
 
     public function registered($request, $user) {
