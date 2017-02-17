@@ -15,7 +15,7 @@ class ClientsSeeder extends Seeder
         'profile_fields' => [
             'login',
             'primary_email',
-            'secondary_email'
+            'secondary_email',
             'first_name',
             'last_name',
             'language',
