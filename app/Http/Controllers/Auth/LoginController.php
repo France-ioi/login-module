@@ -47,6 +47,9 @@ class LoginController extends Controller
     {
         $user->last_login = new \DateTime();
         $user->save();
+        if($user->admin) {
+            return redirect('/admin');
+        }
     }
 
 

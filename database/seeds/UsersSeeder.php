@@ -16,7 +16,8 @@ class UsersSeeder extends Seeder
         // admin user
         $user = \App\User::create([
             'login' => 'admin',
-            'password' => $pwd
+            'password' => $pwd,
+            'admin' => true
         ]);
         $user->emails()->save(new \App\Email([
             'email' => 'admin@admin.admin',

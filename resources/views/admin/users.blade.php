@@ -6,6 +6,14 @@
             <label>User ID</label>
             <input type="text" class="form-control" name="id" value="{{ request()->input('id') }}"/>
         </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" name="email" value="{{ request()->input('email') }}"/>
+        </div>
+        <div class="form-group">
+            <label>Login</label>
+            <input type="text" class="form-control" name="login" value="{{ request()->input('login') }}"/>
+        </div>
         <button type="submit" class="btn btn-primary">Find</button>
     </form>
 

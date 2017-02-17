@@ -10,13 +10,20 @@ class UsersController extends Controller
 {
 
     public function index(Request $request) {
-        if($request->has('id')) {
-            $users = User::where('id', $request->input('id'))->paginate();
-        } else {
-            $users = User::paginate();
+        $query = User::query();
+        if($request->get('id')) {
+            $query->where('id', $request->get('id'));
+        }
+        if($request->get('login')) {
+            $query->where('login', $request->get('login'));
+        }
+        if($request->get('email')) {
+            $query->whereHas('emails', function($query) use ($request) {
+                $query->where('email', $request->get('email'));
+            });
         }
         return view('admin.users', [
-            'users' => $users
+            'users' => $query->paginate()
         ]);
     }
 

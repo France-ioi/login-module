@@ -28,6 +28,10 @@ class User extends Authenticatable
         'secondary_email'
     ];
 
+    protected $casts = [
+        'admin' => 'boolean',
+    ];
+
     protected static function boot() {
         static::creating(function($model) {
             $model->last_login = new \DateTime();
