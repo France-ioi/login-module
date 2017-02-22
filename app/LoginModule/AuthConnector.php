@@ -56,4 +56,10 @@ class AuthConnector
     }
 
 
+    static function disconnect($provider) {
+        if(Auth::check()) {
+            Auth::user()->auth_connections()->where('provider', $provider)->delete();
+        }        
+    }
+
 }

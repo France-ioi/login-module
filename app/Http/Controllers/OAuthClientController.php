@@ -42,4 +42,10 @@ class OAuthClientController extends Controller
         $url = Manager::provider($provider)->getLogoutURL(Auth::user());
         return $url ? redirect($url) : response()->json(['error' => 'empty_url']);;
     }
+
+
+    public function remove($provider) {
+        AuthConnector::disconnect($provider);
+        return redirect('/account');
+    }
 }

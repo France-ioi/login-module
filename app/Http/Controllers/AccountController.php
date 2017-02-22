@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use App\OAuthClient\Manager;
 
 class AccountController extends Controller
 {
@@ -11,7 +13,9 @@ class AccountController extends Controller
     {
         return view('account.index', [
             'redirect_uri' => $request->get('redirect_uri'),
-            'user' => \Auth::user()
+            'user' => Auth::user(),
+            'providers' => Manager::list(),
+            'connected' => Auth::user()->auth_connections()->get()->pluck('id', 'provider')->toArray()
         ]);
     }
 
@@ -19,9 +23,9 @@ class AccountController extends Controller
     public function updateAccount(Request $request) {
         $this->validate($request, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.\Auth::user()->id
+            'email' => 'required|email|max:255|unique:users,email,'.Auth::user()->id
         ]);
-        \Auth::user()->update($request->only(['name', 'email']));
+        Auth::user()->update($request->only(['name', 'email']));
         return $this->getRedirectAfterUpdate($request);
     }
 
