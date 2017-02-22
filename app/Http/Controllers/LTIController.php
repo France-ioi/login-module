@@ -7,6 +7,7 @@ use App\LoginModule\Shared\TokenGenerator;
 use App\LoginModule\Shared\TokenParser;
 use App\Traits\AuthConnector;
 use App\LoginModule\LoginGenerator;
+use App\LoginModule\Keys;
 use Validator;
 use Auth;
 use App\Client;
@@ -85,7 +86,7 @@ class LTIController extends Controller
    	    ];
         $generator = new TokenGenerator(
             config('login_module.name'),
-            config('login_module.private_key')
+            Keys::getPrivate()
         );
 	    return $generator->generateToken($params);
     }

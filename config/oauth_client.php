@@ -9,7 +9,10 @@
 
         'google' => [
             'client_id' => env('GOOGLE_ID'),
-            'client_secret' => env('GOOGLE_SECRET')
+            'client_secret' => env('GOOGLE_SECRET'),
+            'openid' => [
+                'realm' => env('GOOGLE_OPENID_REALM', ''),
+            ]
         ],
 
         'pms' => [

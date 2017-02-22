@@ -19,6 +19,9 @@ return [
         'teacher' => 'Teacher',
         'other' => 'Other'
     ],
+    'school_grade' => 'School grade',
+    'ministry_of_education' => 'What country\'s ministry of education is your school attached to',
+    'ministry_of_education_fr' => 'in a public school or school under contract with the french ministry of education',
     'birthday'  => 'Birthday',
     'presentation'  => 'Presentation',
 ];

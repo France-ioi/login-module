@@ -12,6 +12,7 @@ class ClientsSeeder extends Seeder
         'revoked' => false,
         'name' => 'Dev test platform',
         'secret' => '1AtKfSc7KbgIo8GDCI31pA9laP7pFoBqSg3RtVHq',
+        'public_key' => '',
         'profile_fields' => [
             'login',
             'primary_email',

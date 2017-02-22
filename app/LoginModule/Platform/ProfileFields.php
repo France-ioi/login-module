@@ -35,8 +35,13 @@ class ProfileFields
         }
         if($this->user) {
             $res = [];
+            $role = $this->user->getAttribute('role');
+            $country_code = $this->user->getAttribute('country_code');
             foreach($this->client->profile_fields as $field) {
-                if(empty($this->user->getAttribute($field))) {
+                $value = $this->user->getAttribute($field);
+                if(empty($value)) {
+                    if($field == 'school_grade' && $role != 'student') continue;
+                    if($field == 'ministry_of_education' && $role == 'teacher' && $country_code == 'fr') continue;
                     $res[] = $field;
                 }
             }
@@ -61,6 +66,9 @@ class ProfileFields
             'primary_phone' => 'required',
             'secondary_phone' => 'required',
             'role' => 'in:'.implode(',', array_keys(trans('profile.roles'))),
+            'school_grade' => 'required_if:role,student',
+            'ministry_of_education' => 'required_if:role,teacher',
+            //'ministry_of_education_fr' => 'required_if:role,teacher|required_if:country_code,fr',
             'birthday'  => 'required|date_format:"Y-m-d"',
             'presentation'  => 'required',
         ];
@@ -68,7 +76,9 @@ class ProfileFields
         $required = $this->getEmpty();
         $res = [];
         foreach($required as $field) {
-            $res[$field] = $all[$field];
+            if(isset($all[$field])) {
+                $res[$field] = $all[$field];
+            }
         }
 
         // bugfix for laravel validation bug

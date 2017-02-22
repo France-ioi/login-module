@@ -72,13 +72,14 @@
             if($token = $this->getToken($client, $request->get('code'))) {
                 if($graph = $this->getGraph($client, $token)) {
                     list($first_name, $last_name) = explode(' ', $graph->getField('name', ''), 2);
+                    $id = $graph->getField('id');
                     return  [
-                        'provider' => 'facebook',
-                        'uid' => $graph->getField('id'),
-                        'email' => $graph->getField('email', ''),
+                        'uid' => $id,
+                        'access_token' => $token->getValue(),
+                        'email' => $graph->getField('email', null),
                         'first_name' => $first_name,
                         'last_name' => $last_name,
-                        'access_token' => $token->getValue()
+                        'picture' => 'http://graph.facebook.com/'.$id.'/picture'
                     ];
                 }
             }

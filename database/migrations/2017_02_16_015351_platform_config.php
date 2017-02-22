@@ -16,6 +16,7 @@ class PlatformConfig extends Migration
         Schema::table('oauth_clients', function (Blueprint $table) {
             $table->text('profile_fields')->nallable();
             $table->text('auth_order')->nallable();
+            $table->text('public_key')->nallable();
         });
     }
 
@@ -29,6 +30,7 @@ class PlatformConfig extends Migration
         Schema::table('oauth_clients', function (Blueprint $table) {
             $table->dropColumn('profile_fields');
             $table->dropColumn('auth_order');
+            $table->dropColumn('public_key');
         });
     }
 }

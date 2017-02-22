@@ -11,7 +11,9 @@
 
 
         private function getClient() {
-            $client = new \Google_Client();
+            $client = new \Google_Client([
+                'openid.realm' => config('oauth_client.google.openid.realm')
+            ]);
             $client->setClientId(config('oauth_client.google.client_id'));
             $client->setClientSecret(config('oauth_client.google.client_secret'));
             $client->setScopes(['openid', 'profile', 'email']);
@@ -41,14 +43,14 @@
             }
             $client->setAccessToken($token);
             $token_data = $client->verifyIdToken();
-
             return [
-                'provider' => 'google',
                 'uid' => array_get($token_data, 'sub'),
+                'uid_old' => array_get($token_data, 'openid_id'),
+                'access_token' => $token['access_token'],
                 'email' => array_get($token_data, 'email'),
                 'first_name' => array_get($token_data, 'given_name'),
                 'last_name' => array_get($token_data, 'family_name'),
-                'access_token' => $token['access_token']
+                'picture' => array_get($token_data, 'picture'),
             ];
         }
 

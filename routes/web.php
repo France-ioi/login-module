@@ -7,6 +7,7 @@ Route::get('/login_email', 'Auth\LoginController@showLoginEmailForm');
 Route::get('/oauth_client/redirect/{provider}', 'OAuthClientController@redirect');
 Route::get('/oauth_client/callback/{provider}', ['uses' => 'OAuthClientController@callback', 'as' => 'oauth_client_callback']);
 Route::get('/oauth_client/logout/{provider}', 'OAuthClientController@logout');
+Route::get('/oauth_client/email_exists', 'OAuthClientController@emailExists');
 Route::get('/lti', 'LTIController@login');
 
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);

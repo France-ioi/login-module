@@ -21,8 +21,11 @@ class ProfileController extends Controller
 
     public function update(Request $request) {
         $rules = Platform::profileFields(Auth::user())->getValidationRules();
+        if($request->input('country_code') == 'fr') {
+            unset($rules['ministry_of_education']);
+        }
         $this->validate($request, $rules);
-        Auth::user()->fill($request->except(['primary_email', 'secondary_email']));
+        Auth::user()->fill($request->all());
         Auth::user()->save();
         if($request->has('primary_email')) {
             if($primary = Auth::user()->emails()->primary()->first()) {

@@ -42,12 +42,11 @@
                 $token = $client->getAccessToken('authorization_code', [ 'code' => $request->get('code') ]);
                 $owner = $client->getResourceOwner($token)->toArray();
                 return [
-                    'provider' => 'pms',
                     'uid' => array_get($owner, 'nickName'),
+                    'access_token' => $token->getToken(),
                     'email' => array_get($owner, 'eMail'),
                     'first_name' => array_get($owner, 'firstName'),
                     'last_name' => array_get($owner, 'lastName'),
-                    'access_token' => $token->getToken()
                 ];
             } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
                 return null;

@@ -6,39 +6,52 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Email;
 use App\AuthConnection;
+use Auth;
 
 class AuthConnector
 {
 
 
-    static function connect($user_data) {
-        if($connection = AuthConnection::where('uid', $user_data['uid'])->where('provider', $user_data['provider'])->with('user')->first()) {
-            $connection->user->update($user_data);
+    static function connect($auth) {
+        if($connection = self::findConnection($auth)) {
+            Auth::login($connection->user);
             $connection->is_active = true;
             $connection->save();
-            return $connection->user;
+        } else {
+            $connection = new AuthConnection($auth);
+            $connection->is_active = true;
+            if(Auth::check()) {
+                Auth::user()->auth_connections()->save($connection);
+            } else {
+                if(isset($auth['email']) && Email::where('email', $auth['email'])->first()) {
+                    return false;
+                }
+                $user = User::create($auth);
+                $user->auth_connections()->save($connection);
+                if(isset($auth['email'])) {
+                    $user->emails()->save(new Email([
+                        'role' => 'primary',
+                        'email' => $auth['email']
+                    ]));
+                }
+                Auth::login($user);
+            }
         }
-
-        if($email = Email::where('email', $user_data['email'])->first()) {
-            return $email->user;
-        }
-
-        $user = User::create([
-            'first_name' => $user_data['first_name'],
-            'last_name' => $user_data['last_name']
-        ]);
-        $connection = new AuthConnection($user_data);
-        $connection->is_active = true;
-        $user->auth_connections()->save($connection);
-
-        if($user_data['email']) {
-            $user->emails()->save(new Email([
-                'role' => 'primary',
-                'email' => $user_data['email']
-            ]));
-        }
-
-        return $user;
+        return redirect()->intended('/account');
     }
+
+
+    static function findConnection($auth) {
+        // replace old google id
+        if(isset($auth['uid_old']) && $auth['provider'] == 'google') {
+            if($connection = AuthConnection::where('uid', $auth['uid_old'])->where('provider', $auth['provider'])->first()) {
+                $connection->uid = $auth['uid'];
+                $connection->save();
+            }
+            return $connection;
+        }
+        return AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
+    }
+
 
 }

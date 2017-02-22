@@ -52,6 +52,24 @@
     {!! BootForm::select('role', trans('profile.role'), trans('profile.roles')) !!}
 @endpush
 
+@push('ministry_of_education_fr')
+    <div id="box_ministry_of_education_fr" class="collapse">
+        {!! BootForm::checkbox('ministry_of_education_fr', trans('profile.ministry_of_education_fr')) !!}
+    </div>
+@endpush
+
+@push('ministry_of_education')
+    <div id="box_ministry_of_education" class="collapse">
+        {!! BootForm::text('ministry_of_education', trans('profile.ministry_of_education')) !!}
+    </div>
+@endpush
+
+@push('school_grade')
+    <div id="box_school_grade" class="collapse">
+        {!! BootForm::text('school_grade', trans('profile.school_grade')) !!}
+    </div>
+@endpush
+
 @push('birthday')
     {!! BootForm::date('birthday', trans('profile.birthday')) !!}
 @endpush
@@ -62,10 +80,19 @@
 
 
 @section('content')
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="panel panel-default">
         <div class="panel-heading">Profile</div>
         <div class="panel-body">
-            {!! BootForm::open(['url' => '/profile', 'method' => 'post']) !!}
+            {!! BootForm::open(['url' => '/profile', 'method' => 'post', 'id' => 'profile']) !!}
                 @foreach($fields as $field)
                     @stack($field)
                 @endforeach
@@ -73,4 +100,31 @@
             {!! BootForm::close() !!}
         </div>
     </div>
+
+    <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#birthday').datepicker({ format: 'yyyy-mm-dd' });
+
+            function updateHidden() {
+                $('#box_ministry_of_education_fr').hide();
+                $('#box_ministry_of_education').hide();
+                $('#box_school_grade').hide();
+                var role = $('#role').val();
+                if(role == 'student') {
+                    $('#box_school_grade').show();
+                } else if(role == 'teacher') {
+                    var country_code = $('#country_code').val();
+                    if(country_code == 'fr') {
+                        $('#box_ministry_of_education_fr').show();
+                    } else {
+                        $('#box_ministry_of_education').show();
+                    }
+                }
+            }
+            $('#role').change(updateHidden);
+            $('#language').change(updateHidden);
+            updateHidden();
+        })
+    </script>
 @endsection

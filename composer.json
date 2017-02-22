@@ -13,6 +13,8 @@
         "laravel/passport": "dev-master",
         "laravel/tinker": "~1.0",
         "league/oauth2-client": "^2.2",
+        "namshi/jose": "^7.2",
+        "spomky-labs/jose": "^6.1",
         "watson/bootstrap-form": "^1.1"
     },
     "require-dev": {

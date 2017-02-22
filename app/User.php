@@ -11,8 +11,24 @@ class User extends Authenticatable
     use Notifiable, HasApiTokens;
 
 
-    protected $guarded = [
-        'is_admin'
+    protected $fillable = [
+        'login',
+        'language',
+        'first_name',
+        'last_name',
+        'country_code',
+        'address',
+        'city',
+        'zipcode',
+        'primary_phone',
+        'secondary_phone',
+        'role',
+        'school_grade',
+        'ministry_of_education',
+        'ministry_of_education_fr',
+        'birthday',
+        'presentation',
+        'picture'
     ];
 
     protected $hidden = [
@@ -30,7 +46,9 @@ class User extends Authenticatable
 
     protected $casts = [
         'admin' => 'boolean',
+        'ministry_of_education_fr' => 'boolean'
     ];
+
 
     protected static function boot() {
         static::creating(function($model) {
@@ -40,11 +58,6 @@ class User extends Authenticatable
 
 
     public function routeNotificationForMail() {
-        return $this->primary_email;
-    }
-
-
-    public function getEmailForPasswordReset() {
         return $this->primary_email;
     }
 
