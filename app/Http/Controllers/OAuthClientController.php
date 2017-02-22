@@ -20,8 +20,8 @@ class OAuthClientController extends Controller
     public function callback($provider, Request $request) {
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
-            if($res = AuthConnector::connect($auth)) {
-                return $res;
+            if(AuthConnector::connect($auth)) {
+                return redirect()->intended('/account');
             }
             Session::put('auth_connection', $auth);
             return redirect('/oauth_client/email_exists');

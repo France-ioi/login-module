@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\LoginModule\Shared\TokenGenerator;
 use App\LoginModule\Shared\TokenParser;
-use App\Traits\AuthConnector;
+use App\LoginModule\AuthConnector;
 use App\LoginModule\LoginGenerator;
 use App\LoginModule\Keys;
 use Validator;
@@ -15,7 +15,6 @@ use App\Client;
 class LTIController extends Controller
 {
 
-    use AuthConnector;
 
     public function login(Request $request) {
         $validator = $this->getRequestValidator($request);
@@ -37,11 +36,12 @@ class LTIController extends Controller
         if(!isset($params['loginData'])) {
 	        die('cannot find loginData array in token');
         }
-        $user = $this->getUser($params['loginData'], $platform);
-        Auth::login($user);
-        $token = $this->getUserToken($user);
-        $url = $this->getRedirect($request, $token);
-        return redirect($url);
+        if($user = $this->getUser($params['loginData'], $platform)) {
+            $token = $this->getUserToken($user);
+            $url = $this->getRedirect($request, $token);
+            return redirect($url);
+        }
+        return redirect()->route('login');
     }
 
 
@@ -68,14 +68,15 @@ class LTIController extends Controller
             'ups_'
         );
 
-        $user_data = [
+        $auth = [
             'uid' => $login_data['lti_consumer_key'].'::'.$login_data['lti_user_id'],
             'provider' => 'lti',
             'email' => $login_data['email'],
-            'name' => $login_data['first_name'].' '.$login_data['last_name'],
+            'first_name' => $login_data['first_name'],
+            'last_name' => $login_data['last_name'],
             'login' => $login
         ];
-        return $this->authConnect($user_data);
+        return AuthConnector::connect($auth);
     }
 
 

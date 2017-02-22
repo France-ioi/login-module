@@ -17,11 +17,13 @@ class AuthConnector
             Auth::login($connection->user);
             $connection->is_active = true;
             $connection->save();
+            $user = $connection->user;
         } else {
             $connection = new AuthConnection($auth);
             $connection->is_active = true;
             if(Auth::check()) {
-                Auth::user()->auth_connections()->save($connection);
+                $user = Auth::user();
+                $user->auth_connections()->save($connection);
             } else {
                 if(isset($auth['email']) && Email::where('email', $auth['email'])->first()) {
                     return false;
@@ -37,7 +39,7 @@ class AuthConnector
                 Auth::login($user);
             }
         }
-        return redirect()->intended('/account');
+        return $user;
     }
 
 
