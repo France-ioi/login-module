@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\LoginModule\Badges;
 
 class UsersController extends Controller
 {
@@ -29,7 +30,12 @@ class UsersController extends Controller
 
 
     public function delete($id) {
-        User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
+        $res = Badges::removeUserBadges($user);
+        if(!$res['success']) {
+            return $res;
+        }        
+        $user->delete();
         return redirect()->back()->with('message', 'User deleted');
     }
 
