@@ -29,7 +29,9 @@ Route::group(['middleware' => ['auth']], function() {
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin'], 'namespace' => 'Admin'], function() {
     Route::get('/', 'DashboardController@index');
     Route::get('/users', 'UsersController@index');
-    Route::get('/users/{id}/password', 'UsersController@show_password');
-    Route::post('/users/{id}/password', 'UsersController@update_password');
+    Route::get('/users/{id}/password', 'UsersController@showPassword');
+    Route::post('/users/{id}/password', 'UsersController@updatePassword');
+    Route::get('/users/{id}/emails', 'UsersController@showEmails');
+    Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
     Route::delete('/users/{id}', 'UsersController@delete');
 });

@@ -35,6 +35,7 @@
                     <td>{{ $user->role }}</td>
                     <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                     <td>
+                        <a href="{{ url('/admin/users/'.$user->id.'/emails') }}" class="btn btn-xs btn-primary">Email</a>
                         <a href="{{ url('/admin/users/'.$user->id.'/password') }}" class="btn btn-xs btn-primary">Password</a>
                         <form action="{{ url('/admin/users/'.$user->id) }}" method="POST" style="display: inline">
                             {{ csrf_field() }}

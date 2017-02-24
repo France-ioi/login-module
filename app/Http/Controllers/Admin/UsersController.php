@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Email;
 use App\LoginModule\Badges;
 use App\LoginModule\Platform\BadgeApi;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class UsersController extends Controller
 {
+
+    use SendsPasswordResetEmails;
 
     public function index(Request $request) {
         $query = User::query();
@@ -33,21 +37,33 @@ class UsersController extends Controller
     public function delete($id) {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->back()->with('message', 'User deleted');
+        return redirect()->back()->with('status', 'User deleted');
     }
 
 
-    public function show_password($id) {
+    public function showPassword($id) {
         return view('admin.user_password', [
             'user' => User::findOrFail($id)
         ]);
     }
 
-    public function update_password($id, Request $request) {
+    public function updatePassword($id, Request $request) {
         User::findOrFail($id)->update([
             'password' => \Hash::make($request->input('password'))
         ]);
         return redirect('/admin/users')->with('message', 'Password changed');
+    }
+
+
+    public function showEmails($id) {
+        $user = User::with('emails')->findOrFail($id);
+        return view('admin.user_emails', [
+            'user' => $user
+        ]);
+    }
+
+    public function sendResetLink(Request $request) {
+        return $this->sendResetLinkEmail($request);
     }
 
 }
