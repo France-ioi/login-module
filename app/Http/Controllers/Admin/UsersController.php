@@ -51,7 +51,7 @@ class UsersController extends Controller
         User::findOrFail($id)->update([
             'password' => \Hash::make($request->input('password'))
         ]);
-        return redirect('/admin/users')->with('message', 'Password changed');
+        return redirect('/admin/users')->with('status', 'Password changed');
     }
 
 
