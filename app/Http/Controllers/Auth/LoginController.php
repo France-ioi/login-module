@@ -57,9 +57,16 @@ class LoginController extends Controller
     public function showLoginForm() {
         $auth_order = PlatformRequest::authOrder()->get();
         $default_order = array_merge(['login'], Manager::providers());
+        if($auth_order) {
+            $auth_visible = $auth_order;
+            $auth_hidden = array_diff($default_order, $auth_order);
+        } else {
+            $auth_visible = $default_order;
+            $auth_hidden = [];
+        }
         return view('auth.login', [
-            'auth_visible' => $auth_order,
-            'auth_hidden' => array_diff($default_order, $auth_order),
+            'auth_visible' => $auth_visible,
+            'auth_hidden' => $auth_hidden,
             'badge_required' => PlatformRequest::badge()->url()
         ]);
     }

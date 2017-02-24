@@ -11,7 +11,7 @@ class AuthOrder {
     }
 
     public function get() {
-        return $this->client && is_array($this->client->auth_order) ? $this->client->auth_order : config('auth.default_order');
+        return $this->client && is_array($this->client->auth_order) ? $this->client->auth_order : null;
     }
 
 }
