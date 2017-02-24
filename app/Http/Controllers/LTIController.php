@@ -83,7 +83,7 @@ class LTIController extends Controller
     private function getUserToken($user, $generator) {
         $tokenParams = [
       	    'idUser' => $user['id'],
-      	    'sLogin' => $user['login'] //why?
+      	    'sLogin' => $user['login']
    	    ];
         $generator = new TokenGenerator(
             config('login_module.name'),

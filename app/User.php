@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use App\LoginModule\Platform\BadgeApi;
 
 class User extends Authenticatable
 {
@@ -12,6 +13,7 @@ class User extends Authenticatable
 
 
     protected $fillable = [
+        'password',
         'login',
         'language',
         'first_name',
@@ -53,6 +55,12 @@ class User extends Authenticatable
     protected static function boot() {
         static::creating(function($model) {
             $model->last_login = new \DateTime();
+        });
+        static::deleting(function($model) {
+            $badges = $model->badges()->where('do_not_possess', 0)->get();
+            foreach($badges as $badge) {
+                BadgeApi::remove($badge->url, $badge->code);
+            }
         });
     }
 

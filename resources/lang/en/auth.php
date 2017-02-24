@@ -47,6 +47,6 @@ return [
 
     'change_pwd_header' => 'Password',
     'pwd_new' => 'New password',
-    'btn_pwd_change' => 'Change password'
+    'btn_pwd_change' => 'Change password',
 
 ];

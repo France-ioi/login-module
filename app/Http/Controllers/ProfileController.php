@@ -5,22 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
-use App\LoginModule\Platform\Platform;
+use App\LoginModule\Platform\PlatformRequest;
 use App\Email;
+use Session;
 
 class ProfileController extends Controller
 {
 
 
     public function index(Request $request) {
+        if(!$values = PlatformRequest::badge()->restoreUser()) {
+            $values = [];
+        }
         return view('profile.index', [
-            'fields' => Platform::profileFields(Auth::user())->getEmpty()
+            'fields' => PlatformRequest::profileFields()->getEmpty(),
+            'values' => $values
         ]);
     }
 
 
     public function update(Request $request) {
-        $rules = Platform::profileFields(Auth::user())->getValidationRules();
+        $rules = PlatformRequest::profileFields()->getValidationRules();
         if($request->input('country_code') == 'fr') {
             unset($rules['ministry_of_education']);
         }

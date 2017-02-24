@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use App\LoginModule\Platform\Platform;
+use App\LoginModule\Platform\PlatformRequest;
+use App\OAuthClient\Manager;
 
 class LoginController extends Controller
 {
@@ -43,8 +44,8 @@ class LoginController extends Controller
         return 'login';
     }
 
-    protected function authenticated(Request $request, $user)
-    {
+
+    protected function authenticated(Request $request, $user) {
         $user->last_login = new \DateTime();
         $user->save();
         if($user->admin) {
@@ -53,18 +54,18 @@ class LoginController extends Controller
     }
 
 
-    public function showLoginForm()
-    {
-        $auth_order = Platform::authOrder()->get();
+    public function showLoginForm() {
+        $auth_order = PlatformRequest::authOrder()->get();
+        $default_order = array_merge(['login'], Manager::providers());
         return view('auth.login', [
             'auth_visible' => $auth_order,
-            'auth_hidden' => array_diff(config('auth.default_order'), $auth_order)
+            'auth_hidden' => array_diff($default_order, $auth_order),
+            'badge_required' => PlatformRequest::badge()->url()
         ]);
     }
 
 
-    public function showLoginEmailForm()
-    {
+    public function showLoginEmailForm() {
         return view('auth.login_email');
     }
 

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Email;
+use App\Badge;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\LoginModule\Platform\Platform;
+use App\LoginModule\Platform\PlatformRequest;
+use Session;
 
 class RegisterController extends Controller
 {
@@ -44,10 +46,14 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        $required = Platform::profileFields()->getRequired();
+        $required = PlatformRequest::profileFields()->getRequired();
+        if(!$values = PlatformRequest::badge()->restoreUser()) {
+            $values = [];
+        }
         return view('auth.register', [
             'login_required' => array_search('login', $required) !== false,
             'email_required' => array_search('primary_email', $required) !== false,
+            'values' => $values
         ]);
     }
 
@@ -59,7 +65,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $all_rules = Platform::profileFields()->getValidationRules();
+        $all_rules = PlatformRequest::profileFields()->getValidationRules();
         $reg_rules = [
             'password' => 'required|min:6|confirmed'
         ];
@@ -86,10 +92,16 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'language' => $locale
         ]);
-        if($data['primary_email']) {
+        if(isset($data['primary_email'])) {
             $user->emails()->save(new Email([
                 'role' => 'primary',
                 'email' => $data['primary_email']
+            ]));
+        }
+        if($badge = PlatformRequest::badge()->restore()) {
+            $user->badges()->save(new Badge([
+                'code' => $badge['code'],
+                'url' => $badge['url']
             ]));
         }
         return $user;

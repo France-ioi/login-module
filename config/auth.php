@@ -4,13 +4,6 @@ return [
 
     'master_hash_md5' => env('AUTH_MASTER_HASH_MD5'),
 
-    'default_order' => [
-        'login',
-        'google',
-        'facebook',
-        'pms'
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults

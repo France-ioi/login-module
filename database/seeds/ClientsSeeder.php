@@ -42,11 +42,13 @@ class ClientsSeeder extends Seeder
     {
         \App\Client::create(array_merge($this->defaults, [
             'id' => 1,
-            'redirect' => 'http://login-module-example-client.dev/callback_oauth.php'
+            'redirect' => 'http://login-module-example-client.dev/callback_oauth.php',
+            'badge_url' => 'http://login-module-example-client.dev/dummy_badge.php',
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 2,
-            'redirect' => 'http://login-module-example-client.mobydimk.space/callback_oauth.php'
+            'redirect' => 'http://login-module-example-client.mobydimk.space/callback_oauth.php',
+            'badge_url' => 'http://login-module-example-client.mobydimk.space/dummy_badge.php',
         ]));
     }
 

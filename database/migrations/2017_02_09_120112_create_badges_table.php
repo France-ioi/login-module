@@ -18,8 +18,8 @@ class CreateBadgesTable extends Migration
             $table->timestamps();
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('url', 63);
-            $table->text('infos');
+            $table->string('url')->index();
+            $table->string('code')->nullable();
             $table->tinyInteger('do_not_possess')->default(0);
         });
     }
