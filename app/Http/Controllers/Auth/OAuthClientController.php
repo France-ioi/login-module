@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\OAuthClient\Manager;
 use App\LoginModule\AuthConnector;
 use Session;
@@ -35,12 +36,6 @@ class OAuthClientController extends Controller
             return view('oauth_client.email_exists', $auth_connection);
         }
         return redirect()->route('login');
-    }
-
-
-    public function logout($provider) {
-        $url = Manager::provider($provider)->getLogoutURL(Auth::user());
-        return $url ? redirect($url) : response()->json(['error' => 'empty_url']);;
     }
 
 

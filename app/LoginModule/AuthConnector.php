@@ -15,12 +15,12 @@ class AuthConnector
     static function connect($auth) {
         if($connection = self::findConnection($auth)) {
             Auth::login($connection->user);
-            $connection->is_active = true;
+            $connection->active = true;
             $connection->save();
             $user = $connection->user;
         } else {
             $connection = new AuthConnection($auth);
-            $connection->is_active = true;
+            $connection->active = true;
             if(Auth::check()) {
                 $user = Auth::user();
                 $user->auth_connections()->save($connection);
@@ -59,7 +59,7 @@ class AuthConnector
     static function disconnect($provider) {
         if(Auth::check()) {
             Auth::user()->auth_connections()->where('provider', $provider)->delete();
-        }        
+        }
     }
 
 }

@@ -87,15 +87,10 @@
         }
 
 
-        public function getLogoutURL(\App\User $user) {
-            $connection = $user->auth_connections()->where('provider', 'facebook')->first();
-            if($connection) {
-                $client = $this->getClient();
-                $helper = $client->getRedirectLoginHelper();
-                $next = '/'; //TODO
-                return $helper->getLogoutUrl($connection->access_token, $next);
-            }
-            return null;
+        public function getLogoutURL($access_token, $redirect_url) {
+            $client = $this->getClient();
+            $helper = $client->getRedirectLoginHelper();
+            return $helper->getLogoutUrl($access_token, $redirect_url);
         }
 
     }

@@ -6,6 +6,6 @@
 
         public function getAuthorizationURL();
         public function callback(\Illuminate\Http\Request $request);
-        public function getLogoutURL(\App\User $user);
+        public function getLogoutURL($access_token, $redirect_url);
 
     }

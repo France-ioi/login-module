@@ -10,21 +10,23 @@
 
     class Manager {
 
-        const available_providers = [
+        const PROVIDERS = [
             'facebook' => FacebookProvider::class,
             'google' => GoogleProvider::class,
             'pms' => PMSProvider::class
         ];
 
-        const default_provider = DefaultProvider::class;
+        const DEFAULT_PROVIDER = DefaultProvider::class;
+
+        const SUPPORT_LOGOUT = ['facebook', 'google'];
 
 
         static function providers() {
-            return array_keys(self::available_providers);
+            return array_keys(self::PROVIDERS);
         }
 
         static function provider($name) {
-            $provider = self::available_providers[$name] ? self::available_providers[$name] : self::default_provider;
+            $provider = self::PROVIDERS[$name] ? self::PROVIDERS[$name] : self::DEFAULT_PROVIDER;
             return new $provider;
         }
 

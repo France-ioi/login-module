@@ -1,16 +1,20 @@
 <?php
 
+Route::get('/', function() { return redirect('login'); });
 Auth::routes();
-Route::get('/logout', 'Auth\LoginController@getLogout');
+Route::get('/logout', 'Auth\LogoutController@getLogout');
+Route::post('/logout_start', 'Auth\LogoutController@logoutStart');
+Route::get('/logout_loop', 'Auth\LogoutController@logoutLoop');
+Route::get('/logout_finish', 'Auth\LogoutController@logoutFinish');
 Route::get('/login_email', 'Auth\LoginController@showLoginEmailForm');
 Route::post('/badge/verify', 'BadgeController@verify');
 
-Route::get('/oauth_client/redirect/{provider}', 'OAuthClientController@redirect');
-Route::get('/oauth_client/callback/{provider}', ['uses' => 'OAuthClientController@callback', 'as' => 'oauth_client_callback']);
-Route::get('/oauth_client/logout/{provider}', 'OAuthClientController@logout');
-Route::post('/oauth_client/remove/{provider}', ['uses' => 'OAuthClientController@remove', 'middleware' => 'auth']);
-Route::get('/oauth_client/email_exists', 'OAuthClientController@emailExists');
-Route::get('/lti', 'LTIController@login');
+Route::get('/oauth_client/redirect/{provider}', 'Auth\OAuthClientController@redirect');
+Route::get('/oauth_client/callback/{provider}', ['uses' => 'Auth\OAuthClientController@callback', 'as' => 'oauth_client_callback']);
+Route::post('/oauth_client/remove/{provider}', ['uses' => 'Auth\OAuthClientController@remove', 'middleware' => 'auth']);
+Route::get('/oauth_client/email_exists', 'Auth\OAuthClientController@emailExists');
+Route::get('/oauth_client/logout/{provider}', 'Auth\OAuthClientController@logout');
+Route::get('/lti', 'Auth\LTIController@login');
 
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);
 

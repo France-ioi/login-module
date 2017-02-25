@@ -4,29 +4,15 @@
     <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.logout_header')</div>
         <div class="panel-body">
-            <form role="form" method="POST" action="{{ route('logout') }}">
-                {{ csrf_field() }}
-                <input type="hidden" name="redirect_uri" value="{{ $redirect_uri }}"?>
+            {!! BootForm::open(['url' => '/logout_start']) !!}
                 @if(count($active_connections) > 0)
-                    <p><strong>
-                        @lang('auth.connections_title')
-                    </strong></p>
+                    <p>@lang('auth.logout_hint')</p>
                     @foreach($active_connections as $connection)
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="connection{{ $connection->id }}" checked="checked" disabled="disabled"> {{ $connection->provider }}
-                                </label>
-                            </div>
-                        </div>
+                        {!! BootForm::checkbox('providers[]', trans('auth_connections')[$connection->provider], $connection->provider, true) !!}
                     @endforeach
                 @endif
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        @lang('auth.btn_logout')
-                    </button>
-                </div>
-            </form>
+                {!! BootForm::submit(trans('auth.btn_logout')) !!}
+            {!! BootForm::close() !!}
         </div>
     </div>
 @endsection

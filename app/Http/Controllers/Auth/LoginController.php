@@ -36,7 +36,7 @@ class LoginController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('guest', ['except' => ['logout', 'getLogout']]);
+        $this->middleware('guest', ['except' => ['logout']]);
     }
 
 
@@ -74,35 +74,6 @@ class LoginController extends Controller
 
     public function showLoginEmailForm() {
         return view('auth.login_email');
-    }
-
-
-    public function getLogout(Request $request) {
-        if(!\Auth::check()) {
-            return $this->getRedirectAfterLogout($request);
-        }
-        return view('auth.logout', [
-            'redirect_uri' => $request->get('redirect_uri'),
-            'active_connections' => \Auth::user()->auth_connections()->where('is_active', 1)->get()
-        ]);
-    }
-
-
-    public function logout(Request $request) {
-        //TODO: active connections
-        $this->guard()->logout();
-        $request->session()->flush();
-        $request->session()->regenerate();
-        return $this->getRedirectAfterLogout($request);
-    }
-
-
-    private function getRedirectAfterLogout($request) {
-        if($request->has('redirect_uri')) {
-            return redirect($request->input('redirect_uri'));
-        } else {
-            return redirect(route('login'));
-        }
     }
 
 }

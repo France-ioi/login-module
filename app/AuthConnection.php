@@ -11,12 +11,16 @@ class AuthConnection extends Model
         'provider',
         'uid',
         'user_id',
-        'is_active',
+        'active',
         'access_token'
     ];
 
     protected $visible = [
         'provider'
+    ];
+
+    protected $casts = [
+        'active' => 'boolean'
     ];
 
     public function user() {
