@@ -24,4 +24,11 @@
             </div>
         </div>
     @endif
+    @if(session('error'))
+        <div class="container">
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
 @endsection

@@ -59,7 +59,9 @@ class User extends Authenticatable
         static::deleting(function($model) {
             $badges = $model->badges()->where('do_not_possess', 0)->get();
             foreach($badges as $badge) {
-                BadgeApi::remove($badge->url, $badge->code);
+                if(!BadgeApi::remove($badge->url, $badge->code)) {
+                    throw new Exception('Error occured during deleting badge '.$badge->url);
+                }
             }
         });
     }

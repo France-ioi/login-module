@@ -36,7 +36,11 @@ class UsersController extends Controller
 
     public function delete($id) {
         $user = User::findOrFail($id);
-        $user->delete();
+        try {
+            $user->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
         return redirect()->back()->with('status', 'User deleted');
     }
 
