@@ -37,7 +37,7 @@ return [
     'btn_pwd_reset' => 'Reset password',
 
     'logout_header' => 'Logout',
-    'connections_title' => 'Logout from:',
+    'logout_hint' => 'Also logout from:',
     'btn_logout' => 'Logout',
 
     'link_cancel' => 'Cancel',
@@ -47,6 +47,6 @@ return [
 
     'change_pwd_header' => 'Password',
     'pwd_new' => 'New password',
-    'btn_pwd_change' => 'Change password'
+    'btn_pwd_change' => 'Change password',
 
 ];

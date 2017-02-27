@@ -5,9 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Session;
-use App\LoginModule\Platform\Platform;
+use App\LoginModule\Platform\PlatformRequest;
 
-class ProfileCompleted
+class PlatformBadgeVerified
 {
 
 
@@ -21,10 +21,10 @@ class ProfileCompleted
     public function handle($request, Closure $next, $guard = null)
     {
 
-        if(Platform::profileFields(Auth::guard($guard)->user())->filled()) {
+        if(PlatformRequest::badge()->verified()) {
             return $next($request);
         }
         Session::put('url.intended', $request->fullUrl());
-        return redirect('/profile');
+        return redirect('/badge');
     }
 }

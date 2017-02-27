@@ -54,7 +54,7 @@
         }
 
 
-        public function getLogoutURL(\App\User $user) {
+        public function getLogoutURL($access_token, $redirect_url) {
             return null; //TODO
         }
 

@@ -17,6 +17,7 @@ class PlatformConfig extends Migration
             $table->text('profile_fields')->nallable();
             $table->text('auth_order')->nallable();
             $table->text('public_key')->nallable();
+            $table->string('badge_url')->nallable();
         });
     }
 
@@ -31,6 +32,7 @@ class PlatformConfig extends Migration
             $table->dropColumn('profile_fields');
             $table->dropColumn('auth_order');
             $table->dropColumn('public_key');
+            $table->dropColumn('badge_url');
         });
     }
 }

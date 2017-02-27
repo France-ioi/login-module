@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\PlatformRequest::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
@@ -60,6 +61,7 @@ class Kernel extends HttpKernel
         'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
         'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
         'admin' => \App\Http\Middleware\Admin::class,
-        'profile_completed' => \App\Http\Middleware\ProfileCompleted::class
+        'platform_profile_filled' => \App\Http\Middleware\PlatformProfileFilled::class,
+        'platform_badge_verified' => \App\Http\Middleware\PlatformBadgeVerified::class,
     ];
 }

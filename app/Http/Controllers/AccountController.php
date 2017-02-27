@@ -14,8 +14,8 @@ class AccountController extends Controller
         return view('account.index', [
             'redirect_uri' => $request->get('redirect_uri'),
             'user' => Auth::user(),
-            'providers' => Manager::list(),
-            'connected' => Auth::user()->auth_connections()->get()->pluck('id', 'provider')->toArray()
+            'providers'  => Manager::providers(),
+            'connected' => Auth::user()->auth_connections()->get()->pluck('id', 'provider')->toArray(),
         ]);
     }
 

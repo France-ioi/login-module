@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\LoginModule\Shared\TokenGenerator;
 use App\LoginModule\Shared\TokenParser;
 use App\LoginModule\AuthConnector;
@@ -83,7 +84,7 @@ class LTIController extends Controller
     private function getUserToken($user, $generator) {
         $tokenParams = [
       	    'idUser' => $user['id'],
-      	    'sLogin' => $user['login'] //why?
+      	    'sLogin' => $user['login']
    	    ];
         $generator = new TokenGenerator(
             config('login_module.name'),

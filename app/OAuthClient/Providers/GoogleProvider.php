@@ -55,7 +55,7 @@
         }
 
 
-        public function getLogoutURL(\App\User $user) {
-            return null; //TODO
+        public function getLogoutURL($access_token, $redirect_url) {
+            return 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='.urlencode($redirect_url);
         }
     }

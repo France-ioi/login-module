@@ -5,11 +5,11 @@
 @endpush
 
 @push('first_name')
-    {!! BootForm::text('first_name', trans('profile.first_name')) !!}
+    {!! BootForm::text('first_name', trans('profile.first_name'), array_get($values, 'first_name')) !!}
 @endpush
 
 @push('last_name')
-    {!! BootForm::text('last_name', trans('profile.last_name')) !!}
+    {!! BootForm::text('last_name', trans('profile.last_name'), array_get($values, 'last_name')) !!}
 @endpush
 
 @push('primary_email')
@@ -92,7 +92,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Profile</div>
         <div class="panel-body">
-            {!! BootForm::open(['url' => '/profile', 'method' => 'post', 'id' => 'profile']) !!}
+            {!! BootForm::open(['url' => '/profile', 'method' => 'post']) !!}
                 @foreach($fields as $field)
                     @stack($field)
                 @endforeach

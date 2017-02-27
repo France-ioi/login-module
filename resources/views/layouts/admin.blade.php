@@ -17,9 +17,18 @@
     </nav>
 
 
-    @if(session()->has('message'))
+    @if(session('status'))
         <div class="container">
-            <div class="alert alert-info">{{ session('message') }}</div>
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="container">
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
         </div>
     @endif
 @endsection

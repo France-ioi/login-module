@@ -23,6 +23,7 @@
             @foreach($auth_visible as $method)
                 @stack($method)
             @endforeach
+
             @if(count($auth_hidden) > 0)
                 <hr>
                 <button id="btn-show-hidden" class="btn btn-block btn-link">Show more</button>
@@ -41,4 +42,17 @@
             $('#auth-hidden').show();
         })
     </script>
+
+
+    @if($badge_required)
+        <div class="panel panel-default">
+            <div class="panel-heading">@lang('badge.badge_header')</div>
+            <div class="panel-body">
+                    {!! BootForm::open(['url' => '/badge/verify']) !!}
+                        {!! BootForm::text('code', false) !!}
+                        {!! BootForm::submit(trans('badge.btn_verify_code')) !!}
+                    {!! BootForm::close() !!}
+            </div>
+        </div>
+    @endif
 @endsection
