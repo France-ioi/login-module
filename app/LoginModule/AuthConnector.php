@@ -49,8 +49,8 @@ class AuthConnector
             if($connection = AuthConnection::where('uid', $auth['uid_old'])->where('provider', $auth['provider'])->first()) {
                 $connection->uid = $auth['uid'];
                 $connection->save();
+                return $connection;
             }
-            return $connection;
         }
         return AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
     }
