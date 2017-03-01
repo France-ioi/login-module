@@ -30,12 +30,14 @@ class CreateUsersTable extends Migration
             $table->string('secondary_phone')->nullable();
             $table->enum('role', ['student', 'teacher', 'other'])->nullable();
             $table->string('school_grade')->nullable();
+            $table->string('student_id')->nullable();
             $table->string('ministry_of_education')->nullable();
             $table->boolean('ministry_of_education_fr')->default(false);
             $table->date('birthday')->nullable();
             $table->text('presentation')->nullable();
             $table->string('picture')->nullable();
-
+            $table->enum('gender', ['m', 'f'])->nullable();
+            $table->integer('graduation_year')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->dateTime('last_login');

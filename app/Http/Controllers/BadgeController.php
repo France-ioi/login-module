@@ -54,7 +54,7 @@ class BadgeController extends Controller
                     'url' => $badge_data['url']
                 ]));
             }
-            return redirect()->intended('/account');
+            return redirect(PlatformRequest::authorizationUrl());
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
     }
@@ -82,7 +82,7 @@ class BadgeController extends Controller
                 'do_not_possess' => 1
             ]));
         }
-        return redirect()->intended('/account');
+        return redirect(PlatformRequest::authorizationUrl());
     }
 
 }

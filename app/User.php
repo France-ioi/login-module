@@ -26,11 +26,14 @@ class User extends Authenticatable
         'secondary_phone',
         'role',
         'school_grade',
+        'student_id',
         'ministry_of_education',
         'ministry_of_education_fr',
         'birthday',
         'presentation',
-        'picture'
+        'picture',
+        'gender',
+        'graduation_year'
     ];
 
     protected $hidden = [
@@ -43,7 +46,9 @@ class User extends Authenticatable
 
     protected $appends = [
         'primary_email',
-        'secondary_email'
+        'primary_email_verified',
+        'secondary_email',
+        'secondary_email_verified',
     ];
 
     protected $casts = [
@@ -78,9 +83,21 @@ class User extends Authenticatable
     }
 
 
+    public function getPrimaryEmailVerifiedAttribute() {
+        $primary = $this->emails()->primary()->first();
+        return $primary ? $primary->verified : false;
+    }
+
+
     public function getSecondaryEmailAttribute() {
         $secondary = $this->emails()->secondary()->first();
         return $secondary ? $secondary->email : null;
+    }
+
+
+    public function getSecondaryEmailVerifiedAttribute() {
+        $secondary = $this->emails()->secondary()->first();
+        return $secondary ? $secondary->verified : false;
     }
 
 

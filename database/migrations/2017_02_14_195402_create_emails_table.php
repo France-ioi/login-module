@@ -20,7 +20,7 @@ class CreateEmailsTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('email')->unique()->index();
-            $table->boolean('confirmed')->default(false);
+            $table->boolean('verified')->default(false);
         });
     }
 

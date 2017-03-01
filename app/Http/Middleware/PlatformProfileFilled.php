@@ -24,7 +24,6 @@ class PlatformProfileFilled
         if(PlatformRequest::profileFields()->filled()) {
             return $next($request);
         }
-        Session::put('url.intended', $request->fullUrl());
         return redirect('/profile');
     }
 }

@@ -70,6 +70,20 @@
     </div>
 @endpush
 
+@push('student_id')
+    <div id="box_student_id" class="collapse">
+        {!! BootForm::text('student_id', trans('profile.student_id')) !!}
+    </div>
+@endpush
+
+@push('graduation_year')
+    {!! BootForm::text('graduation_year', trans('profile.graduation_year')) !!}
+@endpush
+
+@push('gender')
+    {!! BootForm::radios('gender', trans('profile.gender'), trans('profile.genders')) !!}
+@endpush
+
 @push('birthday')
     {!! BootForm::date('birthday', trans('profile.birthday')) !!}
 @endpush
@@ -110,9 +124,11 @@
                 $('#box_ministry_of_education_fr').hide();
                 $('#box_ministry_of_education').hide();
                 $('#box_school_grade').hide();
+                $('#box_student_id').hide();
                 var role = $('#role').val();
                 if(role == 'student') {
                     $('#box_school_grade').show();
+                    $('#box_student_id').show();
                 } else if(role == 'teacher') {
                     var country_code = $('#country_code').val();
                     if(country_code == 'fr') {

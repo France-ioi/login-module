@@ -20,7 +20,7 @@ class CreateAuthConnectionsTable extends Migration
             $table->string('uid', 40)->index();
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->boolean('is_active')->default(false);
+            $table->boolean('active')->default(false);
             $table->text('access_token');
         });
     }

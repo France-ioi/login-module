@@ -56,7 +56,7 @@ class ProfileController extends Controller
                 Auth::user()->emails()->save($secondary);
             }
         }
-        return redirect()->intended('/account');
+        return redirect(PlatformRequest::authorizationUrl());
     }
 
 

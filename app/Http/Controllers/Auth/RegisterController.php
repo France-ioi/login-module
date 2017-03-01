@@ -108,8 +108,7 @@ class RegisterController extends Controller
     }
 
     public function registered($request, $user) {
-        //dd(redirect()->intended('account'));
-        return redirect()->intended('account');
+        return redirect()->intended('/account');
     }
 
 }

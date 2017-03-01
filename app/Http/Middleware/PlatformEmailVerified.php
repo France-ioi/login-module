@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use App\LoginModule\Platform\PlatformRequest;
 
-class PlatformBadgeVerified
+class PlatformEmailVerified
 {
 
 
@@ -21,9 +21,9 @@ class PlatformBadgeVerified
     public function handle($request, Closure $next, $guard = null)
     {
 
-        if(PlatformRequest::badge()->verified()) {
+        if(PlatformRequest::profileFields()->verified()) {
             return $next($request);
         }
-        return redirect('/badge');
+        return redirect('/email_verification');
     }
 }

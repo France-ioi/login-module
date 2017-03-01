@@ -6,18 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use App\LoginModule\EmailVerification\CanVerifyEmail;
 
 class Email extends Model implements CanResetPasswordContract
 {
 
-    use CanResetPassword, Notifiable;
+    use CanResetPassword, CanVerifyEmail, Notifiable;
 
     protected $fillable = [
         'user_id',
         'email',
         'role',
-        'confirmed'
+        'verified'
     ];
+
+    protected $casts = [
+        'verified' => 'boolean'
+    ];
+
+    protected static function boot() {
+        static::updating(function($model) {
+            if($model->isDirty('email') && $model->verified) {
+                $model->verified = false;
+            }
+        });
+    }
 
     public function user() {
         return $this->belongsTo('App\User');

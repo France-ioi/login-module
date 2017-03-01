@@ -12,20 +12,45 @@ class ProfileFields
 
     protected $client;
     protected $user;
+    protected $verification_fields = ['primary_email_verified', 'secondary_email_verified'];
+    protected $fields_cache = [
+        'profile' => [],
+        'verification' => [],
+    ];
 
     public function __construct($client = null, $user = null) {
         $this->client = $client;
+        $this->cacheFields();
         $this->user = $user;
     }
 
+
+    private function cacheFields() {
+        if($this->client && $this->client->profile_fields) {
+            $this->fields_cache['required'] = array_diff($this->client->profile_fields, $this->verification_fields);
+            $this->fields_cache['verification'] = array_intersect($this->verification_fields, $this->client->profile_fields);
+        }
+    }
 
     public function filled() {
         return count($this->getEmpty()) === 0;
     }
 
 
+    public function verified() {
+        if($this->user) {
+            foreach($this->fields_cache['verification'] as $field) {
+                if(!$this->user->getAttribute($field)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
     public function getRequired() {
-        return $this->client ? $this->client->profile_fields : [];
+        return $this->fields_cache['required'];
     }
 
 
@@ -37,17 +62,17 @@ class ProfileFields
             $res = [];
             $role = $this->user->getAttribute('role');
             $country_code = $this->user->getAttribute('country_code');
-            foreach($this->client->profile_fields as $field) {
+            foreach($this->getRequired() as $field) {
                 $value = $this->user->getAttribute($field);
                 if(empty($value)) {
-                    if($field == 'school_grade' && $role != 'student') continue;
-                    if($field == 'ministry_of_education' && $role == 'teacher' && $country_code == 'fr') continue;
+                    if(($field == 'school_grade' || $field == 'student_id') && $role && $role != 'student') continue;
+                    if($field == 'ministry_of_education' && $role === 'teacher' && $country_code == 'fr') continue;
                     $res[] = $field;
                 }
             }
-            return $res;
+            return $this->extendFields($res);
         }
-        return $this->client->profile_fields;
+        return $this->getRequired();
     }
 
 
@@ -65,15 +90,19 @@ class ProfileFields
             'zipcode' => 'required',
             'primary_phone' => 'required',
             'secondary_phone' => 'required',
+            'birthday'  => 'required|date_format:"Y-m-d"',
+            'gender' => 'required|in:m,f',
+            'presentation'  => 'required',
             'role' => 'in:'.implode(',', array_keys(trans('profile.roles'))),
             'school_grade' => 'required_if:role,student',
             'ministry_of_education' => 'required_if:role,teacher',
+            'student_id' => 'required_if:role,student',
+            'graduation_year' => 'required|integer|between:1900,'.date('Y'),
             //'ministry_of_education_fr' => 'required_if:role,teacher|required_if:country_code,fr',
-            'birthday'  => 'required|date_format:"Y-m-d"',
-            'presentation'  => 'required',
         ];
 
         $required = $this->getEmpty();
+
         $res = [];
         foreach($required as $field) {
             if(isset($all[$field])) {
@@ -82,10 +111,19 @@ class ProfileFields
         }
 
         // bugfix for laravel validation bug
-        if(isset($res['primary_email']) && isset($res['secondary_phone'])) {
-            $res['secondary_phone'] = $res['secondary_phone'].'|different:primary_email';
+        if(isset($res['primary_email']) && isset($res['secondary_email'])) {
+            $res['secondary_email'] = $res['secondary_email'].'|different:primary_email';
         }
         return $res;
+    }
+
+
+    private function extendFields($fields) {
+        $role_required = ['school_grade', 'ministry_of_education', 'student_id'];
+        if(!in_array('role', $fields) && count(array_intersect($role_required, $fields))  > 0) {
+            array_unshift($fields, 'role');
+        }
+        return $fields;
     }
 
 }

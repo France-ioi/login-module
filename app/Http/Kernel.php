@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'platform_profile_filled' => \App\Http\Middleware\PlatformProfileFilled::class,
+        'platform_email_verified' => \App\Http\Middleware\PlatformEmailVerified::class,
         'platform_badge_verified' => \App\Http\Middleware\PlatformBadgeVerified::class,
     ];
 }

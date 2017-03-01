@@ -9,6 +9,9 @@ use Session;
 class PlatformRequest
 {
 
+    const AUTHORIZATION_URL_KEY = 'authorization_url';
+    const CLIENT_ID_KEY = 'client_id';
+
     private static $client = null;
     private static $client_available = true;
     private static $auth_order = null;
@@ -18,20 +21,27 @@ class PlatformRequest
 
     static function cacheToSession($request) {
         if(!$request->is('oauth/authorize')) return;
+        Session::put(self::AUTHORIZATION_URL_KEY, $request->fullUrl());
         $query = parse_url($request->fullUrl(), PHP_URL_QUERY);
         parse_str($query, $params);
         if(isset($params['client_id'])) {
-            Session::put('client_id', $params['client_id']);
+            Session::put(self::CLIENT_ID_KEY, $params['client_id']);
         } else {
-            Session::forget('client_id');
+            Session::forget(self::CLIENT_ID_KEY);
         }
+    }
+
+
+    static function authorizationUrl() {
+        $url = Session::get(self::AUTHORIZATION_URL_KEY);
+        return url($url ? $url : '/account');
     }
 
 
     static function getClient() {
         if(self::$client_available) {
             if(!self::$client) {
-                self::$client = Client::find(Session::get('client_id'));
+                self::$client = Client::find(Session::get(self::CLIENT_ID_KEY));
             }
             self::$client_available = (bool) self::$client;
             return self::$client;
