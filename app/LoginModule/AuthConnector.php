@@ -33,7 +33,8 @@ class AuthConnector
                 if(isset($auth['email'])) {
                     $user->emails()->save(new Email([
                         'role' => 'primary',
-                        'email' => $auth['email']
+                        'email' => $auth['email'],
+                        'verified' => true
                     ]));
                 }
                 Auth::login($user);

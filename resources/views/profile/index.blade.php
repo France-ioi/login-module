@@ -92,17 +92,22 @@
     {!! BootForm::textarea('presentation', trans('profile.presentation')) !!}
 @endpush
 
+@push('website')
+    {!! BootForm::text('website', trans('profile.website')) !!}
+@endpush
+
 
 @section('content')
-@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    @if(count($errors) > 0)
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="panel panel-default">
         <div class="panel-heading">Profile</div>
         <div class="panel-body">

@@ -66,7 +66,7 @@ class ProfileFields
                 $value = $this->user->getAttribute($field);
                 if(empty($value)) {
                     if(($field == 'school_grade' || $field == 'student_id') && $role && $role != 'student') continue;
-                    if($field == 'ministry_of_education' && $role === 'teacher' && $country_code == 'fr') continue;
+                    if($field == 'ministry_of_education' && $role != 'teacher') continue;
                     $res[] = $field;
                 }
             }
@@ -93,6 +93,7 @@ class ProfileFields
             'birthday'  => 'required|date_format:"Y-m-d"',
             'gender' => 'required|in:m,f',
             'presentation'  => 'required',
+            'website' => 'required',
             'role' => 'in:'.implode(',', array_keys(trans('profile.roles'))),
             'school_grade' => 'required_if:role,student',
             'ministry_of_education' => 'required_if:role,teacher',

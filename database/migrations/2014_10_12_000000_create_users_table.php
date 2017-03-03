@@ -35,6 +35,8 @@ class CreateUsersTable extends Migration
             $table->boolean('ministry_of_education_fr')->default(false);
             $table->date('birthday')->nullable();
             $table->text('presentation')->nullable();
+            $table->text('website')->nullable();
+            $table->string('ip', 16);
             $table->string('picture')->nullable();
             $table->enum('gender', ['m', 'f'])->nullable();
             $table->integer('graduation_year')->nullable();

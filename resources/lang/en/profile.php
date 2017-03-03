@@ -31,4 +31,5 @@ return [
         'f' => 'Female'
     ],
     'presentation'  => 'Presentation',
+    'website' => 'Website'
 ];
