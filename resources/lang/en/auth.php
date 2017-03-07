@@ -43,10 +43,4 @@ return [
     'link_cancel' => 'Cancel',
     'btn_save' => 'Save',
 
-    'account_details_header' => 'Account details',
-
-    'change_pwd_header' => 'Password',
-    'pwd_new' => 'New password',
-    'btn_pwd_change' => 'Change password',
-
 ];

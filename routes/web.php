@@ -27,9 +27,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
     Route::get('/profile', 'ProfileController@index');
     Route::post('/profile', 'ProfileController@update');
+
     Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
     Route::post('/account/details', ['uses' => 'AccountController@updateAccount', 'as' => 'update_account']);
-    Route::post('/account/password', ['uses' => 'AccountController@updatePassword', 'as' => 'update_password']);
+
+
+    Route::get('/auth_connections', 'AuthConnectionsController@index');
+    Route::get('/password', 'PasswordController@index');
+    Route::post('/password', 'PasswordController@updatePassword');
 });
 
 

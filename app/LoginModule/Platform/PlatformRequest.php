@@ -9,8 +9,8 @@ use Session;
 class PlatformRequest
 {
 
-    const AUTHORIZATION_URL_KEY = 'authorization_url';
-    const CLIENT_ID_KEY = 'client_id';
+    const REDIRECT_URL_KEY = 'platform_redirect_url';
+    const CLIENT_ID_KEY = 'platform_client_id';
 
     private static $client = null;
     private static $client_available = true;
@@ -20,21 +20,35 @@ class PlatformRequest
 
 
     static function cacheToSession($request) {
-        if(!$request->is('oauth/authorize')) return;
-        Session::put(self::AUTHORIZATION_URL_KEY, $request->fullUrl());
-        $query = parse_url($request->fullUrl(), PHP_URL_QUERY);
-        parse_str($query, $params);
-        if(isset($params['client_id'])) {
+        if($request->get('redirect_uri') && $request->get('client_id')) {
+            $query = parse_url($request->fullUrl(), PHP_URL_QUERY);
+            parse_str($query, $params);
+
+            if($request->is('oauth/authorize')) {
+                self::setRedirectUrl($request->fullUrl());
+            } else {
+                self::setRedirectUrl($params['redirect_uri']);
+            }
             Session::put(self::CLIENT_ID_KEY, $params['client_id']);
-        } else {
-            Session::forget(self::CLIENT_ID_KEY);
         }
     }
 
 
-    static function authorizationUrl() {
-        $url = Session::get(self::AUTHORIZATION_URL_KEY);
-        return url($url ? $url : '/account');
+    static function hasRedirectUrl() {
+        return Session::has(self::REDIRECT_URL_KEY);
+    }
+
+
+    static function setRedirectUrl($url) {
+        Session::put(self::REDIRECT_URL_KEY, $url);
+    }
+
+
+    static function getRedirectUrl($alternative = '/account') {
+        if(!$url = Session::get(self::REDIRECT_URL_KEY)) {
+            $url = $alternative;
+        }
+        return url($url);
     }
 
 

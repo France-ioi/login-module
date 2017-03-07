@@ -4,48 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\OAuthClient\Manager;
+use App\LoginModule\Platform\PlatformRequest;
 
 class AccountController extends Controller
 {
 
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         return view('account.index', [
-            'redirect_uri' => $request->get('redirect_uri'),
-            'user' => Auth::user(),
-            'providers'  => Manager::providers(),
-            'connected' => Auth::user()->auth_connections()->get()->pluck('id', 'provider')->toArray(),
+            'need_email_verification' => (bool) Auth::user()->emails()->where('verified', false)->first(),
+            'need_badge_verification' => (bool) PlatformRequest::badge()->url()
         ]);
-    }
-
-
-    public function updateAccount(Request $request) {
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.Auth::user()->id
-        ]);
-        Auth::user()->update($request->only(['name', 'email']));
-        return $this->getRedirectAfterUpdate($request);
-    }
-
-
-    public function updatePassword(Request $request) {
-        $this->validate($request, [
-            'password' => 'required|min:6|confirmed'
-        ]);
-        \Auth::user()->password = \Hash::make($request->input('password'));
-        \Auth::user()->save();
-        return $this->getRedirectAfterUpdate($request);
-    }
-
-
-    private function getRedirectAfterUpdate($request) {
-        if($request->has('redirect_uri')) {
-            return redirect($request->input('redirect_uri'));
-        } else {
-            return redirect(route('account'));
-        }
     }
 
 }

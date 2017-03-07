@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">@lang('badge.badge_header')</div>
+        <div class="panel-heading">
+            @lang('badge.header')
+        </div>
         <div class="panel-body">
                 {!! BootForm::open(['url' => '/badge/attach']) !!}
                     {!! BootForm::text('code', false) !!}

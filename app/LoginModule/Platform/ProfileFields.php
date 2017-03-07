@@ -62,7 +62,8 @@ class ProfileFields
             $res = [];
             $role = $this->user->getAttribute('role');
             $country_code = $this->user->getAttribute('country_code');
-            foreach($this->getRequired() as $field) {
+            $required = $this->getRequired();
+            foreach($required as $field) {
                 $value = $this->user->getAttribute($field);
                 if(empty($value)) {
                     if(($field == 'school_grade' || $field == 'student_id') && $role && $role != 'student') continue;
@@ -76,13 +77,26 @@ class ProfileFields
     }
 
 
-    public function getValidationRules() {
+    public function getValidationRules($required_fields) {
+        $login_appendix = '|unique:users';
+        $primary_email_appendix = '|unique:emails,email';
+        $secondary_email_appendix = '|unique:emails,email';
+        if($this->user) {
+            $login_appendix .= ',login,'.$this->user->id;
+            if($id = $this->user->primary_email_id) {
+                $primary_email_appendix .= ','.$id;
+            }
+            if($id = $this->user->secondary_email_id) {
+                $secondary_email_appendix .= ','.$id;
+            }
+        }
+
         $all = [
-            'login' => 'required|min:3|unique:users',
+            'login' => 'required|min:3'.$login_appendix,
             'first_name' => 'required',
             'last_name' => 'required',
-            'primary_email'  => 'required|email|unique:emails,email',
-            'secondary_email'  => 'required|email|unique:emails,email',
+            'primary_email'  => 'required|email'.$primary_email_appendix,
+            'secondary_email'  => 'required|email'.$secondary_email_appendix,
             'language' => 'required|in:'.implode(',', array_keys(config('app.locales'))),
             'country_code' => 'required|in:'.implode(',', array_keys(trans('countries'))),
             'address' => 'required',
@@ -102,10 +116,8 @@ class ProfileFields
             //'ministry_of_education_fr' => 'required_if:role,teacher|required_if:country_code,fr',
         ];
 
-        $required = $this->getEmpty();
-
         $res = [];
-        foreach($required as $field) {
+        foreach($required_fields as $field) {
             if(isset($all[$field])) {
                 $res[$field] = $all[$field];
             }

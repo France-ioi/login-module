@@ -92,6 +92,12 @@ class User extends Authenticatable
     }
 
 
+    public function getPrimaryEmailIdAttribute() {
+        $primary = $this->emails()->primary()->first();
+        return $primary ? $primary->id : false;
+    }
+
+
     public function getSecondaryEmailAttribute() {
         $secondary = $this->emails()->secondary()->first();
         return $secondary ? $secondary->email : null;
@@ -101,6 +107,12 @@ class User extends Authenticatable
     public function getSecondaryEmailVerifiedAttribute() {
         $secondary = $this->emails()->secondary()->first();
         return $secondary ? $secondary->verified : false;
+    }
+
+
+    public function getSecondaryEmailIdAttribute() {
+        $secondary = $this->emails()->secondary()->first();
+        return $secondary ? $secondary->id : false;
     }
 
 

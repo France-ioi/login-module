@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">@lang('email_verification.header')</div>
+        <div class="panel-heading">
+            @lang('email_verification.header')
+        </div>
 
         @if(session('status'))
             <div class="panel-body">

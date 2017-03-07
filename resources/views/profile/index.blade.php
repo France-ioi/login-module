@@ -1,7 +1,7 @@
 @extends('layouts.popup')
 
 @push('login')
-    {!! BootForm::text('login', trans('profile.login')) !!}
+    {!! BootForm::text('login', trans('profile.login'), array_get($values, 'login')) !!}
 @endpush
 
 @push('first_name')
@@ -13,87 +13,87 @@
 @endpush
 
 @push('primary_email')
-    {!! BootForm::email('primary_email', trans('profile.primary_email')) !!}
+    {!! BootForm::email('primary_email', trans('profile.primary_email'), array_get($values, 'primary_email')) !!}
 @endpush
 
 @push('secondary_email')
-    {!! BootForm::email('secondary_email', trans('profile.secondary_email')) !!}
+    {!! BootForm::email('secondary_email', trans('profile.secondary_email'), array_get($values, 'secondary_email')) !!}
 @endpush
 
 @push('language')
-    {!! BootForm::select('language', trans('profile.language'), config('app.locales')) !!}
+    {!! BootForm::select('language', trans('profile.language'), config('app.locales'), array_get($values, 'language')) !!}
 @endpush
 
 @push('country_code')
-    {!! BootForm::select('country_code', trans('profile.country_code'), trans('countries')) !!}
+    {!! BootForm::select('country_code', trans('profile.country_code'), trans('countries'), array_get($values, 'country_code')) !!}
 @endpush
 
 @push('address')
-    {!! BootForm::text('address', trans('profile.address')) !!}
+    {!! BootForm::text('address', trans('profile.address'), array_get($values, 'address')) !!}
 @endpush
 
 @push('city')
-    {!! BootForm::text('city', trans('profile.city')) !!}
+    {!! BootForm::text('city', trans('profile.city'), array_get($values, 'city')) !!}
 @endpush
 
 @push('zipcode')
-    {!! BootForm::text('zipcode', trans('profile.zipcode')) !!}
+    {!! BootForm::text('zipcode', trans('profile.zipcode'), array_get($values, 'zipcode')) !!}
 @endpush
 
 @push('primary_phone')
-    {!! BootForm::text('primary_phone', trans('profile.primary_phone')) !!}
+    {!! BootForm::text('primary_phone', trans('profile.primary_phone'), array_get($values, 'primary_phone')) !!}
 @endpush
 
 @push('secondary_phone')
-    {!! BootForm::text('secondary_phone', trans('profile.secondary_phone')) !!}
+    {!! BootForm::text('secondary_phone', trans('profile.secondary_phone'), array_get($values, 'secondary_phone')) !!}
 @endpush
 
 @push('role')
-    {!! BootForm::select('role', trans('profile.role'), trans('profile.roles')) !!}
+    {!! BootForm::select('role', trans('profile.role'), trans('profile.roles'), array_get($values, 'role')) !!}
 @endpush
 
 @push('ministry_of_education_fr')
     <div id="box_ministry_of_education_fr" class="collapse">
-        {!! BootForm::checkbox('ministry_of_education_fr', trans('profile.ministry_of_education_fr')) !!}
+        {!! BootForm::checkbox('ministry_of_education_fr', trans('profile.ministry_of_education_fr'), array_get($values, 'ministry_of_education_fr')) !!}
     </div>
 @endpush
 
 @push('ministry_of_education')
     <div id="box_ministry_of_education" class="collapse">
-        {!! BootForm::text('ministry_of_education', trans('profile.ministry_of_education')) !!}
+        {!! BootForm::text('ministry_of_education', trans('profile.ministry_of_education'), array_get($values, 'ministry_of_education')) !!}
     </div>
 @endpush
 
 @push('school_grade')
     <div id="box_school_grade" class="collapse">
-        {!! BootForm::text('school_grade', trans('profile.school_grade')) !!}
+        {!! BootForm::text('school_grade', trans('profile.school_grade'), array_get($values, 'school_grade')) !!}
     </div>
 @endpush
 
 @push('student_id')
     <div id="box_student_id" class="collapse">
-        {!! BootForm::text('student_id', trans('profile.student_id')) !!}
+        {!! BootForm::text('student_id', trans('profile.student_id'), array_get($values, 'student_id')) !!}
     </div>
 @endpush
 
 @push('graduation_year')
-    {!! BootForm::text('graduation_year', trans('profile.graduation_year')) !!}
+    {!! BootForm::text('graduation_year', trans('profile.graduation_year'), array_get($values, 'graduation_year')) !!}
 @endpush
 
 @push('gender')
-    {!! BootForm::radios('gender', trans('profile.gender'), trans('profile.genders')) !!}
+    {!! BootForm::radios('gender', trans('profile.gender'), trans('profile.genders'), array_get($values, 'gender')) !!}
 @endpush
 
 @push('birthday')
-    {!! BootForm::date('birthday', trans('profile.birthday')) !!}
+    {!! BootForm::date('birthday', trans('profile.birthday'), array_get($values, 'birthday')) !!}
 @endpush
 
 @push('presentation')
-    {!! BootForm::textarea('presentation', trans('profile.presentation')) !!}
+    {!! BootForm::textarea('presentation', trans('profile.presentation'), array_get($values, 'presentation')) !!}
 @endpush
 
 @push('website')
-    {!! BootForm::text('website', trans('profile.website')) !!}
+    {!! BootForm::text('website', trans('profile.website'), array_get($values, 'website')) !!}
 @endpush
 
 
@@ -109,9 +109,14 @@
     @endif
 
     <div class="panel panel-default">
-        <div class="panel-heading">Profile</div>
+        <div class="panel-heading">
+            @lang('profile.header')
+        </div>
         <div class="panel-body">
             {!! BootForm::open(['url' => '/profile', 'method' => 'post']) !!}
+                @if($all)
+                    {!! BootForm::hidden('all', 1) !!}
+                @endif
                 @foreach($fields as $field)
                     @stack($field)
                 @endforeach

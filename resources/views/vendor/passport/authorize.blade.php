@@ -3,6 +3,7 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
+
             @lang('passport.authorization_header')
         </div>
         <div class="panel-body passport-authorize">

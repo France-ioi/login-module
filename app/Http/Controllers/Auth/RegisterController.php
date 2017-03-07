@@ -65,15 +65,16 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $all_rules = PlatformRequest::profileFields()->getValidationRules();
+        $required = PlatformRequest::profileFields()->getRequired();
+        $validation_rules = PlatformRequest::profileFields()->getValidationRules($required);
         $reg_rules = [
             'password' => 'required|min:6|confirmed'
         ];
-        if($all_rules['login']) {
-            $reg_rules['login'] = $all_rules['login'];
+        if($validation_rules['login']) {
+            $reg_rules['login'] = $validation_rules['login'];
         }
-        if($all_rules['primary_email']) {
-            $reg_rules['primary_email'] = $all_rules['primary_email'];
+        if($validation_rules['primary_email']) {
+            $reg_rules['primary_email'] = $validation_rules['primary_email'];
         }
         return Validator::make($data, $reg_rules);
     }

@@ -17,15 +17,28 @@ class ProfileController extends Controller
         if(!$values = PlatformRequest::badge()->restoreUser()) {
             $values = [];
         }
+        $values = array_merge($values, Auth::user()->toArray());
+
+        if($request->has('all')) {
+            $fields = PlatformRequest::profileFields()->getRequired();
+        } else {
+            $fields = PlatformRequest::profileFields()->getEmpty();
+        }
         return view('profile.index', [
-            'fields' => PlatformRequest::profileFields()->getEmpty(),
-            'values' => $values
+            'fields' => $fields,
+            'values' => $values,
+            'all' => $request->get('all')
         ]);
     }
 
 
     public function update(Request $request) {
-        $rules = PlatformRequest::profileFields()->getValidationRules();
+        if($request->has('all')) {
+            $fields = PlatformRequest::profileFields()->getRequired();
+        } else {
+            $fields = PlatformRequest::profileFields()->getEmpty();
+        }
+        $rules = PlatformRequest::profileFields()->getValidationRules($fields);
         if($request->input('country_code') == 'fr') {
             unset($rules['ministry_of_education']);
         }
@@ -56,7 +69,7 @@ class ProfileController extends Controller
                 Auth::user()->emails()->save($secondary);
             }
         }
-        return redirect(PlatformRequest::authorizationUrl());
+        return redirect(PlatformRequest::getRedirectUrl('/profile'));
     }
 
 

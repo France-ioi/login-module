@@ -17,6 +17,11 @@ class BadgeController extends Controller
     ];
 
 
+    public function index() {
+        return view('badge.index');
+    }
+
+
     public function verify(Request $request) {
         $this->validate($request, $this->validation_rules);
         $code = $request->input('code');
@@ -27,11 +32,6 @@ class BadgeController extends Controller
             return redirect()->route('register');
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
-    }
-
-
-    public function index() {
-        return view('badge.index');
     }
 
 
@@ -54,7 +54,7 @@ class BadgeController extends Controller
                     'url' => $badge_data['url']
                 ]));
             }
-            return redirect(PlatformRequest::authorizationUrl());
+            return redirect(PlatformRequest::getRedirectUrl('/badge'));
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
     }
@@ -82,7 +82,7 @@ class BadgeController extends Controller
                 'do_not_possess' => 1
             ]));
         }
-        return redirect(PlatformRequest::authorizationUrl());
+        return redirect(PlatformRequest::getRedirectUrl('/badge'));
     }
 
 }
