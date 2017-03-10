@@ -8,5 +8,4 @@ MAIL_* - Mail driver config
 FACEBOOK_*, GOOGLE_*, PMS_* - External oAuth platforms
 AUTH_MASTER_HASH_MD5 - admin master password MD5 hash
 ```
-
 2. Run **install.sh**
