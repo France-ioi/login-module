@@ -21,11 +21,17 @@ class UsersController extends Controller
             $query->where('id', $request->get('id'));
         }
         if($request->get('login')) {
-            $query->where('login', $request->get('login'));
+            $query->where('login', 'LIKE', '%'.$request->get('login').'%');
+        }
+        if($request->get('first_name')) {
+            $query->where('first_name', 'LIKE','%'.$request->get('first_name').'%');
+        }
+        if($request->get('last_name')) {
+            $query->where('last_name', 'LIKE', '%'.$request->get('last_name').'%');
         }
         if($request->get('email')) {
             $query->whereHas('emails', function($query) use ($request) {
-                $query->where('email', $request->get('email'));
+                $query->where('email', 'LIKE', '%'.$request->get('email').'%');
             });
         }
         return view('admin.users', [

@@ -20,7 +20,7 @@ class ProfileController extends Controller
         $values = array_merge($values, Auth::user()->toArray());
 
         if($request->has('all')) {
-            $fields = PlatformRequest::profileFields()->getRequired();
+            $fields = PlatformRequest::profileFields()->getAll();
         } else {
             $fields = PlatformRequest::profileFields()->getEmpty();
         }
@@ -33,17 +33,11 @@ class ProfileController extends Controller
 
 
     public function update(Request $request) {
-        if($request->has('all')) {
-            $fields = PlatformRequest::profileFields()->getRequired();
-        } else {
-            $fields = PlatformRequest::profileFields()->getEmpty();
-        }
-        $rules = PlatformRequest::profileFields()->getValidationRules($fields);
-        if($request->input('country_code') == 'fr') {
-            unset($rules['ministry_of_education']);
-        }
+        $required = PlatformRequest::profileFields()->getEmpty();
+        $rules = PlatformRequest::profileFields()->getValidationRules($required);
         $this->validate($request, $rules);
         Auth::user()->fill($request->all());
+        Auth::user()->ministry_of_education_fr = $request->has('ministry_of_education_fr');
         Auth::user()->save();
         if($request->has('primary_email')) {
             if($primary = Auth::user()->emails()->primary()->first()) {

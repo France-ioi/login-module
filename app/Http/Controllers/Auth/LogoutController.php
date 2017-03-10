@@ -26,14 +26,18 @@ class LogoutController extends Controller
             return $this->logoutFinish($request);
         }
         return view('auth.logout', [
-            'active_connections' => $active_connections
+            'active_connections' => $active_connections,
+            'logout_config' => Auth::user()->logout_config ?: []
         ]);
     }
 
 
     public function logoutStart(Request $request) {
-        if($request->has('providers')) {
-            Session::put('logout_providers', array_keys($request->input('providers')));
+        $providers = $request->input('providers') ?: [];
+        Auth::user()->logout_config = array_fill_keys($providers, 1);
+        Auth::user()->save();
+        if(count($providers)) {
+            Session::put('logout_providers', $providers);
             return redirect('logout_loop');
         }
         return redirect('logout_finish');

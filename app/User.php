@@ -55,15 +55,12 @@ class User extends Authenticatable
     protected $casts = [
         'admin' => 'boolean',
         'ministry_of_education_fr' => 'boolean',
-        'graduation_year' => 'integer'
+        'graduation_year' => 'integer',
+        'logout_config' => 'array'
     ];
 
 
     protected static function boot() {
-        static::creating(function($model) {
-            $model->last_login = new \DateTime();
-            $model->ip = \Request::ip();
-        });
         static::deleting(function($model) {
             $badges = $model->badges()->where('do_not_possess', 0)->get();
             foreach($badges as $badge) {

@@ -14,6 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Validator::extend('value_different', function ($attribute, $value, $parameters, $validator) {
+            $other = array_get($validator->getData(), $parameters[0]);
+            return $value !== $other;
+        });
     }
 
     /**
@@ -23,6 +27,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 }

@@ -46,9 +46,6 @@ class LoginController extends Controller
 
 
     protected function authenticated(Request $request, $user) {
-        $user->last_login = new \DateTime();
-        $user->ip = $request->ip();
-        $user->save();
         if($user->admin) {
             return redirect('/admin');
         }

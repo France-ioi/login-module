@@ -54,7 +54,7 @@
 
 @push('ministry_of_education_fr')
     <div id="box_ministry_of_education_fr" class="collapse">
-        {!! BootForm::checkbox('ministry_of_education_fr', trans('profile.ministry_of_education_fr'), array_get($values, 'ministry_of_education_fr')) !!}
+        {!! BootForm::checkbox('ministry_of_education_fr', trans('profile.ministry_of_education_fr'), null, array_get($values, 'ministry_of_education_fr')) !!}
     </div>
 @endpush
 

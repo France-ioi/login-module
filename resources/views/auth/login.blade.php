@@ -46,7 +46,7 @@
 
     @if($badge_required)
         <div class="panel panel-default">
-            <div class="panel-heading">@lang('badge.badge_header')</div>
+            <div class="panel-heading">@lang('badge.header')</div>
             <div class="panel-body">
                     {!! BootForm::open(['url' => '/badge/verify']) !!}
                         {!! BootForm::text('code', false) !!}

@@ -2,35 +2,52 @@
 
 namespace App\LoginModule\Platform;
 
-use App\Client;
-use Auth;
-use Request;
-use Session;
-
 class ProfileFields
 {
 
     protected $client;
+
     protected $user;
-    protected $verification_fields = ['primary_email_verified', 'secondary_email_verified'];
+
+    protected $validation;
+
+    protected $verification_fields = [
+        'primary_email_verified',
+        'secondary_email_verified'
+    ];
+
+    protected $role_required = [
+        'school_grade',
+        'ministry_of_education',
+        'student_id'
+    ];
+
     protected $fields_cache = [
         'profile' => [],
         'verification' => [],
     ];
 
+
     public function __construct($client = null, $user = null) {
         $this->client = $client;
-        $this->cacheFields();
         $this->user = $user;
+        $this->validation = new ProfileFieldsValidation($this->user);
+        $this->cacheFields();
     }
 
 
     private function cacheFields() {
         if($this->client && $this->client->profile_fields) {
-            $this->fields_cache['required'] = array_diff($this->client->profile_fields, $this->verification_fields);
+            $required = array_diff($this->client->profile_fields, $this->verification_fields);
+            if(!in_array('role', $required) && count(array_intersect($this->role_required, $required))  > 0) {
+                $required[] ='role';
+            }
+            $this->fields_cache['required'] = $this->validation->sortFields($required);
+
             $this->fields_cache['verification'] = array_intersect($this->verification_fields, $this->client->profile_fields);
         }
     }
+
 
     public function filled() {
         return count($this->getEmpty()) === 0;
@@ -54,29 +71,41 @@ class ProfileFields
     }
 
 
+    public function getAll() {
+        return $this->validation->getFields();
+    }
+
+
     public function getEmpty() {
         if(!$this->client) {
             return [];
         }
-        if($this->user) {
-            $res = [];
-            $role = $this->user->getAttribute('role');
-            $country_code = $this->user->getAttribute('country_code');
-            $required = $this->getRequired();
-            foreach($required as $field) {
-                $value = $this->user->getAttribute($field);
-                if(empty($value)) {
-                    if(($field == 'school_grade' || $field == 'student_id') && $role && $role != 'student') continue;
-                    if($field == 'ministry_of_education' && $role != 'teacher') continue;
-                    $res[] = $field;
-                }
-            }
-            return $this->extendFields($res);
+        if(!$this->user) {
+            return $this->getRequired();
         }
-        return $this->getRequired();
+        $res = [];
+        $role = $this->user->getAttribute('role');
+        $country_code = $this->user->getAttribute('country_code');
+        $required = $this->getRequired();
+        foreach($required as $field) {
+            $value = $this->user->getAttribute($field);
+            if(empty($value)) {
+                if(($field == 'school_grade' || $field == 'student_id') && $role && $role != 'student') continue;
+                if($field == 'ministry_of_education' && $role != 'teacher') continue;
+                $res[] = $field;
+            }
+        }
+        return $res;
     }
 
 
+    public function getValidationRules($required) {
+        return $this->validation->getFilteredRules($required);
+    }
+
+
+
+/*
     public function getValidationRules($required_fields) {
         $login_appendix = '|unique:users';
         $primary_email_appendix = '|unique:emails,email';
@@ -93,18 +122,18 @@ class ProfileFields
 
         $all = [
             'login' => 'required|min:3'.$login_appendix,
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'first_name' => 'required|max:100',
+            'last_name' => 'required|max:100',
             'primary_email'  => 'required|email'.$primary_email_appendix,
-            'secondary_email'  => 'required|email'.$secondary_email_appendix,
+            'secondary_email'  => 'required|email|different:primary_email'.$secondary_email_appendix,
             'language' => 'required|in:'.implode(',', array_keys(config('app.locales'))),
             'country_code' => 'required|in:'.implode(',', array_keys(trans('countries'))),
-            'address' => 'required',
-            'city' => 'required',
-            'zipcode' => 'required',
-            'primary_phone' => 'required',
-            'secondary_phone' => 'required',
-            'birthday'  => 'required|date_format:"Y-m-d"',
+            'address' => 'required|max:255',
+            'city' => 'required|max:255',
+            'zipcode' => 'required|max:20',
+            'primary_phone' => 'required|max:255',
+            'secondary_phone' => 'required|max:255',
+            'birthday'  => 'required|date_format:"Y-m-d"|before:today',
             'gender' => 'required|in:m,f',
             'presentation'  => 'required',
             'website' => 'required',
@@ -112,8 +141,7 @@ class ProfileFields
             'school_grade' => 'required_if:role,student',
             'ministry_of_education' => 'required_if:role,teacher',
             'student_id' => 'required_if:role,student',
-            'graduation_year' => 'required|integer|between:1900,'.date('Y'),
-            //'ministry_of_education_fr' => 'required_if:role,teacher|required_if:country_code,fr',
+            'graduation_year' => 'required|integer|between:1900,'.date('Y')
         ];
 
         $res = [];
@@ -121,11 +149,6 @@ class ProfileFields
             if(isset($all[$field])) {
                 $res[$field] = $all[$field];
             }
-        }
-
-        // bugfix for laravel validation bug
-        if(isset($res['primary_email']) && isset($res['secondary_email'])) {
-            $res['secondary_email'] = $res['secondary_email'].'|different:primary_email';
         }
         return $res;
     }
@@ -138,5 +161,6 @@ class ProfileFields
         }
         return $fields;
     }
+*/
 
 }

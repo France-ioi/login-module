@@ -23,6 +23,13 @@
                         </ul>
                     </li>
                 </ul>
+                @if(Auth::check() && Auth::user()->admin)
+                    <ul class="nav pull-left">
+                        <li>
+                            <a href="/logout" className="">Logout</a>
+                        </li>
+                    </ul>
+                @endif
             </div>
         </div>
     </nav>
