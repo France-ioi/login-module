@@ -7,7 +7,9 @@
 | APP_URL | App base URL |
 | DB_ | MySQL connection credentials |
 | MAIL_ | Mail driver config |
-| FACEBOOK_ GOOGLE_ PMS_ | External oAuth platforms |
+| FACEBOOK_ | FB oAuth credentials |
+| GOOGLE_ | Google oAuth credentials |
+| PMS_ | PMS oAuth credentials |
 | AUTH_MASTER_HASH_MD5 | admin master password MD5 hash |
 
 - Run **install.sh**
