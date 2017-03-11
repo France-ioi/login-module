@@ -28,7 +28,6 @@ class ClientsSeeder extends Seeder
             'secondary_phone',
             'role',
             'birthday',
-            'presentation',
         ],
         'auth_order' => [
             'login',
