@@ -91,7 +91,9 @@ class RegisterController extends Controller
         $user = User::create([
             'login' => $data['login'],
             'password' => md5($data['password']),
-            'language' => $locale
+            'language' => $locale,
+            'last_login' => new \DateTime(),
+            'ip' => \Request::ip()
         ]);
         if(isset($data['primary_email'])) {
             $user->emails()->save(new Email([

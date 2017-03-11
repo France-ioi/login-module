@@ -22,7 +22,7 @@ class ProfileController extends Controller
         if($request->has('all')) {
             $fields = PlatformRequest::profileFields()->getAll();
         } else {
-            $fields = PlatformRequest::profileFields()->getEmpty();
+            $fields = PlatformRequest::profileFields()->getEmptyExtended();
         }
         return view('profile.index', [
             'fields' => $fields,

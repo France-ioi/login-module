@@ -39,11 +39,8 @@ class ProfileFields
     private function cacheFields() {
         if($this->client && $this->client->profile_fields) {
             $required = array_diff($this->client->profile_fields, $this->verification_fields);
-            if(!in_array('role', $required) && count(array_intersect($this->role_required, $required))  > 0) {
-                $required[] ='role';
-            }
+            $required = $this->extendFields($required);
             $this->fields_cache['required'] = $this->validation->sortFields($required);
-
             $this->fields_cache['verification'] = array_intersect($this->verification_fields, $this->client->profile_fields);
         }
     }
@@ -85,7 +82,6 @@ class ProfileFields
         }
         $res = [];
         $role = $this->user->getAttribute('role');
-        $country_code = $this->user->getAttribute('country_code');
         $required = $this->getRequired();
         foreach($required as $field) {
             $value = $this->user->getAttribute($field);
@@ -96,6 +92,13 @@ class ProfileFields
             }
         }
         return $res;
+    }
+
+
+    public function getEmptyExtended() {
+        $fields = $this->getEmpty();
+        $fields = $this->extendFields($fields);
+        return $this->validation->sortFields($fields);
     }
 
 
@@ -152,15 +155,13 @@ class ProfileFields
         }
         return $res;
     }
-
+*/
 
     private function extendFields($fields) {
-        $role_required = ['school_grade', 'ministry_of_education', 'student_id'];
-        if(!in_array('role', $fields) && count(array_intersect($role_required, $fields))  > 0) {
-            array_unshift($fields, 'role');
+        if(!in_array('role', $fields) && count(array_intersect($this->role_required, $fields))  > 0) {
+            $fields[] ='role';
         }
         return $fields;
     }
-*/
 
 }
