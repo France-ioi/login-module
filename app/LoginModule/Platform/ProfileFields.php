@@ -107,56 +107,6 @@ class ProfileFields
     }
 
 
-
-/*
-    public function getValidationRules($required_fields) {
-        $login_appendix = '|unique:users';
-        $primary_email_appendix = '|unique:emails,email';
-        $secondary_email_appendix = '|unique:emails,email';
-        if($this->user) {
-            $login_appendix .= ',login,'.$this->user->id;
-            if($id = $this->user->primary_email_id) {
-                $primary_email_appendix .= ','.$id;
-            }
-            if($id = $this->user->secondary_email_id) {
-                $secondary_email_appendix .= ','.$id;
-            }
-        }
-
-        $all = [
-            'login' => 'required|min:3'.$login_appendix,
-            'first_name' => 'required|max:100',
-            'last_name' => 'required|max:100',
-            'primary_email'  => 'required|email'.$primary_email_appendix,
-            'secondary_email'  => 'required|email|different:primary_email'.$secondary_email_appendix,
-            'language' => 'required|in:'.implode(',', array_keys(config('app.locales'))),
-            'country_code' => 'required|in:'.implode(',', array_keys(trans('countries'))),
-            'address' => 'required|max:255',
-            'city' => 'required|max:255',
-            'zipcode' => 'required|max:20',
-            'primary_phone' => 'required|max:255',
-            'secondary_phone' => 'required|max:255',
-            'birthday'  => 'required|date_format:"Y-m-d"|before:today',
-            'gender' => 'required|in:m,f',
-            'presentation'  => 'required',
-            'website' => 'required',
-            'role' => 'in:'.implode(',', array_keys(trans('profile.roles'))),
-            'school_grade' => 'required_if:role,student',
-            'ministry_of_education' => 'required_if:role,teacher',
-            'student_id' => 'required_if:role,student',
-            'graduation_year' => 'required|integer|between:1900,'.date('Y')
-        ];
-
-        $res = [];
-        foreach($required_fields as $field) {
-            if(isset($all[$field])) {
-                $res[$field] = $all[$field];
-            }
-        }
-        return $res;
-    }
-*/
-
     private function extendFields($fields) {
         if(!in_array('role', $fields) && count(array_intersect($this->role_required, $fields))  > 0) {
             $fields[] ='role';
