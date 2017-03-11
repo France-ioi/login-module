@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\LoginModule\Platform\BadgeApi;
+
 
 class Badge extends Model
 {
@@ -22,13 +22,10 @@ class Badge extends Model
     ];
 
 
-    protected static function boot() {
-        static::updating(function($model) {
-            if($model->isDirty('do_not_possess') && $model->do_not_possess == 0) {
-                BadgeApi::update($model->url, $model->code, $model->user_id);
-            }
-        });
-    }
+    protected $casts = [
+        'do_not_possess' => 'boolean'
+    ];
+
 
     public function user() {
         return $this->belongsTo('App\User');

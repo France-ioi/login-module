@@ -36,13 +36,13 @@ class CreateUsersTable extends Migration
             $table->date('birthday')->nullable();
             $table->text('presentation')->nullable();
             $table->text('website')->nullable();
-            $table->string('ip', 16);
+            $table->string('ip', 16)->nullable();
             $table->string('picture')->nullable();
             $table->enum('gender', ['m', 'f'])->nullable();
             $table->integer('graduation_year')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->dateTime('last_login');
+            $table->dateTime('last_login')->nullable();
         });
     }
 

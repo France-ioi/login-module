@@ -17,7 +17,7 @@ class CreateAuthConnectionsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('provider', 16);
-            $table->string('uid', 40)->index();
+            $table->string('uid')->index();
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('active')->default(false);

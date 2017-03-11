@@ -26,7 +26,7 @@ class Badge {
             return true;
         }
         $badge = $this->user->badges()->where('url', $url)->first();
-        return (bool) $badge;// && $badge->do_not_possess == 0;
+        return (bool) $badge;// && $badge->do_not_possess;
     }
 
 

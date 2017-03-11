@@ -33,8 +33,8 @@ class UserProvider extends EloquentUserProvider
 
 
     public function validateCredentials(UserContract $user, array $credentials) {
-        $plain = $credentials['password'];
-        if($this->hasher->check($plain, $user->getAuthPassword())) {
+        $hash = md5($credentials['password']);
+        if(md5($user->getAuthPassword()) == $hash) {
             $user->last_login = new \DateTime();
             $user->ip = \Request::ip();
             $user->save();

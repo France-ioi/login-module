@@ -20,7 +20,7 @@ class CreateBadgesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('url')->index();
             $table->string('code')->nullable();
-            $table->tinyInteger('do_not_possess')->default(0);
+            $table->boolean('do_not_possess')->default(false);
         });
     }
 

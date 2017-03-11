@@ -5,6 +5,7 @@ namespace App\LoginModule;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Email;
+use App\Badge;
 use App\AuthConnection;
 use Auth;
 
@@ -39,8 +40,21 @@ class AuthConnector
                 }
                 Auth::login($user);
             }
+            self::addBadge($user, $auth);
         }
         return $user;
+    }
+
+
+    static function addBadge($user, $auth) {
+        if($auth['provider'] == 'pms' && $auth['school_id'] && $auth['school_class']) {
+            $url = 'groups://PMS/'.$auth['school_id'].'/'.$auth['school_class'].'/member';
+            if(!$user->badges()->where('url', $url)->first()) {
+                $user->badges()->save(new Badge([
+                    'url' => $url
+                ]));
+            }
+        }
     }
 
 

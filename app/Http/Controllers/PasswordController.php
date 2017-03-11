@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use Hash;
 
 class PasswordController extends Controller
 {
@@ -18,7 +17,7 @@ class PasswordController extends Controller
         $this->validate($request, [
             'password' => 'required|min:6|confirmed'
         ]);
-        Auth::user()->password = Hash::make($request->input('password'));
+        Auth::user()->password = md5($request->input('password'));
         Auth::user()->save();
         return back()->with(['success' => true]);
     }

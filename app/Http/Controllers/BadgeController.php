@@ -8,6 +8,7 @@ use Auth;
 use Session;
 use App\LoginModule\Platform\PlatformRequest;
 use App\Badge;
+use App\LoginModule\Platform\BadgeApi;
 
 class BadgeController extends Controller
 {
@@ -45,9 +46,10 @@ class BadgeController extends Controller
         }
         if($badge_data = PlatformRequest::badge()->verify($request->input('code'))) {
             if($badge = Auth::user()->badges()->where('url', $badge_data['url'])->first()) {
-                $badge->do_not_possess = 0;
+                $badge->do_not_possess = false;
                 $badge->code = $badge_data['code'];
                 $badge->save();
+                BadgeApi::update($badge->url, $badge->code, $badge->user_id);
             } else {
                 Auth::user()->badges()->save(new Badge([
                     'code' => $badge_data['code'],
@@ -79,7 +81,7 @@ class BadgeController extends Controller
             Auth::user()->badges()->save(new Badge([
                 'code' => '',
                 'url' => $url,
-                'do_not_possess' => 1
+                'do_not_possess' => true
             ]));
         }
         return redirect(PlatformRequest::getRedirectUrl('/badge'));

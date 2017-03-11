@@ -90,7 +90,7 @@ class RegisterController extends Controller
         $locale = session()->has('locale') ? session('locale') : '';
         $user = User::create([
             'login' => $data['login'],
-            'password' => bcrypt($data['password']),
+            'password' => md5($data['password']),
             'language' => $locale
         ]);
         if(isset($data['primary_email'])) {

@@ -39,7 +39,7 @@ class ResetPasswordController extends Controller
 
     protected function resetPassword($email, $password) {
         $email->user->forceFill([
-            'password' => bcrypt($password),
+            'password' => md5($password),
             'remember_token' => str_random(60),
         ])->save();
 

@@ -47,6 +47,8 @@
                     'email' => array_get($owner, 'eMail'),
                     'first_name' => array_get($owner, 'firstName'),
                     'last_name' => array_get($owner, 'lastName'),
+                    'school_id'=> array_get($owner, 'schoolId'),
+                    'school_class' => array_get($owner, 'schoolClass'),
                 ];
             } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
                 return null;

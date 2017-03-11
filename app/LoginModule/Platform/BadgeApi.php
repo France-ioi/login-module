@@ -7,6 +7,9 @@ use App\Badge;
 class BadgeApi {
 
     static function post($url, $request) {
+        if(substr($url, 0, 4) != 'http') {
+            return true;
+        }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -45,7 +48,7 @@ class BadgeApi {
             'code' => $code,
             'idUser' => $user_id
         ];
-        $res = self::post($badgeUrl, $post_data);
+        $res = self::post($url, $post_data);
         return $res && $res['success'];
     }
 
