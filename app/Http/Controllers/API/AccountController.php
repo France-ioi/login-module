@@ -10,8 +10,8 @@ class AccountController extends Controller
 {
 
     public function show(Request $request) {
-        return response()->json(
-            User::with('badges')->findOrFail($request->user()->id)
-        );
+        $res = $request->user();
+        $res['badges'] = $res->badges()->where('do_not_possess', false)->get();
+        return response()->json($res);
     }
 }
