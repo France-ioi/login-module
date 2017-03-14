@@ -98,15 +98,17 @@ class Migrator {
         $connections = [];
         if($user_data['uid']) {
             $provider = false;
-            if(strlen($user_data['uid']) == 16) {
-                $connections['facebook'] = $user_data['uid'];
+
+            $facebook_prefix = 'http://www.facebook.com/';
+            if(strpos($user_data['uid'], $facebook_prefix) !== false) {
+                $connections['facebook'] = str_replace($user_data['uid'], $facebook_prefix, '');
             } else {
                 $connections['google'] = $user_data['uid'];
             }
         }
         foreach($auths as $auth) {
             if($auth['idAuth'] == 5) {
-                $connections['pms'] = $auth['authStr'];
+                //$connections['pms'] = $auth['authStr'];
             } elseif (strpos($auth['authStr'], '::') !== false) {
                 $connections['lti'] = $auth['authStr'];
             }
