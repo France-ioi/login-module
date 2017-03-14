@@ -27,7 +27,12 @@ class BadgeController extends Controller
         $this->validate($request, $this->validation_rules);
         $code = $request->input('code');
         if($badge = $this->findBadge($code)) {
-            return $this->failedVerificationResponse($code, trans('badge.code_registered'));
+            if($badge->login_enabled) {
+                Auth::login($badge->user);
+                return redirect(PlatformRequest::getRedirectUrl('/account'));
+            } else {
+                return $this->failedVerificationResponse($code, trans('badge.code_registered'));
+            }
         }
         if(PlatformRequest::badge()->verifyAndStore($code)) {
             return redirect()->route('register');

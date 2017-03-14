@@ -128,7 +128,10 @@
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#birthday').datepicker({ format: 'yyyy-mm-dd' });
+            $('#birthday').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: new Date()
+            });
 
             function updateHidden() {
                 $('#box_ministry_of_education_fr').hide();

@@ -19,8 +19,8 @@
                     @lang('email_verification.header')
                 </a>
             @endif
-            <a href="{{ url('/auth_connections') }}" class="list-group-item">
-                @lang('auth_connections.header')
+            <a href="{{ url('/auth_methods') }}" class="list-group-item">
+                @lang('auth_methods.header')
             </a>
             <a href="{{ url('/password') }}" class="list-group-item">
                 @lang('password.header')

@@ -11,7 +11,8 @@ class Badge extends Model
         'user_id',
         'url',
         'code',
-        'do_not_possess'
+        'do_not_possess',
+        'login_enabled',
     ];
 
     protected $visible = [
@@ -23,7 +24,8 @@ class Badge extends Model
 
 
     protected $casts = [
-        'do_not_possess' => 'boolean'
+        'do_not_possess' => 'boolean',
+        'login_enabled' => 'boolean',
     ];
 
 

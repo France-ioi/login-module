@@ -25,14 +25,15 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/badge', 'BadgeController@index');
     Route::post('/badge/attach', 'BadgeController@attach');
     Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
+    Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
     Route::get('/profile', 'ProfileController@index');
     Route::post('/profile', 'ProfileController@update');
 
     Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
     Route::post('/account/details', ['uses' => 'AccountController@updateAccount', 'as' => 'update_account']);
 
-
-    Route::get('/auth_connections', 'AuthConnectionsController@index');
+    Route::get('/auth_methods', 'AuthMethodsController@index');
+    Route::post('/auth_methods/badge_login_ability/{id}/{enabled}', 'AuthMethodsController@setBadgeLoginAbility');
     Route::get('/password', 'PasswordController@index');
     Route::post('/password', 'PasswordController@updatePassword');
 });

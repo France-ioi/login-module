@@ -22,7 +22,7 @@ class OAuthClientController extends Controller
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
             if(AuthConnector::connect($auth)) {
-                return redirect()->intended('/auth_connections');
+                return redirect()->intended('/auth_methods');
             }
             Session::put('auth_connection', $auth);
             return redirect('/oauth_client/email_exists');
@@ -41,6 +41,6 @@ class OAuthClientController extends Controller
 
     public function remove($provider) {
         AuthConnector::disconnect($provider);
-        return redirect('/auth_connections');
+        return redirect('/auth_methods');
     }
 }
