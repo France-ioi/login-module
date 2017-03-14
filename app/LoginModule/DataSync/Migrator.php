@@ -14,30 +14,46 @@ class Migrator {
 
     const CHUNK_SIZE = 100;
 
+    protected $command;
+
+
+    public function __construct($command) {
+        $this->command = $command;
+    }
+
+
     public function migrate() {
         $offset = 0;
         while(count($users = Data::queryUsers($offset, self::CHUNK_SIZE))) {
             foreach($users as $user_data) {
                 DB::transaction(function() use ($user_data) {
-                    $user = $this->syncUser($user_data);
-                    $this->syncEmail($user, $user_data);
-                    $badges = Data::queryBadges($user_data['id']);
-                    foreach($badges as $badge_data) {
-                        $this->syncBadge($user, $badge_data);
+                    if($user = $this->syncUser($user_data)) {
+                        $this->syncEmail($user, $user_data);
+                        $badges = Data::queryBadges($user_data['id']);
+                        foreach($badges as $badge_data) {
+                            $this->syncBadge($user, $badge_data);
+                        }
+                        $auths = Data::queryAuths($user_data['id']);
+                        $this->syncAuths($user, $user_data, $auths);
                     }
-                    //$auths = Data::queryAuths($user_data['id']);
-                    //$this->syncAuthConnections($user, $user_data, $auths);
                 });
             }
             $offset += self::CHUNK_SIZE;
         }
+        $this->command->info('Completed.');
     }
 
 
     private function syncUser($user_data) {
         if($user = User::find($user_data['id'])) {
+            if($this->isLoginUsed($user_data['login'], $user->id)) {
+                return;
+            }
             $user->fill($user_data);
         } else {
+            if($this->isLoginUsed($user_data['login'])) {
+                return;
+            }
             $user = new User($user_data);
             $user->id = $user_data['id'];
         }
@@ -50,8 +66,7 @@ class Migrator {
     private function syncEmail($user, $user_data) {
         if($email = $user->emails()->primary()->first()) {
             if($this->isEmailUsed($user_data['email'], $email->id)) {
-                return false;
-                //TODO: msg
+                return;
             }
             $email->fill([
                 'email' => $user_data['email'],
@@ -60,8 +75,7 @@ class Migrator {
             $email->save();
         } else {
             if($this->isEmailUsed($user_data['email'])) {
-                return false;
-                //TODO: msg
+                return;
             }
             $email = new Email([
                 'email' => $user_data['email'],
@@ -70,15 +84,6 @@ class Migrator {
             ]);
             $user->emails()->save($email);
         }
-    }
-
-
-    private function isEmailUsed($email, $except_id = null) {
-        $q = Email::where('email', $email);
-        if($except_id) {
-            $q->where('id', '<>', $except_id);
-        }
-        return $q->first();
     }
 
 
@@ -128,7 +133,35 @@ class Migrator {
                 'access_token' => ''
             ]));
         }
+    }
 
+
+    private function isEmailUsed($email, $except_id = null) {
+        $q = Email::where('email', $email);
+        if($except_id) {
+            $q->where('id', '<>', $except_id);
+        }
+        if($q->first()) {
+            $this->command->error('Duplicate email: '.$email);
+            return true;
+        }
+        return false;
+    }
+
+
+    private function isLoginUsed($login, $except_id = null) {
+        if(is_null($login)) {
+            return false;
+        }
+        $q = User::where('login', $login);
+        if($except_id) {
+            $q->where('id', '<>', $except_id);
+        }
+        if($q->first()) {
+            $this->command->error('Duplicate login: '.$login);
+            return true;
+        }
+        return false;
     }
 
 }

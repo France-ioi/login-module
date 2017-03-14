@@ -38,7 +38,7 @@ class DataSyncCommand extends Command
      */
     public function handle()
     {
-        $migrator = new Migrator();
+        $migrator = new Migrator($this);
         $migrator->migrate();
     }
 }

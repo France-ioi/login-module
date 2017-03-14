@@ -42,6 +42,9 @@ class UserMapper {
         } elseif ($row->sSex == 'Female') {
             $res['gender'] = 'f';
         }
+        if($res['birthday'] == '0000-00-00') {
+            $res['birthday'] = null;
+        }
         return $res;
     }
 
