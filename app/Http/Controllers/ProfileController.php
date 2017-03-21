@@ -14,30 +14,30 @@ class ProfileController extends Controller
 
 
     public function index(Request $request) {
-        if(!$values = PlatformRequest::badge()->restoreUser()) {
-            $values = [];
+        $user = Auth::check() ? Auth::user() : new User;
+        if($badge_data = PlatformRequest::badge()->restoreData()) {
+            $user->fill($badge_data['user']);
         }
-        $values = array_merge($values, Auth::user()->toArray());
 
         if($request->has('all')) {
             $fields = PlatformRequest::profileFields()->getAll();
         } else {
-            $fields = PlatformRequest::profileFields()->getEmptyExtended();
+            $fields = PlatformRequest::profileFields()->getRequired();
         }
         return view('profile.index', [
             'fields' => $fields,
-            'values' => $values,
-            'all' => $request->get('all')
+            'user' => $user,
+            'all' => $request->get('all'),
+            'cancel_url' => PlatformRequest::getCancelUrl()
         ]);
     }
 
 
     public function update(Request $request) {
-        $required = PlatformRequest::profileFields()->getEmpty();
+        $required = PlatformRequest::profileFields()->getRequired();
         $rules = PlatformRequest::profileFields()->getValidationRules($required);
         $this->validate($request, $rules);
         Auth::user()->fill($request->all());
-        Auth::user()->ministry_of_education_fr = $request->has('ministry_of_education_fr');
         Auth::user()->save();
         if($request->has('primary_email')) {
             if($primary = Auth::user()->emails()->primary()->first()) {
@@ -63,6 +63,7 @@ class ProfileController extends Controller
                 Auth::user()->emails()->save($secondary);
             }
         }
+        PlatformRequest::badge()->flushData();
         return redirect(PlatformRequest::getRedirectUrl('/profile'));
     }
 

@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use App\LoginModule\Locale;
 
 class LocaleController extends Controller
 {
+
     public function set($locale) {
-        if(Auth::check()) {
-            Auth::user()->language = $locale;
-            Auth::user()->save();
-        } else {
-            session()->put('locale', $locale);
-        }
+        Locale::set($locale);
         return redirect()->back();
     }
+
 }

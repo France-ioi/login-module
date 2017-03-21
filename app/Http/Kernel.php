@@ -35,7 +35,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\Locale::class,
+            \App\Http\Middleware\AppLocale::class,
         ],
 
         'api' => [
@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
         'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
         'admin' => \App\Http\Middleware\Admin::class,
+        'reauthentication' => \App\Http\Middleware\CheckReauthentication::class,
         'platform_profile_filled' => \App\Http\Middleware\PlatformProfileFilled::class,
         'platform_email_verified' => \App\Http\Middleware\PlatformEmailVerified::class,
         'platform_badge_verified' => \App\Http\Middleware\PlatformBadgeVerified::class,

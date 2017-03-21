@@ -74,6 +74,7 @@ class ProfileFieldsValidation
 
     private function createSchema() {
         $country_codes = array_keys(trans('countries'));
+        $timezones = array_keys(trans('timezones'));
         return [
             'login' => [
                 'required' => 'required',
@@ -87,13 +88,17 @@ class ProfileFieldsValidation
                 'required' => 'required',
                 'valid' => 'max:100'
             ],
+            'real_name_visible' => [
+                'required' => false,
+                'valid' => ''
+            ],
             'primary_email' => [
-                'required' => 'required',
-                'valid' => 'email|unique:emails,email'
+                'required' => 'required|email',
+                'valid' => 'unique:emails,email'
             ],
             'secondary_email' => [
-                'required' => 'required',
-                'valid' => 'email|value_different:primary_email|unique:emails,email'
+                'required' => 'required|email',
+                'valid' => 'value_different:primary_email|unique:emails,email'
             ],
             'language' => [
                 'required' => 'required',
@@ -114,6 +119,10 @@ class ProfileFieldsValidation
             'zipcode' => [
                 'required' => 'required',
                 'valid' => 'max:20'
+            ],
+            'timezone' => [
+                'required' => 'required',
+                'valid' => 'in:'.implode(',', $timezones)
             ],
             'primary_phone' => [
                 'required' => 'required',
@@ -152,11 +161,11 @@ class ProfileFieldsValidation
                 'valid' => ''
             ],
             'school_grade' => [
-                'required' => 'required_if:role,student',
+                'required' => 'required',
                 'valid' => ''
             ],
             'student_id' => [
-                'required' => 'required_if:role,student',
+                'required' => 'required',
                 'valid' => ''
             ],
             'graduation_year' => [

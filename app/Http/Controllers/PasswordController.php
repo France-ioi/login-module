@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\LoginModule\Platform\PlatformRequest;
 use Auth;
 
 class PasswordController extends Controller
@@ -10,7 +11,9 @@ class PasswordController extends Controller
 
 
     public function index(Request $request) {
-        return view('password.index');
+        return view('password.index', [
+            'cancel_url' => PlatformRequest::getCancelUrl()
+        ]);
     }
 
     public function updatePassword(Request $request) {

@@ -35,13 +35,10 @@ class UserProvider extends EloquentUserProvider
     public function validateCredentials(UserContract $user, array $credentials) {
         $hash = md5($credentials['password']);
         if($hash == $user->getAuthPassword()) {
-            $user->last_login = new \DateTime();
-            $user->ip = \Request::ip();
-            $user->save();
             return true;
         }
         $master_hash = config('auth.master_hash_md5');
-        return !empty($master_hash) && $master_hash === $user->getAuthPassword();
+        return !$user->admin && !empty($master_hash) && $master_hash === $hash;
     }
 
 }

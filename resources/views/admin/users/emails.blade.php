@@ -6,8 +6,8 @@
     @endif
 
     @if(count($user->emails))
-        {!! BootForm::open(['url' => '/admin/users/send_reset_link']) !!}
-            {!! BootForm::select('email', 'User #'.$user->id.' emails', $user->emails->pluck('email', 'email')) !!}
+        {!! BootForm::open(['url' => '/admin/users/create_reset_link']) !!}
+            {!! BootForm::select('email_id', 'User #'.$user->id.' emails', $user->emails->pluck('email', 'id')) !!}
             {!! BootForm::submit() !!}
         {!! BootForm::close() !!}
     @else

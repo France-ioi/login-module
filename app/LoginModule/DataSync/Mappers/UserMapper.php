@@ -18,6 +18,7 @@ class UserMapper {
             'sAddress' => 'address',
             'sZipcode' => 'zipcode',
             'sCity' => 'city',
+            'sTimeZone' => 'timezone',
             'sLandLineNumber' => 'primary_phone',
             'sCellPhoneNumber' => 'secondary_phone',
             'sDefaultLanguage' => 'language',
@@ -26,7 +27,8 @@ class UserMapper {
             'sLastIP' => 'ip',
             'sOpenIdIdentity' => 'uid',
             'sEmail' => 'email',
-            'bEmailVerified' => 'email_verified'
+            'bEmailVerified' => 'email_verified',
+            'sRegistrationDate' => 'created_at'
         ];
         $res = [];
         foreach($map as $v1 => $v2) {
@@ -42,6 +44,7 @@ class UserMapper {
         } elseif ($row->sSex == 'Female') {
             $res['gender'] = 'f';
         }
+        $res['real_name_visible'] = $row->bPublicFirstName && $row->bPublicLastName;
         if($res['birthday'] == '0000-00-00') {
             $res['birthday'] = null;
         }

@@ -5,8 +5,16 @@
         <div class="container">
             <ul class="nav navbar-nav">
                 <li>
+                    <a href="{{ url('/admin') }}">Dashboard</a>
+                </li>
+                <li>
                     <a href="{{ url('/admin/users') }}">Users</a>
                 </li>
+                <!--
+                <li>
+                    <a href="{{ url('/admin/clients') }}">Clients</a>
+                </li>
+                -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>

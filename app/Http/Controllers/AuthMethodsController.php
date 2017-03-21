@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\LoginModule\Platform\PlatformRequest;
 use App\OAuthClient\Manager;
 
 class AuthMethodsController extends Controller
@@ -13,7 +14,8 @@ class AuthMethodsController extends Controller
         return view('auth_methods.index', [
             'providers'  => Manager::providers(),
             'connected' => Auth::user()->auth_connections()->get()->pluck('id', 'provider')->toArray(),
-            'badges' => Auth::user()->badges()->where('do_not_possess', false)->get()
+            'badges' => Auth::user()->badges()->where('do_not_possess', false)->get(),
+            'cancel_url' => PlatformRequest::getCancelUrl()
         ]);
     }
 

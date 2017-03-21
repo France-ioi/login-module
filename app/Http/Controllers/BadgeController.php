@@ -34,7 +34,7 @@ class BadgeController extends Controller
                 return $this->failedVerificationResponse($code, trans('badge.code_registered'));
             }
         }
-        if(PlatformRequest::badge()->verifyAndStore($code)) {
+        if($badge_data = PlatformRequest::badge()->verifyAndStoreData($code)) {
             return redirect()->route('register');
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));

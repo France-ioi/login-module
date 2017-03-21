@@ -39,8 +39,4 @@ return [
     'logout_header' => 'Logout',
     'logout_hint' => 'Also logout from:',
     'btn_logout' => 'Logout',
-
-    'link_cancel' => 'Cancel',
-    'btn_save' => 'Save',
-
 ];

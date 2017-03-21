@@ -16,12 +16,6 @@ class ProfileFields
         'secondary_email_verified'
     ];
 
-    protected $role_required = [
-        'school_grade',
-        'ministry_of_education',
-        'student_id'
-    ];
-
     protected $fields_cache = [
         'profile' => [],
         'verification' => [],
@@ -39,9 +33,11 @@ class ProfileFields
     private function cacheFields() {
         if($this->client && $this->client->profile_fields) {
             $required = array_diff($this->client->profile_fields, $this->verification_fields);
-            $required = $this->extendFields($required);
             $this->fields_cache['required'] = $this->validation->sortFields($required);
             $this->fields_cache['verification'] = array_intersect($this->verification_fields, $this->client->profile_fields);
+        } else {
+            $this->fields_cache['required'] = $this->validation->getFields();
+            $this->fields_cache['verification'] = $this->verification_fields;
         }
     }
 
@@ -81,13 +77,10 @@ class ProfileFields
             return $this->getRequired();
         }
         $res = [];
-        $role = $this->user->getAttribute('role');
         $required = $this->getRequired();
         foreach($required as $field) {
             $value = $this->user->getAttribute($field);
-            if(empty($value)) {
-                if(($field == 'school_grade' || $field == 'student_id') && $role && $role != 'student') continue;
-                if($field == 'ministry_of_education' && $role != 'teacher') continue;
+            if(is_null($value) || $value == '') {
                 $res[] = $field;
             }
         }
@@ -95,23 +88,8 @@ class ProfileFields
     }
 
 
-    public function getEmptyExtended() {
-        $fields = $this->getEmpty();
-        $fields = $this->extendFields($fields);
-        return $this->validation->sortFields($fields);
-    }
-
-
     public function getValidationRules($required) {
         return $this->validation->getFilteredRules($required);
-    }
-
-
-    private function extendFields($fields) {
-        if(!in_array('role', $fields) && count(array_intersect($this->role_required, $fields))  > 0) {
-            $fields[] ='role';
-        }
-        return $fields;
     }
 
 }

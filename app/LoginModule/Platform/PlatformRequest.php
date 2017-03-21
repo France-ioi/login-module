@@ -10,6 +10,7 @@ class PlatformRequest
 {
 
     const REDIRECT_URL_KEY = 'platform_redirect_url';
+    const CANCELABLE_KEY = 'platform_request_cancelable';
     const CLIENT_ID_KEY = 'platform_client_id';
 
     private static $client = null;
@@ -20,26 +21,22 @@ class PlatformRequest
 
 
     static function cacheToSession($request) {
-        if($request->get('redirect_uri') && $request->get('client_id')) {
+        if($request->has('redirect_uri') && $request->has('client_id')) {
             $query = parse_url($request->fullUrl(), PHP_URL_QUERY);
             parse_str($query, $params);
 
             if($request->is('oauth/authorize')) {
-                self::setRedirectUrl($request->fullUrl());
+                self::setRedirectUrl($request->fullUrl(), false);
             } else {
-                self::setRedirectUrl($params['redirect_uri']);
+                self::setRedirectUrl($params['redirect_uri'], true);
             }
             Session::put(self::CLIENT_ID_KEY, $params['client_id']);
         }
     }
 
 
-    static function hasRedirectUrl() {
-        return Session::has(self::REDIRECT_URL_KEY);
-    }
-
-
-    static function setRedirectUrl($url) {
+    static function setRedirectUrl($url, $cancelable = false) {
+        Session::put(self::CANCELABLE_KEY, $cancelable);
         Session::put(self::REDIRECT_URL_KEY, $url);
     }
 
@@ -49,6 +46,13 @@ class PlatformRequest
             $url = $alternative;
         }
         return url($url);
+    }
+
+
+    static function getCancelUrl() {
+        if(Session::get(self::CANCELABLE_KEY)) {
+            return self::getRedirectUrl();
+        }
     }
 
 

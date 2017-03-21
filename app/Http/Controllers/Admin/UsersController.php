@@ -8,12 +8,11 @@ use App\User;
 use App\Email;
 use App\LoginModule\Badges;
 use App\LoginModule\Platform\BadgeApi;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Password;
+use Mail;
 
 class UsersController extends Controller
 {
-
-    use SendsPasswordResetEmails;
 
     public function index(Request $request) {
         $query = User::query();
@@ -34,7 +33,7 @@ class UsersController extends Controller
                 $query->where('email', 'LIKE', '%'.$request->get('email').'%');
             });
         }
-        return view('admin.users', [
+        return view('admin.users.index', [
             'users' => $query->paginate()
         ]);
     }
@@ -52,10 +51,11 @@ class UsersController extends Controller
 
 
     public function showPassword($id) {
-        return view('admin.user_password', [
+        return view('admin.users.password', [
             'user' => User::findOrFail($id)
         ]);
     }
+
 
     public function updatePassword($id, Request $request) {
         User::findOrFail($id)->update([
@@ -65,15 +65,40 @@ class UsersController extends Controller
     }
 
 
+
     public function showEmails($id) {
         $user = User::with('emails')->findOrFail($id);
-        return view('admin.user_emails', [
+        return view('admin.users.emails', [
             'user' => $user
         ]);
     }
 
+
+    public function createResetLink(Request $request) {
+        $email = Email::findOrFail($request->input('email_id'));
+        $token = Password::broker()->createToken($email);
+        $body =
+            'Follow this link to reset your password:'.PHP_EOL.
+            route('password.reset', $token);
+        $subject = 'Password reset';
+        return view('admin.users.send_reset_link', [
+            'subject' => $subject,
+            'body' => $body,
+            'email' => $email
+        ]);
+    }
+
+
     public function sendResetLink(Request $request) {
-        return $this->sendResetLinkEmail($request);
+        $this->validate($request, [
+            'email' => 'required|email',
+            'subject' => 'required',
+            'body' => 'required',
+        ]);
+        Mail::raw($request->input('body'), function ($message) use ($request) {
+            $message->to($request->input('email'))->subject($request->input('subject'));
+        });
+        return redirect('/admin/users')->with('status', 'Password recovery email was sent');
     }
 
 }

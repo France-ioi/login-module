@@ -18,7 +18,7 @@
                         @lang('auth.btn_register')
                     </button>
                     <a class="btn btn-link" href="{{ route('login') }}">
-                        @lang('auth.link_cancel')
+                        @lang('ui.cancel')
                     </a>
                 </div>
             {!! BootForm::close() !!}

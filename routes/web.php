@@ -32,10 +32,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
     Route::post('/account/details', ['uses' => 'AccountController@updateAccount', 'as' => 'update_account']);
 
-    Route::get('/auth_methods', 'AuthMethodsController@index');
-    Route::post('/auth_methods/badge_login_ability/{id}/{enabled}', 'AuthMethodsController@setBadgeLoginAbility');
-    Route::get('/password', 'PasswordController@index');
-    Route::post('/password', 'PasswordController@updatePassword');
+    Route::get('/reauthentication', 'Auth\ReauthenticationController@index');
+    Route::post('/reauthentication', 'Auth\ReauthenticationController@update');
+    Route::group(['middleware' => ['reauthentication']], function() {
+        Route::get('/auth_methods', 'AuthMethodsController@index');
+        Route::post('/auth_methods/badge_login_ability/{id}/{enabled}', 'AuthMethodsController@setBadgeLoginAbility');
+        Route::get('/password', 'PasswordController@index');
+        Route::post('/password', 'PasswordController@updatePassword');
+    });
 });
 
 
@@ -45,6 +49,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin'], 'namespace'
     Route::get('/users/{id}/password', 'UsersController@showPassword');
     Route::post('/users/{id}/password', 'UsersController@updatePassword');
     Route::get('/users/{id}/emails', 'UsersController@showEmails');
+    Route::post('/users/create_reset_link', 'UsersController@createResetLink');
     Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
     Route::delete('/users/{id}', 'UsersController@delete');
+
+    Route::get('/clients', 'ClientsController@index');
 });

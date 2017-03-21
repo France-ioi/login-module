@@ -18,7 +18,7 @@ class EmailVerificationController extends Controller
     public function index() {
         return view('email_verification.index', [
             'emails' => Auth::user()->emails()->where('verified', false)->get(),
-            'authorization_url' => PlatformRequest::getRedirectUrl()
+            'authorization_url' => PlatformRequest::getRedirectUrl(),
         ]);
     }
 

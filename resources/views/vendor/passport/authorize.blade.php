@@ -43,7 +43,7 @@
 
                     <input type="hidden" name="state" value="{{ $request->state }}">
                     <input type="hidden" name="client_id" value="{{ $client->id }}">
-                    <button class="btn btn-danger">@lang('passport.btn_cancel')</button>
+                    <button class="btn btn-danger">@lang('ui.cancel')</button>
                 </form>
             </div>
         </div>

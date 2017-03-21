@@ -13,9 +13,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Illuminate\Mail\Events\MessageSending' => [
-            'App\Listeners\LogSentMessage',
-        ],
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\AuthLogin',
+        ]
     ];
 
     /**
@@ -26,7 +26,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }

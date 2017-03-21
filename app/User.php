@@ -18,10 +18,12 @@ class User extends Authenticatable
         'language',
         'first_name',
         'last_name',
+        'real_name_visible',
         'country_code',
         'address',
         'city',
         'zipcode',
+        'timezone',
         'primary_phone',
         'secondary_phone',
         'role',
@@ -37,12 +39,12 @@ class User extends Authenticatable
         'website',
         'last_login',
         'ip',
+        'created_at'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-        'created_at',
         'updated_at'
     ];
 
@@ -58,7 +60,8 @@ class User extends Authenticatable
         'admin' => 'boolean',
         'ministry_of_education_fr' => 'boolean',
         'graduation_year' => 'integer',
-        'logout_config' => 'array'
+        'logout_config' => 'array',
+        'real_name_visible' => 'boolean'
     ];
 
 

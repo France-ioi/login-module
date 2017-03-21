@@ -43,24 +43,23 @@ class Badge {
     }
 
 
-    public function verifyAndStore($code) {
+    public function verifyAndStoreData($code) {
         if($badge_data = $this->verify($code)) {
             Session::put(self::SESSION_KEY, $badge_data);
             return true;
         } else {
-            Session::forget(self::SESSION_KEY);
+            $this->flushData();
         }
     }
 
 
-    public function restoreUser() {
-        $badge_data = $this->restore();
-        return $badge_data ? $badge_data['user'] : null;
+    public function restoreData() {
+        return Session::get(self::SESSION_KEY);
     }
 
 
-    public function restore() {
-        return Session::get(self::SESSION_KEY);
+    public function flushData() {
+        Session::forget(self::SESSION_KEY);
     }
 
 }

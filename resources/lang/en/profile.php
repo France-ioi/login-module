@@ -6,6 +6,7 @@ return [
     'login' => 'Login',
     'first_name' => 'First name',
     'last_name' => 'Last name',
+    'real_name_visible' => 'Display my real name on my public profile',
     'primary_email'  => 'Primary email',
     'secondary_email'  => 'Secondary email',
     'language' => 'Language',
@@ -13,6 +14,7 @@ return [
     'address' => 'Address',
     'city' => 'City',
     'zipcode' => 'Zip code',
+    'timezone' => 'Timezone',
     'primary_phone' => 'Primary phone',
     'secondary_phone' => 'Secondary phone',
     'role' => 'Role',
@@ -24,7 +26,7 @@ return [
     'ministry_of_education' => 'What country\'s ministry of education is your school attached to',
     'ministry_of_education_fr' => 'in a public school or school under contract with the french ministry of education',
     'school_grade' => 'School grade',
-    'student_id' => 'Student id',
+    'student_id' => 'Student ID',
     'graduation_year' => 'Graduation year',
     'birthday'  => 'Birthday',
     'gender' => 'Gender',
@@ -33,5 +35,6 @@ return [
         'f' => 'Female'
     ],
     'presentation'  => 'Presentation',
-    'website' => 'Website'
+    'website' => 'Website',
+    'success' => 'Profile updated.',
 ];
