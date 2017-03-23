@@ -3,6 +3,16 @@
 @section('navigation')
     <nav class="navbar navbar-default">
         <div class="container">
+            @if(Auth::check())
+                <p class="navbar-text">
+                    @if(Auth::user()->first_name)
+                        {{ Auth::user()->first_name }}
+                        {{ Auth::user()->last_name }}
+                    @else
+                        {{ Auth::user()->login }}
+                    @endif
+                </p>
+            @endif
             <div class="navbar-header pull-right">
                 <ul class="nav pull-left">
                     <li class="dropdown">

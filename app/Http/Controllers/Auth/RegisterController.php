@@ -90,7 +90,7 @@ class RegisterController extends Controller
     {
         $user = User::create([
             'login' => $data['login'],
-            'password' => md5($data['password']),
+            'password' => bcrypt($data['password']),
             'language' => Locale::get()
         ]);
         if(isset($data['primary_email'])) {
@@ -108,6 +108,8 @@ class RegisterController extends Controller
 
         return $user;
     }
+
+
 
     public function registered($request, $user) {
         return redirect()->intended('/account');

@@ -28,6 +28,7 @@ class Migrator {
             foreach($users as $user_data) {
                 DB::transaction(function() use ($user_data) {
                     if($user = $this->syncUser($user_data)) {
+                        $this->syncPassword($user, $user_data);
                         $this->syncEmail($user, $user_data);
                         $badges = Data::queryBadges($user_data['id']);
                         foreach($badges as $badge_data) {
@@ -61,6 +62,15 @@ class Migrator {
         $user->save();
         return $user;
     }
+
+
+    private function syncPassword($user, $user_data) {
+        if(!empty($user_data['password']) && 
+            !$user->obsole_passwords()->where('password', $user_data['password'])->first()) {
+            $user->obsole_passwords()->save(new ObsolePassword($user_data));
+        }
+    }    
+
 
 
     private function syncEmail($user, $user_data) {

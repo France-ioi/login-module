@@ -11,7 +11,7 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        $pwd = md5('123123');
+        $pwd = bcrypt('123123');
 
         // admin user
         $user = \App\User::create([

@@ -4,6 +4,8 @@ namespace App\LoginModule\AuthProviders;
 
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use App\LoginModule\UserPassword;
+
 
 class UserProvider extends EloquentUserProvider
 {
@@ -33,12 +35,7 @@ class UserProvider extends EloquentUserProvider
 
 
     public function validateCredentials(UserContract $user, array $credentials) {
-        $hash = md5($credentials['password']);
-        if($hash == $user->getAuthPassword()) {
-            return true;
-        }
-        $master_hash = config('auth.master_hash_md5');
-        return !$user->admin && !empty($master_hash) && $master_hash === $hash;
+        return UserPassword::check($user, $credentials['password']);
     }
 
 }

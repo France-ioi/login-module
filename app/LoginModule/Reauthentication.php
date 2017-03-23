@@ -5,6 +5,7 @@ namespace App\LoginModule;
 use Auth;
 use Session;
 use Illuminate\Support\MessageBag;
+use App\LoginModule\UserPassword;
 
 class Reauthentication {
 
@@ -13,6 +14,7 @@ class Reauthentication {
     const REDIRECT_URL_KEY = 'reauthentication_redirect_url';
 
     public static function required($request) {
+        //TODO: check if obsolete password exists
         if(!is_null(Auth::user()->password) && time() - strtotime(Auth::user()->last_login) >= self::INTERVAL) {
             Session::put(self::REDIRECT_URL_KEY, $request->fullUrl());
             return true;
@@ -22,7 +24,7 @@ class Reauthentication {
 
 
     public static function update($password) {
-        if(!empty($password) && Auth::user()->password == md5($password)) {
+        if(!empty($password) && UserPassword::check(Auth::user(), $password)) {
             Auth::user()->last_login = new \DateTime;
             Auth::user()->save();
             return redirect(self::getRedirectUrl());

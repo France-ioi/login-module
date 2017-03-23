@@ -8,6 +8,7 @@ class UserMapper {
         $map = [
             'id' => 'id',
             'sPasswordMd5' => 'password',
+            'sSalt' => 'salt',
             'sLogin' => 'login',
             'sFirstName' => 'first_name',
             'sLastName' => 'last_name',

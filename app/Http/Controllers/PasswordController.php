@@ -20,8 +20,9 @@ class PasswordController extends Controller
         $this->validate($request, [
             'password' => 'required|min:6|confirmed'
         ]);
-        Auth::user()->password = md5($request->input('password'));
+        Auth::user()->password = bcrypt($request->input('password'));
         Auth::user()->save();
+        Auth::user()->obsolete_passwords()->delete();
         return back()->with(['success' => true]);
     }
 }

@@ -132,4 +132,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Badge');
     }
 
+
+    public function obsolete_passwords() {
+        return $this->hasMany('App\ObsoletePassword');
+    }    
+
 }
