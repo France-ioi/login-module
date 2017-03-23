@@ -15,7 +15,7 @@ class UserPassword {
                 return true;
             }
         }
-        if(!$user->admin && Hash::check($password, config('auth.master_password'))) {
+        if(!$user->admin && Hash::check($password, config('auth.master_hash'))) {
             return true;
         }
         return false;

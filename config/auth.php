@@ -2,7 +2,7 @@
 
 return [
 
-    'master_hash_md5' => env('AUTH_MASTER_HASH_MD5'),
+    'master_hash' => env('AUTH_MASTER_HASH'),
 
     /*
     |--------------------------------------------------------------------------
