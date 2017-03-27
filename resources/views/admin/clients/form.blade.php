@@ -1,18 +1,35 @@
 @extends('layouts.admin')
 
 @section('content')
-    {!! BootForm::open(['model' => $client, 'store' => 'admin.client.store', 'update' => 'admin.client.update']) !!}
+    <h2>
+        @if($client->exists())
+            Client ID: {{ $client->id }}
+        @else
+            New client
+        @endif
+    </h2>
+    {!! BootForm::open(['model' => $client, 'store' => 'admin.clients.store', 'update' => 'admin.clients.update']) !!}
         {!! BootForm::text('name', 'Name') !!}
+        {!! Bootform::hidden('revoked', 0) !!}
+        {!! BootForm::checkbox('revoked', 'Revoked') !!}        
         {!! BootForm::text('secret', 'Secret') !!}
         {!! BootForm::text('redirect', 'Redirect') !!}
-        {!! BootForm::checkbox('revoked', 'Revoked') !!}
-
-        @foreach($profile_fields as $field)
-            {!! BootForm::checkbox('revoked', 'Revoked') !!}
-            {!! BootForm::checkbox('profile_fields[]', $field, $field, isset($client->profile$fieldlogout_config[$connection->provider])) !!}
-        @endforeach
-
-
-
+        {!! BootForm::text('badge_url', 'Badge URL') !!}
+        <label>Required fields</label>
+        <div class="row">
+            @foreach($profile_fields as $field)
+                <div class="col-sm-2 col-xs-6">
+                    {!! BootForm::checkbox('profile_fields[]', $field, $field, is_array($client->profile_fields) && in_array($field, $client->profile_fields)) !!}
+                </div>
+            @endforeach
+        </div>
+        <label>Auth config</label>
+        <div>
+            @foreach($providers as $provider)
+                {!! BootForm::checkbox('auth_order[]', $provider, $provider, is_array($client->auth_order) && in_array($provider, $client->auth_order)) !!}
+            @endforeach            
+        </div>
+        {!! BootForm::textArea('public_key', 'Public key (LTI)') !!}
+        {!! BootForm::submit() !!}
     {!! BootForm::close() !!}
 @endsection

@@ -1,11 +1,16 @@
 @extends('layouts.admin')
 
 @section('content')
+    <p>
+        <a href="{{ route('admin.clients.create') }}" class="btn btn-default">Add</a>
+    </p>
+
     <table class="table table-bordered table-condensed">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -14,6 +19,7 @@
                 <tr>
                     <td>{{ $client->id }}</td>
                     <td>{{ $client->name }}</td>
+                    <td>{{ $client->revoked ? 'Revoked' : 'Active'}}</td>
                     <td>
                         <a href="{{ url('/admin/clients/'.$client->id.'/edit') }}" class="btn btn-xs btn-primary">Edit</a>
                         <form action="{{ url('/admin/clients/'.$client->id) }}" method="POST" style="display: inline" role="delete">

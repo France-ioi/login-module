@@ -43,7 +43,7 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin'], 'namespace' => 'Admin'], function() {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth','admin'], 'namespace' => 'Admin'], function() {
     Route::get('/', 'DashboardController@index');
     Route::get('/users', 'UsersController@index');
     Route::get('/users/{id}/password', 'UsersController@showPassword');
@@ -53,5 +53,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','admin'], 'namespace'
     Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
     Route::delete('/users/{id}', 'UsersController@delete');
 
+    Route::resource('clients', 'ClientsController');
     Route::get('/clients', 'ClientsController@index');
 });

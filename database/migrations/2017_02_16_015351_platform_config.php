@@ -14,10 +14,10 @@ class PlatformConfig extends Migration
     public function up()
     {
         Schema::table('oauth_clients', function (Blueprint $table) {
-            $table->text('profile_fields')->nallable();
-            $table->text('auth_order')->nallable();
-            $table->text('public_key')->nallable();
-            $table->string('badge_url')->nallable();
+            $table->text('profile_fields')->nullable();
+            $table->text('auth_order')->nullable();
+            $table->text('public_key')->nullable();
+            $table->string('badge_url')->nullable();
         });
     }
 
