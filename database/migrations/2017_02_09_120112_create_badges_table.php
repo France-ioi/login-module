@@ -21,6 +21,7 @@ class CreateBadgesTable extends Migration
             $table->string('url')->index();
             $table->string('code')->nullable();
             $table->boolean('do_not_possess')->default(false);
+            $table->boolean('login_enabled')->default(true);
         });
     }
 

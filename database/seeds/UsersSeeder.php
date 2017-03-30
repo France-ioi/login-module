@@ -11,6 +11,7 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
+
         $pwd = bcrypt('123123');
 
         // admin user
@@ -40,9 +41,24 @@ class UsersSeeder extends Seeder
 
         // user with login/pwd
         $user = \App\User::create([
-            'login' => 'test',
+            'login' => 'test1',
             'password' => $pwd
         ]);
+
+
+        // user with login/obsolete pwds
+        $user = \App\User::create([
+            'login' => 'test2',
+            'regular_password' => false
+        ]);
+        $user->obsolete_passwords()->save(new \App\ObsoletePassword([
+            'password' => md5('123123'),
+            'salt' => ''
+        ]));
+        $user->obsolete_passwords()->save(new \App\ObsoletePassword([
+            'password' => md5('123'.'123123'),
+            'salt' => '123'
+        ]));
 
     }
 }

@@ -53,7 +53,7 @@ return [
             'engine' => null,
         ],
 
-        'v1' => [
+        'old' => [
             'driver' => 'mysql',
             'host' => env('DB2_HOST', '127.0.0.1'),
             'port' => env('DB2_PORT', '3306'),

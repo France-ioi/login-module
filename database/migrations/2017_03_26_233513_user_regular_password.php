@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UserLogoutConfig extends Migration
+class UserRegularPassword extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class UserLogoutConfig extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('logout_config')->nullable();
+            $table->boolean('regular_password')->default(true);
         });
     }
 
@@ -26,7 +26,7 @@ class UserLogoutConfig extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('logout_config');
+            $table->dropColumn('regular_password');
         });
     }
 }

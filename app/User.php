@@ -44,6 +44,7 @@ class User extends Authenticatable
 
     protected $hidden = [
         'password',
+        'regular_password',
         'remember_token',
         'updated_at'
     ];
@@ -54,6 +55,7 @@ class User extends Authenticatable
         'primary_email_verified',
         'secondary_email',
         'secondary_email_verified',
+        'client_user_id'
     ];
 
     protected $casts = [
@@ -61,11 +63,18 @@ class User extends Authenticatable
         'ministry_of_education_fr' => 'boolean',
         'graduation_year' => 'integer',
         'logout_config' => 'array',
-        'real_name_visible' => 'boolean'
+        'real_name_visible' => 'boolean',
+        'regular_password' => 'boolean'
     ];
 
 
     protected static function boot() {
+        static::saving(function($model) {
+            if($model->password) {
+                $model->regular_password = true;
+            }
+        });
+
         static::deleting(function($model) {
             $badges = $model->badges()->where('do_not_possess', false)->get();
             foreach($badges as $badge) {
@@ -118,6 +127,12 @@ class User extends Authenticatable
     }
 
 
+    public function getClientUserIdAttribute() {
+
+    }
+
+
+
     public function auth_connections() {
         return $this->hasMany('App\AuthConnection');
     }
@@ -135,6 +150,6 @@ class User extends Authenticatable
 
     public function obsolete_passwords() {
         return $this->hasMany('App\ObsoletePassword');
-    }    
+    }
 
 }

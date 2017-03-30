@@ -19,9 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->boolean('admin')->default(false);
             $table->string('language', 2)->nullable();
-
             $table->string('first_name', 100)->nullable();
             $table->string('last_name', 100)->nullable();
+            $table->boolean('real_name_visible')->default(false);
+            $table->string('timezone')->nullable();
             $table->string('country_code', 2)->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
@@ -43,7 +44,9 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->dateTime('last_login')->nullable();
+            $table->string('logout_config')->nullable();
         });
+        \DB::statement('ALTER TABLE users AUTO_INCREMENT = 100000000');
     }
 
     /**

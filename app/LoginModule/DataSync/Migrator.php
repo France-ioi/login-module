@@ -7,6 +7,7 @@ use App\LoginModule\DataSync\Data;
 use App\User;
 use App\Badge;
 use App\Email;
+use App\ObsoletePassword;
 use App\AuthConnection;
 
 
@@ -58,18 +59,18 @@ class Migrator {
             $user = new User($user_data);
             $user->id = $user_data['id'];
         }
-        $user->admin = $user_data['admin'];
+        //$user->admin = $user_data['admin'];
         $user->save();
         return $user;
     }
 
 
     private function syncPassword($user, $user_data) {
-        if(!empty($user_data['password']) && 
-            !$user->obsole_passwords()->where('password', $user_data['password'])->first()) {
-            $user->obsole_passwords()->save(new ObsolePassword($user_data));
+        if(!empty($user_data['password']) &&
+            !$user->obsolete_passwords()->where('password', $user_data['password'])->first()) {
+            $user->obsolete_passwords()->save(new ObsoletePassword($user_data));
         }
-    }    
+    }
 
 
 

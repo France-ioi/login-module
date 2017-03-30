@@ -8,7 +8,7 @@ use App\LoginModule\DataSync\Mappers\BadgeMapper;
 
 class Data {
 
-    const CONNECTION = 'v1';
+    const CONNECTION = 'old';
 
     public static function queryUsers($offset, $amount) {
         return DB::connection(self::CONNECTION)
