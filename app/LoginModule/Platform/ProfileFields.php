@@ -37,7 +37,7 @@ class ProfileFields
             $this->fields_cache['verification'] = array_intersect($this->verification_fields, $this->client->profile_fields);
         } else {
             $this->fields_cache['required'] = $this->validation->getFields();
-            $this->fields_cache['verification'] = $this->verification_fields;
+            $this->fields_cache['verification'] = [];//$this->verification_fields;
         }
     }
 

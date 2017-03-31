@@ -11,10 +11,9 @@ class AccountController extends Controller
 
     public function show(Request $request) {
         //echo($request->user()->token()->client_id);
-
         $res = $request->user()->toArray();
         $res['badges'] = $request->user()->badges()->where('do_not_possess', false)->get();
-        $res['client_user_id'] = $request->user()->client_user_id;
+        //$res['client_user_id'] = $request->user()->client_user_id;
         return response()->json($res);
     }
 }

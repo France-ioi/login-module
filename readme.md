@@ -11,7 +11,7 @@
 | FACEBOOK_ | FB oAuth credentials |
 | GOOGLE_ | Google oAuth credentials |
 | PMS_ | PMS oAuth credentials |
-| AUTH_MASTER_HASH_MD5 | admin master password MD5 hash |
+| AUTH_MASTER_HASH | admin master password hash, use bcrypt function to create new one |
 
 - Run **install.sh**
 
