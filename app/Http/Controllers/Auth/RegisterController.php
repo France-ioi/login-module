@@ -88,12 +88,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'login' => $data['login'],
+        $required = PlatformRequest::profileFields()->getRequired();
+        $user_data = [
             'password' => bcrypt($data['password']),
             'language' => Locale::get()
-        ]);
-        if(isset($data['primary_email'])) {
+        ];
+        if(array_search('login', $required) !== false) {
+            $user_data['login'] = $data['login'];
+        }
+        $user = User::create($user_data);
+
+        if(array_search('primary_email', $required) !== false) {
             $user->emails()->save(new Email([
                 'role' => 'primary',
                 'email' => $data['primary_email']

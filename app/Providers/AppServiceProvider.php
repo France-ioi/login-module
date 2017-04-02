@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Validator::extend('value_different', function ($attribute, $value, $parameters, $validator) {
             $other = array_get($validator->getData(), $parameters[0]);
-            return $value !== $other;
+            return $value ? $value !== $other : true;
         });
         Validator::replacer('value_different', function ($message, $attribute, $rule, $parameters) {
             $other = str_replace('_', ' ', $parameters[0]);

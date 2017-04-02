@@ -106,7 +106,7 @@ class ProfileFieldsValidation
             ],
             'country_code' => [
                 'required' => 'required',
-                'valid' => 'in:'.implode(',', $country_codes)
+                'valid' => 'in:,'.implode(',', $country_codes)
             ],
             'address' => [
                 'required' => 'required',
@@ -134,7 +134,7 @@ class ProfileFieldsValidation
             ],
             'birthday' => [
                 'required' => 'required',
-                'valid' => 'date_format:"Y-m-d"|before:today'
+                'valid' => 'nullable|date_format:"Y-m-d"|before:today'
             ],
             'gender' => [
                 'required' => 'required',
@@ -170,7 +170,7 @@ class ProfileFieldsValidation
             ],
             'graduation_year' => [
                 'required' => 'required',
-                'valid' => 'integer|between:1900,'.date('Y')
+                'valid' => 'nullable|integer|between:1900,'.date('Y')
             ]
         ];
         // end of createSchema

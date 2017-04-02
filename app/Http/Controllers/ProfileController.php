@@ -19,10 +19,14 @@ class ProfileController extends Controller
             $user->fill($badge_data['user']);
         }
 
+        $required = PlatformRequest::profileFields()->getRequired();
         if($request->has('all')) {
             $fields = PlatformRequest::profileFields()->getAll();
+            if(array_search('login', $required) === false) {
+                $fields = array_diff($fields, ['login']);
+            }
         } else {
-            $fields = PlatformRequest::profileFields()->getRequired();
+            $fields = $required;
         }
         return view('profile.index', [
             'fields' => $fields,
@@ -50,6 +54,8 @@ class ProfileController extends Controller
                 ]);
                 Auth::user()->emails()->save($primary);
             }
+        } else {
+            Auth::user()->emails()->primary()->delete();
         }
         if($request->has('secondary_email')) {
             if($secondary = Auth::user()->emails()->secondary()->first()) {
@@ -62,6 +68,8 @@ class ProfileController extends Controller
                 ]);
                 Auth::user()->emails()->save($secondary);
             }
+        } else {
+            Auth::user()->emails()->secondary()->delete();
         }
         PlatformRequest::badge()->flushData();
         return redirect(PlatformRequest::getRedirectUrl('/profile'));
