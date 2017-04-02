@@ -18,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
             $other = array_get($validator->getData(), $parameters[0]);
             return $value !== $other;
         });
+        Validator::replacer('value_different', function ($message, $attribute, $rule, $parameters) {
+            $other = str_replace('_', ' ', $parameters[0]);
+            return str_replace([':other'], $other, $message);
+        });
     }
 
     /**

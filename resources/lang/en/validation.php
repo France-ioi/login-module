@@ -103,6 +103,8 @@ return [
         ],
     ],
 
+    'value_different' => 'The :attribute and :other must be different.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes

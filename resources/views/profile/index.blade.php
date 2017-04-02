@@ -52,13 +52,6 @@
                 endDate: new Date(),
                 autoclose: true
             });
-            $('#graduation_year').datepicker({
-                format: 'yyyy',
-                viewMode: 'years',
-                minViewMode: 'years',
-                endDate: new Date(),
-                autoclose: true
-            });
 
             function updateHidden() {
                 $('#box_ministry_of_education_fr').hide();

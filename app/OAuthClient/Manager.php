@@ -11,8 +11,9 @@
     class Manager {
 
         const PROVIDERS = [
-            'facebook' => FacebookProvider::class,
-            'google' => GoogleProvider::class,
+            // disabled temporary
+            //'facebook' => FacebookProvider::class,
+            //'google' => GoogleProvider::class,
             'pms' => PMSProvider::class
         ];
 

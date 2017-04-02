@@ -28,7 +28,7 @@
 @endpush
 
 @push('country_code')
-    {!! BootForm::select('country_code', trans('profile.country_code'), trans('countries')) !!}
+    {!! BootForm::select('country_code', trans('profile.country_code'), ['' => '...'] + trans('countries')) !!}
 @endpush
 
 @push('address')
@@ -81,7 +81,7 @@
 @endpush
 
 @push('graduation_year')
-    {!! BootForm::date('graduation_year', trans('profile.graduation_year')) !!}
+    {!! BootForm::text('graduation_year', trans('profile.graduation_year')) !!}
 @endpush
 
 @push('gender')
