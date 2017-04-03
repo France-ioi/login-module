@@ -21,9 +21,11 @@ class PlatformBadgeVerified
     public function handle($request, Closure $next, $guard = null)
     {
 
-        if(PlatformRequest::badge()->verified()) {
+// Temporarily disable
+/*        if(PlatformRequest::badge()->verified()) {
             return $next($request);
         }
-        return redirect('/badge');
+        return redirect('/badge');*/
+        return $next($request); // Delete when reenabling
     }
 }

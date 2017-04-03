@@ -42,7 +42,7 @@
                 $token = $client->getAccessToken('authorization_code', [ 'code' => $request->get('code') ]);
                 $owner = $client->getResourceOwner($token)->toArray();
                 return [
-                    'uid' => array_get($owner, 'nickName'),
+                    'uid' => array_get($owner, 'nickName', array_get($owner, 'eMail')), // eMail if nickName is not present
                     'access_token' => $token->getToken(),
                     'email' => array_get($owner, 'eMail'),
                     'first_name' => array_get($owner, 'firstName'),

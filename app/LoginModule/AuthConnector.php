@@ -29,6 +29,7 @@ class AuthConnector
                 if(isset($auth['email']) && Email::where('email', $auth['email'])->first()) {
                     return false;
                 }
+		$auth['login'] = $auth['uid'];
                 $user = User::create($auth);
                 $user->auth_connections()->save($connection);
                 if(isset($auth['email'])) {
