@@ -44,7 +44,7 @@
 @endpush
 
 @push('timezone')
-    {!! BootForm::select('timezone', trans('profile.timezone'), trans('timezones')) !!}
+    {!! BootForm::select('timezone', trans('profile.timezone'), ['' => '...'] + trans('timezones')) !!}
 @endpush
 
 @push('primary_phone')

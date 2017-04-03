@@ -65,6 +65,29 @@
             }
             $('#country_code').change(updateHidden);
             updateHidden();
-        })
+
+            if(!$('#timezone').val()) {
+                var rightNow = new Date();
+                var date1 = new Date(rightNow.getFullYear(), 0, 1, 0, 0, 0, 0);
+                var date2 = new Date(rightNow.getFullYear(), 6, 1, 0, 0, 0, 0);
+                var temp = date1.toGMTString();
+                var date3 = new Date(temp.substring(0, temp.lastIndexOf(" ") - 1));
+                temp = date2.toGMTString();
+                var date4 = new Date(temp.substring(0, temp.lastIndexOf(" ") - 1));
+                var hoursDiffStdTime = (date1 - date3) / (1000 * 60 * 60);
+                var hoursDiffDaylightTime = (date2 - date4) / (1000 * 60 * 60);
+                $.ajax({
+                    url: 'profile/timezone',
+                    data: {
+                        offset: hoursDiffStdTime,
+                        dls: hoursDiffDaylightTime == hoursDiffStdTime ? 0 : 1
+                    },
+                    success: function(value) {
+                        $('#timezone').val(value);
+                    }
+                });
+            }
+
+        });
     </script>
 @endsection
