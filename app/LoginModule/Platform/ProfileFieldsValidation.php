@@ -152,6 +152,7 @@ class ProfileFieldsValidation
                 'required' => 'required',
                 'valid' => 'in:'.implode(',', array_keys(trans('profile.roles')))
             ],
+/* Disabled temporarily
             'ministry_of_education' => [
                 'required' => 'required_if:role,teacher|required_if:country_code,'.implode(',', array_diff($country_codes, ['fr'])),
                 'valid' => ''
@@ -167,7 +168,7 @@ class ProfileFieldsValidation
             'student_id' => [
                 'required' => 'required',
                 'valid' => ''
-            ],
+            ],*/
             'graduation_year' => [
                 'required' => 'required',
                 'valid' => 'nullable|integer|between:1900,'.date('Y')
