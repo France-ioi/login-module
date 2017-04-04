@@ -45,8 +45,7 @@ class EmailVerificationNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('You are receiving this email because we received a email verification request for your account.')
-            ->action('Confirm', route('email_verification', $this->token))
-            ->line('If you did not request a email verification, no further action is required.');
+            ->line('You are receiving this message because a email verification required for your account.')
+            ->action('Confirm', route('email_verification', $this->token));
     }
 }

@@ -52,10 +52,7 @@ class User extends Authenticatable
 
     protected $appends = [
         'primary_email',
-        'primary_email_verified',
         'secondary_email',
-        'secondary_email_verified',
-        'client_user_id'
     ];
 
     protected $casts = [
@@ -125,12 +122,6 @@ class User extends Authenticatable
         $secondary = $this->emails()->secondary()->first();
         return $secondary ? $secondary->id : false;
     }
-
-
-    public function getClientUserIdAttribute() {
-
-    }
-
 
 
     public function auth_connections() {
