@@ -40,6 +40,7 @@ class ProfileController extends Controller
     }
 
 
+
     public function update(Request $request) {
         $required = PlatformRequest::profileFields()->getRequired();
         $rules = PlatformRequest::profileFields()->getValidationRules($required);

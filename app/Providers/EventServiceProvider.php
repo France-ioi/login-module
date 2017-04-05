@@ -15,7 +15,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'Illuminate\Auth\Events\Login' => [
             'App\Listeners\AuthLogin',
-        ]
+        ],
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\AccessTokenCreated',
+        ],
     ];
 
     /**
