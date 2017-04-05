@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'AA' => 'Arabisch (allgemein)'
+    'AA' => 'Arabisch (allgemein)',
     'AD' => 'Andorra',
     'AE' => 'Vereinigte Arabische Emirate',
     'AF' => 'Afghanistan',
@@ -231,7 +231,7 @@ return [
     'TM' => 'Turkmenistan',
     'TN' => 'Tunesien',
     'TO' => 'Tonga',
-    'TP' => 'Osttimor'
+    'TP' => 'Osttimor',
     'TR' => 'Türkei',
     'TT' => 'Trinidad und Tobago',
     'TV' => 'Tuvalu',
