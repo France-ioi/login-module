@@ -16,6 +16,7 @@
         ],
 
         'pms' => [
+            'base_url' => env('PMS_URL'),
             'client_id' => env('PMS_ID'),
             'client_secret' => env('PMS_SECRET')
         ],
