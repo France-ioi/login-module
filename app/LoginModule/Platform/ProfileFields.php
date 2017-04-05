@@ -6,10 +6,20 @@ class ProfileFields
 {
 
     protected $client;
+
     protected $user;
+
     protected $validation;
-    protected $fields_cache = [];
-    protected $verification_fields = ['primary_email', 'secondary_email'];
+
+    protected $verification_fields = [
+        'primary_email_verified',
+        'secondary_email_verified'
+    ];
+
+    protected $fields_cache = [
+        'profile' => [],
+        'verification' => [],
+    ];
 
 
     public function __construct($client = null, $user = null) {
@@ -22,9 +32,12 @@ class ProfileFields
 
     private function cacheFields() {
         if($this->client && $this->client->profile_fields) {
-            $this->fields_cache = $this->validation->sortFields($this->client->profile_fields);
+            $required = array_diff($this->client->profile_fields, $this->verification_fields);
+            $this->fields_cache['required'] = $this->validation->sortFields($required);
+            $this->fields_cache['verification'] = array_intersect($this->verification_fields, $this->client->profile_fields);
         } else {
-            $this->fields_cache = $this->validation->getFields();
+            $this->fields_cache['required'] = $this->validation->getFields();
+            $this->fields_cache['verification'] = [];
         }
     }
 
@@ -36,9 +49,8 @@ class ProfileFields
 
     public function verified() {
         if($this->user) {
-            $fields = array_intersect($this->verification_fields, $this->fields_cache);
-            foreach($fields as $field) {
-                if(!$this->user->getAttribute($field.'_verified')) {
+            foreach($this->fields_cache['verification'] as $field) {
+                if(!$this->user->getAttribute($field)) {
                     return false;
                 }
             }
@@ -48,7 +60,7 @@ class ProfileFields
 
 
     public function getRequired() {
-        return $this->fields_cache;
+        return $this->fields_cache['required'];
     }
 
 
