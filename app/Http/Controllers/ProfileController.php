@@ -31,6 +31,8 @@ class ProfileController extends Controller
         }
         return view('profile.index', [
             'fields' => $fields,
+            'required' => array_fill_keys($required, true),
+            'star' => config('ui.star'),
             'user' => $user,
             'all' => $request->get('all'),
             'cancel_url' => PlatformRequest::getCancelUrl()

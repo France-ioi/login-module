@@ -143,4 +143,9 @@ class User extends Authenticatable
         return $this->hasMany('App\ObsoletePassword');
     }
 
+
+    public function tokens() {
+        return $this->hasMany('\Laravel\Passport\Token');
+    }    
+
 }
