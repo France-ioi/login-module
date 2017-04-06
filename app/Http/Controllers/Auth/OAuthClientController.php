@@ -27,7 +27,11 @@ class OAuthClientController extends Controller
             Session::put('auth_connection', $auth);
             return redirect('/oauth_client/email_exists');
         }
-        return redirect()->route('login');
+        return redirect('/session_expired');
+    }
+
+    public function sessionExpired() {
+        return view('auth.expired');
     }
 
 
