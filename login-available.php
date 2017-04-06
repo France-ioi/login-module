@@ -34,10 +34,9 @@ function checkNickname ($db1, $db2, $login) {
     }
 
     // login-module v2 database
-    $stmt = $db2->prepare('select id from users where sLogin = :login;');
+    $stmt = $db2->prepare('select id from users where login = :login;');
     $stmt->execute(['login' => $login]);
     $res = $stmt->fetch();
-    $res = true;
 
     return $res ? 'FALSE' : 'TRUE';
 }
