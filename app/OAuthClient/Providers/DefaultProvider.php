@@ -10,6 +10,10 @@
             return '/login';
         }
 
+        public function getPreferencesURL() {
+            return '/profile';
+        }
+
         public function callback(\Illuminate\Http\Request $request) {
             return null;
         }

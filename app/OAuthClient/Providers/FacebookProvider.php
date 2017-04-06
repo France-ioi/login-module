@@ -67,6 +67,11 @@
         }
 
 
+        public function getPreferencesURL() {
+            return $this->getAuthorizationURL(); // TODO ?
+        }
+
+
         public function callback(\Illuminate\Http\Request $request) {
             $client = $this->getClient();
             if($token = $this->getToken($client, $request->get('code'))) {

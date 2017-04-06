@@ -18,6 +18,12 @@ class OAuthClientController extends Controller
     }
 
 
+    public function preferences($provider) {
+        $url = Manager::provider($provider)->getPreferencesURL();
+        return redirect($url);
+    }
+
+
     public function callback($provider, Request $request) {
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
@@ -29,6 +35,7 @@ class OAuthClientController extends Controller
         }
         return redirect('/session_expired');
     }
+
 
     public function sessionExpired() {
         return view('auth.expired');
