@@ -9,7 +9,8 @@ class Client extends \Laravel\Passport\Client
 
     protected $casts = [
         'profile_fields' => 'array',
-        'auth_order' => 'array'
+        'auth_order' => 'array',
+        'pms_autoapprove' => 'boolean'
     ];
 
 }
