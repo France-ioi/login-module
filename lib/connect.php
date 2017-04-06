@@ -6,12 +6,16 @@ use Aws\DynamoDb\SessionHandler;
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../config.php';
 
-function connect() {
+function connect($second=false) {
    global $config;
-   $host = $config->db->host;
-   $database = $config->db->database;
-   $password = $config->db->password;
-   $user = $config->db->user;
+
+   $target = $second ? $config->db2 : $config->db;
+
+   $host = $target->host;
+   $database = $target->database;
+   $password = $target->password;
+   $user = $target->user;
+
    // computing timezone difference with gmt:
    // http://www.sitepoint.com/synchronize-php-mysql-timezone-configuration/
    $now = new DateTime();
