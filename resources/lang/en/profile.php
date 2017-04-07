@@ -37,9 +37,16 @@ return [
     'presentation'  => 'Presentation',
     'website' => 'Website',
     'success' => 'Profile updated.',
+<<<<<<< HEAD
     'email_verification_token' => ' verification code',
     'email_verification_help' => 'Input the code received on your :role email. If you never received it, make sure the email address provided is correct, check your spam folder, then contact us at :email from that email address.',
     'email_verified' => 'Verified',
     'primary_email_role' => 'primary',
     'secondary_email_role' => 'secondary',
 ];
+=======
+
+    'pms_redirect_msg' => 'As a PMS user, you must edit your profile directly on PMS. After doing so, please log out and log back in on the platform to have your profile updated there.',
+    'pms_redirect_btn' => 'Proceed to PMS'
+];
+>>>>>>> 56f8f394a10b05f52179d7cc6aeb3c576fea8f9d

@@ -18,6 +18,12 @@ class OAuthClientController extends Controller
     }
 
 
+    public function preferences($provider) {
+        $url = Manager::provider($provider)->getPreferencesURL();
+        return redirect($url);
+    }
+
+
     public function callback($provider, Request $request) {
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
@@ -27,7 +33,12 @@ class OAuthClientController extends Controller
             Session::put('auth_connection', $auth);
             return redirect('/oauth_client/email_exists');
         }
-        return redirect()->route('login');
+        return redirect('/session_expired');
+    }
+
+
+    public function sessionExpired() {
+        return view('auth.expired');
     }
 
 

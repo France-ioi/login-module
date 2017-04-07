@@ -32,6 +32,11 @@
         }
 
 
+        public function getPreferencesURL() {
+            return $this->getAuthorizationURL(); // TODO ?
+        }
+
+
         public function callback(\Illuminate\Http\Request $request) {
             if($request->get('state') !== session()->pull($this->state_session_key)) {
                 return null;

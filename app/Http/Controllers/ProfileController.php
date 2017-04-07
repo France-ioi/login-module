@@ -20,6 +20,10 @@ class ProfileController extends Controller
             $user->fill($badge_data['user']);
         }
 
+        if($user->auth_connections()->where('provider', 'pms')->where('active', '1')->first()) {
+            return view('profile.pms');
+        }
+
         $required = PlatformRequest::profileFields()->getRequired();
         if($request->has('all')) {
             $fields = PlatformRequest::profileFields()->getAll();

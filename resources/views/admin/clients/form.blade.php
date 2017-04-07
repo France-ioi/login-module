@@ -29,6 +29,7 @@
                 {!! BootForm::checkbox('auth_order[]', $provider, $provider, is_array($client->auth_order) && in_array($provider, $client->auth_order)) !!}
             @endforeach            
         </div>
+        {!! BootForm::checkbox('pms_autoapprove', 'Auto-approve authorizations from PMS to this platform') !!}
         {!! BootForm::textArea('public_key', 'Public key (LTI)') !!}
         {!! BootForm::submit() !!}
     {!! BootForm::close() !!}

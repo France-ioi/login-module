@@ -11,8 +11,10 @@ Route::post('/badge/verify', 'BadgeController@verify');
 Route::get('/email_verification', 'EmailVerificationController@index');
 Route::post('/email_verification/send', 'EmailVerificationController@sendVerificationLink');
 Route::get('/email_verification/verify/{token}', ['uses' => 'EmailVerificationController@verifyEmail', 'as' => 'email_verification']);
+Route::get('/session_expired', 'Auth\OAuthClientController@sessionExpired');
 
 Route::get('/oauth_client/redirect/{provider}', 'Auth\OAuthClientController@redirect');
+Route::get('/oauth_client/preferences/{provider}', 'Auth\OAuthClientController@preferences');
 Route::get('/oauth_client/callback/{provider}', ['uses' => 'Auth\OAuthClientController@callback', 'as' => 'oauth_client_callback']);
 Route::post('/oauth_client/remove/{provider}', ['uses' => 'Auth\OAuthClientController@remove', 'middleware' => 'auth']);
 Route::get('/oauth_client/email_exists', 'Auth\OAuthClientController@emailExists');
