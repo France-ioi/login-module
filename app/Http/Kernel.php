@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'platform_profile_filled' => \App\Http\Middleware\PlatformProfileFilled::class,
         'platform_email_verified' => \App\Http\Middleware\PlatformEmailVerified::class,
         'platform_badge_verified' => \App\Http\Middleware\PlatformBadgeVerified::class,
+        'auto_authorization' => \App\Http\Middleware\AutoAuthorization::class
     ];
 }
