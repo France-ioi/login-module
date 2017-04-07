@@ -76,7 +76,7 @@ class User extends Authenticatable
             $badges = $model->badges()->where('do_not_possess', false)->get();
             foreach($badges as $badge) {
                 if(!BadgeApi::remove($badge->url, $badge->code)) {
-                    throw new Exception('Error occured during deleting badge '.$badge->url);
+                    throw new \Exception('Error occured during deleting badge '.$badge->url);
                 }
             }
         });
@@ -146,6 +146,6 @@ class User extends Authenticatable
 
     public function tokens() {
         return $this->hasMany('\Laravel\Passport\Token');
-    }    
+    }
 
 }
