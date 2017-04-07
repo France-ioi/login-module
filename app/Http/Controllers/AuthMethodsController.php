@@ -21,7 +21,7 @@ class AuthMethodsController extends Controller
 
 
     public function setBadgeLoginAbility($id, $enabled) {
-        $badge = Auth::user()->badges()->findOrFail($id);
+        $badge = Auth::user()->badges()->where('code', '<>', '')->findOrFail($id);
         $badge->login_enabled = $enabled == 1;
         $badge->save();
         return redirect('/auth_methods');
