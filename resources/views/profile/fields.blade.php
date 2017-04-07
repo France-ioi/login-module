@@ -17,10 +17,46 @@
 
 @push('primary_email')
     {!! BootForm::email('primary_email', trans('profile.primary_email').(isset($required['primary_email']) ? $star : '')) !!}
+    <!--
+    @if($user->primary_email_verified)
+        @lang('profile.email_verified')
+    @else
+        {!! BootForm::text(
+            'primary_email_verification_token',
+            trans('profile.primary_email').trans('profile.email_verification_token').(isset($verifiable['primary_email_verified']) ? $star : '')
+        ) !!}
+        <div class="form-group">
+            <p class="help-block">
+                @lang('profile.email_verification_help', [
+                    'role' => trans('profile.primary_email_role'),
+                    'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
+                ])
+            </p>
+        </div>
+    @endif
+    -->
 @endpush
 
 @push('secondary_email')
     {!! BootForm::email('secondary_email', trans('profile.secondary_email').(isset($required['secondary_email']) ? $star : '')) !!}
+    <!--
+    @if($user->secondary_email_verified)
+        @lang('profile.email_verified')
+    @else
+        {!! BootForm::text(
+            'secondary_email_verification_token',
+            trans('profile.secondary_email').trans('profile.email_verification_token')).(isset($verifiable['secondary_email_verified']) ? $star : '')
+        !!}
+        <div class="form-group">
+            <p class="help-block">
+                @lang('profile.email_verification_help', [
+                    'role' => trans('profile.secondary_email_role'),
+                    'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
+                ])
+            </p>
+        </div>
+    @endif
+    -->
 @endpush
 
 @push('language')

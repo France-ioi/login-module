@@ -29,9 +29,13 @@ class ProfileController extends Controller
         } else {
             $fields = $required;
         }
+
+        $verifiable = PlatformRequest::profileFields()->getVerifiable();
+
         return view('profile.index', [
             'fields' => $fields,
             'required' => array_fill_keys($required, true),
+            'verifiable' => array_fill_keys($verifiable, true),
             'star' => config('ui.star'),
             'user' => $user,
             'all' => $request->get('all'),

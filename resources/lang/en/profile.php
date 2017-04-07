@@ -37,4 +37,9 @@ return [
     'presentation'  => 'Presentation',
     'website' => 'Website',
     'success' => 'Profile updated.',
+    'email_verification_token' => ' verification code',
+    'email_verification_help' => 'Input the code received on your :role email. If you never received it, make sure the email address provided is correct, check your spam folder, then contact us at :email from that email address.',
+    'email_verified' => 'Verified',
+    'primary_email_role' => 'primary',
+    'secondary_email_role' => 'secondary',
 ];
