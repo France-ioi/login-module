@@ -21,7 +21,9 @@ class AuthConnector
             $connection->active = true;
             $connection->save();
             $auth['login'] = $auth['uid'];
-            $user->update($auth);
+            if($auth['provider'] == 'pms') {
+                $user->update($auth);
+            }
         } else {
             $connection = new AuthConnection($auth);
             $connection->active = true;
@@ -54,7 +56,7 @@ class AuthConnector
         if($auth['provider'] == 'pms') {
             // TODO :: optimize queries
             // Handle PMS school and participation information
-            $authinfo = $auth['pms_info'];            
+            $authinfo = $auth['pms_info'];
             $badges = array();
             $teacherBadges = array();
 
