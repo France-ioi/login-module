@@ -37,7 +37,7 @@ class AutoAuthorizationController extends AuthorizationController {
             // If coming from PMS and going to an auto-approve client, approve
             // the request automatically
             if($user->auth_connections()->where('provider', 'pms')->where('active', '1')->first()
-                    && $client['pms_autoapprove']) {
+                    && $client['autoapprove_authorization']) {
                 return $this->approveRequest($authRequest, $user);
             }
 

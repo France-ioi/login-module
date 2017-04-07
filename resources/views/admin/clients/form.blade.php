@@ -11,7 +11,7 @@
     {!! BootForm::open(['model' => $client, 'store' => 'admin.clients.store', 'update' => 'admin.clients.update']) !!}
         {!! BootForm::text('name', 'Name') !!}
         {!! Bootform::hidden('revoked', 0) !!}
-        {!! BootForm::checkbox('revoked', 'Revoked') !!}        
+        {!! BootForm::checkbox('revoked', 'Revoked') !!}
         {!! BootForm::text('secret', 'Secret') !!}
         {!! BootForm::text('redirect', 'Redirect') !!}
         {!! BootForm::text('badge_url', 'Badge URL') !!}
@@ -27,9 +27,9 @@
         <div>
             @foreach($providers as $provider)
                 {!! BootForm::checkbox('auth_order[]', $provider, $provider, is_array($client->auth_order) && in_array($provider, $client->auth_order)) !!}
-            @endforeach            
+            @endforeach
         </div>
-        {!! BootForm::checkbox('pms_autoapprove', 'Auto-approve authorizations from PMS to this platform') !!}
+        {!! BootForm::checkbox('autoapprove_authorization', 'Auto-approve authorizations from PMS to this platform') !!}
         {!! BootForm::textArea('public_key', 'Public key (LTI)') !!}
         {!! BootForm::submit() !!}
     {!! BootForm::close() !!}
