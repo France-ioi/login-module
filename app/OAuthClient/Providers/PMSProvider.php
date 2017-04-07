@@ -66,7 +66,11 @@
             if($request->get('state') !== session()->pull($this->state_session_key)) {
                 return null;
             }
-            $client = $this->getClient();
+            $scope = $request->get('scope');
+            if(!$scope) {
+                $scope = 'authenticate';
+            }
+            $client = $this->getClient($scope);
             try {
                 $token = $client->getAccessToken('authorization_code', [ 'code' => $request->get('code') ]);
                 $owner = $client->getResourceOwner($token)->toArray();
@@ -74,6 +78,7 @@
                     'uid' => array_get($owner, 'nickName', array_get($owner, 'eMail')), // eMail if nickName is not present
                     'access_token' => $token->getToken(),
                     'email' => array_get($owner, 'eMail'),
+                    'birthday' => array_get($owner, 'dateOfBirth'),
                     'first_name' => array_get($owner, 'firstName'),
                     'last_name' => array_get($owner, 'lastName'),
                     'language' => 'de',

@@ -21,6 +21,10 @@ class ProfileController extends Controller
         }
 
         if($user->auth_connections()->where('provider', 'pms')->where('active', '1')->first()) {
+            if($redirect = $request->get('redirect_uri')) {
+                // Redirect to callback_profile from the platform after showing the dialog
+                Session::put('url.intended', $request->get('redirect_uri'));
+            }
             return view('profile.pms');
         }
 
