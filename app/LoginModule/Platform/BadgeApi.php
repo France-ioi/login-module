@@ -6,10 +6,12 @@ use App\Badge;
 
 class BadgeApi {
 
+    static function callableUrl($url) {
+        return strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0;
+    }
+
+
     static function post($url, $request) {
-        if(substr($url, 0, 4) != 'http') {
-            return true;
-        }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -23,6 +25,9 @@ class BadgeApi {
 
 
     static function verify($url, $code) {
+        if(!self::callableUrl($url)) {
+            return false;
+        }
         $request = [
             'action' => 'verifyCode',
             'code' => $code
@@ -43,6 +48,9 @@ class BadgeApi {
 
 
     static function update($url, $code, $user_id) {
+        if(!self::callableUrl($url)) {
+            return true;
+        }
         $post_data = [
             'action' => 'updateInfos',
             'code' => $code,
@@ -54,6 +62,9 @@ class BadgeApi {
 
 
     static function remove($url, $code) {
+        if(!self::callableUrl($url)) {
+            return true;
+        }
         $request = [
             'action' => 'removeByCode',
             'code' => $code
@@ -61,5 +72,6 @@ class BadgeApi {
         $res = self::post($url, $request);
         return $res && $res['success'];
     }
+
 
 }
