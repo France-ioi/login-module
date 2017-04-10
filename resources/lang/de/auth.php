@@ -39,4 +39,6 @@ return [
     'logout_header' => 'Logout',
     'logout_hint' => 'Auch ausloggen von:',
     'btn_logout' => 'Logout',
+
+    'session_expired' => 'Deine Sitzung ist abgelaufen. Bitte Fenster schließen und wieder einloggen.'
 ];
