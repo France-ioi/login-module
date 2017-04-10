@@ -123,6 +123,13 @@ class User extends Authenticatable
         return $secondary ? $secondary->id : false;
     }
 
+/*
+    public function getTeacherVerifiedAttribute() {
+        if(!$this->role == 'teacher') {
+
+        }
+    }
+*/
 
     public function auth_connections() {
         return $this->hasMany('App\AuthConnection');
