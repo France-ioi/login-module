@@ -75,7 +75,7 @@ class RouteServiceProvider extends ServiceProvider
      * @return void
      */
     protected function remapPassportRoutes() {
-        Route::middleware(['web', 'auth', 'platform_profile_filled', 'platform_email_verified', 'platform_badge_verified'])
+        Route::middleware(['web', 'auth', 'authorization_available'])
              ->namespace('\Laravel\Passport\Http\Controllers')
              ->group(base_path('routes/passport.php'));
     }

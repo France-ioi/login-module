@@ -1,29 +1,12 @@
 <?php
 
-namespace App\LoginModule\EmailVerification;
+namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class EmailVerificationNotification extends Notification
 {
-    /**
-     * The password reset token.
-     *
-     * @var string
-     */
-    public $token;
-
-    /**
-     * Create a notification instance.
-     *
-     * @param  string  $token
-     * @return void
-     */
-    public function __construct($token)
-    {
-        $this->token = $token;
-    }
 
     /**
      * Get the notification's channels.
@@ -46,6 +29,6 @@ class EmailVerificationNotification extends Notification
     {
         return (new MailMessage)
             ->line('You are receiving this message because a email verification required for your account.')
-            ->action('Confirm', route('email_verification', $this->token));
+            ->line('Verification code: '.$notifiable->code);
     }
 }

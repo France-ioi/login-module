@@ -8,9 +8,6 @@ Route::get('/logout_loop', 'Auth\LogoutController@logoutLoop');
 Route::get('/logout_finish', 'Auth\LogoutController@logoutFinish');
 Route::get('/login_email', 'Auth\LoginController@showLoginEmailForm');
 Route::post('/badge/verify', 'BadgeController@verify');
-Route::get('/email_verification', 'EmailVerificationController@index');
-Route::post('/email_verification/send', 'EmailVerificationController@sendVerificationLink');
-Route::get('/email_verification/verify/{token}', ['uses' => 'EmailVerificationController@verifyEmail', 'as' => 'email_verification']);
 Route::get('/session_expired', 'Auth\OAuthClientController@sessionExpired');
 
 Route::get('/oauth_client/redirect/{provider}', 'Auth\OAuthClientController@redirect');

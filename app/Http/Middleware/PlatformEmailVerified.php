@@ -24,6 +24,6 @@ class PlatformEmailVerified
         if(PlatformRequest::profileFields()->verified()) {
             return $next($request);
         }
-        return redirect('/email_verification');
+        return redirect('/profile');
     }
 }

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\LoginModule\Platform\PlatformRequest;
-use App\LoginModule\EmailVerification\Verificator;
 use App\Email;
 use Session;
 
@@ -54,40 +53,55 @@ class ProfileController extends Controller
 
 
     public function update(Request $request) {
-        $required = PlatformRequest::profileFields()->getRequired();
-        $rules = PlatformRequest::profileFields()->getValidationRules($required);
-        $this->validate($request, $rules);
+        $this->validateRequest($request);
         Auth::user()->fill($request->all());
         Auth::user()->save();
-        $this->updateUserEmail('primary', $request);
-        $this->updateUserEmail('secondary', $request);
+
+        $errors = [];
+        if(!$this->updateUserEmail('primary', $request)) {
+            $errors['primary_email_validation_code'] = trans('profile.primary_email').trans('profile.email_verification_failed');
+        }
+        if(!$this->updateUserEmail('secondary', $request)) {
+            $errors['secondary_email_verification_code'] = trans('profile.secondary_email').trans('profile.email_verification_failed');
+        }
+        if(!PlatformRequest::profileFields()->verified()) {
+            if(!count($errors)) {
+                $errors[] = trans('profile.email_verification_required');
+            }
+            return redirect()->back()->withErrors($errors);
+        }
         PlatformRequest::badge()->flushData();
         return redirect(PlatformRequest::getRedirectUrl('/profile'));
     }
 
 
+    private function validateRequest($request) {
+        $required = PlatformRequest::profileFields()->getRequired();
+        $rules = PlatformRequest::profileFields()->getValidationRules($required);
+        $this->validate($request, $rules);
+    }
+
+
     private function updateUserEmail($role, $request) {
-        if($request->has($role.'_email')) {
-            $new_value = $request->input($role.'_email');
+        $res = true;
+        if($new_value = $request->input($role.'_email')) {
             if($email = Auth::user()->emails()->where('role', $role)->first()) {
-                $old_value = $email->email;
+                if($verification_code = $request->input($role.'_email_verification_code')) {
+                    $res = $email->verifyCode($verification_code);
+                }
                 $email->email = $new_value;
                 $email->save();
             } else {
-                $old_value = null;
                 $email = new Email([
                     'email' => $new_value,
                     'role' => $role
                 ]);
                 Auth::user()->emails()->save($email);
             }
-            if($old_value !== $new_value) {
-                $token = Verificator::getToken($email);
-                $email->sendEmailVerificationNotification($token);
-            }
         } else {
             Auth::user()->emails()->where('role', $role)->delete();
         }
+        return $res;
     }
 
 
