@@ -17,7 +17,7 @@ class AutoAuthorization
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $client = PlatformRequest::getClient();
+        $client = PlatformRequest::client();
         $pms_active = (bool) Auth::guard($guard)->user()->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
         if($client['autoapprove_authorization'] && $pms_active) {
             $url = str_replace('/oauth/authorize?', '/oauth/auto_authorize?', $request->fullUrl());

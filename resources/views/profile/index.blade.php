@@ -17,6 +17,16 @@
         </div>
     @endif
 
+    @if(count($fixed))
+        <div class="alert alert-info">
+            @lang('profile.pms_redirect_msg')
+            <a class="btn btn-block btn-primary" href="/oauth_client/preferences/pms">
+                @lang('profile.pms_redirect_btn')
+            </a>
+        </div>
+
+    @endif
+
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('profile.header')

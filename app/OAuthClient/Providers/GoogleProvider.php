@@ -7,7 +7,7 @@
     class GoogleProvider implements ProviderInterface {
 
 
-        private $state_session_key = 'google_oauth_state';
+        const STATE_SESSION_KEY = 'google_oauth_state';
 
 
         private function getClient() {
@@ -25,7 +25,7 @@
 
         public function getAuthorizationURL() {
             $state = str_random(40);
-            session()->put($this->state_session_key, $state);
+            session()->put(self::STATE_SESSION_KEY, $state);
             $client = $this->getClient();
             $client->setState($state);
             return $client->createAuthUrl();
@@ -38,7 +38,7 @@
 
 
         public function callback(\Illuminate\Http\Request $request) {
-            if($request->get('state') !== session()->pull($this->state_session_key)) {
+            if($request->get('state') !== session()->pull(self::STATE_SESSION_KEY)) {
                 return null;
             }
             $client = $this->getClient();
@@ -63,4 +63,10 @@
         public function getLogoutURL($access_token, $redirect_url) {
             return 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='.urlencode($redirect_url);
         }
+
+
+        public function getFixedFields() {
+            return [];
+        }
+
     }

@@ -92,6 +92,7 @@ class ProfileFields
     }
 
 
+
     public function getValidationRules($required) {
         return $this->validation->getFilteredRules($required);
     }

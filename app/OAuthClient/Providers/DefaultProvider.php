@@ -22,4 +22,8 @@
             return '/logout'; // ??
         }
 
+        public function getFixedFields() {
+            return [];
+        }
+
     }

@@ -56,7 +56,7 @@ class PlatformRequest
     }
 
 
-    static function getClient() {
+    static function client() {
         if(self::$client_available) {
             if(!self::$client) {
                 self::$client = Client::find(Session::get(self::CLIENT_ID_KEY));
@@ -70,7 +70,7 @@ class PlatformRequest
 
     static function authOrder() {
         if(!self::$auth_order) {
-            self::$auth_order = new AuthOrder(self::getClient());
+            self::$auth_order = new AuthOrder(self::client());
         }
         return self::$auth_order;
     }
@@ -78,7 +78,7 @@ class PlatformRequest
 
     static function profileFields($user = null) {
         if(!self::$profile_fields) {
-            self::$profile_fields = new ProfileFields(self::getClient(), Auth::user());
+            self::$profile_fields = new ProfileFields(self::client(), Auth::user());
         }
         return self::$profile_fields;
     }
@@ -86,7 +86,7 @@ class PlatformRequest
 
     static function badge() {
         if(!self::$badge) {
-            self::$badge = new Badge(self::getClient(), Auth::user());
+            self::$badge = new Badge(self::client(), Auth::user());
         }
         return self::$badge;
     }

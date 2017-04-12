@@ -12,8 +12,8 @@
 
         const PROVIDERS = [
             // disabled temporary
-            //'facebook' => FacebookProvider::class,
-            //'google' => GoogleProvider::class,
+            'facebook' => FacebookProvider::class,
+            'google' => GoogleProvider::class,
             'pms' => PMSProvider::class
         ];
 

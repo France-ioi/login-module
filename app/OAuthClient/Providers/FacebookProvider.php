@@ -8,14 +8,14 @@
 
     class PersistentDataHandler implements PersistentDataInterface {
 
-        protected $prefix = 'FBRLH_';
+        const PREFIX = 'FBRLH_';
 
         public function get($key) {
-            return session()->pull($this->prefix.$key);
+            return session()->pull(self::PREFIX.$key);
         }
 
         public function set($key, $value) {
-            session()->put($this->prefix.$key, $value);
+            session()->put(self::PREFIX, $value);
         }
     }
 
@@ -96,6 +96,11 @@
             $client = $this->getClient();
             $helper = $client->getRedirectLoginHelper();
             return $helper->getLogoutUrl($access_token, $redirect_url);
+        }
+
+
+        public function getFixedFields() {
+            return [];
         }
 
     }

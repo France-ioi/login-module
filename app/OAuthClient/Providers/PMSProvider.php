@@ -23,10 +23,20 @@
         }
     }
 
+
+
     class PMSProvider implements ProviderInterface {
         // Interface between the app and the PMS provider
 
-        private $state_session_key = 'pms_oauth_state';
+        const STATE_SESSION_KEY = 'pms_oauth_state';
+
+        const FIXED_FIELDS = [
+            'primary_email',
+            'birthday',
+            'first_name',
+            'last_name',
+            'language'
+        ];
 
 
         private function getClient($scopes='authenticate') {
@@ -44,7 +54,7 @@
 
         public function getAuthorizationURL() {
             $state = str_random(40);
-            session()->put($this->state_session_key, $state);
+            session()->put(self::STATE_SESSION_KEY, $state);
             $client = $this->getClient();
             return $client->getAuthorizationUrl([
                 'state' => $state
@@ -54,7 +64,7 @@
 
         public function getPreferencesURL() {
             $state = str_random(40);
-            session()->put($this->state_session_key, $state);
+            session()->put(self::STATE_SESSION_KEY, $state);
             $client = $this->getClient('preferences');
             return $client->getAuthorizationUrl([
                 'state' => $state
@@ -63,7 +73,7 @@
 
 
         public function callback(\Illuminate\Http\Request $request) {
-            if($request->get('state') !== session()->pull($this->state_session_key)) {
+            if($request->get('state') !== session()->pull(self::STATE_SESSION_KEY)) {
                 return null;
             }
             $scope = $request->get('scope');
@@ -92,6 +102,11 @@
 
         public function getLogoutURL($access_token, $redirect_url) {
             return null; //TODO
+        }
+
+
+        public function getFixedFields() {
+            return self::FIXED_FIELDS;
         }
 
     }
