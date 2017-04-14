@@ -31,6 +31,10 @@ class PlatformRequest
                 self::setRedirectUrl($params['redirect_uri'], true);
             }
             Session::put(self::CLIENT_ID_KEY, $params['client_id']);
+        } else if(!$request->server('HTTP_REFERER')) {
+            Session::forget(self::CLIENT_ID_KEY);
+            Session::forget(self::CANCELABLE_KEY);
+            Session::forget(self::REDIRECT_URL_KEY);
         }
     }
 
