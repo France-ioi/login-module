@@ -11,7 +11,10 @@
                     <a href="{{ url('/admin/users') }}">Users</a>
                 </li>
                 <li>
-                    <a href="{{ url('/admin/clients') }}">Clients</a>
+                    <a href="{{ route('admin.clients.index') }}">Clients</a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.official_domains.index') }}">Official domains</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

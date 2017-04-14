@@ -11,9 +11,10 @@ class ProfileFields
 
     protected $validation;
 
-    protected $verification_fields = [
+    const VERIFICATION_FIELDS = [
         'primary_email_verified',
-        'secondary_email_verified'
+        'secondary_email_verified',
+        'teacher_domain_verified',
     ];
 
     protected $fields_cache = [
@@ -32,9 +33,9 @@ class ProfileFields
 
     private function cacheFields() {
         if($this->client && $this->client->profile_fields) {
-            $required = array_diff($this->client->profile_fields, $this->verification_fields);
+            $required = array_diff($this->client->profile_fields, self::VERIFICATION_FIELDS);
             $this->fields_cache['required'] = $this->validation->sortFields($required);
-            $this->fields_cache['verifiable'] = array_intersect($this->verification_fields, $this->client->profile_fields);
+            $this->fields_cache['verifiable'] = array_intersect(self::VERIFICATION_FIELDS, $this->client->profile_fields);
         } else {
             $this->fields_cache['required'] = $this->validation->getFields();
         }

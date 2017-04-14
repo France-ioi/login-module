@@ -46,6 +46,11 @@ class Email extends Model implements CanResetPasswordContract
     }
 
 
+    public function setEmailAttribute($email) {
+        $this->attributes['email'] = mb_strtolower($email);
+    }
+
+
     public function user() {
         return $this->belongsTo('App\User');
     }

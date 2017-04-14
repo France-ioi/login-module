@@ -13,4 +13,8 @@ class OfficialDomain extends Model
     ];
 
 
+    public function setDomainAttribute($domain) {
+        $this->attributes['domain'] = mb_strtolower($domain);
+    }
+
 }

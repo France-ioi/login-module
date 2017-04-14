@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\LoginModule\Platform\BadgeApi;
+use App\LoginModule\TeacherEmailVerificator;
 
 class User extends Authenticatable
 {
@@ -123,13 +124,14 @@ class User extends Authenticatable
         return $secondary ? $secondary->id : false;
     }
 
-/*
-    public function getTeacherVerifiedAttribute() {
-        if(!$this->role == 'teacher') {
 
+    public function getTeacherDomainVerifiedAttribute() {
+        if($this->role === 'teacher') {
+            return TeacherDomainVerificator::verify($this);
         }
+        return true;
     }
-*/
+
 
     public function getHasPasswordAttribute() {
         return $this->regular_password ? !is_null($this->password) : $this->obsolete_passwords()->first();

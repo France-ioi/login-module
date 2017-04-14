@@ -52,7 +52,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth','ad
     Route::post('/users/create_reset_link', 'UsersController@createResetLink');
     Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
     Route::delete('/users/{id}', 'UsersController@delete');
-
     Route::resource('clients', 'ClientsController');
-    Route::get('/clients', 'ClientsController@index');
+    Route::resource('official_domains', 'OfficialDomainsController');
 });

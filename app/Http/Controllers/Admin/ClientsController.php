@@ -16,7 +16,7 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() 
+    public function index()
     {
         return view('admin.clients.index', [
             'clients' => Client::get()
@@ -35,8 +35,8 @@ class ClientsController extends Controller
         ]);
         return view('admin.clients.form', [
             'client' => $client,
-            'profile_fields' => PlatformRequest::profileFields()->getAll(),
-            'providers' => Manager::providers()            
+            'profile_fields' => $this->getProfileFields(),
+            'providers' => Manager::providers()
         ]);
     }
 
@@ -52,7 +52,8 @@ class ClientsController extends Controller
         $client->personal_access_client = false;
         $client->password_client = false;
         $client->save();
-        return redirect('/admin/clients')
+        return redirect()
+            ->route('admin.clients.index')
             ->with('status', 'New client added.');
     }
 
@@ -76,7 +77,7 @@ class ClientsController extends Controller
     {
         return view('admin.clients.form', [
             'client' => $client,
-            'profile_fields' => PlatformRequest::profileFields()->getAll(),
+            'profile_fields' => $this->getProfileFields(),
             'providers' => Manager::providers()
         ]);
     }
@@ -92,7 +93,8 @@ class ClientsController extends Controller
     {
         $client->fill($request->all());
         $client->save();
-        return redirect('/admin/clients')
+        return redirect()
+            ->route('admin.clients.index')
             ->with('status', 'Client updated.');
     }
 
@@ -105,7 +107,15 @@ class ClientsController extends Controller
     public function destroy(Client $client)
     {
         $client->delete();
-        return redirect('/admin/clients')
-            ->with('status', 'Client deleted.');        
+        return redirect()
+            ->route('admin.clients.index')
+            ->with('status', 'Client deleted.');
+    }
+
+
+
+    private function getProfileFields() {
+        $pf = PlatformRequest::profileFields();
+        return array_merge($pf->getAll(), $pf::VERIFICATION_FIELDS);
     }
 }
