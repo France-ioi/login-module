@@ -19,7 +19,9 @@
 
         const DEFAULT_PROVIDER = DefaultProvider::class;
 
-        const SUPPORT_LOGOUT = ['facebook', 'google'];
+        const SUPPORT_LOGOUT = ['facebook', 'google']; // available at logout page
+
+        const SUPPORT_REMOVE = ['facebook', 'google']; // remove button available at auth methods page
 
 
         static function providers() {

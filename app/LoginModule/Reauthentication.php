@@ -14,8 +14,7 @@ class Reauthentication {
     const REDIRECT_URL_KEY = 'reauthentication_redirect_url';
 
     public static function required($request) {
-        //TODO: check if obsolete password exists
-        if(!is_null(Auth::user()->password) && time() - strtotime(Auth::user()->last_login) >= self::INTERVAL) {
+        if(Auth::user()->has_password && time() - strtotime(Auth::user()->last_login) >= self::INTERVAL) {
             Session::put(self::REDIRECT_URL_KEY, $request->fullUrl());
             return true;
         }

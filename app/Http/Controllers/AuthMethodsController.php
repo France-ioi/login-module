@@ -13,9 +13,11 @@ class AuthMethodsController extends Controller
     public function index() {
         return view('auth_methods.index', [
             'providers'  => Manager::providers(),
+            'support_remove'  => array_flip(Manager::SUPPORT_REMOVE),
             'connected' => Auth::user()->auth_connections()->get()->pluck('id', 'provider')->toArray(),
             'badges' => Auth::user()->badges()->where('do_not_possess', false)->get(),
-            'cancel_url' => PlatformRequest::getCancelUrl()
+            'cancel_url' => PlatformRequest::getCancelUrl(),
+            'has_password' => Auth::user()->has_password
         ]);
     }
 

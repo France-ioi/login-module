@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     protected static function boot() {
         static::saving(function($model) {
-            if($model->password) {
+            if(!is_null($model->password)) {
                 $model->regular_password = true;
             }
         });
@@ -130,6 +130,11 @@ class User extends Authenticatable
         }
     }
 */
+
+    public function getHasPasswordAttribute() {
+        return $this->regular_password ? !is_null($this->password) : $this->obsolete_passwords()->first();
+    }
+
 
     public function auth_connections() {
         return $this->hasMany('App\AuthConnection');

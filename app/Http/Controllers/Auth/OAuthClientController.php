@@ -51,7 +51,9 @@ class OAuthClientController extends Controller
 
 
     public function remove($provider) {
-        AuthConnector::disconnect($provider);
+        if(array_search($provider, Manager::SUPPORT_REMOVE) !== false) {
+            AuthConnector::disconnect($provider);
+        }
         return redirect('/auth_methods');
     }
 }

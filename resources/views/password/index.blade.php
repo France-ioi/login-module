@@ -17,7 +17,7 @@
                 {!! BootForm::password('password_confirmation', trans('auth.pwd_confirm')) !!}
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
-                        @lang('password.btn_change')
+                        @lang('password.btn_submit')
                     </button>
                     @if($cancel_url)
                         <a class="btn btn-link" href="{{ $cancel_url }}">

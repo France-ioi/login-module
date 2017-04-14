@@ -7,7 +7,7 @@
         </div>
         <div class="panel-body">
             {!! BootForm::open(['url' => '/reauthentication', 'method' => 'post']) !!}
-                {!! BootForm::password('password', trans('auth.pwd')) !!}
+                {!! BootForm::password('password', trans('reauthentication.pwd')) !!}
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
                         @lang('ui.continue')
