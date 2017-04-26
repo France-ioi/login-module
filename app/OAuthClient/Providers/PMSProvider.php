@@ -4,6 +4,7 @@
 
     use App\OAuthClient\Providers\ProviderInterface;
     use League\OAuth2\Client\Provider\GenericProvider;
+    use Session;
 
     class PMSClient extends GenericProvider {
         // Class to add the Authorization header required by PMS
@@ -66,9 +67,14 @@
             $state = str_random(40);
             session()->put(self::STATE_SESSION_KEY, $state);
             $client = $this->getClient('preferences');
-            return $client->getAuthorizationUrl([
+
+            // TODO :: better way of storing then getting back the refresh_token
+            $refresh_token = Session::get('pms.refresh_token');
+
+            $url = $client->getAuthorizationUrl([
                 'state' => $state
             ]);
+            return $url . '&refresh_token=' . $refresh_token;
         }
 
 
@@ -84,6 +90,9 @@
             try {
                 $token = $client->getAccessToken('authorization_code', [ 'code' => $request->get('code') ]);
                 $owner = $client->getResourceOwner($token)->toArray();
+
+                // TODO :: better way of storing then getting back the refresh_token
+                Session::put('pms.refresh_token', $token->getRefreshToken());
                 return [
                     'uid' => array_get($owner, 'nickName', array_get($owner, 'eMail')), // eMail if nickName is not present
                     'access_token' => $token->getToken(),
