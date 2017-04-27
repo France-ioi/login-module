@@ -20,7 +20,9 @@ class AuthConnector
             Auth::login($user);
             $connection->active = true;
             $connection->save();
-            $auth['login'] = $auth['uid'];
+            if(!isset($auth['login'])) {
+                $auth['login'] = $auth['uid'];
+            }
             if($auth['provider'] == 'pms') {
                 $user->update($auth);
             }
@@ -34,7 +36,9 @@ class AuthConnector
                 if(isset($auth['email']) && Email::where('email', $auth['email'])->first()) {
                     return false;
                 }
-                $auth['login'] = $auth['uid'];
+                if(!isset($auth['login'])) {
+                    $auth['login'] = $auth['uid'];
+                }
                 $user = User::create($auth);
                 $user->auth_connections()->save($connection);
                 if(isset($auth['email'])) {
@@ -123,7 +127,23 @@ class AuthConnector
                 return $connection;
             }
         }
-        return AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
+        $connection = AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
+        if($auth['provider'] == 'pms' && !$connection) {
+            // Check for a legacy connection
+            $connection = AuthConnection::where('uid', $auth['login'])->where('provider', $auth['provider'])->first();
+            if(!$connection) {
+                $connection = AuthConnection::where('uid', $auth['email'])->where('provider', $auth['provider'])->first();
+            }
+
+            if($connection) {
+                // Found connection, create a new connection with the UID
+                $uid_connection = new AuthConnection($auth);
+                $uid_connection->active = true;
+                $user = $connection->user;
+                $user->auth_connections()->save($uid_connection);
+            }
+        }
+        return $connection;
     }
 
 

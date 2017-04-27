@@ -94,7 +94,8 @@
                 // TODO :: better way of storing then getting back the refresh_token
                 Session::put('pms.refresh_token', $token->getRefreshToken());
                 return [
-                    'uid' => array_get($owner, 'nickName', array_get($owner, 'eMail')), // eMail if nickName is not present
+                    'uid' => array_get($owner, 'userID'),
+                    'login' => array_get($owner, 'nickName', array_get($owner, 'eMail')), // eMail if nickName is not present
                     'access_token' => $token->getToken(),
                     'email' => array_get($owner, 'eMail'),
                     'birthday' => array_get($owner, 'dateOfBirth'),
