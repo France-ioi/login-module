@@ -19,9 +19,9 @@
             @endif
 
             {!! BootForm::open(['route' => 'password.request']) !!}
-                <input type="hidden" name="token" value="{{ $token }}">
-                {!! BootForm::email('email', trans('auth.email')) !!}
-                {!! BootForm::password('password', trans('auth.pwd')) !!}
+                {!! BootForm::email('email', trans('auth.email'), $email) !!}
+                {!! BootForm::text('token', trans('password.token'), $token) !!}
+                {!! BootForm::password('password', trans('password.pwd_new')) !!}
                 {!! BootForm::password('password_confirmation', trans('auth.pwd_confirm')) !!}
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">

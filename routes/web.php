@@ -1,7 +1,10 @@
 <?php
 
 Route::get('/', function() { return redirect('login'); });
+
+Route::get('/password/reset/new', ['uses' => 'Auth\ResetPasswordController@showNewPasswordForm', 'as' => 'password.reset.new']);
 Auth::routes();
+
 Route::get('/logout', 'Auth\LogoutController@getLogout');
 Route::post('/logout_start', 'Auth\LogoutController@logoutStart');
 Route::get('/logout_loop', 'Auth\LogoutController@logoutLoop');

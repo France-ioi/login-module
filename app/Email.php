@@ -7,11 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Notifications\EmailVerificationNotification;
+use App\Notifications\ResetPasswordNotification;
 
 class Email extends Model implements CanResetPasswordContract
 {
 
-    use CanResetPassword, Notifiable;
+    use Notifiable;
 
     protected $fillable = [
         'user_id',
@@ -43,6 +44,16 @@ class Email extends Model implements CanResetPasswordContract
             $this->code = null;
             return true;
         }
+    }
+
+
+    public function getEmailForPasswordReset() {
+        return $this->email;
+    }
+
+
+    public function sendPasswordResetNotification($token) {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
 
