@@ -55,7 +55,6 @@ class AuthConnector
         return $user;
     }
 
-
     static function addBadge($user, $auth) {
         if($auth['provider'] == 'pms') {
             // TODO :: optimize queries
@@ -71,27 +70,29 @@ class AuthConnector
                 $badges[] = $myBadge['badge'];
             }
 
+            if(isset($authinfo['teacherUserId'])) {
+                $badges[] = 'teacher://pms.bwinf.de/member/teacher_'.$authinfo['teacherUserId'].'/'.$authinfo['teacherFirstName'].' '.$authinfo['teacherLastName'];
+                $teacherBadges[] = 'teacher://pms.bwinf.de/manager/teacher_'.$authinfo['teacherUserId'].'/'.$authinfo['teacherFirstName'].' '.$authinfo['teacherLastName'];
+            }
+
             // Make badge for school
             if(isset($authinfo['schoolId'])) {
-                $schoolPath = 'groups://PMS/schools/school_'.$authinfo['schoolId'].'/';
-                $badges[] = $schoolPath.'member';
-                $teacherBadges[] = $schoolPath.'manager';
+                // Dummy school name, TODO :: fetch school names
+                $badges[] = 'school://pms.bwinf.de/member/school_'.$authinfo['schoolId'].'/school_'.$authinfo['schoolId'];
             }
 
             // Make badges for participations
+            $maxGrade = -1000;
             if(isset($authinfo['participations'])) {
                 foreach($authinfo['participations'] as $participation) {
-                    $newBadge = 'groups://PMS/competitions/competition_'.$participation['competitionId'].'/';
-                    $newBadge .= isset($authinfo['schoolId']) ? 'school_'.$authinfo['schoolId'].'/' : '';
-                    $newBadge .= isset($participation['grade']) ? 'grade_'.$participation['grade'].'/' : '';
-
-                    // Student is member, teacher is manager
-                    $teacherBadge = $newBadge . 'manager';
-                    $newBadge .= 'member';
-
-                    $badges[] = $newBadge;
-                    $teacherBadges[] = $teacherBadge;
+                    // TODO :: Get the actual grade name
+                    $badges[] = 'competition://pms.bwinf.de/member/competition_'.$participation['competitionId'].'/'.$participation['competitionName'].'/grade_'.$participation['grade'].'/'.$participation['competitionName'].' - Grade '.$participation['grade'];
+                    $maxGrade = max($maxGrade, $participation['grade']);
                 }
+            }
+            if($maxGrade > -1000) {
+                // TODO :: Get the actual grade name
+                $badges[] = 'grade://pms.bwinf.de/member/grade_'.$maxGrade.'/Grade '.$maxGrade;
             }
 
             // Add badges
@@ -104,6 +105,7 @@ class AuthConnector
             }
 
             // Store badges for teachers
+            // TODO :: do we still have multiple badges?
             if(isset($authinfo['teacherUserId'])) {
                 foreach($teacherBadges as $url) {
                     if(!PmsAdminBadge::where('pms_id', $authinfo['teacherUserId'])->where('badge', $url)->first()) {
