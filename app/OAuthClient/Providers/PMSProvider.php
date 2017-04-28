@@ -40,7 +40,7 @@
         ];
 
 
-        private function getClient($scopes='authenticate') {
+        private function getClient($scopes = 'authenticate') {
             return new PMSClient([
                 'clientId' => config('oauth_client.pms.client_id'),
                 'clientSecret' => config('oauth_client.pms.client_secret'),
@@ -63,18 +63,14 @@
         }
 
 
-        public function getPreferencesURL() {
+        public function getPreferencesURL($auth_connection) {
             $state = str_random(40);
             session()->put(self::STATE_SESSION_KEY, $state);
             $client = $this->getClient('preferences');
-
-            // TODO :: better way of storing then getting back the refresh_token
-            $refresh_token = Session::get('pms.refresh_token');
-
             $url = $client->getAuthorizationUrl([
                 'state' => $state
             ]);
-            return $url . '&refresh_token=' . $refresh_token;
+            return $url . '&refresh_token=' . $auth_connection->refresh_token;
         }
 
 
@@ -90,13 +86,11 @@
             try {
                 $token = $client->getAccessToken('authorization_code', [ 'code' => $request->get('code') ]);
                 $owner = $client->getResourceOwner($token)->toArray();
-
-                // TODO :: better way of storing then getting back the refresh_token
-                Session::put('pms.refresh_token', $token->getRefreshToken());
                 return [
                     'uid' => array_get($owner, 'userID'),
                     'login' => array_get($owner, 'nickName', array_get($owner, 'eMail')), // eMail if nickName is not present
                     'access_token' => $token->getToken(),
+                    'refresh_token' => $token->getRefreshToken(),
                     'email' => array_get($owner, 'eMail'),
                     'birthday' => array_get($owner, 'dateOfBirth'),
                     'first_name' => array_get($owner, 'firstName'),

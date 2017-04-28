@@ -12,7 +12,8 @@ class AuthConnection extends Model
         'uid',
         'user_id',
         'active',
-        'access_token'
+        'access_token',
+        'refresh_token'
     ];
 
     protected $visible = [

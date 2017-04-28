@@ -10,7 +10,7 @@
             return '/login';
         }
 
-        public function getPreferencesURL() {
+        public function getPreferencesURL($auth_connection) {
             return '/profile';
         }
 

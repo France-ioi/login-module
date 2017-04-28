@@ -32,7 +32,7 @@
         }
 
 
-        public function getPreferencesURL() {
+        public function getPreferencesURL($auth_connection) {
             return $this->getAuthorizationURL(); // TODO ?
         }
 

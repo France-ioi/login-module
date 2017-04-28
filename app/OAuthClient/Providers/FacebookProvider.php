@@ -4,21 +4,30 @@
 
     use App\OAuthClient\Providers\ProviderInterface;
     use Facebook\PersistentData\PersistentDataInterface;
+    use Facebook\Url\UrlDetectionInterface;
 
 
     class PersistentDataHandler implements PersistentDataInterface {
 
-        const PREFIX = 'FBRLH_';
+        const PREFIX = 'FB_PDH_';
 
         public function get($key) {
             return session()->pull(self::PREFIX.$key);
         }
 
         public function set($key, $value) {
-            session()->put(self::PREFIX, $value);
+            session()->put(self::PREFIX.$key, $value);
         }
     }
 
+
+    class UrlDetectionHandler implements UrlDetectionInterface {
+
+        public function getCurrentUrl() {
+            return \Request::url();
+        }
+
+    }
 
 
     class FacebookProvider implements ProviderInterface {
@@ -28,13 +37,14 @@
             return new \Facebook\Facebook([
                 'app_id' => config('oauth_client.facebook.client_id'),
                 'app_secret' => config('oauth_client.facebook.client_secret'),
-                'default_graph_version' => 'v2.2',
-                'persistent_data_handler' => new PersistentDataHandler()
+                'default_graph_version' => 'v2.3',
+                'persistent_data_handler' => new PersistentDataHandler(),
+                'url_detection_handler' => new UrlDetectionHandler()
             ]);
         }
 
 
-        private function getToken($client, $code) {
+        private function getToken($client) {
             $helper = $client->getRedirectLoginHelper();
             try {
                 $token = $helper->getAccessToken();
@@ -67,14 +77,14 @@
         }
 
 
-        public function getPreferencesURL() {
+        public function getPreferencesURL($auth_connection) {
             return $this->getAuthorizationURL(); // TODO ?
         }
 
 
         public function callback(\Illuminate\Http\Request $request) {
             $client = $this->getClient();
-            if($token = $this->getToken($client, $request->get('code'))) {
+            if($token = $this->getToken($client)) {
                 if($graph = $this->getGraph($client, $token)) {
                     list($first_name, $last_name) = explode(' ', $graph->getField('name', ''), 2);
                     $id = $graph->getField('id');
