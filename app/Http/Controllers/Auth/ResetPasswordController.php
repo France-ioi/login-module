@@ -51,6 +51,7 @@ class ResetPasswordController extends Controller
         $email->user->forceFill([
             'password' => bcrypt($password),
             'remember_token' => str_random(60),
+            'last_password_recovery_at' => new \DateTime
         ])->save();
         $email->user->obsolete_passwords()->delete();
         $this->guard()->login($email->user);

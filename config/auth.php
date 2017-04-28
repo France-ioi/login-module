@@ -4,6 +4,8 @@ return [
 
     'master_hash' => env('AUTH_MASTER_HASH'),
 
+    'password_recovery_interval' => 86400, // secs,  set empty value to disable
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults

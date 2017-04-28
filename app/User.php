@@ -40,7 +40,8 @@ class User extends Authenticatable
         'website',
         'last_login',
         'ip',
-        'created_at'
+        'created_at',
+        'last_password_recovery_at'
     ];
 
     protected $hidden = [
