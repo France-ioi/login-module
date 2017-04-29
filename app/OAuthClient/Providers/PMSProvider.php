@@ -47,7 +47,7 @@
                 'redirectUri' => route('oauth_client_callback', ['provider' => 'pms']),
                 'urlAuthorize' => config('oauth_client.pms.base_url').'/wa/OAuth2/authorize',
                 'urlAccessToken' => config('oauth_client.pms.base_url').'/wa/OAuth2/token',
-                'urlResourceOwnerDetails' => config('oauth_client.pms.base_url').'/wa/OAuth2/studentData',
+                'urlResourceOwnerDetails' => config('oauth_client.pms.base_url').'/wa/OAuth2/userData',
                 'scopes' => $scopes
             ]);
         }

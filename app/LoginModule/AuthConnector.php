@@ -57,6 +57,7 @@ class AuthConnector
     }
 
     static function addBadge($user, $auth) {
+        // TODO :: should probably be in PMSProvider rather than here
         if($auth['provider'] == 'pms') {
             // TODO :: optimize queries
             // Handle PMS school and participation information
@@ -65,21 +66,31 @@ class AuthConnector
             $teacherBadges = array();
 
             // Fetch manager badges if we have any
-            $myAdminBadges = PmsAdminBadge::where('pms_id', $authinfo['userID'])->get();
-            // Handle PMS school and participation information
+            // TODO :: do we still need that?
+            /*$myAdminBadges = PmsAdminBadge::where('pms_id', $authinfo['userID'])->get();
             foreach($myAdminBadges as $myBadge) {
                 $badges[] = $myBadge['badge'];
-            }
+            }*/
 
-            if(isset($authinfo['teacherUserId'])) {
+            // Get teacher information
+            if($authinfo['userType'] == 't') {
+                $badges[] = 'teacher://pms.bwinf.de/manager/teacher_'.$authinfo['userID'].'/'.$authinfo['firstName'].' '.$authinfo['lastName'];
+            } elseif(isset($authinfo['teacherUserId'])) {
                 $badges[] = 'teacher://pms.bwinf.de/member/teacher_'.$authinfo['teacherUserId'].'/'.$authinfo['teacherFirstName'].' '.$authinfo['teacherLastName'];
-                $teacherBadges[] = 'teacher://pms.bwinf.de/manager/teacher_'.$authinfo['teacherUserId'].'/'.$authinfo['teacherFirstName'].' '.$authinfo['teacherLastName'];
+                //$teacherBadges[] = 'teacher://pms.bwinf.de/manager/teacher_'.$authinfo['teacherUserId'].'/'.$authinfo['teacherFirstName'].' '.$authinfo['teacherLastName'];
             }
 
             // Make badge for school
             if(isset($authinfo['schoolId'])) {
                 // Dummy school name, TODO :: fetch school names
-                $badges[] = 'school://pms.bwinf.de/member/school_'.$authinfo['schoolId'].'/school_'.$authinfo['schoolId'];
+                if($authinfo['userType'] == 't') {
+                    // We get an array of schoolIds
+                    foreach($authinfo['schoolId'] as $schoolId) {
+                        $badges[] = 'school://pms.bwinf.de/member/school_'.$schoolId.'/school_'.$schoolId;
+                    }
+                } else {
+                    $badges[] = 'school://pms.bwinf.de/member/school_'.$authinfo['schoolId'].'/school_'.$authinfo['schoolId'];
+                }
             }
 
             // Make badges for participations
@@ -106,8 +117,8 @@ class AuthConnector
             }
 
             // Store badges for teachers
-            // TODO :: do we still have multiple badges?
-            if(isset($authinfo['teacherUserId'])) {
+            // TODO :: do we still need that?
+            /*if(isset($authinfo['teacherUserId'])) {
                 foreach($teacherBadges as $url) {
                     if(!PmsAdminBadge::where('pms_id', $authinfo['teacherUserId'])->where('badge', $url)->first()) {
                         PmsAdminBadge::create([
@@ -116,7 +127,7 @@ class AuthConnector
                         ]);
                     }
                 }
-            }
+            }*/
         }
     }
 
