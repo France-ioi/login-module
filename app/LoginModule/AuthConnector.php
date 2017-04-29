@@ -122,14 +122,32 @@ class AuthConnector
 
     static function findConnection($auth) {
         // replace old google id
-        if(isset($auth['uid_old']) && $auth['provider'] == 'google') {
+        if($auth['provider'] == 'google' && !empty($auth['uid_old'])) {
             if($connection = AuthConnection::where('uid', $auth['uid_old'])->where('provider', $auth['provider'])->first()) {
                 $connection->uid = $auth['uid'];
-                $connection->save();
                 return $connection;
             }
         }
-        $connection = AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
+$auth['provider'] = 'pms';
+$auth['login'] = 'ddd';
+        if($auth['provider'] == 'pms') {
+            $legacy_connections = AuthConnection::whereIn('uid', [$auth['uid'], $auth['login'], $auth['email']])->where('provider', $auth['provider'])->get();
+            dd($legacy_connections);
+            if(count($legacy_connections) > 0) {
+                $connection = $legacy_connections->pop();
+                $connection->uid = $auth['uid'];
+                foreach($legacy_connections as $legacy_connection) {
+                    $legacy_connection->delete();
+                }
+                return $connection;
+            }
+            return null;
+        }
+
+        return AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
+/*
+
+
         if($auth['provider'] == 'pms' && !$connection) {
             // Check for a legacy connection
             $connection = AuthConnection::where('uid', $auth['login'])->where('provider', $auth['provider'])->first();
@@ -146,6 +164,7 @@ class AuthConnector
             }
         }
         return $connection;
+        */
     }
 
 

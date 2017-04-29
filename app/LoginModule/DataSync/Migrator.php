@@ -81,7 +81,7 @@ class Migrator {
             }
             $email->fill([
                 'email' => $user_data['email'],
-                'verified' => $user_data['email_verified']
+                'verified' => true, //$user_data['email_verified']
             ]);
             $email->save();
         } else {
@@ -91,7 +91,7 @@ class Migrator {
             $email = new Email([
                 'email' => $user_data['email'],
                 'role' => 'primary',
-                'verified' => $user_data['email_verified']
+                'verified' => true, //$user_data['email_verified']
             ]);
             $user->emails()->save($email);
         }
