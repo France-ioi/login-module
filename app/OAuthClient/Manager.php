@@ -5,6 +5,7 @@
     use App\OAuthClient\Providers\FacebookProvider;
     use App\OAuthClient\Providers\GoogleProvider;
     use App\OAuthClient\Providers\PMSProvider;
+    use App\OAuthClient\Providers\FranceConnectProvider;
     use App\OAuthClient\Providers\DefaultProvider;
 
 
@@ -14,14 +15,15 @@
             // disabled temporary
             'facebook' => FacebookProvider::class,
             'google' => GoogleProvider::class,
-            'pms' => PMSProvider::class
+            'pms' => PMSProvider::class,
+            //'france_connect' => FranceConnectProvider::class
         ];
 
         const DEFAULT_PROVIDER = DefaultProvider::class;
 
-        const SUPPORT_LOGOUT = ['facebook', 'google']; // available at logout page
+        const SUPPORT_LOGOUT = ['facebook', 'google', 'france_connect']; // available at logout page
 
-        const SUPPORT_REMOVE = ['facebook', 'google']; // remove button available at auth methods page
+        const SUPPORT_REMOVE = ['facebook', 'google', 'france_connect']; // remove button available at auth methods page
 
 
         static function providers() {

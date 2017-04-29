@@ -128,8 +128,9 @@ class AuthConnector
                 return $connection;
             }
         }
-$auth['provider'] = 'pms';
-$auth['login'] = 'ddd';
+
+/*
+TODO: discuss legacy pms data
         if($auth['provider'] == 'pms') {
             $legacy_connections = AuthConnection::whereIn('uid', [$auth['uid'], $auth['login'], $auth['email']])->where('provider', $auth['provider'])->get();
             dd($legacy_connections);
@@ -145,9 +146,9 @@ $auth['login'] = 'ddd';
         }
 
         return AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
-/*
+*/
 
-
+        $connection = AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
         if($auth['provider'] == 'pms' && !$connection) {
             // Check for a legacy connection
             $connection = AuthConnection::where('uid', $auth['login'])->where('provider', $auth['provider'])->first();
@@ -164,7 +165,6 @@ $auth['login'] = 'ddd';
             }
         }
         return $connection;
-        */
     }
 
 

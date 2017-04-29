@@ -21,4 +21,9 @@
             'client_secret' => env('PMS_SECRET')
         ],
 
+        'france_connect' => [
+            'client_id' => env('FRANCE_CONNECT_ID'),
+            'client_secret' => env('FRANCE_CONNECT_SECRET')
+        ]
+
     ];
