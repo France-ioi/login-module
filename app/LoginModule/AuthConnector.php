@@ -19,6 +19,7 @@ class AuthConnector
             $user = $connection->user;
             Auth::login($user);
             $connection->active = true;
+            $connection->refresh_token = $auth['refresh_token'];
             $connection->save();
             if(!isset($auth['login'])) {
                 $auth['login'] = $auth['uid'];
