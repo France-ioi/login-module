@@ -141,14 +141,19 @@ class AuthConnector
             }
         }
 
-/*
-TODO: discuss legacy pms data
         if($auth['provider'] == 'pms') {
+            // PMS connections were formerly identified by nickname/email
+            // now they're identified by userID
             $legacy_connections = AuthConnection::whereIn('uid', [$auth['uid'], $auth['login'], $auth['email']])->where('provider', $auth['provider'])->get();
-            dd($legacy_connections);
             if(count($legacy_connections) > 0) {
                 $connection = $legacy_connections->pop();
-                $connection->uid = $auth['uid'];
+                if($connection->uid != $auth['uid']) {
+                    // Update old connection to use the userID
+                    $connection->uid = $auth['uid'];
+                    // not needed as it is currently saved in connect(), but it could change
+                    $connection->save();
+                }
+                // Delete old connections
                 foreach($legacy_connections as $legacy_connection) {
                     $legacy_connection->delete();
                 }
@@ -158,25 +163,6 @@ TODO: discuss legacy pms data
         }
 
         return AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
-*/
-
-        $connection = AuthConnection::where('uid', $auth['uid'])->where('provider', $auth['provider'])->first();
-        if($auth['provider'] == 'pms' && !$connection) {
-            // Check for a legacy connection
-            $connection = AuthConnection::where('uid', $auth['login'])->where('provider', $auth['provider'])->first();
-            if(!$connection) {
-                $connection = AuthConnection::where('uid', $auth['email'])->where('provider', $auth['provider'])->first();
-            }
-
-            if($connection) {
-                // Found connection, create a new connection with the UID
-                $uid_connection = new AuthConnection($auth);
-                $uid_connection->active = true;
-                $user = $connection->user;
-                $user->auth_connections()->save($uid_connection);
-            }
-        }
-        return $connection;
     }
 
 
