@@ -38,6 +38,6 @@ return [
     'website' => 'Website',
     'success' => 'Profil wurde geändert.',
 
-    'pms_redirect_msg' => 'Bitte gehe zum PMS, um dein Profil zu bearbeiten. Falls du noch nicht für den JwInf angemeldet bist, kannst du das unter „Wettbewerbe“ gleich mit erledigen. Speichere die Änderungen und klicke dann auf „Zurück zum JLS“.',
+    'pms_redirect_msg' => 'Bitte gehe zum PMS, um dein Profil zu bearbeiten. Falls du noch nicht für den JwInf angemeldet bist, kannst du das unter „Wettbewerbe“ gleich mit erledigen. Speichere die Änderungen und klicke dann auf „Zurück zum JwInf“.',
     'pms_redirect_btn' => 'Weiter zum PMS'
 ];

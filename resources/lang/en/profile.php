@@ -45,6 +45,6 @@ return [
     'primary_email_role' => 'primary',
     'secondary_email_role' => 'secondary',
 
-    'pms_redirect_msg' => 'As a PMS user, you must edit your profile directly on PMS. Please press the "Return to JLS" button afterwards to have your profile updated here.',
+    'pms_redirect_msg' => 'As a PMS user, you must edit your profile directly on PMS. Please press the "Zurück zum JwInf" button afterwards to have your profile updated here.',
     'pms_redirect_btn' => 'Proceed to PMS'
 ];
