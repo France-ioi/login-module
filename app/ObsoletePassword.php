@@ -11,6 +11,7 @@ class ObsoletePassword extends Model
         'user_id',
         'salt',
         'password',
+        'type',
     ];    
     
     
