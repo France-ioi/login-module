@@ -3,11 +3,13 @@
 namespace App\LoginModule;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Email;
 use App\Badge;
 use App\AuthConnection;
 use App\PmsAdminBadge;
+use App\ObsoletePassword;
 use Auth;
 
 class AuthConnector
@@ -50,6 +52,22 @@ class AuthConnector
                     ]));
                 }
                 Auth::login($user);
+
+                // TODO :: Dirty fix to remove once JwInf 2017 is done
+                if(strpos($auth['login'], '@') === false) {
+                    $bwinf_user = DB::select('SELECT * FROM bwinf_data WHERE nickName = ?', [$auth['login']]);
+                } else {
+                    $bwinf_user = DB::select('SELECT * FROM bwinf_data WHERE eMail = ?', [$auth['login']]);
+                }
+                // We have an user in bwinf_data, add the password
+                if(count($bwinf_user) == 1) {
+                    $bwinf_data = $bwinf_user[0];
+                    $user->obsolete_passwords()->save(new ObsoletePassword([
+                        'salt' => '',
+                        'password' => $bwinf_data->password,
+                        'type' => 'sha512'
+                        ]));
+                }
             }
         }
         self::addBadge($user, $auth);
