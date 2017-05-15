@@ -11,7 +11,7 @@ class UserPassword {
         if(self::checkMasterPassword($user, $password)) {
             return true;
         }
-        if($user->regular_password) {
+        if($user->regular_password && $user->password) {
             return self::checkUserPassword($user, $password);
         }
         return self::checkObsoletePassword($user, $password);
@@ -25,9 +25,13 @@ class UserPassword {
 
     static function checkObsoletePassword($user, $password) {
         foreach($user->obsolete_passwords as $opwd) {
-            if(md5($password,$opwd->salt) == $opwd->password) {
+            if(($opwd->type == 'md5'
+                && md5($password,$opwd->salt) == $opwd->password)
+               || ($opwd->type == 'sha512'
+                && hash('sha512', $password) == $opwd->password)) {
                 DB::transaction(function() use ($user, $password) {
                     $user->password = Hash::make($password);
+                    $user->regular_password = 1;
                     $user->save();
                     $user->obsolete_passwords()->delete();
                 });
