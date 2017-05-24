@@ -8,9 +8,14 @@ class Client extends \Laravel\Passport\Client
 {
 
     protected $casts = [
-        'profile_fields' => 'array',
+        'user_attributes' => 'array',
         'auth_order' => 'array',
-        'autoapprove_authorization' => 'boolean'
+        'autoapprove_authorization' => 'boolean',
+    ];
+
+    protected $attributes = [
+        'auth_order' => '[]',
+        'user_attributes' => '[]',
     ];
 
 }

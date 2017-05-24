@@ -15,11 +15,11 @@
         {!! BootForm::text('secret', 'Secret') !!}
         {!! BootForm::text('redirect', 'Redirect') !!}
         {!! BootForm::text('badge_url', 'Badge URL') !!}
-        <label>Required fields</label>
+        <label>Require user attributes</label>
         <div class="row">
-            @foreach($profile_fields as $field)
+            @foreach($user_attributes as $attr)
                 <div class="col-sm-2 col-xs-6">
-                    {!! BootForm::checkbox('profile_fields[]', $field, $field, is_array($client->profile_fields) && in_array($field, $client->profile_fields)) !!}
+                    {!! BootForm::checkbox('user_attributes[]', $attr, $attr, in_array($attr, $client->user_attributes)) !!}
                 </div>
             @endforeach
         </div>

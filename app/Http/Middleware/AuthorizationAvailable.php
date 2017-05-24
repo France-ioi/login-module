@@ -3,11 +3,17 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\LoginModule\Platform\PlatformRequest;
-use Illuminate\Support\Facades\Auth;
+use App\LoginModule\Profile\UserProfile;
 
 class AuthorizationAvailable
 {
+
+    protected $profile;
+
+
+    public function __construct(UserProfile $profile) {
+        $this->profile = $profile;
+    }
     /**
      * Handle an incoming request.
      *
@@ -17,20 +23,15 @@ class AuthorizationAvailable
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if(!PlatformRequest::profileFields()->filled()) {
+        if(!$this->profile->completed() && !$this->profile->verified()) {
             return redirect('/profile');
         }
-        if(!PlatformRequest::profileFields()->verified()) {
-            return redirect('/profile');
-        }
-
         // Temporarily disable
         /*
-        if(!PlatformRequest::badge()->verified()) {
+        if(!$this->context->badge()->verified()) {
             return redirect('/badge');
         }
         */
-
         return $next($request);
     }
 }

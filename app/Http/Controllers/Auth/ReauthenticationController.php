@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\LoginModule\Platform\PlatformRequest;
 use App\LoginModule\Reauthentication;
+use App\LoginModule\PLatform\PlatformContext;
 
 class ReauthenticationController extends Controller
 {
 
-    public function index() {
+
+    public function index(PlatformContext $context) {
         return view('reauthentication.index', [
-            'cancel_url' => PlatformRequest::getCancelUrl()
+            'cancel_url' => $context->cancelUrl()
         ]);
     }
 

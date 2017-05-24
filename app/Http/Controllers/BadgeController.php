@@ -8,6 +8,7 @@ use Auth;
 use Session;
 use App\LoginModule\Platform\PlatformRequest;
 use App\Badge;
+use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Platform\BadgeApi;
 
 class BadgeController extends Controller
@@ -16,6 +17,11 @@ class BadgeController extends Controller
     private $validation_rules = [
         'code' => 'required'
     ];
+
+
+    public function __construct(PlatformContext $context) {
+        $this->context = $context;
+    }
 
 
     public function index() {
@@ -29,12 +35,12 @@ class BadgeController extends Controller
         if($badge = $this->findBadge($code)) {
             if($badge->login_enabled) {
                 Auth::login($badge->user);
-                return redirect(PlatformRequest::getRedirectUrl('/account'));
+                return redirect($this->context->continueUrl('/account'));
             } else {
                 return $this->failedVerificationResponse($code, trans('badge.code_registered'));
             }
         }
-        if($badge_data = PlatformRequest::badge()->verifyAndStoreData($code)) {
+        if($badge_data = $this->context->badge()->verifyAndStoreData($code)) {
             return redirect()->route('register');
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
@@ -49,7 +55,7 @@ class BadgeController extends Controller
                 return $this->failedVerificationResponse($code, trans('badge.code_registered'));
             }
         }
-        if($badge_data = PlatformRequest::badge()->verify($request->input('code'))) {
+        if($badge_data = $this->context->badge()->verify($request->input('code'))) {
             if($badge = Auth::user()->badges()->where('url', $badge_data['url'])->first()) {
                 $badge->do_not_possess = false;
                 $badge->code = $badge_data['code'];
@@ -61,14 +67,14 @@ class BadgeController extends Controller
                     'url' => $badge_data['url']
                 ]));
             }
-            return redirect(PlatformRequest::getRedirectUrl('/badge'));
+            return redirect($this->context->continueUrl('/badge'));
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
     }
 
 
     private function findBadge($code) {
-        return Badge::where('url', PlatformRequest::badge()->url())->where('code', $code)->first();
+        return Badge::where('url', $this->context->badge()->url())->where('code', $code)->first();
     }
 
 
@@ -81,7 +87,7 @@ class BadgeController extends Controller
 
 
     public function doNotHave() {
-        $url = PlatformRequest::badge()->url();
+        $url = $this->context->badge()->url();
         if(!$badge = Auth::user()->badges()->where('url', $url)->first()) {
             Auth::user()->badges()->save(new Badge([
                 'code' => '',
@@ -89,7 +95,7 @@ class BadgeController extends Controller
                 'do_not_possess' => true
             ]));
         }
-        return redirect(PlatformRequest::getRedirectUrl('/badge'));
+        return redirect($this->context->continueUrl('/badge'));
     }
 
 }

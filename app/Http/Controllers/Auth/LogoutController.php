@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
-use Session;
 use App\OAuthClient\Manager;
 
 class LogoutController extends Controller
@@ -20,7 +19,7 @@ class LogoutController extends Controller
         if(!Auth::check()) {
             return $this->redirectAfterLogout($request->get('redirect_uri'));
         }
-        Session::put('logout_redirect', $request->get('redirect_uri'));
+        $request->session()->put('logout_redirect', $request->get('redirect_uri'));
         $active_connections = \Auth::user()->auth_connections()->where('active', true)->whereIn('provider', Manager::SUPPORT_LOGOUT)->get();
         if(count($active_connections) == 0) {
             return $this->logoutFinish($request);
@@ -37,7 +36,7 @@ class LogoutController extends Controller
         Auth::user()->logout_config = array_fill_keys($providers, 1);
         Auth::user()->save();
         if(count($providers)) {
-            Session::put('logout_providers', $providers);
+            $request->session()->put('logout_providers', $providers);
             return redirect('logout_loop');
         }
         return redirect('logout_finish');
@@ -45,7 +44,7 @@ class LogoutController extends Controller
 
 
     public function logoutFinish(Request $request) {
-        $redirect_uri = Session::pull('logout_redirect');
+        $redirect_uri = $request->session()->pull('logout_redirect');
         Auth::guard()->logout();
         $request->session()->flush();
         $request->session()->regenerate();

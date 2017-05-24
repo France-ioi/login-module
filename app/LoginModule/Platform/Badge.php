@@ -4,10 +4,9 @@ namespace App\LoginModule\Platform;
 
 use Session;
 
-
 class Badge {
 
-    const SESSION_KEY = 'badge_data';
+    const SESSION_KEY = 'BADGE';
     protected $client;
 
     public function __construct($client, $user) {

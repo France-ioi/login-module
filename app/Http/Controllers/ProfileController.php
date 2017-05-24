@@ -4,123 +4,96 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
-use App\LoginModule\Platform\PlatformRequest;
 use App\Email;
-use Session;
 use App\OAuthClient\Manager;
+use App\LoginModule\Platform\PlatformContext;
+use \App\LoginModule\Profile\SchemaBuilder;
+use \App\LoginModule\Profile\UserProfile;
+use \App\LoginModule\Profile\Verification\Verificator;
+
 
 class ProfileController extends Controller
 {
 
+    protected $context;
+
+
+    public function __construct(PlatformContext $context, SchemaBuilder $schema_builder) {
+        $this->context = $context;
+        $this->schema_builder = $schema_builder;
+    }
+
 
     public function index(Request $request) {
-        $user = Auth::check() ? Auth::user() : new User;
-        if($badge_data = PlatformRequest::badge()->restoreData()) {
+        $user = auth()->user();
+
+        if($badge_data = $this->context->badge()->restoreData()) {
             $user->fill($badge_data['user']);
         }
 
-        $fixed = [];
-        if($user->exists() && $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first()) {
-            $fixed = Manager::provider('pms')->getFixedFields();
+        if(count($disabled = $this->disabledAttributes($user)) > 0) {
             if($redirect = $request->get('redirect_uri')) {
-                // Redirect to callback_profile from the platform after showing the dialog
-                Session::put('url.intended', $request->get('redirect_uri'));
+                $request->session()->put('url.intended', $request->get('redirect_uri'));
             }
-        }
+        };
 
-
-        $required = PlatformRequest::profileFields()->getRequired();
-        if($request->has('all')) {
-            $fields = PlatformRequest::profileFields()->getAll();
-            if(array_search('login', $required) === false) {
-                $fields = array_diff($fields, ['login']);
-            }
-        } else {
-            $fields = $required;
-        }
-
-        $verifiable = PlatformRequest::profileFields()->getVerifiable();
+        $schema = $this->schema_builder->build(
+            $user,
+            $this->requiredAttributes(),
+            $disabled,
+            $request->has('all')
+        );
 
         return view('profile.index', [
-            'fields' => $fields,
-            'fixed' => array_fill_keys($fixed, true),
-            'required' => array_fill_keys($required, true),
-            'verifiable' => array_fill_keys($verifiable, true),
-            'star' => config('ui.star'),
-            'user' => $user,
-            'all' => $request->get('all'),
-            'cancel_url' => PlatformRequest::getCancelUrl()
+            'form' => [
+                'model' => $user,
+                'url' => '/profile',
+                'method' => 'post'
+            ],
+            'schema' => $schema,
+            'pms_redirect' => count($disabled) > 0,
+            'cancel_url' => $this->context->cancelUrl(),
+            'all' => $request->has('all')
         ]);
     }
 
 
+    public function update(Request $request, UserProfile $profile, Verificator $verificator) {
+        $user = auth()->user();
 
-    public function update(Request $request) {
-        $fixed = Manager::provider('pms')->getFixedFields();
-        $fixed = array_flip($fixed);
-        $required = PlatformRequest::profileFields()->getRequired();
-        $rules = PlatformRequest::profileFields()->getValidationRules($required);
-        $rules = array_diff_key($rules, $fixed);
-        $this->validate($request, $rules);
-
-        Auth::user()->fill($request->except($fixed));
-        Auth::user()->save();
-
-        $errors = [];
-        if(!$this->updateUserEmail('primary', $request, !isset($fixed['primary_email']))) {
-            $errors['primary_email_validation_code'] = trans('profile.primary_email').trans('profile.email_verification_failed');
-        }
-        if(!$this->updateUserEmail('secondary', $request, !isset($fixed['secondary_email']))) {
-            $errors['secondary_email_verification_code'] = trans('profile.secondary_email').trans('profile.email_verification_failed');
-        }
-        if(!PlatformRequest::profileFields()->verified()) {
-            if(!count($errors)) {
-                $errors[] = trans('profile.email_verification_required');
-            }
-            return redirect()->back()->withErrors($errors);
-        }
-        PlatformRequest::badge()->flushData();
-        return redirect(PlatformRequest::getRedirectUrl('/profile'));
-    }
-
-
-
-    private function updateUserEmail($role, $request, $editable) {
-        $new_value = $request->input($role.'_email');
-
-        if($editable && !$new_value) {
-            Auth::user()->emails()->where('role', $role)->delete();
-            return true;
-        }
-
-        if($email = Auth::user()->emails()->where('role', $role)->first()) {
-            $res = true;
-            if($verification_code = $request->input($role.'_email_verification_code')) {
-                $res = $email->verifyCode($verification_code);
-            }
-            if($editable && $new_value) {
-                $email->email = $new_value;
-            }
-            $email->save();
-            return $res;
-        }
-
-        if($new_value) {
-            $email = new Email([
-                'email' => $new_value,
-                'role' => $role
-            ]);
-            Auth::user()->emails()->save($email);
-        }
-        return true;
-    }
-
-
-    public function timezone(Request $request) {
-        return response()->json(
-            timezone_name_from_abbr('', 3600 * $request->get('offset'), (int) $request->get('dls'))
+        $schema = $this->schema_builder->build(
+            $user,
+            $this->requiredAttributes(),
+            $this->disabledAttributes($user),
+            $request->has('all')
         );
+
+        $this->validate($request, $schema->rules());
+
+        $user = $profile->update($request, $schema->fillableAttributes());
+
+        if(($verification = $verificator->verify($user)) !== true) {
+            return redirect()->back()->withErrors($verification);
+        }
+
+        $this->context->badge()->flushData();
+        return redirect($this->context->continueUrl('/account'));
+    }
+
+
+    private function requiredAttributes() {
+        if($client = $this->context->client()) {
+            return $client->user_attributes;
+        }
+        return [];
+    }
+
+
+    private function disabledAttributes($user) {
+        if($user->auth_connections()->where('provider', 'pms')->where('active', '1')->first()) {
+            return Manager::provider('pms')->getFixedFields();
+        }
+        return [];
     }
 
 }

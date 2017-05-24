@@ -3,10 +3,18 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\LoginModule\Platform\PlatformRequest as PlatformRequestLib;
+use App\LoginModule\Platform\PlatformContext;
 
 class PlatformRequest
 {
+
+    private $context;
+
+
+    public function __construct(PlatformContext $context) {
+        $this->context = $context;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -16,7 +24,7 @@ class PlatformRequest
      */
     public function handle($request, Closure $next)
     {
-        PlatformRequestLib::cacheToSession($request);
+        $this->context->request($request);
         return $next($request);
     }
 }

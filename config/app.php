@@ -164,7 +164,6 @@ return [
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
-        //Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
@@ -184,6 +183,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\LoginModule\Passwords\PasswordResetServiceProvider::class,
+        App\LoginModule\Platform\PlatformContextServiceProvider::class,
+        App\LoginModule\Profile\UserProfileServiceProvider::class,
 
         Laravel\Passport\PassportServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
@@ -239,6 +240,7 @@ return [
         'Form'     => Collective\Html\FormFacade::class,
         'HTML'     => Collective\Html\HtmlFacade::class,
         'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
+        'ProfileFormRenderer' => App\LoginModule\Profile\ProfileFormRenderer::class
     ],
 
 ];

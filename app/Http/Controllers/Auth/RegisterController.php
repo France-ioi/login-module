@@ -8,8 +8,9 @@ use App\Badge;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\LoginModule\Platform\PlatformRequest;
-use App\LoginModule\Locale;;
+use App\LoginModule\Locale;
+use App\LoginModule\Platform\PlatformContext;
+use App\LoginModule\Profile\SchemaBuilder;
 
 
 class RegisterController extends Controller
@@ -39,16 +40,17 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(PlatformContext $context, SchemaBuilder $schema_builder) {
         $this->middleware('guest');
+        $this->context = $context;
+        $this->schema_builder = $schema_builder;
     }
 
 
     public function showRegistrationForm()
     {
-        $required = PlatformRequest::profileFields()->getRequired();
-        $badge_data = PlatformRequest::badge()->restoreData();
+        $required = $this->requiredAttributes();
+        $badge_data = $this->context->badge()->restoreData();
         $values = $badge_data ? $badge_data['user'] : [];
 
         return view('auth.register', [
@@ -66,8 +68,9 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $required = PlatformRequest::profileFields()->getRequired();
-        $validation_rules = PlatformRequest::profileFields()->getValidationRules($required);
+        $required = $this->requiredAttributes();
+        $schema = $this->schema_builder->build(null, $this->requiredAttributes());
+        $validation_rules = $schema->rules();
         $reg_rules = [
             'password' => 'required|min:6|confirmed'
         ];
@@ -88,7 +91,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $required = PlatformRequest::profileFields()->getRequired();
+        $required = $this->requiredAttributes();
         $user_data = [
             'password' => bcrypt($data['password']),
             'language' => Locale::get()
@@ -104,7 +107,7 @@ class RegisterController extends Controller
                 'email' => $data['primary_email']
             ]));
         }
-        if($badge_data = PlatformRequest::badge()->restoreData()) {
+        if($badge_data = $this->context->badge()->restoreData()) {
             $user->badges()->save(new Badge([
                 'code' => $badge_data['code'],
                 'url' => $badge_data['url']
@@ -119,5 +122,15 @@ class RegisterController extends Controller
     public function registered($request, $user) {
         return redirect()->intended('/account');
     }
+
+
+    private function requiredAttributes() {
+        $attributes = ['login', 'primary_email'];
+        if($client = $this->context->client()) {
+            $attributes = array_intersect($attributes, $client->user_attributes);
+        }
+        return $attributes;
+    }
+
 
 }

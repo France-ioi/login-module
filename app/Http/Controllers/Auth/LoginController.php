@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use App\LoginModule\Platform\PlatformRequest;
 use App\OAuthClient\Manager;
+use App\LoginModule\Platform\PlatformContext;
 
 class LoginController extends Controller
 {
@@ -52,8 +52,13 @@ class LoginController extends Controller
     }
 
 
-    public function showLoginForm() {
-        $auth_order = PlatformRequest::authOrder()->get();
+    public function showLoginForm(PlatformContext $context) {
+        $auth_order = [];
+        $badge_required = false;
+        if($client = $context->client()) {
+            $auth_order =  is_array($client->auth_order) ? $client->auth_order : [];
+            $badge_required = (bool) $context->badge()->url();
+        }
         $default_order = array_merge(['login'], Manager::providers());
         if($auth_order) {
             $auth_visible = $auth_order;
@@ -62,11 +67,7 @@ class LoginController extends Controller
             $auth_visible = $default_order;
             $auth_hidden = [];
         }
-        return view('auth.login', [
-            'auth_visible' => $auth_visible,
-            'auth_hidden' => $auth_hidden,
-            'badge_required' => PlatformRequest::badge()->url()
-        ]);
+        return view('auth.login', compact('auth_visible', 'auth_hidden', 'badge_required'));
     }
 
 

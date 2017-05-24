@@ -12,11 +12,13 @@ class ClientsSeeder extends Seeder
         'revoked' => false,
         'secret' => '1AtKfSc7KbgIo8GDCI31pA9laP7pFoBqSg3RtVHq',
         'public_key' => '',
-        'profile_fields' => [
+        'user_attributes' => [
             'login',
             'primary_email',
             'first_name',
             'last_name',
+            'primary_email_verified',
+            'teacher_domain_verified'
         ],
         'auth_order' => [
             'login',
@@ -43,7 +45,7 @@ class ClientsSeeder extends Seeder
         ]));
 
 
-        $algorea_profile_fields = [
+        $user_attributes = [
             'student_id',
             'login',
             'primary_email',
@@ -66,19 +68,19 @@ class ClientsSeeder extends Seeder
             'id' => 3,
             'redirect' => 'http://algorea-platform.dev/login/callback_oauth.php',
             'badge_url' => 'http://login-module-example-client.dev/dummy_badge.php',
-            'profile_fields' => $algorea_profile_fields,
+            'user_attributes' => $user_attributes,
             'name' => 'Algorea - dev',
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 4,
             'redirect' => 'http://algorea-platform.mobydimk.space/login/callback_oauth.php',
             'badge_url' => 'http://login-module-example-client.mobydimk.space/dummy_badge.php',
-            'profile_fields' => $algorea_profile_fields,
+            'user_attributes' => $user_attributes,
             'name' => 'Algorea - demo',
         ]));
 
 
-        $france_ioi_profile_fields = [
+        $user_attributes = [
             'login',
             'primary_email',
             'first_name',
@@ -102,14 +104,14 @@ class ClientsSeeder extends Seeder
             'id' => 5,
             'redirect' => 'http://france-ioi.dev/user/callback_oauth.php',
             'badge_url' => '',
-            'profile_fields' => $france_ioi_profile_fields,
+            'user_attributes' => $user_attributes,
             'name' => 'franceioi - dev',
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 6,
             'redirect' => 'http://france-ioi.mobydimk.space/user/callback_oauth.php',
             'badge_url' => '',
-            'profile_fields' => $france_ioi_profile_fields,
+            'user_attributes' => $user_attributes,
             'name' => 'franceioi - demo',
         ]));
     }

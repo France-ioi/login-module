@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\LoginModule\Platform\PlatformRequest;
-use Auth;
+use App\LoginModule\Platform\PlatformContext;
 
 class PasswordController extends Controller
 {
 
 
-    public function index(Request $request) {
+    public function index(Request $request, PlatformContext $context) {
         return view('password.index', [
-            'cancel_url' => PlatformRequest::getCancelUrl()
+            'cancel_url' => $context->cancelUrl()
         ]);
     }
 
@@ -21,9 +20,9 @@ class PasswordController extends Controller
         $this->validate($request, [
             'password' => 'required|min:6|confirmed'
         ]);
-        Auth::user()->password = bcrypt($request->input('password'));
-        Auth::user()->save();
-        Auth::user()->obsolete_passwords()->delete();
+        $request->user()->password = bcrypt($request->input('password'));
+        $request->user()->save();
+        $request->user()->obsolete_passwords()->delete();
         return back()->with(['success' => true]);
     }
 }

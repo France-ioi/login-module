@@ -14,16 +14,8 @@
                     @lang('badge.header')
                 </a>
             @endif
-            @if($need_email_verification)
-                <a href="{{ url('/email_verification') }}" class="list-group-item">
-                    @lang('email_verification.header')
-                </a>
-            @endif
             <a href="{{ url('/auth_methods') }}" class="list-group-item">
                 @lang('auth_methods.header')
-            </a>
-            <a href="{{ url('/password') }}" class="list-group-item">
-                @lang('password.header')
             </a>
         </ul>
     </div>

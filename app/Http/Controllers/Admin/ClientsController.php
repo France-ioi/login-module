@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\LoginModule\Platform\PlatformRequest;
 use App\OAuthClient\Manager;
 use App\Http\Requests\Admin\StoreClientRequest;
+use App\LoginModule\Profile\SchemaBuilder;
 
 class ClientsController extends Controller
 {
@@ -35,7 +35,7 @@ class ClientsController extends Controller
         ]);
         return view('admin.clients.form', [
             'client' => $client,
-            'profile_fields' => $this->getProfileFields(),
+            'user_attributes' => SchemaBuilder::availableAttributes(),
             'providers' => Manager::providers()
         ]);
     }
@@ -77,7 +77,7 @@ class ClientsController extends Controller
     {
         return view('admin.clients.form', [
             'client' => $client,
-            'profile_fields' => $this->getProfileFields(),
+            'user_attributes' => SchemaBuilder::availableAttributes(),
             'providers' => Manager::providers()
         ]);
     }
@@ -91,6 +91,7 @@ class ClientsController extends Controller
      */
     public function update(StoreClientRequest $request, Client $client)
     {
+        //dd($request->all());
         $client->fill($request->all());
         $client->save();
         return redirect()
@@ -113,9 +114,4 @@ class ClientsController extends Controller
     }
 
 
-
-    private function getProfileFields() {
-        $pf = PlatformRequest::profileFields();
-        return array_merge($pf->getAll(), $pf::VERIFICATION_FIELDS);
-    }
 }

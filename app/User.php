@@ -6,11 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\LoginModule\Platform\BadgeApi;
-use App\LoginModule\TeacherEmailVerificator;
+use App\LoginModule\Profile\Verification\VerifiableUser;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens, VerifiableUser;
 
 
     protected $fillable = [
@@ -96,12 +96,6 @@ class User extends Authenticatable
     }
 
 
-    public function getPrimaryEmailVerifiedAttribute() {
-        $primary = $this->emails()->primary()->first();
-        return $primary ? $primary->verified : false;
-    }
-
-
     public function getPrimaryEmailIdAttribute() {
         $primary = $this->emails()->primary()->first();
         return $primary ? $primary->id : false;
@@ -114,23 +108,9 @@ class User extends Authenticatable
     }
 
 
-    public function getSecondaryEmailVerifiedAttribute() {
-        $secondary = $this->emails()->secondary()->first();
-        return $secondary ? $secondary->verified : false;
-    }
-
-
     public function getSecondaryEmailIdAttribute() {
         $secondary = $this->emails()->secondary()->first();
         return $secondary ? $secondary->id : false;
-    }
-
-
-    public function getTeacherDomainVerifiedAttribute() {
-        if($this->role === 'teacher') {
-            return TeacherDomainVerificator::verify($this);
-        }
-        return true;
     }
 
 

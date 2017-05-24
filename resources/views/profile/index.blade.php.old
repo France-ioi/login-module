@@ -17,8 +17,7 @@
         </div>
     @endif
 
-<!-- move to render -->
-    @if($pms_redirect)
+    @if(count($fixed))
         <div class="alert alert-info">
             @lang('profile.pms_redirect_msg')
             <a class="btn btn-block btn-primary" href="/oauth_client/preferences/pms">
@@ -32,11 +31,14 @@
             @lang('profile.header')
         </div>
         <div class="panel-body">
-            {!! BootForm::open($form) !!}
+            {!! BootForm::open(['url' => '/profile', 'method' => 'post', 'model' => $user]) !!}
                 @if($all)
                     {!! BootForm::hidden('all', 1) !!}
                 @endif
-                {!! ProfileFormRenderer::render($schema) !!}
+                @include('profile.fields')
+                @foreach($fields as $field)
+                    @stack($field)
+                @endforeach
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
                         @lang('ui.save')
@@ -46,6 +48,7 @@
                             @lang('ui.close')
                         </a>
                     @endif
+                </div>
             {!! BootForm::close() !!}
         </div>
     </div>
@@ -71,6 +74,7 @@
             }
             $('#country_code').change(updateHidden);
             updateHidden();
+
             if(!$('#timezone').val()) {
                 var rightNow = new Date();
                 var date1 = new Date(rightNow.getFullYear(), 0, 1, 0, 0, 0, 0);
