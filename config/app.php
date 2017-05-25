@@ -240,7 +240,8 @@ return [
         'Form'     => Collective\Html\FormFacade::class,
         'HTML'     => Collective\Html\HtmlFacade::class,
         'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
-        'ProfileFormRenderer' => App\LoginModule\Profile\ProfileFormRenderer::class
+        'ProfileFormRenderer' => App\LoginModule\Profile\ProfileFormRenderer::class,
+        'EmailMasker' => App\Helpers\EmailMasker::class
     ],
 
 ];

@@ -10,7 +10,7 @@
                 </div>
             @endif
             {!! BootForm::open(['route' => 'password.email']) !!}
-                {!! BootForm::email('email', trans('auth.email')) !!}
+                {!! BootForm::text('login_or_email', trans('auth.login_or_email')) !!}
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
                         @lang('auth.btn_pwd_reset_email')

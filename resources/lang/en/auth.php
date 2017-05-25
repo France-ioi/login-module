@@ -36,6 +36,8 @@ return [
     'btn_pwd_reset_email' => 'Send Password Reset Link',
     'btn_pwd_reset' => 'Reset password',
 
+    'emails_list_header' => 'Select Email address',
+
     'logout_header' => 'Logout',
     'logout_hint' => 'Also logout from:',
     'btn_logout' => 'Logout',

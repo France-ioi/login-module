@@ -12,7 +12,12 @@ class EmailProvider extends EloquentUserProvider
         if(empty($credentials)) {
             return;
         }
-        return $this->createModel()->newQuery()->where('email', $credentials['email'])->first();
+        $q = $this->createModel()->newQuery();
+        if(isset($credentials['email_id'])) {
+            return $q->where('id', $credentials['email_id'])->first();
+        } elseif (isset($credentials['email'])) {
+            return $q->where('email', $credentials['email'])->first();
+        }
     }
 
 }
