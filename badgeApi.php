@@ -24,6 +24,7 @@ function getInfos($badgeUrl, $verifInfos, $verifType) {
             addBadge($res['userInfos']['franceioiID'], $badgeUrl, $verifInfos, $verifType);
 	        $badgeRegistered = isBadgeRegistered($badgeUrl, $verifInfos, $verifType);
 		    echo json_encode(['success' => false, 'error' => 'error_code_used', 'errorArgs' => ['login' => $badgeRegistered['result']['sLogin']]]);
+            exit();
         } else {
     		$res['userInfos']['sLogin'] = genLogin($db, $res['userInfos']['sFirstName'], $res['userInfos']['sLastName'], '');
         }

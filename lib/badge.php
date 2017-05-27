@@ -197,7 +197,10 @@ function verifyAndAddBadge($idUser, $badgeUrl, $verifInfos, $verifType) {
     if($verifData['userInfos']['franceioiID']) {
         // This badge belongs to some user on the badge interface, skip updateBadgeInfos
         if($verifData['userInfos']['franceioiID'] != $idUser) {
-    		return ['success' => false, 'error' => 'error_badge_code_invalid'];	
+            // This badge already belongs to some user, add it to him instead
+            addBadge($verifData['userInfos']['franceioiID'], $badgeUrl, $verifInfos, $verifType);
+            $badgeRegistered = isBadgeRegistered($badgeUrl, $verifInfos, $verifType);
+            return ['success' => false, 'error' => 'error_code_used', 'errorArgs' => ['login' => $badgeRegistered['result']['sLogin']]];
         }
 	    addBadge($idUser, $badgeUrl, $verifInfos, $verifType);
         return ['success' => true];
