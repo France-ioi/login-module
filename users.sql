@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `users_auths` (
 CREATE TABLE IF NOT EXISTS `user_badges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idUser` int(11) NOT NULL,
-  `sBadge` varchar(63) NOT NULL,
+  `sBadge` TEXT NOT NULL,
   `jBadgeInfos` TEXT NULL DEFAULT NULL,
   `bDoNotPossess` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),

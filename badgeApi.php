@@ -19,7 +19,14 @@ function getInfos($badgeUrl, $verifInfos, $verifType) {
 	}
 	$res = verifyBadge($badgeUrl, $verifInfos, $verifType);
 	if ($res['success']) {
-		$res['userInfos']['sLogin'] = genLogin($db, $res['userInfos']['sFirstName'], $res['userInfos']['sLastName'], '');
+        if($res['userInfos']['franceioiID']) {
+            // This badge already belongs to some user, add it to him instead
+            addBadge($res['userInfos']['franceioiID'], $badgeUrl, $verifInfos, $verifType);
+	        $badgeRegistered = isBadgeRegistered($badgeUrl, $verifInfos, $verifType);
+		    echo json_encode(['success' => false, 'error' => 'error_code_used', 'errorArgs' => ['login' => $badgeRegistered['result']['sLogin']]]);
+        } else {
+    		$res['userInfos']['sLogin'] = genLogin($db, $res['userInfos']['sFirstName'], $res['userInfos']['sLastName'], '');
+        }
 	}
 	echo json_encode($res);
 }
