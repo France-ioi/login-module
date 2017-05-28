@@ -2,31 +2,23 @@
 
 namespace App\Notifications;
 
-use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\MailMessage;
+use App\LoginModule\LocalizedNotification;
 
-class ResetPasswordNotification extends Notification
+class ResetPasswordNotification extends LocalizedNotification
 {
 
     public $token;
 
 
-    public function __construct($token)
-    {
+    public function __construct($token) {
         $this->token = $token;
     }
 
 
-    public function via($notifiable)
-    {
-        return ['mail'];
+    public function toMail($notifiable) {
+        return $this->buildMessage('reset_password', $notifiable->user->language, [
+            'token' => $this->token
+        ]);
     }
 
-
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-            ->line('Your password reset token:')
-            ->line($this->token);
-    }
 }

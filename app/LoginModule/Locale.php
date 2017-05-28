@@ -32,7 +32,7 @@ class Locale
     }
 
 
-    private static function validate($locale) {
+    public static function validate($locale) {
         $locales = config('app.locales');
         return isset($locales[$locale]) ? $locale : config('app.locale');
     }

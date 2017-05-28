@@ -2,33 +2,16 @@
 
 namespace App\Notifications;
 
-use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\MailMessage;
+use App\LoginModule\LocalizedNotification;
 
-class EmailVerificationNotification extends Notification
+class EmailVerificationNotification extends LocalizedNotification
 {
 
-    /**
-     * Get the notification's channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array|string
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
+
+    public function toMail($notifiable) {
+        return $this->buildMessage('email_verification', $notifiable->user->language, [
+            'code' => $notifiable->code
+        ]);
     }
 
-    /**
-     * Build the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-            ->line('You are receiving this message because a email verification required for your account.')
-            ->line('Verification code: '.$notifiable->code);
-    }
 }
