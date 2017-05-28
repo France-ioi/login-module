@@ -510,13 +510,15 @@ angular.module('login', ['jm.i18next'])
          $scope.badgeInfos = {};
          $scope.step = "connected";
          $scope.$applyAsync();
-         postLoginMessage('login', {
-            login: session.sLogin,
-            token: session.sToken
-         }, function() {
-            if ($scope.popupMode) {
-               closeAfterMessage();
-            }
+         loadSession($scope, $http).then(function () {
+            postLoginMessage('login', {
+               login: session.sLogin,
+               token: session.sToken
+            }, function() {
+               if ($scope.popupMode) {
+                  closeAfterMessage();
+               }
+            });
          });
       };
 
