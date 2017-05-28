@@ -82,6 +82,7 @@ function validateUserFacebook($db, $sIdentity) {
          $_SESSION['modules']['login']["sSex"] = $user->sSex;
          $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
          $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
+         $_SESSION['modules']['login']["sEmail"] = $user->sEmail;
          addBadgesInSession();
          $token_params = array(
             "idUser" => $user->id,
@@ -91,6 +92,7 @@ function validateUserFacebook($db, $sIdentity) {
             "sSex" => $user->sSex,
             "sLastName" => $user->sLastName,
             "sStudentId" => $user->sStudentId,
+            "sEmail" => $user->sEmail,
             "aBadges" => $_SESSION['modules']['login']['aBadges']
          );
          $token = $tokenGenerator->generateToken($token_params);
@@ -140,6 +142,7 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity, $email) {
          $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
          $_SESSION['modules']['login']["sSex"] = $user->sSex;
          $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
+         $_SESSION['modules']['login']["sEmail"] = $user->sEmail;
          $_SESSION['modules']['login']["hasGoogle"] = true;
          //$_SESSION['modules']['login']["hasFacebook"] = !!$user->facebook_id;
          $_SESSION['modules']['login']["hasFacebook"] = false;
@@ -151,7 +154,8 @@ function validateUserGoogle($db, $sIdentity, $sOldIdentity, $email) {
             "sFirstName" => $user->sFirstName,
             "sLastName" => $user->sLastName,
             "sSex" => $user->sSex,
-            "sStudentId" => $user->sStudentId
+            "sStudentId" => $user->sStudentId,
+            "sEmail" => $user->sEmail
          );
          $token = $tokenGenerator->generateToken($token_params);
          $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);
@@ -255,6 +259,7 @@ function validateLoginUser($db, $sLogin, $sPassword) {
    $_SESSION['modules']['login']["sLastName"] = $user->sLastName;
    $_SESSION['modules']['login']["sSex"] = $user->sSex;
    $_SESSION['modules']['login']["sStudentId"] = $user->sStudentId;
+   $_SESSION['modules']['login']["sEmail"] = $user->sEmail;
    $_SESSION['modules']['login']["sProvider"] = "password";
    $_SESSION['modules']['login']["hasPassword"] = true;
    //$_SESSION['modules']['login']["hasGoogle"] = ($user->google_id || $user->google_id_old);
@@ -273,6 +278,7 @@ function validateLoginUser($db, $sLogin, $sPassword) {
       "sSex" => $_SESSION['modules']['login']["sSex"],
       "aBadges" => $_SESSION['modules']['login']["aBadges"],
       "sStudentId" => $_SESSION['modules']['login']["sStudentId"],
+      "sEmail" => $_SESSION['modules']['login']["sEmail"],
     );
    $token = $tokenGenerator->generateToken($token_params);
    $db->exec('UPDATE `users` SET `sLastLoginDate`=NOW(), `sRecover` = NULL WHERE `id`='.$user->id);

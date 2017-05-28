@@ -206,6 +206,7 @@ function getUserToken($db, $user, $tokenGenerator, $badges) {
         "sFirstName" => $user['sFirstName'],
         "sLastName" => $user['sLastName'],
         "sStudentId" => $user['sStudentId'],
+        "sEmail" => $user['sEmail'],
         "aBadges" => $badges
     ];
     $token = $tokenGenerator->generateToken($tokenParams);
@@ -228,6 +229,7 @@ function finishLogin($resourceOwner) {
     $_SESSION['modules']['login']["sFirstName"] = $user['sFirstName'];
     $_SESSION['modules']['login']["sLastName"] = $user['sLastName'];
     $_SESSION['modules']['login']["sStudentId"] = $user['sStudentId'];
+    $_SESSION['modules']['login']["sEmail"] = $user['sEmail'];
     $_SESSION['modules']['login']["aBadges"] = $badges;
     $_SESSION['modules']['login']["bIsAdmin"] = $user['bIsAdmin'];
     $_SESSION['modules']['login']["sProvider"] = "oauth";

@@ -232,6 +232,7 @@ angular.module('login', ['jm.i18next'])
          $scope.infos.sFirstName = session.sFirstName;
          $scope.infos.sLastName = session.sLastName;
          $scope.infos.sStudentId = session.sStudentId;
+         $scope.infos.sEmail = session.sEmail;
          $scope.infos.sSex = session.sSex;
          var params = getUrlVars();
          if (params.large === "1") {
@@ -668,6 +669,7 @@ var loginManager = {
          sFirstName: loginData.sFirstName,
          sLastName: loginData.sLastName,
          sStudentId: loginData.sStudentId,
+         sEmail: loginData.sEmail,
          sSex: loginData.sSex
       };
       if (typeof selfTarget !== "undefined") { // If used on france-ioi's website TODO: find a better way to check that
@@ -681,6 +683,7 @@ var loginManager = {
             sFirstName: loginData.sFirstName,
             sLastName: loginData.sLastName,
             sStudentId: loginData.sStudentId,
+            sEmail: loginData.sEmail,
             sSex: loginData.sSex,
          };
          if (scope.requiredFields && !checkAgainstRequired(scope.infos, scope.requiredFields)) {
