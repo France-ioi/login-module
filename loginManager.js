@@ -196,11 +196,11 @@ function checkAgainstRequired(infos, requiredFields) {
    return true;
 }
 
-function checkAgainstRequiredBadge(session, requiredBadge) {
+function checkAgainstRequiredBadge(session, requiredBadge, beInsistent) {
    if (!session || !requiredBadge) {
       return true;
    }
-   if (session.aNotBadges) {
+   if (session.aNotBadges && !beInsistent) {
       for (var i = 0; i < session.aNotBadges.length; i++) {
          if (session.aNotBadges[i] == requiredBadge) {
             return true;
@@ -309,7 +309,7 @@ angular.module('login', ['jm.i18next'])
                      $scope.infosError = null;
                      $scope.step = 'infos';
                      $scope.$applyAsync();
-                  } else if ($scope.requiredBadge && !checkAgainstRequiredBadge($scope.session, $scope.requiredBadge)) {
+                  } else if ($scope.requiredBadge && !checkAgainstRequiredBadge($scope.session, $scope.requiredBadge, $scope.beInsistentWithBadge)) {
                      $scope.step = 'badgeInfos';
                      $scope.autoVerifyBadgeFromUrl();
                      $scope.$applyAsync();
@@ -695,7 +695,7 @@ var loginManager = {
                scope.infosError = null;
                scope.step = 'infos';
             });
-         } else if (scope.requiredBadge && !checkAgainstRequiredBadge(scope.session, scope.requiredBadge)) {
+         } else if (scope.requiredBadge && !checkAgainstRequiredBadge(scope.session, scope.requiredBadge, $scope.beInsistentWithBadge)) {
             scope.$apply(function() {
                scope.badgeError = null;
                scope.step = 'badgeInfos';

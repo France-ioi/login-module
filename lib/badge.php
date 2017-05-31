@@ -124,10 +124,14 @@ function addBadge($idUser, $badge, $badgeInfos, $verifType) {
 	global $db;
 	if (!$idUser || !$badge) return;
 	$jBadgeInfos = $badgeInfos ? json_encode(['code' => trim($badgeInfos['code'])], JSON_UNESCAPED_UNICODE) : null;
-	$stmt = $db->prepare('SELECT id from `user_badges` where `idUser` = :idUser and sBadge = :badge;');
+	$stmt = $db->prepare('SELECT id from `user_badges` where `idUser` = :idUser and sBadge = :badge and bDoNotPossess = 0');
     $stmt->execute(['idUser' => $idUser, 'badge' => $badge]);
     $idBadge = $stmt->fetchColumn();
     if (!$idBadge) {
+        // Delete doNotPossess badge(s) corresponding to this badge
+        $stmt = $db->prepare('DELETE FROM `user_badges` WHERE idUser = :idUser AND sBadge = :badge AND bDoNotPossess = 1');
+        $stmt->execute(['idUser' => $idUser, 'badge' => $badge]);
+
         $stmt = $db->prepare('INSERT INTO `user_badges` (`idUser`, `sBadge`, `jBadgeInfos`) VALUES (:idUser, :badge, :jBadgeInfos);');
         $stmt->execute(['idUser' => $idUser, 'badge' => $badge, 'jBadgeInfos' => $jBadgeInfos]);
     }
