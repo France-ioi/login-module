@@ -309,7 +309,7 @@ angular.module('login', ['jm.i18next'])
                      $scope.infosError = null;
                      $scope.step = 'infos';
                      $scope.$applyAsync();
-                  } else if ($scope.requiredBadge && !checkAgainstRequiredBadge($scope.session, $scope.requiredBadge, $scope.beInsistentWithBadge)) {
+                  } else if ($scope.requiredBadge && !checkAgainstRequiredBadge($scope.session, $scope.requiredBadge, scope.beInsistentWithBadge)) {
                      $scope.step = 'badgeInfos';
                      $scope.autoVerifyBadgeFromUrl();
                      $scope.$applyAsync();
