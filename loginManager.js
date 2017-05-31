@@ -695,7 +695,7 @@ var loginManager = {
                scope.infosError = null;
                scope.step = 'infos';
             });
-         } else if (scope.requiredBadge && !checkAgainstRequiredBadge(scope.session, scope.requiredBadge, $scope.beInsistentWithBadge)) {
+         } else if (scope.requiredBadge && !checkAgainstRequiredBadge(scope.session, scope.requiredBadge, scope.beInsistentWithBadge)) {
             scope.$apply(function() {
                scope.badgeError = null;
                scope.step = 'badgeInfos';
