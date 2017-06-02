@@ -217,6 +217,30 @@ function checkAgainstRequiredBadge(session, requiredBadge, beInsistent) {
    return false;
 }
 
+// Functions to translate between grade selection and graduation year
+// TODO :: make it work for any year (need to change translations as well)
+function gradeToYear(grade) {
+   if(grade < 0) {
+      return grade;
+   } else if(grade >= 13) {
+      grade -= 3;
+   }
+   return 2017+12-grade;
+};
+
+function yearToGrade(year) {
+   if(year < 0) {
+      return year;
+   } else if(year > 2025) {
+      return -3;
+   } else if(year < 2017) {
+      return -2;
+   } else {
+      return 2017+12-grade;
+   }
+};
+
+
 angular.module('login', ['jm.i18next'])
    .controller('LoginCtrl', function($scope, $http, $timeout, $interval, $i18next) {
       $scope.step = "";
@@ -232,7 +256,7 @@ angular.module('login', ['jm.i18next'])
          $scope.infos.sFirstName = session.sFirstName;
          $scope.infos.sLastName = session.sLastName;
          $scope.infos.sStudentId = session.sStudentId;
-         $scope.infos.iGrade = session.iGrade;
+         $scope.infos.iGraduationYear = session.iGraduationYear;
          $scope.infos.sEmail = session.sEmail;
          $scope.infos.sSex = session.sSex;
          var params = getUrlVars();
@@ -279,6 +303,7 @@ angular.module('login', ['jm.i18next'])
          } else if (params.recover === "1") {
             $scope.step = "recover";
          } else if (params.setInfos === "1") {
+            $scope.infos.grade = yearToGrade($scope.infos.iGraduationYear);
             $scope.step = "infos";
          } else if (params.sRecover) {
             $scope.step = "recovered";
@@ -308,6 +333,7 @@ angular.module('login', ['jm.i18next'])
                } else {
                   if ($scope.requiredFields && !checkAgainstRequired($scope.infos, $scope.requiredFields)) {
                      $scope.infosError = null;
+                     $scope.infos.grade = yearToGrade($scope.infos.iGraduationYear);
                      $scope.step = 'infos';
                      $scope.$applyAsync();
                   } else if ($scope.requiredBadge && !checkAgainstRequiredBadge($scope.session, $scope.requiredBadge, $scope.beInsistentWithBadge)) {
@@ -526,6 +552,10 @@ angular.module('login', ['jm.i18next'])
       };
 
       $scope.changeInfos = function() {
+         // Update graduation year (only if changed)
+         if(yearToGrade($scope.infos.iGraduationYear) != $scope.infos.grade) {
+            $scope.infos.iGraduationYear = gradeToYear($scope.infos.grade);
+         }
          if ($scope.requiredFields) {
             var missingFields = [];
             for (var i = 0; i < $scope.requiredFields.length; i++) {
@@ -674,7 +704,7 @@ var loginManager = {
          sFirstName: loginData.sFirstName,
          sLastName: loginData.sLastName,
          sStudentId: loginData.sStudentId,
-         iGrade: loginData.iGrade,
+         iGraduationYear: loginData.iGraduationYear,
          sEmail: loginData.sEmail,
          sSex: loginData.sSex
       };
@@ -689,13 +719,14 @@ var loginManager = {
             sFirstName: loginData.sFirstName,
             sLastName: loginData.sLastName,
             sStudentId: loginData.sStudentId,
-            iGrade: loginData.iGrade,
+            iGraduationYear: loginData.iGraduationYear,
             sEmail: loginData.sEmail,
             sSex: loginData.sSex,
          };
          if (scope.requiredFields && !checkAgainstRequired(scope.infos, scope.requiredFields)) {
             scope.$apply(function() {
                scope.infosError = null;
+               scope.infos.grade = yearToGrade(scope.infos.iGraduationYear);
                scope.step = 'infos';
             });
          } else if (scope.requiredBadge && !checkAgainstRequiredBadge(scope.session, scope.requiredBadge, scope.beInsistentWithBadge)) {

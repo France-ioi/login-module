@@ -122,7 +122,7 @@
    <script src="bower_components/jschannel/src/jschannel.js"></script>
    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
    <link href="bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet" type="text/css" />
-   <script src="loginManager.js?v=15"></script>
+   <script src="loginManager.js?v=16"></script>
    </head>
    <body ng-controller="LoginCtrl" id="LoginCtrl" ng-cloak>
       <div id="fb-root"></div>
@@ -414,7 +414,6 @@
               <label for="grade" ng-i18next="grade_question"></span>
               <select class="form-control" id="grade" ng-model="infos.grade">
                 <option value="" ng-i18next="grade_select" selected></option>
-                <option value="-1" ng-i18next="grade_-1"></option>
                 <option value="4" ng-i18next="grade_4"></option>
                 <option value="5" ng-i18next="grade_5"></option>
                 <option value="6" ng-i18next="grade_6"></option>
@@ -427,7 +426,10 @@
                 <option value="14" ng-i18next="grade_11_pro"></option>
                 <option value="12" ng-i18next="grade_12"></option>
                 <option value="15" ng-i18next="grade_12_pro"></option>
-                <option value="-4" ng-i18next="grade_-4">Autre</option>
+                <option value="-1" ng-i18next="grade_-1"></option>
+                <option value="-2" ng-i18next="grade_-2"></option>
+                <option value="-3" ng-i18next="grade_-3"></option>
+                <option value="-4" ng-i18next="grade_-4"></option>
               </select>
             </div>
 

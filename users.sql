@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `sCountryCode` char(3) NOT NULL DEFAULT '',
   `sTimeZone` varchar(100) NOT NULL,
   `sBirthDate` date NOT NULL DEFAULT '0000-00-00' COMMENT 'User''s birth date',
-  `iGrade` int(11) NOT NULL DEFAULT '0',
   `iGraduationYear` int(11) NOT NULL DEFAULT '0' COMMENT 'User''s high school graduation year',
   `iPrecision` int(11) NOT NULL DEFAULT '100',
   `iAutonomy` int(11) NOT NULL DEFAULT '100',

@@ -92,7 +92,7 @@
 	"error_unknown_user": "Impossible de trouver un utilisateur correspondant dans la base.",
 	"recovery_mail_title": "Récupération de compte sur France-IOI",
 	"recovery_mail_body": "(Ce message est envoyé automatiquement, merci de ne pas y répondre.)\n\nBonjour,\n\nNous avons reçu une demande de récupération de mot de passe pour votre identifiant {{login}}. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce message, sinon vous pouvez cliquez sur le lien suivant pour obtenir un nouveau mot de passe :\n\n {{link}} \n\n-- \nLe webmaster France-IOI",
-	"error_code_used": "Le code que vous avez entré a déjà été utilisé par l'utilisateur {{login}}. Connectez-vous avec cet utilisateur et, si vous n'avez pas choisi de mot de passe, votre mot de passe est votre code de participation.",
+	"error_code_used": "Ce code est déjà associé à l'utilisateur {{login}}. Cliquez sur le bouton 'Mot de passe' pour vous connecter avec ce nom d'utilisateur et, si vous n'avez pas choisi de mot de passe, votre mot de passe est votre code de qualification.",
 	"error_code_registered_already" : "Ce code est déjà associé à votre compte",
 	"error_missing_badge_code": "Vous n'avez pas spécifié de code",
 	"error_badge_code_invalid": "Le code n'est pas valide",
@@ -123,8 +123,10 @@
     "grade_10_pro": "En seconde pro.",
     "grade_11_pro": "En première pro.",
     "grade_12_pro": "En terminale pro.",
-    "grade_-1": "Je suis un enseignant",
-    "grade_-4": "Autre",
+    "grade_-1": "Je ne souhaite pas l'indiquer",
+    "grade_-2": "Post-bac",
+    "grade_-3": "Autre",
+    "grade_-4": "Je suis un enseignant",
     "grade_select": "Sélectionnez votre classe",
-    "grade_question": "En quelle classe êtes-vous ?"
+    "grade_question": "En quelle classe êtes-vous pour l'année scolaire 2016-2017 ?"
 }
