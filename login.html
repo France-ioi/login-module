@@ -122,7 +122,7 @@
    <script src="bower_components/jschannel/src/jschannel.js"></script>
    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
    <link href="bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet" type="text/css" />
-   <script src="loginManager.js?v=20"></script>
+   <script src="loginManager.js?v=21"></script>
    </head>
    <body ng-controller="LoginCtrl" id="LoginCtrl" ng-cloak>
       <div id="fb-root"></div>
@@ -411,25 +411,24 @@
               <label class="radio-inline"><input type="radio" ng-model="infos.sSex" ng-value="'Female'">{{'infos_sSex_f' | i18next}}</label>
             </div>
             <div class="form-group">
-              <label for="grade" ng-i18next="grade_question"></label>
+              <label for="grade">En quelle classe êtes-vous pour l'année scolaire 2016-2017 ?</label>
               <select class="form-control" id="grade" ng-model="infos.grade">
-                <option value="" ng-i18next="grade_select" selected></option>
-                <option value="4" ng-i18next="grade_4"></option>
-                <option value="5" ng-i18next="grade_5"></option>
-                <option value="6" ng-i18next="grade_6"></option>
-                <option value="7" ng-i18next="grade_7"></option>
-                <option value="8" ng-i18next="grade_8"></option>
-                <option value="9" ng-i18next="grade_9"></option>
-                <option value="10" ng-i18next="grade_10"></option>
-                <option value="13" ng-i18next="grade_10_pro"></option>
-                <option value="11" ng-i18next="grade_11"></option>
-                <option value="14" ng-i18next="grade_11_pro"></option>
-                <option value="12" ng-i18next="grade_12"></option>
-                <option value="15" ng-i18next="grade_12_pro"></option>
-                <option value="-1" ng-i18next="grade_-1"></option>
-                <option value="-2" ng-i18next="grade_-2"></option>
-                <option value="-3" ng-i18next="grade_-3"></option>
-                <option value="-4" ng-i18next="grade_-4"></option>
+                <option value="" selected>Sélectionnez votre classe</option>
+                <option value="4">En CM1</option>
+                <option value="5">En CM2</option>
+                <option value="6">En 6e</option>
+                <option value="7">En 5e</option>
+                <option value="8">En 4e</option>
+                <option value="9">En 3e</option>
+                <option value="10">En seconde</option>
+                <option value="13">En seconde pro.</option>
+                <option value="11">En première</option>
+                <option value="14">En première pro.</option>
+                <option value="12">En terminale</option>
+                <option value="15">En terminale pro.</option>
+                <option value="-1">Je ne souhaite pas l'indiquer</option>
+                <option value="-2">Post-vac</option>
+                <option value="-3">Autre</option>
               </select>
             </div>
 
