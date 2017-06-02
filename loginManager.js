@@ -232,15 +232,15 @@ function gradeToYear(grade) {
 
 function yearToGrade(year) {
    if(year < 0) {
-      return year;
-   } else if(year > 2025) {
-      return -3;
-   } else if(year < 2017) {
-      return -2;
+      return year.toString();
    } else if(year == 0 || year == '0') {
-      return 0;
+      return '0';
+   } else if(year > 2025) {
+      return '-3';
+   } else if(year < 2017) {
+      return '-2';
    } else {
-      return 2017+12-year;
+      return (2017+12-year).toString();
    }
 };
 
