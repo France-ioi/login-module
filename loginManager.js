@@ -224,6 +224,8 @@ function gradeToYear(grade) {
       return grade;
    } else if(grade >= 13) {
       grade -= 3;
+   } else if (grade == 0 || grade == '0') {
+      return 0;
    }
    return 2017+12-grade;
 };
@@ -235,6 +237,8 @@ function yearToGrade(year) {
       return -3;
    } else if(year < 2017) {
       return -2;
+   } else if(year == 0 || year == '0') {
+      return 0;
    } else {
       return 2017+12-year;
    }
