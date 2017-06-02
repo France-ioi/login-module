@@ -189,7 +189,7 @@ var session;
 function checkAgainstRequired(infos, requiredFields) {
    for (var i = 0; i < requiredFields.length; i++) {
       var requiredField = requiredFields[i];
-      if (!infos[requiredField]) {
+      if (!infos[requiredField] || infos[requiredField] == '0') {
          return false;
       }
    }
