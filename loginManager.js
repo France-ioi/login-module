@@ -236,7 +236,7 @@ function yearToGrade(year) {
    } else if(year < 2017) {
       return -2;
    } else {
-      return 2017+12-grade;
+      return 2017+12-year;
    }
 };
 
