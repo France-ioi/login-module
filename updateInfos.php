@@ -18,11 +18,12 @@ if (!isset($_POST['infos']) || !count($_POST['infos'])) {
 
 $db = connect();
 
-$stmt = $db->prepare('update users set sFirstName = :sFirstName, sLastName = :sLastName, sStudentId = :sStudentId, sSex = :sSex, sEmail = :sEmail where id = :idUser;');
+$stmt = $db->prepare('update users set sFirstName = :sFirstName, sLastName = :sLastName, sStudentId = :sStudentId, sSex = :sSex, sEmail = :sEmail, iGrade = :iGrade where id = :idUser;');
 $stmt->execute([
 	'sFirstName' => $_POST['infos']['sFirstName'],
 	'sLastName' => $_POST['infos']['sLastName'],
 	'sStudentId' => $_POST['infos']['sStudentId'],
+	'iGrade' => $_POST['infos']['iGrade'],
 	'sSex' => $_POST['infos']['sSex'],
     'sEmail' => $_POST['infos']['sEmail'],
 	'idUser' => $login_session['idUser']
@@ -31,6 +32,7 @@ $stmt->execute([
 $_SESSION['modules']['login']['sFirstName'] = $_POST['infos']['sFirstName'];
 $_SESSION['modules']['login']['sLastName'] = $_POST['infos']['sLastName'];
 $_SESSION['modules']['login']['sStudentId'] = $_POST['infos']['sStudentId'];
+$_SESSION['modules']['login']['iGrade'] = $_POST['infos']['iGrade'];
 $_SESSION['modules']['login']['sSex'] = $_POST['infos']['sSex'];
 $_SESSION['modules']['login']['sEmail'] = $_POST['infos']['sEmail'];
 

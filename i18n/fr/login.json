@@ -110,5 +110,21 @@
 	"viewMore_login_third_party": "Voir plus de modes de connexion",
 	"viewLess_login_third_party": "Voir moins de modes de connexion",
 	"viewMore_provider": "Voir plus de sites",
-	"viewLess_provider": "Voir moins de sites"
+	"viewLess_provider": "Voir moins de sites",
+    "grade_4": "En CM1",
+    "grade_5": "En CM2",
+    "grade_6": "En 6e",
+    "grade_7": "En 5e",
+    "grade_8": "En 4e",
+    "grade_9": "En 3e",
+    "grade_10": "En seconde",
+    "grade_11": "En première",
+    "grade_12": "En terminale",
+    "grade_10_pro": "En seconde pro.",
+    "grade_11_pro": "En première pro.",
+    "grade_12_pro": "En terminale pro.",
+    "grade_-1": "Je suis un enseignant",
+    "grade_-4": "Autre",
+    "grade_select": "Sélectionnez votre classe",
+    "grade_question": "En quelle classe êtes-vous ?"
 }

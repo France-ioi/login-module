@@ -232,6 +232,7 @@ angular.module('login', ['jm.i18next'])
          $scope.infos.sFirstName = session.sFirstName;
          $scope.infos.sLastName = session.sLastName;
          $scope.infos.sStudentId = session.sStudentId;
+         $scope.infos.iGrade = session.iGrade;
          $scope.infos.sEmail = session.sEmail;
          $scope.infos.sSex = session.sSex;
          var params = getUrlVars();
@@ -673,6 +674,7 @@ var loginManager = {
          sFirstName: loginData.sFirstName,
          sLastName: loginData.sLastName,
          sStudentId: loginData.sStudentId,
+         iGrade: loginData.iGrade,
          sEmail: loginData.sEmail,
          sSex: loginData.sSex
       };
@@ -687,6 +689,7 @@ var loginManager = {
             sFirstName: loginData.sFirstName,
             sLastName: loginData.sLastName,
             sStudentId: loginData.sStudentId,
+            iGrade: loginData.iGrade,
             sEmail: loginData.sEmail,
             sSex: loginData.sSex,
          };
