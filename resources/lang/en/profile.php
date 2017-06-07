@@ -37,14 +37,12 @@ return [
     'presentation'  => 'Presentation',
     'website' => 'Website',
     'success' => 'Profile updated.',
-    'email_verification_code' => ' verification code',
-    'email_verification_help' => 'Input the code received on your :role email. If you never received it, make sure the email address provided is correct, check your spam folder, then contact us at :email from that email address.',
+
+    'primary_email_verification_code' => 'Primary email verification code',
+    'secondary_email_verification_code' => 'Secondary email verification code',
+    'email_verification_help' => 'Input the code received on your email. If you never received it, make sure the email address provided is correct, check your spam folder, then contact us at :email from that email address.',
     'email_verified' => 'Verified',
-    //'email_verification_failed' => ' verification failed',
-    //'email_verification_required' => 'Email verification reqiured',
-    'primary_email_role' => 'primary',
-    'secondary_email_role' => 'secondary',
-    'teacher_domain_verification_failed' => 'Teacher email verification failed.',
+    'email_verification_code_error' => 'Wrong email verification code.',
 
     'pms_redirect_msg' => 'As a PMS user, you must edit your profile directly on PMS. Please press the "Zurück zum JwInf" button afterwards to have your profile updated here.',
     'pms_redirect_btn' => 'Proceed to PMS'

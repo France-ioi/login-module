@@ -13,10 +13,17 @@ class PlatformContextState
         'cancelable' => false
     ];
 
-
+    protected $data;
+    protected $session = null;
 
     public function __construct() {
-        $this->data = array_replace(self::DEFAULT_DATA, session()->get(self::SESSION_KEY) ?: []);
+        $this->data = self::DEFAULT_DATA;
+    }
+
+
+    public function session($session) {
+        $this->session = $session;
+        $this->data = array_replace(self::DEFAULT_DATA, $this->session->get(self::SESSION_KEY) ?: []);
     }
 
 
@@ -24,19 +31,19 @@ class PlatformContextState
         if(is_null($key)) {
             return $this->data;
         }
-        return isset($this->data[$key]) ?: null;
+        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
 
     public function set(array $data) {
         $this->data = $data;
-        session()->put(self::SESSION_KEY, $data);
+        $this->session && $this->session->put(self::SESSION_KEY, $data);
     }
 
 
     public function flush() {
         $this->data = self::DEFAULT_DATA;
-        session()->forget(self::SESSION_KEY);
+        $this->session && $this->session->forget(self::SESSION_KEY);
     }
 
 }

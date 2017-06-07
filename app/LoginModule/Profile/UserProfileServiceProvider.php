@@ -3,34 +3,17 @@
 namespace App\LoginModule\Profile;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Http\Request;
 use App\LoginModule\Platform\PlatformContext;
 
-class UserProfileServiceProvider extends ServiceProvider
-{
 
-    protected $defer = true;
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
+class UserProfileServiceProvider extends ServiceProvider {
 
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->singleton(UserProfileServiceProvider::class, function ($app) {
-            return new UserProfileServiceProvider(
+    public function register() {
+        $this->app->singleton(UserProfile::class, function ($app) {
+            return new UserProfile(
                 $app->make(PlatformContext::class)
             );
         });
     }
+
 }

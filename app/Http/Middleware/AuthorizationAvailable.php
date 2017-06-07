@@ -4,15 +4,18 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\LoginModule\Profile\UserProfile;
+use App\LoginModule\Profile\Verification\Verificator;
+
 
 class AuthorizationAvailable
 {
 
     protected $profile;
+    protected $verificator;
 
-
-    public function __construct(UserProfile $profile) {
+    public function __construct(UserProfile $profile, Verificator $verificator) {
         $this->profile = $profile;
+        $this->verificator = $verificator;
     }
     /**
      * Handle an incoming request.
@@ -23,7 +26,7 @@ class AuthorizationAvailable
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if(!$this->profile->completed() && !$this->profile->verified()) {
+        if(!$this->profile->completed($request->user()) || $this->verificator->verify($request->user()) !== true) {
             return redirect('/profile');
         }
         // Temporarily disable

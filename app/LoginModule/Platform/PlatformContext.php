@@ -12,12 +12,13 @@ class PlatformContext
     protected $badge;
 
 
-    public function __construct($state) {
+    public function __construct(PlatformContextState $state) {
         $this->state = $state;
     }
 
 
     public function request($request) {
+        $this->state->session($request->session());
         if($request->has('redirect_uri') && $request->has('client_id')) {
             $authorization = $request->is('oauth/authorize');
             $this->state->set([

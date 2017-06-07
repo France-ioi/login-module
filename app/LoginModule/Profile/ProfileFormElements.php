@@ -34,7 +34,10 @@ class ProfileFormElements {
 
 
     public static function verification_code($block, $label) {
-        return '';
+        return BootForm::text(
+            $block->name,
+            $label
+        );
     }
 
 
@@ -56,7 +59,7 @@ class ProfileFormElements {
             $block->options,
             null,
             null,
-            ['disabled']
+            $block->disabled ? ['disabled'] : []
         );
     }
 
@@ -78,6 +81,21 @@ class ProfileFormElements {
             null,
             $block->disabled ? ['disabled'] : []
         );
+    }
+
+
+    public static function dummy($block, $label) {
+        return '';
+    }
+
+
+    public static function message_success($block, $label) {
+        return '<div class="alert alert-success">'.$label.'</div>';
+    }
+
+
+    public static function help($html) {
+        return '<div class="form-group"><p class="help-block">'.$html.'</p></div>';
     }
 
 }

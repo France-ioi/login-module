@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Auth;
 use Session;
-use App\LoginModule\Platform\PlatformRequest;
 use App\Badge;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Platform\BadgeApi;

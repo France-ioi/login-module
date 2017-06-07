@@ -29,7 +29,7 @@ class Verificator {
     public function verify($user) {
         $errors = [];
         foreach($this->attributes as $attribute) {
-            if(!$this->user->getAttribute($attribute)) {
+            if(!$user->getAttribute($attribute)) {
                 $errors[$field] = trans('verification_erorrs.'.$field);
             }
         }

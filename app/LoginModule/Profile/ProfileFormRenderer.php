@@ -8,12 +8,16 @@ class ProfileFormRenderer {
         $html = '';
         foreach($schema->blocks() as $block) {
             $html .= ProfileFormElements::{$block->type}($block, self::label($block));
+            if($block->help) {
+                $html .= ProfileFormElements::help($block->help);
+            }
         }
         return $html;
     }
 
+
     private static function label($block) {
-        return trans('profile.'.$block->name).($block->required ? config('ui.star') : '');
+        return $block->label ?: trans('profile.'.$block->name).($block->required ? config('ui.star') : '');
     }
 
 }

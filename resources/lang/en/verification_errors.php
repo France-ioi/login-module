@@ -2,8 +2,8 @@
 
 return [
 
-    'primary_email' => 'Primary email verification failed.',
-    'secondary_email' => 'Secondary email verification failed.',
-    'teacher_domain' => 'Teacher email verification failed.',
+    'primary_email_verified' => 'Primary email verification required.',
+    'secondary_email_verified' => 'Secondary email verification required.',
+    'teacher_domain_verified' => 'Teacher email verification required.',
 
 ];

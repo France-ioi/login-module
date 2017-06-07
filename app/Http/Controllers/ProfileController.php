@@ -7,9 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Email;
 use App\OAuthClient\Manager;
 use App\LoginModule\Platform\PlatformContext;
-use \App\LoginModule\Profile\SchemaBuilder;
-use \App\LoginModule\Profile\UserProfile;
-use \App\LoginModule\Profile\Verification\Verificator;
+use App\LoginModule\Profile\SchemaBuilder;
+use App\LoginModule\Profile\UserProfile;
+use App\LoginModule\Profile\Verification\Verificator;
 
 
 class ProfileController extends Controller
@@ -26,24 +26,20 @@ class ProfileController extends Controller
 
     public function index(Request $request) {
         $user = auth()->user();
-
         if($badge_data = $this->context->badge()->restoreData()) {
             $user->fill($badge_data['user']);
         }
-
         if(count($disabled = $this->disabledAttributes($user)) > 0) {
             if($redirect = $request->get('redirect_uri')) {
                 $request->session()->put('url.intended', $request->get('redirect_uri'));
             }
         };
-
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
             $disabled,
             $request->has('all')
         );
-
         return view('profile.index', [
             'form' => [
                 'model' => $user,
@@ -59,23 +55,20 @@ class ProfileController extends Controller
 
 
     public function update(Request $request, UserProfile $profile, Verificator $verificator) {
-        $user = auth()->user();
-
+        $user = $request->user();
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
             $this->disabledAttributes($user),
             $request->has('all')
         );
-
         $this->validate($request, $schema->rules());
-
-        $user = $profile->update($request, $schema->fillableAttributes());
-
-        if(($verification = $verificator->verify($user)) !== true) {
-            return redirect()->back()->withErrors($verification);
+        if(($result = $profile->update($request, $schema->fillableAttributes())) !== true) {
+            return redirect()->back()->withErrors($result);
         }
-
+        if(($result = $verificator->verify($user)) !== true) {
+            return redirect()->back()->withErrors($result);
+        }
         $this->context->badge()->flushData();
         return redirect($this->context->continueUrl('/account'));
     }

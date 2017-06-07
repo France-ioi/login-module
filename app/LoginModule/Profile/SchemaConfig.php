@@ -33,9 +33,7 @@ class SchemaConfig {
 
     public static function real_name_visible($user = null) {
         return [
-            'type' => 'checkbox',
-            'required' => false,
-            'valid' => ''
+            'type' => 'checkbox'
         ];
     }
 
@@ -50,10 +48,19 @@ class SchemaConfig {
 
 
     public static function primary_email_verified($user = null) {
+        if($user && $user->primary_email_id && $user->primary_email_verified) {
+            return [
+                'type' => 'message_success',
+                'label' => trans('profile.email_verified')
+            ];
+        }
         return [
-            'type' => 'verification_code',
+            'type' => 'text',
+            'name' => 'primary_email_verification_code',
             'required' => 'required',
-            'valid' => ''
+            'help' => trans('profile.email_verification_help', [
+                'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
+            ])
         ];
     }
 
@@ -68,10 +75,19 @@ class SchemaConfig {
 
 
     public static function secondary_email_verified($user = null) {
+        if($user && $user->secondary_email_id && $user->secondary_email_verified) {
+            return [
+                'type' => 'message_success',
+                'label' => trans('profile.email_verified')
+            ];
+        }
         return [
-            'type' => 'verification_code',
+            'type' => 'text',
+            'name' => 'secondary_email_verification_code',
             'required' => 'required',
-            'valid' => ''
+            'help' => trans('profile.email_verification_help', [
+                'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
+            ])
         ];
     }
 
@@ -177,8 +193,7 @@ class SchemaConfig {
     public static function presentation($user = null) {
         return [
             'type' => 'textarea',
-            'required' => 'required',
-            'valid' => ''
+            'required' => 'required'
         ];
     }
 
@@ -186,8 +201,7 @@ class SchemaConfig {
     public static function website($user = null) {
         return [
             'type' => 'text',
-            'required' => 'required',
-            'valid' => ''
+            'required' => 'required'
         ];
     }
 
@@ -210,17 +224,14 @@ class SchemaConfig {
         $country_codes = array_keys(trans('countries'));
         return [
             'type' => 'checkbox',
-            'required' => 'required_if:role,teacher|required_if:country_code,'.implode(',', array_diff($country_codes, ['fr'])),
-            'valid' => ''
+            'required' => 'required_if:role,teacher|required_if:country_code,'.implode(',', array_diff($country_codes, ['fr']))
         ];
     }
 
 
     public static function ministry_of_education_fr($user = null) {
         return [
-            'type' => 'checkbox',
-            'required' => false,
-            'valid' => ''
+            'type' => 'checkbox'
         ];
     }
 
@@ -228,8 +239,7 @@ class SchemaConfig {
     public static function school_grade($user = null) {
         return [
             'type' => 'text',
-            'required' => 'required',
-            'valid' => ''
+            'required' => 'required'
         ];
     }
 
@@ -237,8 +247,7 @@ class SchemaConfig {
     public static function student_id($user = null) {
         return [
             'type' => 'text',
-            'required' => 'required',
-            'valid' => ''
+            'required' => 'required'
         ]
     }
     */
@@ -249,6 +258,13 @@ class SchemaConfig {
             'type' => 'text',
             'required' => 'required',
             'valid' => 'nullable|integer|between:1900,'.date('Y')
+        ];
+    }
+
+
+    public static function teacher_domain_verified($user = null) {
+        return [
+            'type' => 'dummy'
         ];
     }
 
