@@ -30,7 +30,7 @@ class Verificator {
         $errors = [];
         foreach($this->attributes as $attribute) {
             if(!$user->getAttribute($attribute)) {
-                $errors[$field] = trans('verification_erorrs.'.$field);
+                $errors[$attribute] = trans('verification_errors.'.$attribute);
             }
         }
         return count($errors) > 0 ? $errors : true;

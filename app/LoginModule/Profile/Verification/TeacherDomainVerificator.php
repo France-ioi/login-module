@@ -8,7 +8,7 @@ class TeacherDomainVerificator {
 
 
     public static function verify($user) {
-        if(!$user->country_code) {
+        if(!$user->country_code || $user->role != 'teacher') {
             return false;
         }
         $emails = $user->emails()->get()->pluck('email');

@@ -64,10 +64,10 @@ class ProfileController extends Controller
         );
         $this->validate($request, $schema->rules());
         if(($result = $profile->update($request, $schema->fillableAttributes())) !== true) {
-            return redirect()->back()->withErrors($result);
+            return redirect()->back()->withInput()->withErrors($result);
         }
         if(($result = $verificator->verify($user)) !== true) {
-            return redirect()->back()->withErrors($result);
+            return redirect()->back()->withInput()->withErrors($result);
         }
         $this->context->badge()->flushData();
         return redirect($this->context->continueUrl('/account'));
