@@ -23,7 +23,7 @@ class Migrator {
     }
 
 
-    public function migrate() {
+    public function run() {
         $offset = 0;
         while(count($users = Data::queryUsers($offset, self::CHUNK_SIZE))) {
             foreach($users as $user_data) {

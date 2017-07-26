@@ -51,10 +51,11 @@ class User extends Authenticatable
         'updated_at'
     ];
 
-
     protected $appends = [
         'primary_email',
         'secondary_email',
+        'primary_email_verified',
+        'secondary_email_verified'
     ];
 
     protected $casts = [

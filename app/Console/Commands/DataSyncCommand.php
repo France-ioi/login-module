@@ -12,14 +12,14 @@ class DataSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'lm:sync';
+    protected $signature = 'lm:import';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync data: login module v1 -> login module v2';
+    protected $description = 'Import accounts data from old (v1) database';
 
     /**
      * Create a new command instance.
@@ -39,6 +39,6 @@ class DataSyncCommand extends Command
     public function handle()
     {
         $migrator = new Migrator($this);
-        $migrator->migrate();
+        $migrator->run();
     }
 }
