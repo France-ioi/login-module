@@ -21,7 +21,7 @@ class AuthConnector
             $user = $connection->user;
             Auth::login($user);
             $connection->active = true;
-            $connection->refresh_token = $auth['refresh_token'];
+            $connection->refresh_token = isset($auth['refresh_token']) ? $auth['refresh_token'] : null;
             $connection->save();
             if(!isset($auth['login'])) {
                 $auth['login'] = $auth['uid'];
@@ -52,22 +52,6 @@ class AuthConnector
                     ]));
                 }
                 Auth::login($user);
-
-                // TODO :: Dirty fix to remove once JwInf 2017 is done
-                if(strpos($auth['login'], '@') === false) {
-                    $bwinf_user = DB::select('SELECT * FROM bwinf_data WHERE nickName = ?', [$auth['login']]);
-                } else {
-                    $bwinf_user = DB::select('SELECT * FROM bwinf_data WHERE eMail = ?', [$auth['login']]);
-                }
-                // We have an user in bwinf_data, add the password
-                if(count($bwinf_user) == 1) {
-                    $bwinf_data = $bwinf_user[0];
-                    $user->obsolete_passwords()->save(new ObsoletePassword([
-                        'salt' => '',
-                        'password' => $bwinf_data->password,
-                        'type' => 'sha512'
-                        ]));
-                }
             }
         }
         self::addBadge($user, $auth);

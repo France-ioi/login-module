@@ -74,10 +74,10 @@ class RegisterController extends Controller
         $reg_rules = [
             'password' => 'required|min:6|confirmed'
         ];
-        if($validation_rules['login']) {
+        if(isset($validation_rules['login'])) {
             $reg_rules['login'] = $validation_rules['login'];
         }
-        if($validation_rules['primary_email']) {
+        if(isset($validation_rules['primary_email'])) {
             $reg_rules['primary_email'] = $validation_rules['primary_email'];
         }
         return Validator::make($data, $reg_rules);
