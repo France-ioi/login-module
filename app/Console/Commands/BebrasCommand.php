@@ -19,7 +19,6 @@ class BebrasCommand extends Command
         {database : bebras mysql database }
         {username : bebras mysql username }
         {password : bebras mysql password }
-        {id : login module DB start user id }
     ';
 
     /**
@@ -49,7 +48,7 @@ class BebrasCommand extends Command
         $arguments = collect($this->arguments())->except('command');
         $connection = $this->connectDB($this->arguments());
         $migrator = new Migrator($this, $connection);
-        $migrator->run($this->argument('id'));
+        $migrator->run();
     }
 
 

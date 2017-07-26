@@ -6,6 +6,7 @@ use DB;
 use App\LoginModule\Bebras\Data;
 use App\User;
 use App\Email;
+use App\ObsoletePassword;
 
 class Migrator {
 
@@ -40,32 +41,45 @@ class Migrator {
 
 
     private function syncUser($user_data) {
-        if($email = Email::where('email', $user_data['primary_email'])->first()) {
+        if($user_data['login_module_id']) {
+            $user = User::find($user_data['login_module_id']);
+            if(!$user) {
+                $this->command->error('externalID #'.$user_data['login_module_id'].' defined, but user not found');
+                return null;
+            }
+            $user->fill($user_data);
+            $user->save();
+            return $user;
+        }
+
+        if($email = Email::where('email', $user_data['primary_email'])->orWhere('email', $user_data['secondary_email'])->first()) {
             $email->user->fill($user_data);
             $email->user->save();
-        } else {
-            $user = new User($user_data);
-            $user->id = $user_data['id'];
-            $email->user()->save($user);
+            Data::updateUserExternalId($this->connection, $user_data['bebras_id'], $email->user->id);
+            return $email->user;
         }
-        return $email->user;
+
+        $user = User::create($user_data);
+        $user->save();
+        Data::updateUserExternalId($this->connection, $user_data['bebras_id'], $user->id);
+        return $user;
     }
 
 
     private function syncEmail($user, $role, $email, $verified) {
-        if($email = $user->emails()->where('role', $role)->first()) {
-            $email->fill([
+        if($row = $user->emails()->where('role', $role)->first()) {
+            $row->fill([
                 'email' => $email,
                 'verified' => $verified
             ]);
-            $email->save();
+            $row->save();
         } else {
-            $email = new Email([
+            $row = new Email([
                 'email' => $email,
                 'role' => $role,
                 'verified' => $verified
             ]);
-            $user->emails()->save($email);
+            $user->emails()->save($row);
         }
     }
 

@@ -17,7 +17,13 @@ class Data {
             ->map(function($row) {
                 return UserMapper::remap($row);
             });
+    }
 
+
+    public static function updateUserExternalId($connection, $bebras_id, $login_module_id) {
+        return $connection->table('user')
+            ->where('ID', $bebras_id)
+            ->update(['externalID' => $login_module_id]);
     }
 
 }

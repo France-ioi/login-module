@@ -11,13 +11,14 @@ class UserMapper {
             'secondary_email_verified' => !empty($row->alternativeEmailValidated),
         ];
         $map = [
-            'ID' => 'id',
+            'ID' => 'bebras_id',
+            'externalID' => 'login_module_id',
             'firstName' => 'first_name',
             'lastName' => 'last_name',
             'officialEmail' => 'primary_email',
             'alternativeEmail' => 'secondary_email',
             'comment' => 'presentation',
-            'password' => 'passwordMd5'
+            'passwordMd5' => 'password'
         ];
         foreach($map as $v1 => $v2) {
             $res[$v2] = isset($row->$v1) ? $row->$v1 : null;
