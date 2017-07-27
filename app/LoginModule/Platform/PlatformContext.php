@@ -32,6 +32,15 @@ class PlatformContext
     }
 
 
+    public function getData() {
+        return $this->state->get();
+    }
+
+    public function setData($data) {
+        $this->state->set($data);
+    }
+
+
     public function client() {
         if(!$this->client && $client_id = $this->state->get('client_id')) {
             $this->client = Client::find($client_id);

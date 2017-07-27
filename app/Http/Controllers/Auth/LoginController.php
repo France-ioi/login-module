@@ -30,18 +30,31 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/account';
 
+    protected $context;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct(PlatformContext $context) {
         $this->middleware('guest', ['except' => ['logout']]);
+        $this->context = $context;
     }
 
 
     public function username() {
         return 'login';
+    }
+
+
+    protected function sendLoginResponse(Request $request) {
+        $context_data = $this->context->getData();
+        $request->session()->regenerate();
+        $this->context->setData($context_data);
+        $this->clearLoginAttempts($request);
+        return $this->authenticated($request, $this->guard()->user())
+                ?: redirect()->intended($this->redirectPath());
     }
 
 
@@ -52,12 +65,12 @@ class LoginController extends Controller
     }
 
 
-    public function showLoginForm(PlatformContext $context) {
+    public function showLoginForm() {
         $auth_order = [];
         $badge_required = false;
-        if($client = $context->client()) {
+        if($client = $this->context->client()) {
             $auth_order =  is_array($client->auth_order) ? $client->auth_order : [];
-            $badge_required = (bool) $context->badge()->url();
+            $badge_required = (bool) $this->context->badge()->url();
         }
         $default_order = array_merge(['login'], Manager::providers());
         if($auth_order) {

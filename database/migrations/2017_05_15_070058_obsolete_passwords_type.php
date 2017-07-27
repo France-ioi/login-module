@@ -25,7 +25,7 @@ class ObsoletePasswordsType extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('obsolete_passwords', function (Blueprint $table) {
             $table->dropColumn('type');
         });
     }

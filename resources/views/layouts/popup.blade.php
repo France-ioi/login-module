@@ -33,7 +33,7 @@
                         </ul>
                     </li>
                 </ul>
-                @if(Auth::check() && Auth::user()->admin)
+                @if(Auth::check())
                     <ul class="nav pull-left">
                         <li>
                             <a href="/logout" className="">Logout</a>

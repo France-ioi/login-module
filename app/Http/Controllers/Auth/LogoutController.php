@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\OAuthClient\Manager;
+use App\LoginModule\Platform\PlatformContext;
 
 class LogoutController extends Controller
 {
 
-    public function __construct() {
+    public function __construct(PlatformContext $context) {
         $this->middleware('auth', ['except' => ['getLogout']]);
+        $this->context = $context;
     }
 
 
@@ -46,8 +48,10 @@ class LogoutController extends Controller
     public function logoutFinish(Request $request) {
         $redirect_uri = $request->session()->pull('logout_redirect');
         Auth::guard()->logout();
+        $context_data = $this->context->getData();
         $request->session()->flush();
         $request->session()->regenerate();
+        $this->context->setData($context_data);
         return $this->redirectAfterLogout($redirect_uri);
     }
 
