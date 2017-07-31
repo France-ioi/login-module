@@ -23,9 +23,6 @@ class AuthConnector
             $connection->active = true;
             $connection->refresh_token = isset($auth['refresh_token']) ? $auth['refresh_token'] : null;
             $connection->save();
-            if(!isset($auth['login'])) {
-                $auth['login'] = $auth['uid'];
-            }
             if($auth['provider'] == 'pms') {
                 $user->update($auth);
             }
@@ -38,9 +35,6 @@ class AuthConnector
             } else {
                 if(isset($auth['email']) && Email::where('email', $auth['email'])->first()) {
                     return false;
-                }
-                if(!isset($auth['login'])) {
-                    $auth['login'] = $auth['uid'];
                 }
                 $user = User::create($auth);
                 $user->auth_connections()->save($connection);
