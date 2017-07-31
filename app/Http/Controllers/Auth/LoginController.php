@@ -62,6 +62,7 @@ class LoginController extends Controller
         if($user->admin) {
             return redirect('/admin');
         }
+        return redirect($this->context->continueUrl('/account'));
     }
 
 

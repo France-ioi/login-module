@@ -3,7 +3,7 @@
 namespace App\LoginModule\Profile;
 
 use App\LoginModule\Platform\PlatformContext;
-
+use App\Email;
 
 class UserProfile {
 
