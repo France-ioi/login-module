@@ -114,6 +114,34 @@ class ClientsSeeder extends Seeder
             'user_attributes' => $user_attributes,
             'name' => 'franceioi - demo',
         ]));
+
+
+        $user_attributes = [
+            'primary_email',
+            'teacher_domain_verified',
+            'first_name',
+            'last_name',
+            'gender',
+            'country_code',
+            'role',
+            'presentation',
+        ];
+        \App\Client::create(array_merge($this->defaults, [
+            'id' => 7,
+            'redirect' => 'http://bebras-platform.dev/teacherInterface/login_module/callback_oauth.php',
+            'badge_url' => '',
+            'user_attributes' => $user_attributes,
+            'name' => 'Bebras - dev',
+        ]));
+        \App\Client::create(array_merge($this->defaults, [
+            'id' => 8,
+            'redirect' => 'http://bebras.mobydimk.space/teacherInterface/login_module/callback_oauth.php',
+            'badge_url' => '',
+            'user_attributes' => $user_attributes,
+            'name' => 'Bebras - demo',
+        ]));
+
+
     }
 
 }
