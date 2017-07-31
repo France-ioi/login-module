@@ -38,6 +38,28 @@ class SchemaConfig {
     }
 
 
+    public static function country_code($user = null) {
+        $options = trans('countries');
+        return [
+            'type' => 'select',
+            'options' => ['' => '...'] + $options,
+            'required' => 'required',
+            'valid' => 'in:,'.implode(',', array_keys($options))
+        ];
+    }
+
+
+    public static function role($user = null) {
+        $options = trans('profile.roles');
+            return [
+                'type' => 'select',
+                'options' => $options,
+                'required' => 'required',
+                'valid' => 'in:'.implode(',', array_keys($options))
+            ];
+    }
+
+
     public static function primary_email($user = null) {
         return [
             'type' => 'email',
@@ -103,15 +125,7 @@ class SchemaConfig {
     }
 
 
-    public static function country_code($user = null) {
-        $options = trans('countries');
-        return [
-            'type' => 'select',
-            'options' => ['' => '...'] + $options,
-            'required' => 'required',
-            'valid' => 'in:,'.implode(',', array_keys($options))
-        ];
-    }
+
 
 
     public static function address($user = null) {
@@ -203,17 +217,6 @@ class SchemaConfig {
             'type' => 'text',
             'required' => 'required'
         ];
-    }
-
-
-    public static function role($user = null) {
-        $options = trans('profile.roles');
-            return [
-                'type' => 'select',
-                'options' => $options,
-                'required' => 'required',
-                'valid' => 'in:'.implode(',', array_keys($options))
-            ];
     }
 
 
