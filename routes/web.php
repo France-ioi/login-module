@@ -53,6 +53,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth','ad
     Route::get('/users', 'UsersController@index');
     Route::get('/users/{id}/password', 'UsersController@showPassword');
     Route::post('/users/{id}/password', 'UsersController@updatePassword');
+    Route::get('/users/{id}/teacher_status', 'UsersController@showTeacherStatus');
+    Route::post('/users/{id}/teacher_status', 'UsersController@updateTeacherStatus');
     Route::get('/users/{id}/emails', 'UsersController@showEmails');
     Route::post('/users/create_reset_link', 'UsersController@createResetLink');
     Route::post('/users/send_reset_link', 'UsersController@sendResetLink');

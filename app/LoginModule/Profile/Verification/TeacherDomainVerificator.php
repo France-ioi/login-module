@@ -8,6 +8,9 @@ class TeacherDomainVerificator {
 
 
     public static function verify($user) {
+        if($user->teacher_verified) {
+            return true;
+        }
         if(!$user->country_code || $user->role != 'teacher') {
             return false;
         }

@@ -47,6 +47,7 @@
                     <td>
                         <a href="{{ url('/admin/users/'.$user->id.'/emails') }}" class="btn btn-xs btn-primary" title="Send recovery email to user">Send recovery</a>
                         <a href="{{ url('/admin/users/'.$user->id.'/password') }}" class="btn btn-xs btn-primary" title="Change user password">Password</a>
+                        <a href="{{ url('/admin/users/'.$user->id.'/teacher_status') }}" class="btn btn-xs btn-primary" title="Teacher status">Teacher status</a>
                         <form action="{{ url('/admin/users/'.$user->id) }}" method="POST" style="display: inline" role="delete">
                             {{ csrf_field() }}
                             <input name="_method" type="hidden" value="DELETE"/>

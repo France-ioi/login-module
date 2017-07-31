@@ -28,6 +28,7 @@ class UserMapper {
         } else if($row->gender == 'f') {
             $res['gender'] = 'F';
         }
+        $res['teacher_verified'] = (bool) $row->isOwnOfficialEmail;
         return $res;
     }
 

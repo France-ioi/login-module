@@ -64,7 +64,8 @@ class User extends Authenticatable
         'graduation_year' => 'integer',
         'logout_config' => 'array',
         'real_name_visible' => 'boolean',
-        'regular_password' => 'boolean'
+        'regular_password' => 'boolean',
+        'teacher_verified' => 'boolean'
     ];
 
 

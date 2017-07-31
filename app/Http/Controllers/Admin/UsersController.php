@@ -65,6 +65,21 @@ class UsersController extends Controller
     }
 
 
+    public function showTeacherStatus($id) {
+        return view('admin.users.teacher_status', [
+            'user' => User::findOrFail($id)
+        ]);
+    }
+
+
+    public function updateTeacherStatus($id, Request $request) {
+        $user = User::findOrFail($id);
+        $user->teacher_verified = $request->has('teacher_verified');
+        $user->save();
+        return redirect('/admin/users')->with('status', 'Teacher status saved');
+    }
+
+
 
     public function showEmails($id) {
         $user = User::with('emails')->findOrFail($id);
