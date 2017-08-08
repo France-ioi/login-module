@@ -133,18 +133,20 @@
             emails.refresh();
 
 
-            function updateTeacherDomainAlert() {
-                $('#teacher_domain_alert').toggle($('input[name=teacher_domain_verified]:checked').val() == 'no');
-            }
-            updateTeacherDomainAlert();
-            $('input[name=teacher_domain_verified]').click(updateTeacherDomainAlert);
 
 
             function updateTeacherDomainBlock() {
                 $('#block_teacher_domain_verified').toggle($('select[name=role]').val() == 'teacher');
             }
+            $('input[name=teacher_domain_verified][value=yes]').prop('checked', true);
             updateTeacherDomainBlock();
             $('select[name=role]').click(updateTeacherDomainBlock);
+
+            function updateTeacherDomainAlert() {
+                $('#teacher_domain_alert').toggle($('input[name=teacher_domain_verified]:checked').val() == 'no');
+            }
+            updateTeacherDomainAlert();
+            $('input[name=teacher_domain_verified]').click(updateTeacherDomainAlert);
 
 
             function updateHidden() {
