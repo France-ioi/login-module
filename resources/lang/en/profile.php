@@ -46,5 +46,12 @@ return [
     'email_verification_code_error' => 'Wrong email verification code.',
 
     'pms_redirect_msg' => 'As a PMS user, you must edit your profile directly on PMS. Please press the "Zurück zum JwInf" button afterwards to have your profile updated here.',
-    'pms_redirect_btn' => 'Proceed to PMS'
+    'pms_redirect_btn' => 'Proceed to PMS',
+
+    'teacher_domain_verified' => 'Do you have an email from an authorized domain?',
+    'teacher_domain_options' => [
+        'yes' => 'Yes, I will provide it as my primary/secondary email',
+        'no' => 'No, I don\'t have one'
+    ],
+    'teacher_domain_alert' => 'Please contact :email and explain why you don\'t have an authorized email.'
 ];

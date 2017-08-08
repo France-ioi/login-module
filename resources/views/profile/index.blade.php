@@ -77,19 +77,98 @@
             })($('#display_only_required_fields'));
 
 
-            function updateHidden() {
-                $('#box_ministry_of_education_fr').hide();
-                $('#box_ministry_of_education').hide();
-                var country_code = $('#country_code').val();
-                if(country_code == 'FR') {
-                    $('#box_ministry_of_education_fr').show();
-                } else {
-                    $('#box_ministry_of_education').show();
+
+
+            var emails = {
+                country_code: null,
+                is_teacher: false,
+                domains: ['aa.bb', 'vvv.ccc'],
+
+                install: function() {
+                    if(this.country_code && this.is_teacher) {
+                        $('input[name=primary_email').typeahead({
+                            source: this.source,
+                            autoSelect: true
+                        });
+                        $('input[name=secondary_email').typeahead({
+                            source: this.source,
+                            autoSelect: true
+                        });
+                    } else {
+                        $('input[name=primary_email').typeahead('destroy');
+                        $('input[name=secondary_email').typeahead('destroy');
+                    }
+                },
+
+                refresh: function() {
+                    var country_code = $('select[name=country_code]').val();
+                    var is_teacher = $('select[name=role]').val() == 'teacher';
+                    if(this.country_code !== country_code || this.is_teacher !== is_teacher) {
+                        this.country_code = country_code;
+                        this.is_teacher = is_teacher;
+                        this.install();
+                        $.ajax({
+                            url: '/official_domains',
+                            data: {
+                                country_code: this.country_code
+                            },
+                            success: function(domains) {
+                                emails.domains = domains;
+                            }
+                        });
+                    }
+                },
+
+                source: function(value, callback) {
+                    if(value.indexOf('@') >= 0) {
+                        return null;
+                    }
+                    var res = [];
+                    for(var i=0; i<emails.domains.length; i++) {
+                        res.push(value + '@' + emails.domains[i]);
+                    }
+                    callback(res);
                 }
             }
-            $('#country_code').change(updateHidden);
+            emails.refresh();
+
+
+            function updateTeacherDomainAlert() {
+                $('#teacher_domain_alert').toggle($('input[name=teacher_domain_verified]:checked').val() == 'no');
+            }
+            updateTeacherDomainAlert();
+            $('input[name=teacher_domain_verified]').click(updateTeacherDomainAlert);
+
+
+            function updateTeacherDomainBlock() {
+                $('#block_teacher_domain_verified').toggle($('select[name=role]').val() == 'teacher');
+            }
+            updateTeacherDomainBlock();
+            $('select[name=role]').click(updateTeacherDomainBlock);
+
+
+            function updateHidden() {
+                $('#block_ministry_of_education_fr').hide();
+                $('#block_ministry_of_education').hide();
+                var country_code = $('select[name=country_code]').val();
+                if(country_code == 'FR') {
+                    $('#block_ministry_of_education_fr').show();
+                } else {
+                    $('#block_ministry_of_education').show();
+                }
+            }
             updateHidden();
-            if(!$('#timezone').val()) {
+            $('select[name=country_code]').change(function() {
+                updateHidden();
+                emails.refresh();
+            });
+            $('select[name=role]').change(function() {
+                emails.refresh();
+            });
+
+
+
+            if(!$('input[name=timezone]').val()) {
                 var rightNow = new Date();
                 var date1 = new Date(rightNow.getFullYear(), 0, 1, 0, 0, 0, 0);
                 var date2 = new Date(rightNow.getFullYear(), 6, 1, 0, 0, 0, 0);
@@ -106,7 +185,7 @@
                         dls: hoursDiffDaylightTime == hoursDiffStdTime ? 0 : 1
                     },
                     success: function(value) {
-                        $('#timezone').val(value);
+                        $('input[name=timezone]').val(value);
                     }
                 });
             }

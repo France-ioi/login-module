@@ -40,5 +40,12 @@ return [
     'success' => 'Profil wurde geändert.',
 
     'pms_redirect_msg' => 'Bitte gehe zum PMS, um dein Profil zu bearbeiten. Falls du noch nicht für den JwInf angemeldet bist, kannst du das unter „Wettbewerbe“ gleich mit erledigen. Speichere die Änderungen und klicke dann auf „Zurück zum JwInf“.',
-    'pms_redirect_btn' => 'Weiter zum PMS'
+    'pms_redirect_btn' => 'Weiter zum PMS',
+
+    'teacher_domain_verified' => 'Do you have an email from an authorized domain?',
+    'teacher_domain_options' => [
+        'yes' => 'Yes, I will provide it as my primary/secondary email',
+        'no' => 'No, I don\'t have one'
+    ],
+    'teacher_domain_alert' => 'Please contact :email and explain why you don\'t have an authorized email.'
 ];

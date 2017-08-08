@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
     Route::get('/profile', 'ProfileController@index');
     Route::post('/profile', 'ProfileController@update');
+    Route::get('/official_domains', 'OfficialDomainsController@index');
     Route::get('/timezone', 'TimezoneController@index');
 
     Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);

@@ -74,6 +74,7 @@ class ProfileController extends Controller
     }
 
 
+
     private function requiredAttributes() {
         if($client = $this->context->client()) {
             return $client->user_attributes;

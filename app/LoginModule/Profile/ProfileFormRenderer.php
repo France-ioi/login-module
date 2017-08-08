@@ -11,7 +11,7 @@ class ProfileFormRenderer {
             if($block->help) {
                 $block_html .= ProfileFormElements::help($block->help);
             }
-            $html .= self::wrapper($block_html, $block->required);
+            $html .= self::wrapper($block_html, $block);
         }
         return $html;
     }
@@ -22,8 +22,8 @@ class ProfileFormRenderer {
     }
 
 
-    private static function wrapper($html, $required) {
-        return '<div required_field='.($required ? 1 : 0).'>'.$html.'</div>';
+    private static function wrapper($html, $block) {
+        return '<div required_field="'.($block->required ? 1 : 0).'" id="block_'.$block->name.'">'.$html.'</div>';
     }
 
 }

@@ -10,3 +10,4 @@
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 require('bootstrap-datepicker');
+require('bootstrap-3-typeahead');

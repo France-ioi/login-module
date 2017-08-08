@@ -28,7 +28,7 @@ class ProfileFormElements {
             $block->name,
             $label,
             null,
-            $block->disabled ? ['disabled'] : []
+            array_merge($block->disabled ? ['disabled'] : [], ['autocomplete' => 'off'])
         );
     }
 
@@ -94,8 +94,25 @@ class ProfileFormElements {
     }
 
 
+    public static function message_info($block, $label) {
+        return '<div class="alert alert-info">'.$label.'</div>';
+    }
+
+
     public static function help($html) {
         return '<div class="form-group"><p class="help-block">'.$html.'</p></div>';
+    }
+
+
+    public static function teacher_domain($block, $label) {
+        return BootForm::radios(
+            $block->name,
+            $label,
+            $block->options
+        ).
+        '<div id="teacher_domain_alert" style="display: none">'.
+            self::message_info(null, trans('profile.teacher_domain_alert', ['email' => config('mail.from.address')])).
+        '</div>';
     }
 
 }

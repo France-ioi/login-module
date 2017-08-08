@@ -60,6 +60,20 @@ class SchemaConfig {
     }
 
 
+    public static function teacher_domain_verified($user = null) {
+        if($user->role == 'teacher' && $user->teacher_domain_verified) {
+            return [
+                'type' => 'dummy'
+            ];
+        }
+        return [
+            'type' => 'teacher_domain',
+            'required' => false,
+            'options' => trans('profile.teacher_domain_options')
+        ];
+    }
+
+
     public static function primary_email($user = null) {
         return [
             'type' => 'email',
@@ -264,11 +278,5 @@ class SchemaConfig {
         ];
     }
 
-
-    public static function teacher_domain_verified($user = null) {
-        return [
-            'type' => 'dummy'
-        ];
-    }
 
 }
