@@ -79,7 +79,7 @@ class SchemaConfig {
         return [
             'type' => 'text',
             'name' => 'primary_email_verification_code',
-            'required' => 'required',
+            //'required' => 'required',
             'help' => trans('profile.email_verification_help', [
                 'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
             ])
@@ -106,7 +106,7 @@ class SchemaConfig {
         return [
             'type' => 'text',
             'name' => 'secondary_email_verification_code',
-            'required' => 'required',
+            //'required' => 'required',
             'help' => trans('profile.email_verification_help', [
                 'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
             ])

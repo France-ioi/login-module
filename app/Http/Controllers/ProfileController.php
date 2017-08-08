@@ -38,7 +38,7 @@ class ProfileController extends Controller
             $user,
             $this->requiredAttributes(),
             $disabled,
-            $request->has('all')
+            true//$request->has('all')
         );
         return view('profile.index', [
             'form' => [
@@ -60,7 +60,7 @@ class ProfileController extends Controller
             $user,
             $this->requiredAttributes(),
             $this->disabledAttributes($user),
-            $request->has('all')
+            true//$request->has('all')
         );
         $this->validate($request, $schema->rules());
         if(($result = $profile->update($request, $schema->fillableAttributes())) !== true) {

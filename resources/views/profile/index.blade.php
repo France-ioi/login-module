@@ -30,6 +30,13 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('profile.header')
+            <div class="pull-right">
+                <div class="checkbox" style="margin: 0">
+                    <label>
+                        <input type="checkbox" id="display_only_required_fields"/> Display only required fields
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="panel-body">
             {!! BootForm::open($form) !!}
@@ -58,6 +65,16 @@
                 endDate: new Date(),
                 autoclose: true
             });
+
+            function toggleOptionalFields(visibility) {
+                $('[required_field=0]').toggle(visibility);
+            }
+            $('#display_only_required_fields').click(function() {
+                toggleOptionalFields(!this.checked);
+            })
+            @if(!$all)
+                toggleOptionalFields(false);
+            @endif
 
             function updateHidden() {
                 $('#box_ministry_of_education_fr').hide();
