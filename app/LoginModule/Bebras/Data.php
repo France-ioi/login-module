@@ -20,10 +20,10 @@ class Data {
     }
 
 
-    public static function updateUserExternalId($connection, $bebras_id, $login_module_id) {
+    public static function updateExternalUser($connection, $id, $data) {
         return $connection->table('user')
-            ->where('ID', $bebras_id)
-            ->update(['externalID' => $login_module_id]);
+            ->where('ID', $id)
+            ->update($data);
     }
 
 }

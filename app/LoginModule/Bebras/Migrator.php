@@ -23,7 +23,7 @@ class Migrator {
     }
 
 
-    public function run($id) {
+    public function run() {
         $offset = 0;
         while(count($users = Data::queryUsers($this->connection, $offset, self::CHUNK_SIZE))) {
             foreach($users as $user_data) {
@@ -53,20 +53,24 @@ class Migrator {
         }
 
         if($email = Email::where('email', $user_data['primary_email'])->orWhere('email', $user_data['secondary_email'])->first()) {
-            $email->user->fill($user_data);
-            $email->user->save();
-            Data::updateUserExternalId($this->connection, $user_data['bebras_id'], $email->user->id);
-            return $email->user;
+            $user = $email->user;
+            $user->fill($user_data);
+        } else {
+            $user = User::create($user_data);
         }
-
-        $user = User::create($user_data);
         $user->save();
-        Data::updateUserExternalId($this->connection, $user_data['bebras_id'], $user->id);
+
+        $external_user = [
+            'externalID' => $user->id,
+            'manualAccess' => $user_data['validated'] == 1 && $user_data['primary_email_verified'] == 0 ? 1 : 0
+        ];
+        Data::updateExternalUser($this->connection, $user_data['bebras_id'], $external_user);
         return $user;
     }
 
 
     private function syncEmail($user, $role, $email, $verified) {
+        if(empty($email)) return;
         if($row = $user->emails()->where('role', $role)->first()) {
             $row->fill([
                 'email' => $email,

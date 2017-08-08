@@ -18,7 +18,8 @@ class UserMapper {
             'officialEmail' => 'primary_email',
             'alternativeEmail' => 'secondary_email',
             'comment' => 'presentation',
-            'passwordMd5' => 'password'
+            'passwordMd5' => 'password',
+            'validated' => 'validated'
         ];
         foreach($map as $v1 => $v2) {
             $res[$v2] = isset($row->$v1) ? $row->$v1 : null;
