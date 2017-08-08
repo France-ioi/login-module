@@ -2,6 +2,7 @@
 
 return [
     'header' => 'Profile',
+    'display_only_required_fields' => 'Display only required fields',
 
     'login' => 'Login',
     'first_name' => 'First name',

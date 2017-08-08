@@ -33,7 +33,7 @@
             <div class="pull-right">
                 <div class="checkbox" style="margin: 0">
                     <label>
-                        <input type="checkbox" id="display_only_required_fields"/> Display only required fields
+                        <input type="checkbox" id="display_only_required_fields"/> @lang('profile.display_only_required_fields')
                     </label>
                 </div>
             </div>
@@ -66,15 +66,16 @@
                 autoclose: true
             });
 
-            function toggleOptionalFields(visibility) {
-                $('[required_field=0]').toggle(visibility);
-            }
-            $('#display_only_required_fields').click(function() {
-                toggleOptionalFields(!this.checked);
-            })
-            @if(!$all)
+
+            (function(el) {
+                function toggleOptionalFields() {
+                    $('[required_field=0]').toggle(!el.prop('checked'));
+                }
+                el.click(toggleOptionalFields);
+                el.prop('checked', {!! $all ? 'false' : 'true' !!});
                 toggleOptionalFields(false);
-            @endif
+            })($('#display_only_required_fields'));
+
 
             function updateHidden() {
                 $('#box_ministry_of_education_fr').hide();
