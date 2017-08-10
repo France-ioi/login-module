@@ -17,6 +17,11 @@
 
 # Maintenance
 
-- Data migration from old login module DB to new login module DB
+- Import accounts from old login module database
+``` php artisan lm:import ```
 
-``` php artisan lm:sync ```
+- Merge two login-module databases
+``` php artisan lm:merge HOST PORT DATABASE USERNAME PASSWORD ```
+
+- Import accounts from bebras database
+``` php artisan bebras:import HOST PORT DATABASE USERNAME PASSWORD ```

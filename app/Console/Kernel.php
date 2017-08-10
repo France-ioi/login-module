@@ -14,8 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\KeysCommand::class,
-        Commands\DataSyncCommand::class,
-        Commands\BebrasCommand::class,
+        Commands\LoginModuleImportCommand::class,
+        Commands\LoginModuleMergeCommand::class,
+        Commands\BebrasImportCommand::class,
     ];
 
     /**

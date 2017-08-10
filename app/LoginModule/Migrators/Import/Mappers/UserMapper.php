@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LoginModule\DataSync\Mappers;
+namespace App\LoginModule\Migrators\Import\Mappers;
 
 class UserMapper {
 

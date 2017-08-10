@@ -1,9 +1,9 @@
 <?php
 
-namespace App\LoginModule\DataSync;
+namespace App\LoginModule\Migrators\Import;
 
 use DB;
-use App\LoginModule\DataSync\Data;
+use App\LoginModule\Migrators\Import\Data;
 use App\User;
 use App\Badge;
 use App\Email;

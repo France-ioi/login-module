@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LoginModule\Bebras\Mappers;
+namespace App\LoginModule\Migrators\Bebras\Mappers;
 
 class UserMapper {
 

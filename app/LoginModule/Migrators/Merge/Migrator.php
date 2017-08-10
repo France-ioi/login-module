@@ -1,9 +1,9 @@
 <?php
-namespace App\LoginModule\Bebras;
+namespace App\LoginModule\Migrators\Merge;
 
 
 use DB;
-use App\LoginModule\Bebras\Data;
+use App\LoginModule\Migrators\Merge\Data;
 use App\User;
 use App\Email;
 use App\ObsoletePassword;

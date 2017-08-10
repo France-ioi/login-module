@@ -3,11 +3,15 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\LoginModule\Bebras\Migrator;
-use DB;
+use App\LoginModule\Migrators\Bebras\Migrator;
+use App\LoginModule\Migrators\ExternalDatabaseCommand;
 
-class BebrasCommand extends Command
+
+class BebrasImportCommand extends Command
 {
+
+    use ExternalDatabaseCommand;
+
     /**
      * The name and signature of the console command.
      *
@@ -45,24 +49,8 @@ class BebrasCommand extends Command
      */
     public function handle()
     {
-        $arguments = collect($this->arguments())->except('command');
-        $connection = $this->connectDB($this->arguments());
-        $migrator = new Migrator($this, $connection);
+        $migrator = new Migrator($this, $this->connectExternalDB());
         $migrator->run();
     }
 
-
-    private function connectDB($arguments) {
-        $arguments = collect($arguments)
-            ->except('command')
-            ->merge([
-                'driver' => 'mysql',
-                'port' => '3306',
-                'charset' => 'utf8',
-                'collation' => 'utf8_unicode_ci'
-            ])
-            ->toArray();
-        config()->set('database.connections.bebras', $arguments);
-        return DB::connection('bebras');
-    }
 }

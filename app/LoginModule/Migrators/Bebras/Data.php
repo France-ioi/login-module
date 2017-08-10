@@ -1,9 +1,9 @@
 <?php
 
-namespace App\LoginModule\Bebras;
+namespace App\LoginModule\Migrators\Bebras;
 
 use DB;
-use App\LoginModule\Bebras\Mappers\UserMapper;
+use App\LoginModule\Migrators\Bebras\Mappers\UserMapper;
 
 class Data {
 

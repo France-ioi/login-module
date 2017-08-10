@@ -1,10 +1,10 @@
 <?php
 
-namespace App\LoginModule\DataSync;
+namespace App\LoginModule\Migrators\Import;
 
 use DB;
-use App\LoginModule\DataSync\Mappers\UserMapper;
-use App\LoginModule\DataSync\Mappers\BadgeMapper;
+use App\LoginModule\Migrators\Import\Mappers\UserMapper;
+use App\LoginModule\Migrators\Import\Mappers\BadgeMapper;
 
 class Data {
 

@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\LoginModule\DataSync\Migrator;
+use App\LoginModule\Migrators\Import\Migrator;
 
-class DataSyncCommand extends Command
+class LoginModuleImportCommand extends Command
 {
     /**
      * The name and signature of the console command.
