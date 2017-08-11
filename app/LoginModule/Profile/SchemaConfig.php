@@ -175,7 +175,7 @@ class SchemaConfig {
             'type' => 'select',
             'options' => ['' => '...'] + $options,
             'required' => 'required',
-            'valid' => 'in:'.implode(',', array_keys($options))
+            'valid' => 'in:,'.implode(',', array_keys($options))
         ];
     }
 
