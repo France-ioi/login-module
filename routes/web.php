@@ -62,4 +62,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth','ad
     Route::delete('/users/{id}', 'UsersController@delete');
     Route::resource('clients', 'ClientsController');
     Route::resource('official_domains', 'OfficialDomainsController');
+    Route::resource('origin_instances', 'OriginInstancesController');
 });
