@@ -2,28 +2,33 @@
 
 namespace App\LoginModule\Migrators\Merge;
 
-use DB;
-use App\LoginModule\Migrators\Bebras\Mappers\UserMapper;
+use App\User;
+use App\OfficialDomain;
+use App\Client;
 
-class Data {
+class Data
+{
 
     public static function queryUsers($connection, $offset, $amount) {
-        return $connection->table('user')
-            ->select('*')
-            ->where('isAdmin', 0)
+        return User::on($connection->getName())
+            ->with(['emails', 'badges', 'auth_connections', 'obsolete_passwords'])
+            ->where('admin', 0)
             ->skip($offset)
             ->take($amount)
-            ->get()
-            ->map(function($row) {
-                return UserMapper::remap($row);
-            });
+            ->get();
     }
 
 
-    public static function updateExternalUser($connection, $id, $data) {
-        return $connection->table('user')
-            ->where('ID', $id)
-            ->update($data);
+    public static function queryOfficialDomains($connection, $offset, $amount) {
+        return OfficialDomain::on($connection->getName())
+            ->skip($offset)
+            ->take($amount)
+            ->get();
+    }
+
+
+    public static function queryOAuthClients($connection) {
+        return Client::on($connection->getName())->get();
     }
 
 }

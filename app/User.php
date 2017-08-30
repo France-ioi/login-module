@@ -145,4 +145,8 @@ class User extends Authenticatable
         return $this->hasMany('\Laravel\Passport\Token');
     }
 
+    public function originInstance() {
+        return $this->belongsTo('App\OriginInstance');
+    }
+
 }

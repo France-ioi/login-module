@@ -47,6 +47,7 @@ class ProfileController extends Controller
                 'method' => 'post'
             ],
             'schema' => $schema,
+            'toggle_optional_fields_allowed' => $schema->hasRequired(),
             'pms_redirect' => count($disabled) > 0,
             'cancel_url' => $this->context->cancelUrl(),
             'all' => $request->has('all')

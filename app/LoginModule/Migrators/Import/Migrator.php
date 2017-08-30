@@ -3,7 +3,6 @@
 namespace App\LoginModule\Migrators\Import;
 
 use DB;
-use App\LoginModule\Migrators\Import\Data;
 use App\User;
 use App\Badge;
 use App\Email;
@@ -11,31 +10,34 @@ use App\ObsoletePassword;
 use App\AuthConnection;
 
 
-class Migrator {
+class Migrator
+{
 
     const CHUNK_SIZE = 100;
 
     protected $command;
+    protected $connection;
 
 
-    public function __construct($command) {
+    public function __construct($command, $connection) {
         $this->command = $command;
+        $this->connection = $connection;
     }
 
 
     public function run() {
         $offset = 0;
-        while(count($users = Data::queryUsers($offset, self::CHUNK_SIZE))) {
+        while(count($users = Data::queryUsers($this->connection, $offset, self::CHUNK_SIZE))) {
             foreach($users as $user_data) {
                 DB::transaction(function() use ($user_data) {
                     if($user = $this->syncUser($user_data)) {
                         $this->syncPassword($user, $user_data);
                         $this->syncEmail($user, $user_data);
-                        $badges = Data::queryBadges($user_data['id']);
+                        $badges = Data::queryBadges($this->connection, $user_data['id']);
                         foreach($badges as $badge_data) {
                             $this->syncBadge($user, $badge_data);
                         }
-                        $auths = Data::queryAuths($user_data['id']);
+                        $auths = Data::queryAuths($this->connection, $user_data['id']);
                         $this->syncAuths($user, $user_data, $auths);
                     }
                 });

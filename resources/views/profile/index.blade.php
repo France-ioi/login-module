@@ -30,13 +30,15 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('profile.header')
-            <div class="pull-right">
-                <div class="checkbox" style="margin: 0">
-                    <label>
-                        <input type="checkbox" id="display_only_required_fields"/> @lang('profile.display_only_required_fields')
-                    </label>
+            @if($toggle_optional_fields_allowed)
+                <div class="pull-right">
+                    <div class="checkbox" style="margin: 0">
+                        <label>
+                            <input type="checkbox" id="display_only_required_fields"/> @lang('profile.display_only_required_fields')
+                        </label>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
         <div class="panel-body">
             {!! BootForm::open($form) !!}
@@ -66,15 +68,16 @@
                 autoclose: true
             });
 
-
-            (function(el) {
-                function toggleOptionalFields() {
-                    $('[required_field=0]').toggle(!el.prop('checked'));
-                }
-                el.click(toggleOptionalFields);
-                el.prop('checked', {!! $all ? 'false' : 'true' !!});
-                toggleOptionalFields(false);
-            })($('#display_only_required_fields'));
+            @if($toggle_optional_fields_allowed)
+                (function(el) {
+                    function toggleOptionalFields() {
+                        $('[required_field=0]').toggle(!el.prop('checked'));
+                    }
+                    el.click(toggleOptionalFields);
+                    el.prop('checked', {!! $all ? 'false' : 'true' !!});
+                    toggleOptionalFields(false);
+                })($('#display_only_required_fields'));
+            @endif
 
 
 

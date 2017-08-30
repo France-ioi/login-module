@@ -40,25 +40,25 @@ class UserProfile {
 
         if($email = $request->user()->emails()->where('role', $role)->first()) {
             $errors = [];
-            if($verification_code = $request->input($role.'_email_verification_code')) {
+            if($email->email != $new_value) {
+                $email->email = $new_value;
+                $email->requireVerification();
+            } else if($verification_code = $request->input($role.'_email_verification_code')) {
                 if(!$email->verifyCode($verification_code)) {
                     $errors[$role.'_email_verification_code'] = trans('profile.email_verification_code_error');
                 }
-            }
-            if($new_value) {
-                $email->email = $new_value;
             }
             $email->save();
             return $errors;
         }
 
-        if($new_value) {
-            $email = new Email([
-                'email' => $new_value,
-                'role' => $role
-            ]);
-            $request->user()->emails()->save($email);
-        }
+
+        $email = new Email([
+            'email' => $new_value,
+            'role' => $role
+        ]);
+        $request->user()->emails()->save($email);
+        $email->requireVerification();
         return [];
     }
 

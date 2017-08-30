@@ -3,20 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\LoginModule\Migrators\Bebras\Migrator;
-use App\LoginModule\Migrators\ExternalDatabaseCommand;
-
+use App\LoginModule\Migrators\MigratorCommand;
 
 class BebrasImportCommand extends Command
 {
 
-    use ExternalDatabaseCommand;
+    use MigratorCommand;
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'bebras:import
         {host : bebras mysql host }
         {port : bebras mysql port }
@@ -25,32 +18,8 @@ class BebrasImportCommand extends Command
         {password : bebras mysql password }
     ';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Import accounts from bebras instance';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $migrator = new Migrator($this, $this->connectExternalDB());
-        $migrator->run();
-    }
+    protected $migrator_class = \App\LoginModule\Migrators\Bebras\Migrator::class;
 
 }

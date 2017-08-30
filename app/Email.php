@@ -27,14 +27,12 @@ class Email extends Model implements CanResetPasswordContract
     ];
 
 
-    protected static function boot() {
-        static::saving(function($model) {
-            if($model->isDirty('email')) {
-                $model->verified = false;
-                $model->code = str_random(10);
-                $model->notify(new EmailVerificationNotification());
-            }
-        });
+
+    public function requireVerification() {
+        $this->verified = false;
+        $this->code = str_random(10);
+        $this->save();
+        $this->notify(new EmailVerificationNotification());
     }
 
 

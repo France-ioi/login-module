@@ -39,4 +39,11 @@ class Schema {
         return $res;
     }
 
+    public function hasRequired() {
+        foreach($this->blocks as $block) {
+            if($block->required) return true;
+        }
+        return false;
+    }
+
 }

@@ -3,12 +3,12 @@ namespace App\LoginModule\Migrators\Bebras;
 
 
 use DB;
-use App\LoginModule\Migrators\Bebras\Data;
 use App\User;
 use App\Email;
 use App\ObsoletePassword;
 
-class Migrator {
+class Migrator
+{
 
     const CHUNK_SIZE = 100;
 

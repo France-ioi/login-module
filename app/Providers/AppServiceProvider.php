@@ -14,6 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Validator::extend('login', function ($attribute, $value, $parameters, $validator) {
+            return strpos($value, '_') === false;
+        });
         Validator::extend('value_different', function ($attribute, $value, $parameters, $validator) {
             $other = array_get($validator->getData(), $parameters[0]);
             return $value ? $value !== $other : true;

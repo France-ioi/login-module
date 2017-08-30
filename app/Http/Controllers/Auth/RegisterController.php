@@ -102,10 +102,12 @@ class RegisterController extends Controller
         $user = User::create($user_data);
 
         if(array_search('primary_email', $required) !== false) {
-            $user->emails()->save(new Email([
+            $email = new Email([
                 'role' => 'primary',
                 'email' => $data['primary_email']
-            ]));
+            ]);
+            $user->emails()->save($email);
+            $email->requireVerification();
         }
         if($badge_data = $this->context->badge()->restoreData()) {
             $user->badges()->save(new Badge([

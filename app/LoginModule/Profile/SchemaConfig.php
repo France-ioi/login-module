@@ -8,7 +8,7 @@ class SchemaConfig {
         return [
             'type' => 'text',
             'required' => 'required',
-            'valid' => 'min:3|unique:users'.($user ? ',login,'.$user->id : '')
+            'valid' => 'login|min:3|unique:users'.($user ? ',login,'.$user->id : '')
         ];
     }
 

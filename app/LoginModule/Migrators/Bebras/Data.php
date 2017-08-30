@@ -5,7 +5,8 @@ namespace App\LoginModule\Migrators\Bebras;
 use DB;
 use App\LoginModule\Migrators\Bebras\Mappers\UserMapper;
 
-class Data {
+class Data
+{
 
     public static function queryUsers($connection, $offset, $amount) {
         return $connection->table('user')
