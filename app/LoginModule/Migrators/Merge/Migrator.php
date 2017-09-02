@@ -10,7 +10,7 @@ use App\Badge;
 use App\AuthConnection;
 use App\OfficialDomain;
 use App\Client;
-
+use App\LoginModule\Migrators\MySqlInsertIgnoreGrammar;
 
 class Migrator
 {
@@ -74,47 +74,39 @@ class Migrator
     }
 
 
-    private function findExistingUsers($external_user) {
-        $q = false;
+    private function findSimilarUsers($external_user) {
+        $q = User::query();
         if(!is_null($external_user->login)) {
-            $q = User::where('login', $external_user->login);
-        } else {
-            $emails = $external_user->emails->pluck('email');
-            if(count($emails)) {
-                $q = User::whereHas('emails', function($sq) use ($emails) {
-                    $sq->whereIn('email', $emails);
-                });
-            }
+            $q->where('login', $external_user->login);
         }
-        return $q ? $q->with('emails')->get() : null;
+        $emails = $external_user->emails->pluck('email');
+        if(count($emails)) {
+            $q->orWhereHas('emails', function($sq) use ($emails) {
+                $sq->whereIn('email', $emails);
+            });
+        }
+        return $q->with('emails')->get();
     }
 
 
     private function saveUser($external_user) {
-        //dd($external_user->getAttributes());
-        $new_user = new User(collect($external_user->getAttributes())->except('id')->toArray());
+        $new_user = new User(collect($external_user->getAttributes())->except(['id', 'merge_group_id'])->toArray());
         $new_user->origin_instance_id = $this->origin_instance->id;
-        if($existing_users = $this->findExistingUsers($external_user)) {
 
+        $existing_users = $this->findSimilarUsers($external_user);
+        if(count($existing_users)) {
             $exist = $existing_users->search(function($user) {
                 return $user->origin_instance_id === $this->origin_instance->id;
             });
             if($exist !== false) {
                 return false;
             }
-
-            $primary_user = $existing_users->filter(function($user) {
-                return is_null($user->origin_instance_id);
-            })->shift();
-
-            if($primary_user) {
-                $new_user->primary_user_id = $primary_user->id;
-            }
+            $new_user->merge_group_id = Group::create($existing_users);
         }
         $new_user->save();
+        $existing_users->push($new_user);
         return $new_user;
     }
-
 
 
     private function saveEmails($new_user, $new_emails) {
@@ -152,6 +144,7 @@ class Migrator
 
 
     private function saveOAuth($new_user, $external_user, $clients_map) {
+        \DB::setQueryGrammar(new MySqlInsertIgnoreGrammar);
         foreach(['oauth_access_tokens', 'oauth_auth_codes'] as $table) {
             $rows = $this->connection->table($table)
                 ->select('*')
@@ -163,6 +156,8 @@ class Migrator
                     return (array) $item;
                 })
                 ->toArray();
+
+
             \DB::table($table)->insert($rows);
             unset($rows);
         }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\OAuthClient\Manager;
 use App\LoginModule\Platform\PlatformContext;
 
+
 class LoginController extends Controller
 {
     /*
@@ -48,6 +49,24 @@ class LoginController extends Controller
     }
 
 
+    public function attemptLogin(Request $request)
+    {
+        $credentials = $this->credentials($request);
+        $credentials['origin_instance_id'] = null;
+        $remember = $request->has('remember');
+        if($res = $this->guard()->attempt($credentials, $remember)) {
+            return $res;
+        }
+        \App\OriginInstance::get()->pluck('id')->map(function($id) use ($credentials, $remember) {
+            $credentials['origin_instance_id'] = $id;
+            if($res = $this->guard()->attempt($credentials, $remember)) {
+                return $res;
+            }
+        });
+        return false;
+    }
+
+
     protected function sendLoginResponse(Request $request) {
         $context_data = $this->context->getData();
         $request->session()->regenerate();
@@ -59,6 +78,7 @@ class LoginController extends Controller
 
 
     protected function authenticated(Request $request, $user) {
+        //check group here
         if($user->admin) {
             return redirect('/admin');
         }

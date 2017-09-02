@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\LoginModule\Profile\UserProfile;
 use App\LoginModule\Profile\Verification\Verificator;
-
+use App\LoginModule\Migrators\Merge\Group;
 
 class AuthorizationAvailable
 {
@@ -26,7 +26,8 @@ class AuthorizationAvailable
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if(!$this->profile->completed($request->user()) || $this->verificator->verify($request->user()) !== true) {
+        $user = $request->user();
+        if(!$this->profile->completed($user) || $this->verificator->verify($user) !== true || Group::revalidationRequired($user)) {
             return redirect('/profile');
         }
         // Temporarily disable

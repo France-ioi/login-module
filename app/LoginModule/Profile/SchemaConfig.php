@@ -2,13 +2,20 @@
 
 namespace App\LoginModule\Profile;
 
+use \Illuminate\Validation\Rule;
+
 class SchemaConfig {
 
     public static function login($user = null) {
+        $valid = ['login', 'min:3'];
+        if($user) {
+            $valid[] = Rule::unique('users')->ignore($user->id);
+        }
+
         return [
             'type' => 'text',
             'required' => 'required',
-            'valid' => 'login|min:3|unique:users'.($user ? ',login,'.$user->id : '')
+            'valid' => $valid
         ];
     }
 
@@ -75,10 +82,16 @@ class SchemaConfig {
 
 
     public static function primary_email($user = null) {
+        if($user && $user->primary_email_id) {
+            $valid = Rule::unique('emails', 'email')->ignore($user->primary_email_id);
+        } else {
+            $valid = Rule::unique('emails', 'email');
+        }
         return [
             'type' => 'email',
-            'required' => 'required|email',
-            'valid' => 'unique:emails,email'.($user && $user->primary_email_id ? ','.$user->primary_email_id : '')
+            'required' => ['required', 'email'],
+            'valid' => [$valid]
+            //'unique:emails,email'.($user && $user->primary_email_id ? ','.$user->primary_email_id : '')
         ];
     }
 
@@ -102,10 +115,19 @@ class SchemaConfig {
 
 
     public static function secondary_email($user = null) {
+        if($user && $user->primary_email_id) {
+            $valid = Rule::unique('emails', 'email')->ignore($user->primary_email_id);
+        } else {
+            $valid = Rule::unique('emails', 'email');
+        }
         return [
             'type' => 'email',
-            'required' => 'required|email',
-            'valid' => 'value_different:primary_email|unique:emails,email'.($user && $user->secondary_email_id ? ','.$user->secondary_email_id : '')
+            'required' => ['required', 'email'],
+            'valid' => [
+                'value_different:primary_email',
+                $valid
+                //'unique:emails,email'.($user && $user->secondary_email_id ? ','.$user->secondary_email_id : '')
+            ]
         ];
     }
 
@@ -202,7 +224,11 @@ class SchemaConfig {
         return [
             'type' => 'date',
             'required' => 'required',
-            'valid' => 'nullable|date_format:"Y-m-d"|before:today'
+            'valid' => [
+                'nullable',
+                'date_format:"Y-m-d"',
+                'before:today'
+            ]
         ];
     }
 
@@ -274,7 +300,11 @@ class SchemaConfig {
         return [
             'type' => 'text',
             'required' => 'required',
-            'valid' => 'nullable|integer|between:1900,'.date('Y')
+            'valid' => [
+                'nullable',
+                'integer',
+                'between:1900,'.date('Y')
+            ]
         ];
     }
 

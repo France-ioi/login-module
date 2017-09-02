@@ -26,25 +26,31 @@ Route::get('/lti', 'Auth\LTIController@login');
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);
 
 Route::group(['middleware' => ['auth']], function() {
-    Route::get('/badge', 'BadgeController@index');
-    Route::post('/badge/attach', 'BadgeController@attach');
-    Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
-    Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
-    Route::get('/profile', 'ProfileController@index');
-    Route::post('/profile', 'ProfileController@update');
-    Route::get('/official_domains', 'OfficialDomainsController@index');
-    Route::get('/timezone', 'TimezoneController@index');
+    Route::get('/merging_accounts', 'MergingAccountsController@index');
+    Route::post('/merging_accounts/accept', 'MergingAccountsController@acceptMerge');
+    Route::post('/merging_accounts/decline', 'MergingAccountsController@declineMerge');
 
-    Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
-    Route::post('/account/details', ['uses' => 'AccountController@updateAccount', 'as' => 'update_account']);
+    Route::group(['middleware' => ['merging_accounts']], function() {
+        Route::get('/badge', 'BadgeController@index');
+        Route::post('/badge/attach', 'BadgeController@attach');
+        Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
+        Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
+        Route::get('/profile', 'ProfileController@index');
+        Route::post('/profile', 'ProfileController@update');
+        Route::get('/official_domains', 'OfficialDomainsController@index');
+        Route::get('/timezone', 'TimezoneController@index');
 
-    Route::get('/reauthentication', 'Auth\ReauthenticationController@index');
-    Route::post('/reauthentication', 'Auth\ReauthenticationController@update');
-    Route::group(['middleware' => ['reauthentication']], function() {
-        Route::get('/auth_methods', 'AuthMethodsController@index');
-        Route::post('/auth_methods/badge_login_ability/{id}/{enabled}', 'AuthMethodsController@setBadgeLoginAbility');
-        Route::get('/password', 'PasswordController@index');
-        Route::post('/password', 'PasswordController@updatePassword');
+        Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
+        Route::post('/account/details', ['uses' => 'AccountController@updateAccount', 'as' => 'update_account']);
+
+        Route::get('/reauthentication', 'Auth\ReauthenticationController@index');
+        Route::post('/reauthentication', 'Auth\ReauthenticationController@update');
+        Route::group(['middleware' => ['reauthentication']], function() {
+            Route::get('/auth_methods', 'AuthMethodsController@index');
+            Route::post('/auth_methods/badge_login_ability/{id}/{enabled}', 'AuthMethodsController@setBadgeLoginAbility');
+            Route::get('/password', 'PasswordController@index');
+            Route::post('/password', 'PasswordController@updatePassword');
+        });
     });
 });
 

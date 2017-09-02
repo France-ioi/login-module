@@ -5,42 +5,45 @@ namespace App\LoginModule\AuthProviders;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use App\LoginModule\UserPassword;
-use Illuminate\Support\Facades\DB;
-use App\LoginModule\AuthConnector;
-use App\Email;
 use App\User;
-use App\AuthConnection;
-use App\ObsoletePassword;
+use App\LoginModule\Migrators\Merge\Group;
 
 class UserProvider extends EloquentUserProvider
 {
-
-
     public function retrieveByCredentials(array $credentials) {
          if(empty($credentials)) {
              return;
          }
-
          // for pwd restore, it available for users with emails only
          if(isset($credentials['email'])) {
              $credentials['login'] = $credentials['email'];
              unset($credentials['email']);
          }
 
-         $query = $this->createModel()->newQuery();
-
-         if(strpos($credentials['login'], '@') === false) {
-             $query->where('login', $credentials['login']);
-         } else if($email = \App\Email::where('email', $credentials['login'])->first()) {
-             $query->where('id', $email->user_id);
-         } else return;
-
+        $query = User::query();
+        if(strpos($credentials['login'], '@') === false) {
+            $query->where('login', $credentials['login']);
+        } else {
+            $query->whereHas('emails', function($q) use($credentials) {
+                $q->where('email', $credentials['login']);
+                if(isset($credentials['origin_instance_id'])) {
+                    $q->where('origin_instance_id', $credentials['origin_instance_id']);
+                 }
+            });
+        }
+         if(isset($credentials['origin_instance_id'])) {
+            $query->where('origin_instance_id', $credentials['origin_instance_id']);
+         }
         return $query->first();
     }
 
 
     public function validateCredentials(UserContract $user, array $credentials) {
-        return UserPassword::check($user, $credentials['password']);
+        if(UserPassword::check($user, $credentials['password'])) {
+            $user = Group::reduceByPassword($user, $credentials['password']);
+            return true;
+        }
+        return false;
     }
 
 }

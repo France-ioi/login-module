@@ -9,7 +9,11 @@ class OriginInstancesSeeder extends Seeder
     {
         \App\OriginInstance::create([
             'id' => 1,
-            'name' => 'Test login module instance (merge)'
+            'name' => 'Test login module instance A (merge)'
+        ]);
+        \App\OriginInstance::create([
+            'id' => 2,
+            'name' => 'Test login module instance B (merge)'
         ]);
     }
 

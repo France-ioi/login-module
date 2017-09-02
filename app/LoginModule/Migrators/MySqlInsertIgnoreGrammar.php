@@ -4,7 +4,7 @@ namespace App\LoginModule\Migrators;
 
 use Illuminate\Database\Query\Grammars\MySqlGrammar;
 
-class QueryGrammar extends MySqlGrammar
+class MySqlInsertIgnoreGrammar extends MySqlGrammar
 {
 
     public function compileInsert(\Illuminate\Database\Query\Builder $query, array $values) {

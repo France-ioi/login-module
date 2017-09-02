@@ -18,6 +18,7 @@ class UserProfile {
     public function update($request, $fillable_attributes) {
         $data = $request->only($fillable_attributes);
         $request->user()->fill($data);
+        $request->user()->login_revalidate_required = false;
         $request->user()->save();
 
         $errors = [];
@@ -48,6 +49,7 @@ class UserProfile {
                     $errors[$role.'_email_verification_code'] = trans('profile.email_verification_code_error');
                 }
             }
+            $email->email_revalidate_required = false;
             $email->save();
             return $errors;
         }

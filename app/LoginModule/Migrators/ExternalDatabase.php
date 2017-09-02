@@ -20,7 +20,6 @@ class ExternalDatabase
             ])
             ->toArray();
         config()->set('database.connections.'.self::CONNECTION_NAME, $arguments);
-        DB::connection(self::CONNECTION_NAME)->setQueryGrammar(new QueryGrammar());
         return DB::connection(self::CONNECTION_NAME);
     }
 

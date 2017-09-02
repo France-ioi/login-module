@@ -51,12 +51,12 @@ class SchemaBuilder {
         if($disabled) {
             return '';
         }
-        $rule = '';
+        $rule = [];
         if($required && isset($config['required']))  {
-            $rule .= $config['required'].'|';
+            $rule = array_merge($rule, (array) $config['required']);
         }
         if(isset($config['valid'])) {
-            $rule .= $config['valid'];
+            $rule = array_merge($rule, (array) $config['valid']);
         }
         return $rule;
     }

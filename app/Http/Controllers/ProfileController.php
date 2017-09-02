@@ -10,7 +10,7 @@ use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Profile\SchemaBuilder;
 use App\LoginModule\Profile\UserProfile;
 use App\LoginModule\Profile\Verification\Verificator;
-
+use App\LoginModule\Migrators\Merge\Group;
 
 class ProfileController extends Controller
 {
@@ -50,7 +50,8 @@ class ProfileController extends Controller
             'toggle_optional_fields_allowed' => $schema->hasRequired(),
             'pms_redirect' => count($disabled) > 0,
             'cancel_url' => $this->context->cancelUrl(),
-            'all' => $request->has('all')
+            'all' => $request->has('all'),
+            'revalidation_fields' => Group::getRevalidationFields($user)
         ]);
     }
 
@@ -63,7 +64,9 @@ class ProfileController extends Controller
             $this->disabledAttributes($user),
             true//$request->has('all')
         );
+        //\DB::connection()->enableQueryLog();
         $this->validate($request, $schema->rules());
+
         if(($result = $profile->update($request, $schema->fillableAttributes())) !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
