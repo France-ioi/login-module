@@ -66,8 +66,10 @@ class UserProfile {
 
 
     public function completed($user) {
+        $attributes = SchemaBuilder::availableAttributes();
         if($client = $this->context->client()) {
-            foreach($client->user_attributes as $attribute) {
+            $attributes = array_values(array_intersect($client->user_attributes, $attributes));
+            foreach($attributes as $attribute) {
                 $value = $user->getAttribute($attribute);
                 if(is_null($value) || $value == '') {
                     return false;
