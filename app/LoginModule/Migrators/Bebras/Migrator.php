@@ -41,6 +41,7 @@ class Migrator
 
 
     private function syncUser($user_data) {
+        unset($user_data['password']);
         if($user_data['login_module_id']) {
             $user = User::find($user_data['login_module_id']);
             if(!$user) {

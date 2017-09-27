@@ -49,6 +49,7 @@ class Migrator
 
 
     private function syncUser($user_data) {
+        unset($user_data['password']);
         if($user = User::find($user_data['id'])) {
             if($this->isLoginUsed($user_data['login'], $user->id)) {
                 return;
