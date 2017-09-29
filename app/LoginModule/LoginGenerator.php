@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\LoginModule;
 
 use App\User;
 
@@ -33,7 +33,7 @@ class LoginGenerator {
                 $iChar = rand(0, strlen($charsAllowed) - 1);
                 $login .= substr($charsAllowed, $iChar, 1);
             }
-            if(!User::where('name', $login)->first()) {
+            if(!User::where('login', $login)->first()) {
                 return $login;
             }
             error_log("Error, login ".$login." is already used");

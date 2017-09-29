@@ -1,6 +1,8 @@
 <?php
 /* Copyright (c) 2013 Association France-ioi, MIT License http://opensource.org/licenses/MIT */
 
+namespace App\LoginModule\Shared;
+
 use Namshi\JOSE\JWS;
 use Namshi\JOSE\SimpleJWS;
 
