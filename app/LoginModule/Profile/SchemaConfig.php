@@ -285,15 +285,14 @@ class SchemaConfig {
             'required' => 'required'
         ];
     }
-
+*/
 
     public static function student_id($user = null) {
         return [
             'type' => 'text',
             'required' => 'required'
-        ]
+        ];
     }
-    */
 
 
     public static function graduation_year($user = null) {
