@@ -1,8 +1,9 @@
 <?php
 /* Copyright (c) 2013 Association France-ioi, MIT License http://opensource.org/licenses/MIT */
 
+namespace App\LoginModule\Shared;
+
 use Jose\Factory\DecrypterFactory;
-use Jose\Factory\VerifierFactory;
 use Jose\Factory\JWKFactory;
 use Jose\Loader;
 use Jose\Object\JWKSet;
@@ -36,13 +37,11 @@ class TokenParser
     */
    public function decodeJWS($tokenString)
    {
-      $result = Loader::load($tokenString);
-      $verifier = VerifierFactory::createVerifier(['RS512']);
-      $valid_signature = $verifier->verifyWithKey($result, $this->key);
-      if (false === $valid_signature) {
-         throw new Exception('Signature cannot be validated, please check your SSL keys');
-      }
-      $datetime = new DateTime();
+      $loader = new Loader();
+      $key_set = new JWKSet();
+      $key_set->addKey($this->key);
+      $result = $loader->loadAndVerifySignatureUsingKeySet($tokenString, $key_set, ['RS512']);
+      $datetime = new \DateTime();
       $datetime->modify('+1 day');
       $tomorrow = $datetime->format('d-m-Y');
       $params = $result->getPayload();

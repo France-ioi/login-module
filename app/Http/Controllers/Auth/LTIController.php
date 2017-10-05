@@ -23,9 +23,9 @@ class LTIController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $platform = Client::where('name', $request->get('platform'))->first();
+        $platform = Client::where('name', $request->get('sPlatform'))->first();
         if(!$platform) {
-            die('cannot find platform named '.$request->get('platform'));
+            die('cannot find platform named '.$request->get('sPlatform'));
         }
 
         $parser = new TokenParser(
@@ -33,7 +33,7 @@ class LTIController extends Controller
             $platform->name,
             'public'
         );
-        $params = $parser->decodeJWS($request->get('token'));
+        $params = $parser->decodeJWS($request->get('sToken'));
         if(!isset($params['loginData'])) {
 	        die('cannot find loginData array in token');
         }
@@ -49,8 +49,8 @@ class LTIController extends Controller
     private function getRequestValidator($request) {
         return Validator::make($request->all(), [
             'redirectUrl' => 'required',
-            'token' => 'required',
-            'platform' => 'required'
+            'sToken' => 'required',
+            'sPlatform' => 'required'
         ]);
     }
 
@@ -72,16 +72,17 @@ class LTIController extends Controller
         $auth = [
             'uid' => $login_data['lti_consumer_key'].'::'.$login_data['lti_user_id'],
             'provider' => 'lti',
+            'access_token' => 'none',
             'email' => $login_data['email'],
-            'first_name' => $login_data['first_name'],
-            'last_name' => $login_data['last_name'],
+            'first_name' => $login_data['firstName'],
+            'last_name' => $login_data['lastName'],
             'login' => $login
         ];
         return AuthConnector::connect($auth);
     }
 
 
-    private function getUserToken($user, $generator) {
+    private function getUserToken($user) {
         $tokenParams = [
       	    'idUser' => $user['id'],
       	    'sLogin' => $user['login']
@@ -90,7 +91,7 @@ class LTIController extends Controller
             config('login_module.name'),
             Keys::getPrivate()
         );
-	    return $generator->generateToken($params);
+	    return $generator->generateToken($tokenParams);
     }
 
 

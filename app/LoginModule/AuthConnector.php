@@ -33,7 +33,7 @@ class AuthConnector
                 $user = Auth::user();
                 $user->auth_connections()->save($connection);
             } else {
-                if(isset($auth['email']) && Email::where('email', $auth['email'])->first()) {
+                if(isset($auth['email']) && $auth['email'] != '' && Email::where('email', $auth['email'])->first()) {
                     return false;
                 }
                 $user = User::create($auth);
