@@ -16,16 +16,20 @@ class ProfileController extends Controller
 {
 
     protected $context;
+    protected $schema_builder;
+    protected $profile;
 
 
-    public function __construct(PlatformContext $context, SchemaBuilder $schema_builder) {
+    public function __construct(PlatformContext $context, SchemaBuilder $schema_builder, UserProfile $profile) {
         $this->context = $context;
         $this->schema_builder = $schema_builder;
+        $this->profile = $profile;
     }
 
 
     public function index(Request $request) {
-        $user = auth()->user();
+        $user = $this->profile->getUserBeforeEditor();
+
         if($badge_data = $this->context->badge()->restoreData()) {
             $user->fill($badge_data['user']);
         }
@@ -44,7 +48,8 @@ class ProfileController extends Controller
             'form' => [
                 'model' => $user,
                 'url' => '/profile',
-                'method' => 'post'
+                'method' => 'post',
+                'files' => true
             ],
             'schema' => $schema,
             'toggle_optional_fields_allowed' => $schema->hasRequired(),
@@ -56,7 +61,7 @@ class ProfileController extends Controller
     }
 
 
-    public function update(Request $request, UserProfile $profile, Verificator $verificator) {
+    public function update(Request $request, Verificator $verificator) {
         $user = $request->user();
         $schema = $this->schema_builder->build(
             $user,
@@ -67,7 +72,7 @@ class ProfileController extends Controller
         //\DB::connection()->enableQueryLog();
         $this->validate($request, $schema->rules());
 
-        if(($result = $profile->update($request, $schema->fillableAttributes())) !== true) {
+        if(($result = $this->profile->update($request, $schema->fillableAttributes())) !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
         if(($result = $verificator->verify($user)) !== true) {

@@ -146,6 +146,11 @@
             emails.refresh();
 
 
+            $('#graduation_grade').change(function() {
+                var grade = $(this).val();
+                var year = $('#graduation_year').val();
+                $('#block_graduation_year').toggle((!grade && year) || grade == '-2');
+            }).trigger('change');
 
 
             function updateTeacherDomainBlock() {

@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\LoginModule\Platform\BadgeApi;
 use App\LoginModule\Profile\Verification\VerifiableUser;
+use Carbon\Carbon;
+use App\LoginModule\Graduation;
 
 class User extends Authenticatable
 {
@@ -34,9 +36,10 @@ class User extends Authenticatable
         'ministry_of_education_fr',
         'birthday',
         'presentation',
-        'picture',
         'gender',
         'graduation_year',
+        'graduation_grade',
+        'graduation_updated_at',
         'website',
         'last_login',
         'ip',
@@ -55,7 +58,8 @@ class User extends Authenticatable
         'primary_email',
         'secondary_email',
         'primary_email_verified',
-        'secondary_email_verified'
+        'secondary_email_verified',
+        'has_picture'
     ];
 
     protected $casts = [
@@ -65,7 +69,8 @@ class User extends Authenticatable
         'logout_config' => 'array',
         'real_name_visible' => 'boolean',
         'regular_password' => 'boolean',
-        'teacher_verified' => 'boolean'
+        'teacher_verified' => 'boolean',
+        'graduation_grade_expire_at' => 'date'
     ];
 
 
@@ -73,6 +78,17 @@ class User extends Authenticatable
         static::saving(function($model) {
             if(!is_null($model->password)) {
                 $model->regular_password = true;
+            }
+            if($model->isDirty('graduation_grade')) {
+                if($model->graduation_grade == -1) {
+                    $model->graduation_grade_expire_at = null;
+                    $model->graduation_year = null;
+                } else if($model->graduation_grade == -1) {
+                    $model->graduation_grade_expire_at = null;
+                } else if($year = Graduation::year($model)) {
+                    $model->graduation_grade_expire_at = Graduation::gradeExpirationDate($model);
+                    $model->graduation_year = $year;
+                }
             }
         });
 
@@ -145,8 +161,19 @@ class User extends Authenticatable
         return $this->hasMany('\Laravel\Passport\Token');
     }
 
+
     public function originInstance() {
         return $this->belongsTo('App\OriginInstance');
+    }
+
+
+    public function getHasPictureAttribute() {
+        return (bool) $this->attributes['picture'];
+    }
+
+
+    public function getPictureAttribute() {
+        return $this->attributes['picture'] ? $this->attributes['picture'] : asset(config('ui.profile_picture.default'));
     }
 
 }

@@ -37,6 +37,8 @@ return [
     ],
     'presentation'  => 'Presentation',
     'website' => 'Website',
+    'picture' => 'Picture',
+    'graduation_grade' => 'Grade for the school year between :year_begin and :year_end',
     'success' => 'Profile updated.',
 
     'primary_email_verification_code' => 'Primary email verification code',

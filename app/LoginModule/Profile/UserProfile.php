@@ -4,6 +4,7 @@ namespace App\LoginModule\Profile;
 
 use App\LoginModule\Platform\PlatformContext;
 use App\Email;
+use Carbon\Carbon;
 
 class UserProfile {
 
@@ -20,6 +21,10 @@ class UserProfile {
         $request->user()->fill($data);
         $request->user()->login_revalidate_required = false;
         $request->user()->save();
+
+        if($request->hasFile('picture')) {
+            $this->storePicture($request->user(), $request->file('picture'));
+        }
 
         $errors = [];
         foreach(['primary', 'secondary'] as $role) {
@@ -65,6 +70,22 @@ class UserProfile {
     }
 
 
+    private function storePicture($user, $file) {
+        $img = \Image::make($file);
+        $pp = config('ui.profile_picture');
+        $img->resize($pp['width'], $pp['height'], function($constraint) {
+            $constraint->aspectRatio();
+        });
+        $resource = $img->stream()->detach();
+        $path = 'profile_pictures/'.$user->id.'.'.$file->extension();
+        if(\Storage::put($path, $resource)) {
+            $url = \Storage::url($path);
+            $user->picture = asset($path);
+        }
+        $user->save();
+    }
+
+
     public function completed($user) {
         $attributes = SchemaBuilder::availableAttributes();
         if($client = $this->context->client()) {
@@ -77,6 +98,18 @@ class UserProfile {
             }
         }
         return true;
+    }
+
+
+    public function getUserBeforeEditor() {
+        $user = request()->user();
+        if($user->graduation_grade >= 0 &&
+            !is_null($user->graduation_grade_expire_at) &&
+            Carbon::now()->gte($user->graduation_grade_expire_at)) {
+            $user->graduation_grade = null;
+            $user->save();
+        }
+        return $user;
     }
 
 }

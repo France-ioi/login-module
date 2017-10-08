@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => 'local',
+    'default' => 'public',
 
     /*
     |--------------------------------------------------------------------------
@@ -45,14 +45,14 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app')
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
+            'root' => public_path(),
+            'visib ility' => 'public',
+            'url' => env('APP_URL')
         ],
 
         's3' => [
@@ -60,7 +60,7 @@ return [
             'key' => env('AWS_KEY'),
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
-            'bucket' => env('AWS_BUCKET'),
+            'bucket' => env('AWS_BUCKET')
         ],
 
     ],

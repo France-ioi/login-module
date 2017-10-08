@@ -84,6 +84,26 @@ class ProfileFormElements {
     }
 
 
+    public static function picture($block, $label) {
+        $opts = [
+            'accept' => '.gif,.jpg,.png'
+        ];
+        if($block->disabled) {
+            $opts[] = 'disabled';
+        }
+        return
+            '<div>'.
+                (\Auth::user()->hasPicture ? '<img src='.\Auth::user()->picture.'\>' : '').
+                BootForm::file(
+                    $block->name,
+                    $label,
+                    $opts
+                ).
+            '</div>';
+    }
+
+
+
     public static function dummy($block, $label) {
         return '';
     }

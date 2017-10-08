@@ -37,6 +37,7 @@ return [
     ],
     'presentation'  => 'Präsentation',
     'website' => 'Website',
+    'picture' => 'Foto',
     'success' => 'Profil wurde geändert.',
 
     'pms_redirect_msg' => 'Bitte gehe zum PMS, um dein Profil zu bearbeiten. Falls du noch nicht für den JwInf angemeldet bist, kannst du das unter „Wettbewerbe“ gleich mit erledigen. Speichere die Änderungen und klicke dann auf „Zurück zum JwInf“.',
