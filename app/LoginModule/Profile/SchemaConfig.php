@@ -318,7 +318,10 @@ class SchemaConfig {
             'type' => 'select',
             'options' => ['' => '...'] + $options,
             //'required' => 'required',
-            'valid' => 'in:'.implode(',', array_keys($options)),
+            'valid' => [
+                'nullable',
+                'in:'.implode(',', array_keys($options))
+            ],
             'label' => trans('profile.graduation_grade', [
                 'year_begin' => $date->year - 1,
                 'year_end' => $date->year
