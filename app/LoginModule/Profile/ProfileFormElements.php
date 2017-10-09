@@ -85,8 +85,10 @@ class ProfileFormElements {
 
 
     public static function picture($block, $label) {
+        $max_file_size = config('ui.profile_picture.max_file_size');
         $opts = [
-            'accept' => '.gif,.jpg,.png'
+            'accept' => '.gif,.jpg,.png',
+            'max_file_size' => $max_file_size
         ];
         if($block->disabled) {
             $opts[] = 'disabled';
@@ -97,7 +99,6 @@ class ProfileFormElements {
         } else {
             $picture = '';
         }
-
         return
             '<div>'.
                 $picture.
@@ -106,6 +107,9 @@ class ProfileFormElements {
                     $label,
                     $opts
                 ).
+                '<span class="help-block hidden file_size_error">'.
+                    trans('profile.max_file_size_error', ['size' => $max_file_size]).
+                '</span>'.
             '</div>';
     }
 

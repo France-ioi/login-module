@@ -49,7 +49,8 @@ class ProfileController extends Controller
                 'model' => $user,
                 'url' => '/profile',
                 'method' => 'post',
-                'files' => true
+                'files' => true,
+                'id' => 'profile'
             ],
             'schema' => $schema,
             'toggle_optional_fields_allowed' => $schema->hasRequired(),

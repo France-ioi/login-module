@@ -38,6 +38,7 @@ return [
     'presentation'  => 'Presentation',
     'website' => 'Website',
     'picture' => 'Picture',
+    'max_file_size_error' => 'The file size exceeds the limit allowed and cannot be saved. Max file size is :sizeMb',
     'graduation_grade' => 'Grade for the school year between :year_begin and :year_end',
     'success' => 'Profile updated.',
 

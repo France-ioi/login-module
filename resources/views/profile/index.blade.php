@@ -72,9 +72,46 @@
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function() {
-            $('form').submit(function() {
-                $(document.body).append($('<div class="overlay-spinner">'));
-            })
+            var form = {
+                submit_available: true,
+
+                setSubmitAvailable: function(v) {
+                    this.submit_available = v;
+                    this.el.find('[type=submit]').prop('disabled', !this.submit_available);
+                },
+
+                onSubmit: function(e) {
+                    if(this.submit_available) {
+                        $(document.body).append($('<div class="overlay-spinner">'));
+                    } else {
+                        e.preventDefault();
+                    }
+                },
+
+                init: function() {
+                    this.el = $('form#profile');
+                    this.el.submit(this.onSubmit.bind(this));
+                }
+            }
+            form.init();
+
+
+
+            $('#picture').on('change', function(e) {
+                var max_file_size = parseFloat($(this).attr('max_file_size')) || 0;
+                if(!max_file_size) return;
+                var allowed_size = true;
+                if(e.currentTarget.files.length) {
+                    var size = (e.currentTarget.files[0].size/1048576).toFixed(2);
+                    if(size > max_file_size) {
+                        allowed_size = false;
+                    }
+                }
+                form.setSubmitAvailable(allowed_size);
+                var error = $('#block_picture').find('span.file_size_error').toggleClass('hidden', allowed_size);
+                $(this).parent().append(error);
+                $(this).closest('.form-group').toggleClass('has-error', !allowed_size);
+            });
 
 
             $('#birthday').datepicker({
