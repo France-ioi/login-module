@@ -335,7 +335,8 @@ class SchemaConfig {
             'type' => 'picture',
             //'required' => 'required',
             'valid' => [
-                'image'
+                'image',
+                'max:'.(1024*config('ui.profile_picture.max_file_size'))
             ]
         ];
     }

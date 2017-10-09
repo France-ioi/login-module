@@ -96,7 +96,6 @@
             form.init();
 
 
-
             $('#picture').on('change', function(e) {
                 var max_file_size = parseFloat($(this).attr('max_file_size')) || 0;
                 if(!max_file_size) return;

@@ -108,7 +108,7 @@ class ProfileFormElements {
                     $opts
                 ).
                 '<span class="help-block hidden file_size_error">'.
-                    trans('profile.max_file_size_error', ['size' => $max_file_size]).
+                    trans('profile.picture_size_error', ['size' => $max_file_size]).
                 '</span>'.
             '</div>';
     }
