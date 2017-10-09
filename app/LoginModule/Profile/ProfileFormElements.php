@@ -91,9 +91,16 @@ class ProfileFormElements {
         if($block->disabled) {
             $opts[] = 'disabled';
         }
+        if(request()->user()->hasPicture) {
+            $url = request()->user()->picture.'?t='.strtotime(request()->user()->updated_at);
+            $picture = '<img src='.$url.'\>';
+        } else {
+            $picture = '';
+        }
+
         return
             '<div>'.
-                (\Auth::user()->hasPicture ? '<img src='.\Auth::user()->picture.'\>' : '').
+                $picture.
                 BootForm::file(
                     $block->name,
                     $label,

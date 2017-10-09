@@ -72,6 +72,11 @@
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function() {
+            $('form').submit(function() {
+                $(document.body).append($('<div class="overlay-spinner">'));
+            })
+
+
             $('#birthday').datepicker({
                 format: 'yyyy-mm-dd',
                 endDate: new Date(),
