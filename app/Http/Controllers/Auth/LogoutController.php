@@ -77,7 +77,7 @@ class LogoutController extends Controller
 
 
     private function getNextActiveConnection() {
-        $logout_providers = Session::get('logout_providers');
+        $logout_providers = session()->get('logout_providers');
         if(!is_array($logout_providers)) return false;
         return Auth::user()->auth_connections()->where('active', true)->whereIn('provider', $logout_providers)->first();
     }
