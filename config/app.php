@@ -242,7 +242,8 @@ return [
         'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
         'ProfileFormRenderer' => App\LoginModule\Profile\ProfileFormRenderer::class,
         'EmailMasker' => App\Helpers\EmailMasker::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'PlatformHelper' => App\LoginModule\Platform\PlatformHelper::class
     ],
 
 ];

@@ -39,6 +39,14 @@
                             <a href="/logout" className="">Logout</a>
                         </li>
                     </ul>
+
+                @if(PlatformHelper::cancelUrl())
+                    <ul class="nav pull-left">
+                        <li>
+                            <a href="{{ PlatformHelper::cancelUrl() }}">Close</a>
+                        </li>
+                        @endif
+                    </ul>
                 @endif
             </div>
         </div>
