@@ -7,7 +7,7 @@
             {!! BootForm::open(['route' => 'login']) !!}
                 {!! BootForm::text('login', trans('auth.login_or_email')) !!}
                 {!! BootForm::password('password', trans('auth.pwd')) !!}
-                {!! BootForm::checkbox('remember_me', trans('auth.remember_me')) !!}
+                {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
                 {!! BootForm::submit(trans('auth.btn_login')) !!}
                 <hr/>
                 <div class="form-group">
