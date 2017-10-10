@@ -120,7 +120,7 @@ class Migrator
 
             $facebook_prefix = 'http://www.facebook.com/';
             if(strpos($user_data['uid'], $facebook_prefix) !== false) {
-                $connections['facebook'] = str_replace($user_data['uid'], $facebook_prefix, '');
+                $connections['facebook'] = str_replace($facebook_prefix, '', $user_data['uid']);
             } else {
                 $connections['google'] = $user_data['uid'];
             }
@@ -133,8 +133,10 @@ class Migrator
             }
         }
 
-        foreach($user->auth_connections as $auth_connection) {
-            if(isset($connections[$auth_connection->provider])) {
+        foreach($user->auth_connections as $exists_connection) {
+            if(isset($connections[$exists_connection->provider])) {
+                $exists_connection->uid = $connections[$exists_connection->provider];
+                $exists_connection->save();
                 unset($connections[$auth_connection->provider]);
             }
         }
