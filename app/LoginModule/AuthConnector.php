@@ -19,6 +19,9 @@ class AuthConnector
     static function connect($auth) {
         if($connection = self::findConnection($auth)) {
             $user = $connection->user;
+            if(Auth::check() && Auth::user()->id != $user->id) {
+                return false;
+            }
             Auth::login($user);
             $connection->active = true;
             $connection->refresh_token = isset($auth['refresh_token']) ? $auth['refresh_token'] : null;

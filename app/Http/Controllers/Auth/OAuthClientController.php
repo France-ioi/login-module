@@ -27,6 +27,7 @@ class OAuthClientController extends Controller
 
 
     public function callback($provider, Request $request) {
+        //TODO refactiring: return redirect from AuthConnector::connect
         $user_was_logged = \Auth::check();
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
