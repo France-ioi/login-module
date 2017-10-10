@@ -20,6 +20,10 @@ class AuthConnector
         if($connection = self::findConnection($auth)) {
             $user = $connection->user;
             if(Auth::check() && Auth::user()->id != $user->id) {
+                session()->put('auth_connection_exists', [
+                    'email' => $auth['email'],
+                    'login' => $user->login
+                ]);
                 return false;
             }
             Auth::login($user);

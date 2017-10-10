@@ -27,7 +27,7 @@ class OAuthClientController extends Controller
 
 
     public function callback($provider, Request $request) {
-        //TODO refactiring: return redirect from AuthConnector::connect
+        //TODO refactoring: return redirect from AuthConnector::connect
         $user_was_logged = \Auth::check();
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
@@ -38,7 +38,6 @@ class OAuthClientController extends Controller
                 }
                 return redirect()->intended('/auth_methods');
             }
-            Session::put('auth_connection', $auth);
             return redirect('/oauth_client/email_exists');
         }
         return redirect('/session_expired');
@@ -51,8 +50,9 @@ class OAuthClientController extends Controller
 
 
     public function emailExists() {
-        if($auth_connection = Session::pull('auth_connection')) {
-            return view('oauth_client.email_exists', $auth_connection);
+        if($data = session()->pull('auth_connection_exists')) {
+            $data['login'] = $data['login'] ? $data['login'] : trans('auth_connections.email_exists_login_empty');
+            return view('oauth_client.email_exists', $data);
         }
         return redirect()->route('login');
     }

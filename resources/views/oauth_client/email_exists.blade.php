@@ -2,7 +2,10 @@
 
 @section('content')
     <div class="alert alert-info">
-        <strong>{{ $email }}</strong> already exists in database, please login then add this authentication method.
+        <strong>{{ $email }}</strong> @lang('auth_connections.email_exists_message1')
+        <strong>{{ $login }}</strong>@lang('auth_connections.email_exists_message2')
     </div>
-    <a href="{{ route('login') }}" class="btn btn-primary">Continue</a>
+    <a href="{{ route('login') }}" class="btn btn-primary">
+        @lang('ui.continue')
+    </a>
 @endsection
