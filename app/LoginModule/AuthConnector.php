@@ -41,7 +41,7 @@ class AuthConnector
                 $user->auth_connections()->save($connection);
             } else {
                 if(isset($auth['email']) && $auth['email'] != '' && Email::where('email', $auth['email'])->first()) {
-                    return false;
+                    abort(403, 'Provided email exists but not linked with provided UID.');
                 }
                 $user = User::create($auth);
                 $user->auth_connections()->save($connection);
