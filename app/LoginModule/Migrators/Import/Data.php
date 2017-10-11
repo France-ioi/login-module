@@ -8,8 +8,6 @@ use App\LoginModule\Migrators\Import\Mappers\BadgeMapper;
 class Data
 {
 
-    const CONNECTION = 'old';
-
     public static function queryUsers($connection, $offset, $amount) {
         return $connection->table('users')
             ->select('*')
