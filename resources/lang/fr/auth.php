@@ -25,6 +25,7 @@ return [
     'name' => 'Nom',
 
     'login_header' => 'Connexion',
+    'login_password' => 'Connexion par mot de passe',
     'btn_login' => 'Se connecter',
     'link_reset_pwd' => 'Mot de passe oublié ?',
     'link_register' => 'Créer un compte',

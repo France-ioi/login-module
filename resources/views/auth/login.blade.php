@@ -1,7 +1,7 @@
 @extends('layouts.popup')
 
 @push('login')
-    <a class="btn btn-block btn-default" href="{{ url('/login_email') }}">Login with password</a>
+    <a class="btn btn-block btn-default" href="{{ url('/login_email') }}">@lang('auth.login_password')</a>
 @endpush
 
 @push('google')

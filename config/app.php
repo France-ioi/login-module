@@ -94,7 +94,7 @@ return [
 
     'locales' => [
         'en' => 'English',
-        'fr' => 'French',
+        'fr' => 'Français',
         'de' => 'Deutsch',
         'ru' => 'Русский'
     ],
