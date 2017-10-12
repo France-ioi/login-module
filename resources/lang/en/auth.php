@@ -25,6 +25,7 @@ return [
     'name' => 'Name',
 
     'login_header' => 'Login',
+    'login_password' => 'Login with password',
     'btn_login' => 'Login',
     'link_reset_pwd' => 'Forgot Your Password?',
     'link_register' => 'Register account',
