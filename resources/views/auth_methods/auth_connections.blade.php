@@ -4,6 +4,15 @@
     </div>
 
     <ul class="list-group">
+        <li class="list-group-item">
+            {{ trans('auth_methods.password') }}
+            @if($has_password)
+                <span class="label label-success">@lang('auth_methods.active')</span>
+            @endif
+            <a class="btn btn-xs btn-primary pull-right" href="/password">
+                @lang($has_password ? 'auth_methods.btn_change' : 'auth_methods.btn_add')
+            </a>
+        </li>
         @foreach($providers as $provider)
             <li class="list-group-item">
                 {{ trans('auth_connections')[$provider] }}
@@ -21,14 +30,5 @@
                 @endif
             </li>
         @endforeach
-        <li class="list-group-item">
-            {{ trans('auth_methods.password') }}
-            @if($has_password)
-                <span class="label label-success">@lang('auth_methods.active')</span>
-            @endif
-            <a class="btn btn-xs btn-primary pull-right" href="/password">
-                @lang($has_password ? 'auth_methods.btn_change' : 'auth_methods.btn_add')
-            </a>
-        </li>
     </ul>
 </div>
