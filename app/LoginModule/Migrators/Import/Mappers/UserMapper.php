@@ -22,7 +22,6 @@ class UserMapper {
             'sTimeZone' => 'timezone',
             'sLandLineNumber' => 'primary_phone',
             'sCellPhoneNumber' => 'secondary_phone',
-            'sDefaultLanguage' => 'language',
             'sFreeText' => 'presentation',
             'sWebSite' => 'website',
             'sLastIP' => 'ip',
@@ -36,6 +35,8 @@ class UserMapper {
             $res[$v2] = isset($row->$v1) ? $row->$v1 : null;
         }
         $res['admin'] = $row->bIsAdmin == 1;
+        $res['language'] = $row->sDefaultLanguage ? strtolower($row->sDefaultLanguage) : null;
+        $res['real_name_visible'] = $row->bPublicFirstName && $row->bPublicLastName;
         if($row->bIsTeacher == 1) {
             $res['role'] = 'teacher';
         }
@@ -45,7 +46,6 @@ class UserMapper {
         } elseif ($row->sSex == 'Female') {
             $res['gender'] = 'f';
         }
-        $res['real_name_visible'] = $row->bPublicFirstName && $row->bPublicLastName;
         if($res['birthday'] == '0000-00-00') {
             $res['birthday'] = null;
         }
