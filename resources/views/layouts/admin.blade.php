@@ -5,24 +5,24 @@
         <div class="container">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="{{ url('/admin') }}">Dashboard</a>
+                    <a href="{{ url('/admin') }}">@lang('admin.dashboard')</a>
                 </li>
                 <li>
-                    <a href="{{ url('/admin/users') }}">Users</a>
+                    <a href="{{ url('/admin/users') }}">@lang('admin.users')</a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.clients.index') }}">Clients</a>
+                    <a href="{{ route('admin.clients.index') }}">@lang('admin.clients')</a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.official_domains.index') }}">Official domains</a>
+                    <a href="{{ route('admin.official_domains.index') }}">@lang('admin.official_domains')</a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.origin_instances.index') }}">LM instances</a>
+                    <a href="{{ route('admin.origin_instances.index') }}">@lang('admin.origin_instances')</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="{{ url('/logout') }}">Logout</a>
+                    <a href="{{ url('/logout') }}">@lang('admin.logout')</a>
                 </li>
             </ul>
         </div>

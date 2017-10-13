@@ -38,7 +38,7 @@ return [
     'presentation'  => 'Présentation',
     'website' => 'Site Internet',
     'picture' => 'Image de profil',
-    'picture_size_error' => "L'image de profil ne doit pas peser plus de :size megabyte(s).",
+    'picture_size_error' => "L'image de profil ne doit pas peser plus de :size mégaoctet(s).",
     'graduation_grade' => "L'année du bac doit être comprise entre :year_begin et :year_end",
     'success' => 'Profil mis à jour.',
 
