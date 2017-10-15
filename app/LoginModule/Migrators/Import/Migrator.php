@@ -126,10 +126,10 @@ class Migrator
             }
         }
         foreach($auths as $auth) {
-            if($auth['idAuth'] == 5) {
-                //$connections['pms'] = $auth['authStr'];
-            } elseif (strpos($auth['authStr'], '::') !== false) {
-                $connections['lti'] = $auth['authStr'];
+            if($auth->idAuth == 5) {
+                $connections['pms'] = $auth->authStr;
+            } elseif (strpos($auth->authStr, '::') !== false) {
+                $connections['lti'] = $auth->authStr;
             }
         }
 
@@ -137,7 +137,7 @@ class Migrator
             if(isset($connections[$exists_connection->provider])) {
                 $exists_connection->uid = $connections[$exists_connection->provider];
                 $exists_connection->save();
-                unset($connections[$auth_connection->provider]);
+                unset($connections[$exists_connection->provider]);
             }
         }
 

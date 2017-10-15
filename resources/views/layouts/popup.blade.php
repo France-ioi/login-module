@@ -36,14 +36,14 @@
                 @if(Auth::check())
                     <ul class="nav pull-left">
                         <li>
-                            <a href="/logout" className="">Logout</a>
+                            <a href="/logout" className="">@lang('admin.logout')</a>
                         </li>
                     </ul>
 
                 @if(PlatformHelper::cancelUrl())
                     <ul class="nav pull-left">
                         <li>
-                            <a href="{{ PlatformHelper::cancelUrl() }}">Close</a>
+                            <a href="{{ PlatformHelper::cancelUrl() }}">@lang('ui.close')</a>
                         </li>
                         @endif
                     </ul>
