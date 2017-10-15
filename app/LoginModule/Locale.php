@@ -33,6 +33,7 @@ class Locale
 
 
     public static function validate($locale) {
+        $locale = strtolower($locale);
         $locales = config('app.locales');
         return isset($locales[$locale]) ? $locale : config('app.locale');
     }
