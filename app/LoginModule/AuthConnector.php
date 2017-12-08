@@ -42,14 +42,16 @@ class AuthConnector
             } else {
                 if(isset($auth['email']) && $auth['email'] != '') {
                     $email = Email::where('email', $auth['email'])->first();
-                    if($email->user->auth_connections()->where('provider', $auth['provider'])->first()) {
-                        abort(403, 'Provided email exists but not linked with provided UID.');
+                    if($email) {
+                        if($email->user->auth_connections()->where('provider', $auth['provider'])->first()) {
+                            abort(403, 'Provided email exists but not linked with provided UID.');
+                        }
+                        session()->put('auth_connection_exists', [
+                            'email' => $auth['email'],
+                            'login' => $email->user->login
+                        ]);
+                        return false;
                     }
-                    session()->put('auth_connection_exists', [
-                        'email' => $auth['email'],
-                        'login' => $email->user->login
-                    ]);
-                    return false;
                 }
                 $user = User::create($auth);
                 $user->auth_connections()->save($connection);
