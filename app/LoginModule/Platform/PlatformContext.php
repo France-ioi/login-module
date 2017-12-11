@@ -31,7 +31,7 @@ class PlatformContext
                 'cancelable' => !$authorization
             ]);
         } else if(!$request->server('HTTP_REFERER')) {
-            $this->state->flush();
+            //$this->state->flush();
         }
     }
 

@@ -68,9 +68,10 @@ class ProfileController extends Controller
             $user,
             $this->requiredAttributes(),
             $this->disabledAttributes($user),
-            true//$request->has('all')
+            $request->has('all')
         );
         //\DB::connection()->enableQueryLog();
+        //dd($schema->rules());
         $this->validate($request, $schema->rules());
 
         if(($result = $this->profile->update($request, $schema->fillableAttributes())) !== true) {
