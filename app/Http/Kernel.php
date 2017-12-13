@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'authorization_available' => \App\Http\Middleware\AuthorizationAvailable::class,
         'auto_authorization' => \App\Http\Middleware\AutoAuthorization::class,
         'merging_accounts' => \App\Http\Middleware\MergingAccounts::class,
+        'platform_api' => \App\Http\Middleware\PlatformAPI::class
     ];
 }

@@ -26,7 +26,8 @@ class AutoAuthorization
     {
         if($client = $this->context->client()) {
             $pms_active = (bool) Auth::guard($guard)->user()->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
-            if($client->autoapprove_authorization && $pms_active) {
+            $generated_account = Auth::guard($guard)->user()->creator_client_id == $client->id;
+            if(($client->autoapprove_authorization && $pms_active) || $generated_account) {
                 $url = str_replace('/oauth/authorize?', '/oauth/auto_authorize?', $request->fullUrl());
                 return redirect($url);
             }
