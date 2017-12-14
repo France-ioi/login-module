@@ -13,7 +13,7 @@ class AccountsManagerController extends Controller
     public function create(Request $request) {
         $res = [];
         for($i=0; $i<$request->get('amount'); $i++) {
-            $password = $this->generatePassword();
+            $password = $this->randomStr();
             $login = $this->generateLogin($request->get('prefix'));
             $user = User::create([
                 'login' => $login,
@@ -41,14 +41,15 @@ class AccountsManagerController extends Controller
 
     private function generateLogin($prefix) {
         do {
-            $login = uniqid($prefix.'_');
+            $login = $prefix.'_'.$this->randomStr();
         } while (User::where('login', $login)->first());
         return $login;
     }
 
 
-    private function generatePassword() {
-        return uniqid();
+    private function randomStr($l = 10) {
+        $c = '0123456789abcdefghijklmnopqrstuvwxyz';
+        return substr(str_shuffle(str_repeat($c, 5)), 0, $l);
     }
 
 

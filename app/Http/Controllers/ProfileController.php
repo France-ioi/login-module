@@ -33,11 +33,15 @@ class ProfileController extends Controller
         if($badge_data = $this->context->badge()->restoreData()) {
             $user->fill($badge_data['user']);
         }
-        if(count($disabled = $this->disabledAttributes($user)) > 0) {
+
+        $pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
+        if($pms_user) {
             if($redirect = $request->get('redirect_uri')) {
                 $request->session()->put('url.intended', $request->get('redirect_uri'));
             }
         };
+        $disabled = $this->disabledAttributes($pms_user, $user->creator_client_id);
+
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
@@ -54,7 +58,7 @@ class ProfileController extends Controller
             ],
             'schema' => $schema,
             'toggle_optional_fields_allowed' => $schema->hasRequired(),
-            'pms_redirect' => count($disabled) > 0,
+            'pms_redirect' => $pms_user,
             'cancel_url' => $this->context->cancelUrl(),
             'all' => $request->has('all'),
             'revalidation_fields' => Group::getRevalidationFields($user)
@@ -64,10 +68,11 @@ class ProfileController extends Controller
 
     public function update(Request $request, Verificator $verificator) {
         $user = $request->user();
+        $pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
-            $this->disabledAttributes($user),
+            $this->disabledAttributes($pms_user, $user->creator_client_id),
             $request->has('all')
         );
         //\DB::connection()->enableQueryLog();
@@ -94,9 +99,12 @@ class ProfileController extends Controller
     }
 
 
-    private function disabledAttributes($user) {
-        if($user->auth_connections()->where('provider', 'pms')->where('active', '1')->first()) {
+    private function disabledAttributes($pms_user, $generated_user) {
+        if($pms_user) {
             return Manager::provider('pms')->getFixedFields();
+        }
+        if($generated_user) {
+            return ['login'];
         }
         return [];
     }
