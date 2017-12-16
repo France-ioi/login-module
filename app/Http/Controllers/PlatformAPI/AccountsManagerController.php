@@ -32,8 +32,10 @@ class AccountsManagerController extends Controller
 
 
     public function delete(Request $request) {
-        $prefix = $request->get('prefix').'\_%';
-        User::where('login', 'like', $prefix)->where('creator_client_id', $request->get('client_id'))->delete();
+        if(!empty($request->get('prefix'))) {
+            $prefix = str_replace('_', '\_', $request->get('prefix')).'\_%';
+            User::where('login', 'like', $prefix)->where('creator_client_id', $request->get('client_id'))->delete();
+        }
         return $this->makeResponse(true, $request->get('secret'));
     }
 
