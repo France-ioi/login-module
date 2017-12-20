@@ -5,7 +5,7 @@ namespace App\Http\Controllers\PlatformAPI;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
-
+use App\AutoLoginToken;
 
 class AccountsManagerController extends Controller
 {
@@ -21,10 +21,19 @@ class AccountsManagerController extends Controller
                 'creator_client_id' => $request->get('client_id')
             ]);
 
+            $token = '';
+            if($request->get('auto_login')) {
+                $token = str_random(50);
+                $user->autoLoginToken()->save(new AutoLoginToken([
+                    'token' => $token
+                ]));
+            }
+
             $res[] = [
                 'id' => $user->id,
                 'login' => $login,
                 'password' => $password,
+                'auto_login_token' => $token
             ];
         }
         return $this->makeResponse($res, $request->get('secret'));

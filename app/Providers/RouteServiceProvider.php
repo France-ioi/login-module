@@ -79,7 +79,7 @@ class RouteServiceProvider extends ServiceProvider
      * @return void
      */
     protected function remapPassportRoutes() {
-        Route::middleware(['web', 'auth', 'authorization_available'])
+        Route::middleware(['auth.auto_login_token', 'web', 'auth', 'authorization_available'])
              ->namespace('\Laravel\Passport\Http\Controllers')
              ->group(base_path('routes/passport.php'));
     }

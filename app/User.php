@@ -168,6 +168,11 @@ class User extends Authenticatable
     }
 
 
+    public function autoLoginToken() {
+        return $this->hasOne('App\AutoLoginToken');
+    }
+
+
     public function getHasPictureAttribute() {
         return (bool) $this->attributes['picture'];
     }
