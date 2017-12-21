@@ -40,7 +40,7 @@ class ProfileController extends Controller
                 $request->session()->put('url.intended', $request->get('redirect_uri'));
             }
         };
-        $disabled = $this->disabledAttributes($pms_user, $user->creator_client_id);
+        $disabled = $this->disabledAttributes($pms_user, $user->login_fixed);
 
         $schema = $this->schema_builder->build(
             $user,
@@ -72,7 +72,7 @@ class ProfileController extends Controller
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
-            $this->disabledAttributes($pms_user, $user->creator_client_id),
+            $this->disabledAttributes($pms_user, $user->login_fixed),
             $request->has('all')
         );
         //\DB::connection()->enableQueryLog();
@@ -99,11 +99,11 @@ class ProfileController extends Controller
     }
 
 
-    private function disabledAttributes($pms_user, $generated_user) {
+    private function disabledAttributes($pms_user, $login_fixed) {
         if($pms_user) {
             return Manager::provider('pms')->getFixedFields();
         }
-        if($generated_user) {
+        if($login_fixed) {
             return ['login'];
         }
         return [];

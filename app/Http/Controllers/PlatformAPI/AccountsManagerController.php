@@ -15,15 +15,18 @@ class AccountsManagerController extends Controller
         for($i=0; $i<$request->get('amount'); $i++) {
             $password = $this->randomStr();
             $login = $this->generateLogin($request->get('prefix'));
-            $user = User::create([
+
+            $user = new User([
                 'login' => $login,
-                'password' => \Hash::make($password),
-                'creator_client_id' => $request->get('client_id')
+                'password' => \Hash::make($password)
             ]);
+            $user->login_fixed = true;
+            $user->creator_client_id = $request->get('client_id');
+            $user->save();
 
             $token = '';
             if($request->get('auto_login')) {
-                $token = str_random(50);
+                $token = $this->randomStr(50);
                 $user->autoLoginToken()->save(new AutoLoginToken([
                     'token' => $token
                 ]));
