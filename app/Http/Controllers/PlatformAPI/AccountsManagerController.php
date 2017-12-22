@@ -15,12 +15,13 @@ class AccountsManagerController extends Controller
         for($i=0; $i<$request->get('amount'); $i++) {
             $password = $this->randomStr();
             $login = $this->generateLogin($request->get('prefix'));
+            $login_fixed = !$request->get('auto_login'); //TODO: add option for $login_fixed
 
             $user = new User([
                 'login' => $login,
                 'password' => \Hash::make($password)
             ]);
-            $user->login_fixed = true;
+            $user->login_fixed = $login_fixed;
             $user->creator_client_id = $request->get('client_id');
             $user->save();
 
