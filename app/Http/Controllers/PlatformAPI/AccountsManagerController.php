@@ -45,7 +45,7 @@ class AccountsManagerController extends Controller
 
     public function delete(Request $request) {
         if(!empty($request->get('prefix'))) {
-            $prefix = str_replace('_', '\_', $request->get('prefix')).'\_%';
+            $prefix = str_replace('_', '\_', $request->get('prefix')).'%';
             User::where('login', 'like', $prefix)->where('creator_client_id', $request->get('client_id'))->delete();
         }
         return $this->makeResponse(true, $request->get('secret'));
@@ -55,7 +55,7 @@ class AccountsManagerController extends Controller
 
     private function generateLogin($prefix) {
         do {
-            $login = $prefix.'_'.$this->randomStr();
+            $login = $prefix.$this->randomStr();
         } while (User::where('login', $login)->first());
         return $login;
     }
