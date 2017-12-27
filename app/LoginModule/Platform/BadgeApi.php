@@ -33,14 +33,14 @@ class BadgeApi {
             'code' => $code
         ];
         $res = self::post($url, $request);
-        if($res && isset($res['userInfos'])) {
+        if($res) {
             return [
-                'login' => array_get($res['userInfos'], 'sLogin'),
-                'email' => array_get($res['userInfos'], 'sEmail'),
-                'first_name' => array_get($res['userInfos'], 'sFirstName'),
-                'last_name' => array_get($res['userInfos'], 'sLastName'),
-                'student_id' => array_get($res['userInfos'], 'sStudentId'),
-                'gender' => array_get($res['userInfos'], 'sSex'),
+                'login' => array_get($res, 'sLogin'),
+                'email' => array_get($res, 'sEmail'),
+                'first_name' => array_get($res, 'sFirstName'),
+                'last_name' => array_get($res, 'sLastName'),
+                'student_id' => array_get($res, 'sStudentId'),
+                'gender' => array_get($res, 'sSex'),
             ];
         }
         return false;
