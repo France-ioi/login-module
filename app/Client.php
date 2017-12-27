@@ -11,6 +11,7 @@ class Client extends \Laravel\Passport\Client
         'user_attributes' => 'array',
         'auth_order' => 'array',
         'autoapprove_authorization' => 'boolean',
+        'badge_autologin' => 'boolean',
     ];
 
     protected $attributes = [

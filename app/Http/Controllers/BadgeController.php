@@ -9,6 +9,9 @@ use Session;
 use App\Badge;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Platform\BadgeApi;
+use App\LoginModule\UserDataGenerator;
+use App\User;
+use App\Email;
 
 class BadgeController extends Controller
 {
@@ -18,8 +21,9 @@ class BadgeController extends Controller
     ];
 
 
-    public function __construct(PlatformContext $context) {
+    public function __construct(PlatformContext $context, UserDataGenerator $generator) {
         $this->context = $context;
+        $this->generator = $generator;
     }
 
 
@@ -40,10 +44,46 @@ class BadgeController extends Controller
             }
         }
         if($badge_data = $this->context->badge()->verifyAndStoreData($code)) {
+            $client = $this->context->client();
+            if($client && $client->badge_autologin) {
+                return $this->authWithBadge($badge_data);
+            }
             return redirect()->route('register');
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
     }
+
+
+    private function authWithBadge($badge_data) {
+
+        $user_data = $badge_data['user'];
+        $email_used = $user_data['email'] && \App\Email::where('email', $user_data['email'])->first();
+        $login_used = $user_data['login'] && \App\User::where('login', $user_data['login'])->first();
+        if($email_used || $login_used) {
+            return redirect()->route('register');
+        }
+        $this->context->badge()->flushData();
+
+        if(!$user_data['email'] && !$user_data['login']) {
+            $user_data['login'] = $this->generator->login('badge_');
+        }
+        $user = User::create($user_data);
+        $user->badges()->save(new Badge([
+            'code' => $badge_data['code'],
+            'url' => $badge_data['url'],
+            'data' => $badge_data['user']['data']
+        ]));
+        if($user_data['email']) {
+            $user->emails()->save(new Email([
+                'role' => 'primary',
+                'email' => $user_data['email']
+            ]));
+        }
+        Auth::login($user);
+
+        return redirect($this->context->continueUrl('/account'));
+    }
+
 
 
     public function attach(Request $request) {

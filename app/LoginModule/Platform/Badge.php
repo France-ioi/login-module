@@ -45,7 +45,7 @@ class Badge {
     public function verifyAndStoreData($code) {
         if($badge_data = $this->verify($code)) {
             Session::put(self::SESSION_KEY, $badge_data);
-            return true;
+            return $badge_data;
         } else {
             $this->flushData();
         }

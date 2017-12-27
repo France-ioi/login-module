@@ -6,15 +6,25 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\AutoLoginToken;
+use App\LoginModule\UserDataGenerator;
 
 class AccountsManagerController extends Controller
 {
 
+    protected $generator;
+
+
+    public function __construct(UserDataGenerator $generator) {
+        $this->generator = $generator;
+    }
+
+
+
     public function create(Request $request) {
         $res = [];
         for($i=0; $i<$request->get('amount'); $i++) {
-            $password = $this->randomStr();
-            $login = $this->generateLogin($request->get('prefix'));
+            $password = $this->generator->password();
+            $login = $this->generator->login($request->get('prefix'));
             $login_fixed = !$request->get('auto_login'); //TODO: add option for $login_fixed
 
             $user = new User([
@@ -27,7 +37,7 @@ class AccountsManagerController extends Controller
 
             $token = '';
             if($request->get('auto_login')) {
-                $token = $this->randomStr(50);
+                $token = $this->generator->autoLoginToken();
                 $user->autoLoginToken()->save(new AutoLoginToken([
                     'token' => $token
                 ]));
@@ -50,21 +60,6 @@ class AccountsManagerController extends Controller
             User::where('login', 'like', $prefix)->where('creator_client_id', $request->get('client_id'))->delete();
         }
         return $this->makeResponse(true, $request->get('secret'));
-    }
-
-
-
-    private function generateLogin($prefix) {
-        do {
-            $login = $prefix.$this->randomStr();
-        } while (User::where('login', $login)->first());
-        return $login;
-    }
-
-
-    private function randomStr($l = 10) {
-        $c = '0123456789abcdefghijklmnopqrstuvwxyz';
-        return substr(str_shuffle(str_repeat($c, 5)), 0, $l);
     }
 
 

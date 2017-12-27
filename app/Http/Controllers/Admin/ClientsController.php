@@ -49,6 +49,7 @@ class ClientsController extends Controller
     public function store(StoreClientRequest $request)
     {
         $client = new Client($request->all());
+        $client->badge_autologin = $request->has('badge_autologin');
         $client->personal_access_client = false;
         $client->password_client = false;
         $client->save();
@@ -93,6 +94,7 @@ class ClientsController extends Controller
     {
         //dd($request->all());
         $client->fill($request->all());
+        $client->badge_autologin = $request->has('badge_autologin');
         $client->save();
         return redirect()
             ->route('admin.clients.index')
