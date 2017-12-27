@@ -41,6 +41,7 @@ class BadgeApi {
                 'last_name' => array_get($res['userInfos'], 'sLastName'),
                 'student_id' => array_get($res['userInfos'], 'sStudentId'),
                 'gender' => array_get($res['userInfos'], 'sSex'),
+                'data' => array_get($res['userInfos'], 'data') //TODO: is it correct key?
             ];
         }
         return false;

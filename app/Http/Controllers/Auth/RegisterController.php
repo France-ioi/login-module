@@ -112,7 +112,8 @@ class RegisterController extends Controller
         if($badge_data = $this->context->badge()->restoreData()) {
             $user->badges()->save(new Badge([
                 'code' => $badge_data['code'],
-                'url' => $badge_data['url']
+                'url' => $badge_data['url'],
+                'data' => $badge_data['user']['data']
             ]));
         }
 

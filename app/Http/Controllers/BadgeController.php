@@ -58,12 +58,14 @@ class BadgeController extends Controller
             if($badge = Auth::user()->badges()->where('url', $badge_data['url'])->first()) {
                 $badge->do_not_possess = false;
                 $badge->code = $badge_data['code'];
+                $badge->data = $badge_data['user']['data'];
                 $badge->save();
                 BadgeApi::update($badge->url, $badge->code, $badge->user_id);
             } else {
                 Auth::user()->badges()->save(new Badge([
                     'code' => $badge_data['code'],
-                    'url' => $badge_data['url']
+                    'url' => $badge_data['url'],
+                    'data' => $badge_data['user']['data']
                 ]));
             }
             return redirect($this->context->continueUrl('/badge'));

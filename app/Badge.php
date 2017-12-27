@@ -13,12 +13,14 @@ class Badge extends Model
         'code',
         'do_not_possess',
         'login_enabled',
+        'data'
     ];
 
     protected $visible = [
         'id',
         'url',
         'code',
+        'data',
         'do_not_possess'
     ];
 
@@ -26,6 +28,7 @@ class Badge extends Model
     protected $casts = [
         'do_not_possess' => 'boolean',
         'login_enabled' => 'boolean',
+        'data' => 'array'
     ];
 
 
