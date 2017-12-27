@@ -65,7 +65,7 @@ class BadgeController extends Controller
         $this->context->badge()->flushData();
 
         if(!$user_data['email'] && !$user_data['login']) {
-            $user_data['login'] = $this->generator->login('badge_');
+            $user_data['login'] = $this->generator->loginFromBadge($user_data, 'badge_');
         }
         $user = User::create($user_data);
         $user->badges()->save(new Badge([
