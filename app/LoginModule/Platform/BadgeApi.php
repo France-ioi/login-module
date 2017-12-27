@@ -40,7 +40,7 @@ class BadgeApi {
                 'first_name' => array_get($res, 'sFirstName'),
                 'last_name' => array_get($res, 'sLastName'),
                 'student_id' => array_get($res, 'sStudentId'),
-                'gender' => array_get($res, 'sSex'),
+                'gender' => strtolower(substr(array_get($res, 'sSex'), 0, 1)),
                 'data' => array_get($res, 'data')
             ];
         }
