@@ -29,9 +29,12 @@ class ProfileController extends Controller
 
     public function index(Request $request) {
         $user = $this->profile->getUserBeforeEditor();
+        //dd($user);
 
         if($badge_data = $this->context->badge()->restoreData()) {
-            $user->fill($badge_data['user']);
+            foreach($badge_data['user'] as $k => $v) {
+                if($v) $user->$k = $v;
+            }
         }
 
         $pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
