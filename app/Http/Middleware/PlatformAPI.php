@@ -23,7 +23,7 @@ class PlatformAPI
             return response('client not found', 400);
         }
         $data = $this->decode($request->get('data'), $client->secret);
-        $data['secret'] = $client->secret;
+        $data['client'] = $client;
         $request->merge($data);
         return $next($request);
     }

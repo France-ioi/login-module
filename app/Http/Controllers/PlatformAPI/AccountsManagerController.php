@@ -50,7 +50,7 @@ class AccountsManagerController extends Controller
                 'auto_login_token' => $token
             ];
         }
-        return $this->makeResponse($res, $request->get('secret'));
+        return $this->makeResponse($res, $request->get('client')->secret);
     }
 
 
@@ -59,7 +59,7 @@ class AccountsManagerController extends Controller
             $prefix = str_replace('_', '\_', $request->get('prefix')).'%';
             User::where('login', 'like', $prefix)->where('creator_client_id', $request->get('client_id'))->delete();
         }
-        return $this->makeResponse(true, $request->get('secret'));
+        return $this->makeResponse(true, $request->get('client')->secret);
     }
 
 
