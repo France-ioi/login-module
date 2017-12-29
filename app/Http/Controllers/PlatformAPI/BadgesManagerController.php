@@ -8,15 +8,14 @@ use App\Badge;
 
 class BadgesManagerController extends Controller
 {
-    public function resetDoNotPosess(Request $request) {
+    public function resetDoNotPossess(Request $request) {
         $res = false;
-        $badge = Badge::where('user_id', $request->get('user_id'))->where('code', $request->get('code'))->first();
+        $badge = Badge::where('user_id', $request->get('user_id'))->where('url', $request->get('client')->badge_url)->where('do_not_possess', true)->first();
         if($badge) {
-            $badge->do_not_possess = false;
-            $badge->save();
+            $badge->delete();
             $res = true;
         }
-        return $this->makeResponse($res, $request->get('secret'));
+        return $this->makeResponse($res, $request->get('client')->secret);
     }
 
     //TODO: remove duplicated code
