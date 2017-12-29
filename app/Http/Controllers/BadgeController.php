@@ -108,9 +108,35 @@ class BadgeController extends Controller
                     'data' => $badge_data['user']['data']
                 ]));
             }
+            $first_name_different = Auth::user()->first_name != $badge_data['user']['first_name'];
+            $last_name_different = Auth::user()->last_name != $badge_data['user']['last_name'];
+            if($first_name_different || $last_name_different) {
+                return redirect('badge/confirm_difference')->with([
+                    'badge_user' => $badge_data['user']
+                ]);
+            }
             return redirect($this->context->continueUrl('/badge'));
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
+    }
+
+
+    public function getConfirmDifference(Request $request) {
+        return view('badge.confirm_difference', [
+            'badge_user' => session('badge_user'),
+            'user' => Auth::user()
+        ]);
+    }
+
+
+    public function confirmDifference(Request $request) {
+        $url = $this->context->badge()->url();
+        if($badge = Auth::user()->badges()->where('url', $url)->first()) {
+            $badge->comments = $request->get('comments');
+            $badge->override_profile = $request->has('override_profile');
+            $badge->save();
+        }
+        return redirect($this->context->continueUrl('/account'));
     }
 
 

@@ -20,8 +20,14 @@ class Badge {
     }
 
 
-    public function verified() {
-        if(!$url = $this->url()) {
+    public function required() {
+        return $this->client ? $this->client->badge_required : false;
+    }
+
+
+    public function valid() {
+        $url = $this->url();
+        if(!$url || !$this->required()) {
             return true;
         }
         $badge = $this->user->badges()->where('url', $url)->first();

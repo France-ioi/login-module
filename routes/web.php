@@ -34,7 +34,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/badge', 'BadgeController@index');
         Route::post('/badge/attach', 'BadgeController@attach');
         Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
-        Route::post('/badge/do_not_have', 'BadgeController@doNotHave');
+        Route::get('/badge/confirm_difference', 'BadgeController@getConfirmDifference');
+        Route::post('/badge/confirm_difference', 'BadgeController@confirmDifference');
         Route::get('/profile', 'ProfileController@index');
         Route::post('/profile', 'ProfileController@update');
         Route::get('/official_domains', 'OfficialDomainsController@index');
