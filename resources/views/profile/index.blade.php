@@ -95,6 +95,10 @@
             }
             form.init();
 
+            $('#login').on('change', function(e) {
+                $('#login_change_limitations').show();
+            });
+
 
             $('#picture').on('change', function(e) {
                 var max_file_size = parseFloat($(this).attr('max_file_size')) || 0;

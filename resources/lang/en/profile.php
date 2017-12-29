@@ -56,5 +56,6 @@ return [
         'yes' => 'Yes, I will provide it as my primary/secondary email',
         'no' => 'No, I don\'t have one'
     ],
-    'teacher_domain_alert' => 'Please contact :email and explain why you don\'t have an authorized email.'
+    'teacher_domain_alert' => 'Please contact :email and explain why you don\'t have an authorized email.',
+    'login_change_limitations' => 'If you change your login, after one hour, you won\'t be able to change it again for a year'
 ];

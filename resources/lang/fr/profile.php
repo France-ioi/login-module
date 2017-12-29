@@ -56,5 +56,6 @@ return [
         'yes' => "Oui, je vais l'enregistrer comme adresse mail primaire/secondaire",
         'no' => "Non, je n'en ai pas"
     ],
-    'teacher_domain_alert' => "Veuillez contacter :email en expliquant pourquoi vous n'avez pas d'adresse mail avec un nom de domaine reconnu."
+    'teacher_domain_alert' => "Veuillez contacter :email en expliquant pourquoi vous n'avez pas d'adresse mail avec un nom de domaine reconnu.",
+    'login_change_limitations' => 'If you change your login, after one hour, you won\'t be able to change it again for a year'
 ];

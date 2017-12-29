@@ -90,6 +90,9 @@ class User extends Authenticatable
                     $model->graduation_year = $year;
                 }
             }
+            if($model->isDirty('login')) {
+                $model->login_updated_at = new \DateTime;
+            }
         });
 
         static::deleting(function($model) {

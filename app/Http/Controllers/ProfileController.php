@@ -11,6 +11,7 @@ use App\LoginModule\Profile\SchemaBuilder;
 use App\LoginModule\Profile\UserProfile;
 use App\LoginModule\Profile\Verification\Verificator;
 use App\LoginModule\Migrators\Merge\Group;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -37,13 +38,13 @@ class ProfileController extends Controller
             }
         }
 
-        $pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
-        if($pms_user) {
+        $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
+        if($is_pms_user) {
             if($redirect = $request->get('redirect_uri')) {
                 $request->session()->put('url.intended', $request->get('redirect_uri'));
             }
         };
-        $disabled = $this->disabledAttributes($pms_user, $user->login_fixed);
+        $disabled = $this->disabledAttributes($user, $is_pms_user, $user->login_fixed);
 
         $schema = $this->schema_builder->build(
             $user,
@@ -61,7 +62,7 @@ class ProfileController extends Controller
             ],
             'schema' => $schema,
             'toggle_optional_fields_allowed' => $schema->hasRequired(),
-            'pms_redirect' => $pms_user,
+            'pms_redirect' => $is_pms_user,
             'cancel_url' => $this->context->cancelUrl(),
             'all' => $request->has('all'),
             'revalidation_fields' => Group::getRevalidationFields($user)
@@ -71,11 +72,11 @@ class ProfileController extends Controller
 
     public function update(Request $request, Verificator $verificator) {
         $user = $request->user();
-        $pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
+        $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
-            $this->disabledAttributes($pms_user, $user->login_fixed),
+            $this->disabledAttributes($user, $is_pms_user, $user->login_fixed),
             $request->has('all')
         );
         //\DB::connection()->enableQueryLog();
@@ -102,11 +103,18 @@ class ProfileController extends Controller
     }
 
 
-    private function disabledAttributes($pms_user, $login_fixed) {
-        if($pms_user) {
+    private function disabledAttributes($user, $is_pms_user, $login_fixed) {
+        if($is_pms_user) {
             return Manager::provider('pms')->getFixedFields();
         }
-        if($login_fixed) {
+        $login_change_restricted = false;
+        if(!is_null($user->login) && !is_null($user->login_updated_at) && $login_change_available = config('profile.login_change_available')) {
+            $first = (new \DateTime($user->login_updated_at))->add(new \DateInterval($login_change_available['first_interval']));
+            $second = (new \DateTime($user->login_updated_at))->add(new \DateInterval($login_change_available['second_interval']));
+            $now = new \DateTime;
+            $login_change_restricted = $now > $first && $now < $second;
+        }
+        if($login_fixed || $login_change_restricted) {
             return ['login'];
         }
         return [];

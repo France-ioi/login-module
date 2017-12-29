@@ -13,7 +13,7 @@ class SchemaConfig {
         }
 
         return [
-            'type' => 'text',
+            'type' => 'login',
             'required' => 'required',
             'valid' => $valid
         ];
