@@ -132,6 +132,9 @@ class RegisterController extends Controller
         if($client = $this->context->client()) {
             $attributes = array_intersect($attributes, $client->user_attributes);
         }
+        if(!count($attributes)) {
+            $attributes = ['login'];
+        }
         return $attributes;
     }
 
