@@ -20,7 +20,7 @@
         <label>Require user attributes</label>
         <div class="row">
             @foreach($user_attributes as $attr)
-                <div class="col-sm-2 col-xs-6">
+                <div class="col-sm-4 col-xs-6">
                     {!! BootForm::checkbox('user_attributes[]', $attr, $attr, in_array($attr, $client->user_attributes)) !!}
                 </div>
             @endforeach

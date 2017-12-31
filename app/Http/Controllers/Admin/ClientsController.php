@@ -53,6 +53,7 @@ class ClientsController extends Controller
         $client->badge_required = $request->has('badge_required');
         $client->personal_access_client = false;
         $client->password_client = false;
+        $client->auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->save();
         return redirect()
             ->route('admin.clients.index')
@@ -97,6 +98,7 @@ class ClientsController extends Controller
         $client->fill($request->all());
         $client->badge_autologin = $request->has('badge_autologin');
         $client->badge_required = $request->has('badge_required');
+        $client->auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->save();
         return redirect()
             ->route('admin.clients.index')
