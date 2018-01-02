@@ -8,7 +8,7 @@ return [
     'do_not_have' => "Je n'ai pas de code",
 
     'badge' => 'Badge',
-    'diff_notice' => 'The firstName/lastName in your badge doesn\'t match the firstName/lastName in your profile.',
-    'everride_checkbox' => 'Is this really you?',
-    'comments' => 'Explain why it\'s different'
+    'diff_notice' => 'Les prénom et nom de votre badge ne correspondent pas au prénom et nom de votre profil.',
+    'override_checkbox' => "S'agit-il vraiment de vous ?",
+    'comments' => "Veuillez expliquer pourquoi c'est différent."
 ];

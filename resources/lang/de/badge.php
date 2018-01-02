@@ -9,6 +9,6 @@ return [
 
     'badge' => 'Badge',
     'diff_notice' => 'The firstName/lastName in your badge doesn\'t match the firstName/lastName in your profile.',
-    'everride_checkbox' => 'Is this really you?',
+    'override_checkbox' => 'Is this really you?',
     'comments' => 'Explain why it\'s different'
 ];

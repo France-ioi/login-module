@@ -25,7 +25,7 @@
             </table>
             <p>@lang('badge.diff_notice')</p>
             {!! BootForm::open(['url' => '/badge/confirm_difference']) !!}
-                {!! BootForm::checkbox('override_profile', trans('badge.everride_checkbox')) !!}
+                {!! BootForm::checkbox('override_profile', trans('badge.override_checkbox')) !!}
                 <div class="form-group">
                     <label>@lang('badge.comments')</label>
                     <textarea class="form-control" name="comments"></textarea>
