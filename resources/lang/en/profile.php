@@ -39,7 +39,7 @@ return [
     'website' => 'Website',
     'picture' => 'Picture',
     'picture_size_error' => 'The picture may not be greater than :size megabyte(s).',
-    'graduation_grade' => 'Grade for the school year between :year_begin and :year_end',
+    'graduation_grade' => 'Grade for the school year :year_begin-:year_end',
     'success' => 'Profile updated.',
 
     'primary_email_verification_code' => 'Primary email verification code',

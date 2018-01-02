@@ -25,10 +25,12 @@ return [
     'name' => 'Name',
 
     'login_header' => 'Login',
-    'login_password' => 'Login with password',
+    'login_intro' => 'Choose one of the following authentication methods :',
+    'login_password' => 'Login and password',
     'btn_login' => 'Login',
     'link_reset_pwd' => 'Forgot Your Password?',
     'link_register' => 'Register account',
+    'show_more' => 'Show more',
 
     'register_header' => 'Register',
     'btn_register' => 'Register',

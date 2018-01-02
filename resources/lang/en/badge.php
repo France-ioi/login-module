@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'header' => 'Qualification сode',
-    'btn_verify_code' => 'Verify',
+    'header' => 'Participation сode',
+    'btn_verify_code' => 'Validate',
     'code_verification_fail' => 'Verification failed',
-    'code_registered' => 'Badge registered by another user',
+    'code_registered' => 'Code registered by another user',
     'do_not_have' => 'I dont have this code',
 
     'badge' => 'Badge',

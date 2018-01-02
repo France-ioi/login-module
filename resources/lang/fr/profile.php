@@ -39,7 +39,7 @@ return [
     'website' => 'Site Internet',
     'picture' => 'Image de profil',
     'picture_size_error' => "L'image de profil ne doit pas peser plus de :size mégaoctet(s).",
-    'graduation_grade' => "L'année du bac doit être comprise entre :year_begin et :year_end",
+    'graduation_grade' => "Indiquez votre classe pour l'année :year_begin-:year_end",
     'success' => 'Profil mis à jour.',
 
     'primary_email_verification_code' => "Code de vérification de l'adresse mail principale",

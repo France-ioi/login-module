@@ -25,10 +25,12 @@ return [
     'name' => 'Nom',
 
     'login_header' => 'Connexion',
-    'login_password' => 'Connexion par mot de passe',
+    'login_intro' => 'Choisissez parmi les modes de connexion suivants :',
+    'login_password' => 'Identifiant et mot de passe',
     'btn_login' => 'Se connecter',
     'link_reset_pwd' => 'Mot de passe oublié ?',
     'link_register' => 'Créer un compte',
+    'show_more' => 'Afficher plus',
 
     'register_header' => 'Création de compte',
     'btn_register' => 'Créer un compte',
