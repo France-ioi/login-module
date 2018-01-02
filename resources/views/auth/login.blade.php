@@ -16,13 +16,24 @@
     <a class="btn btn-block btn-default" href="/oauth_client/redirect/pms">PMS</a>
 @endpush
 
+@push('badge')
+    <li class="list-group-item">
+    {!! BootForm::horizontal(['url' => '/badge/verify']) !!}
+        {!! BootForm::text('code', trans('badge.header')) !!}
+        {!! BootForm::submit(trans('badge.btn_verify_code')) !!}
+    {!! BootForm::close() !!}
+    </li>
+@endpush
+
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.login_header')</div>
         <div class="panel-body">
+            <div class="list-group">
             @foreach($auth_visible as $method)
                 @stack($method)
             @endforeach
+            </div>
 
             @if(count($auth_hidden) > 0)
                 <hr>
@@ -43,7 +54,7 @@
         })
     </script>
 
-
+<!--
     @if($badge_required)
         <div class="panel panel-default">
             <div class="panel-heading">@lang('badge.header')</div>
@@ -55,4 +66,5 @@
             </div>
         </div>
     @endif
+-->
 @endsection

@@ -36,7 +36,7 @@ class ClientsController extends Controller
         return view('admin.clients.form', [
             'client' => $client,
             'user_attributes' => SchemaBuilder::availableAttributes(),
-            'providers' => Manager::providers()
+            'providers' => $this->getProviders()
         ]);
     }
 
@@ -81,7 +81,7 @@ class ClientsController extends Controller
         return view('admin.clients.form', [
             'client' => $client,
             'user_attributes' => SchemaBuilder::availableAttributes(),
-            'providers' => Manager::providers()
+            'providers' => $this->getProviders()
         ]);
     }
 
@@ -119,5 +119,10 @@ class ClientsController extends Controller
             ->with('status', 'Client deleted.');
     }
 
+
+    private function getProviders() {
+        //dd(array_merge(Manager::providers(), ['badge']));
+        return array_merge(Manager::providers(), ['badge']);
+    }
 
 }

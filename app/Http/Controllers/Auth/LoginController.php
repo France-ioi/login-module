@@ -93,7 +93,7 @@ class LoginController extends Controller
             $auth_order =  is_array($client->auth_order) ? $client->auth_order : [];
             $badge_required = (bool) $this->context->badge()->url();
         }
-        $default_order = array_merge(['login'], Manager::providers());
+        $default_order = array_merge(['login', 'badge'], Manager::providers());
         if($auth_order) {
             $auth_visible = $auth_order;
             $auth_hidden = array_diff($default_order, $auth_order);
