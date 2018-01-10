@@ -3,6 +3,8 @@
 namespace App\LoginModule;
 
 use App\User;
+use App\Badge;
+use App\AutoLoginToken;
 
 class UserDataGenerator {
 
@@ -38,7 +40,18 @@ class UserDataGenerator {
 
 
     public function autoLoginToken() {
-        return $this->randomStr(50);
+        do {
+            $token = $this->randomStr(50);
+        } while (AutoLoginToken::where('token', $token)->first());
+        return $token;
+    }
+
+
+    public function participationCode() {
+        do {
+            $code = $this->randomStr(10);
+        } while (Badge::where('code', $code)->where('url', '')->first());
+        return $code;
     }
 
 

@@ -30,6 +30,13 @@
     <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.login_header')</div>
         <div class="panel-body">
+            @if($errors->any())
+                <ul class="alert alert-danger">
+                    @foreach($errors->all() as $error)
+                        <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            @endif
             <p>@lang('auth.login_intro')</p>
             <div class="list-group">
             @foreach($auth_visible as $method)

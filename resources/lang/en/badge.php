@@ -3,7 +3,7 @@
 return [
     'header' => 'Participation сode',
     'btn_verify_code' => 'Validate',
-    'code_verification_fail' => 'Verification failed',
+    'code_verification_fail' => 'Code verification failed',
     'code_registered' => 'Code registered by another user',
     'do_not_have' => 'I dont have this code',
 

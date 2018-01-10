@@ -141,7 +141,9 @@ class BadgeController extends Controller
 
 
     private function findBadge($code) {
-        return Badge::where('url', $this->context->badge()->url())->where('code', $code)->first();
+        return Badge::where('code', $code)->where(function($q) use ($code) {
+            $q->where('code', '')->orWhere('code', $code);
+        })->first();
     }
 
 

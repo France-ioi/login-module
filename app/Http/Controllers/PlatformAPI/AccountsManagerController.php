@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\PlatformAPI;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Badge;
 use App\User;
 use App\AutoLoginToken;
 use App\LoginModule\UserDataGenerator;
 
-class AccountsManagerController extends Controller
+class AccountsManagerController extends PlatformAPIController
 {
 
     protected $generator;
@@ -23,32 +23,41 @@ class AccountsManagerController extends Controller
     public function create(Request $request) {
         $res = [];
         for($i=0; $i<$request->get('amount'); $i++) {
-            $password = $this->generator->password();
-            $login = $this->generator->login($request->get('prefix'));
-            $login_fixed = !$request->get('auto_login'); //TODO: add option for $login_fixed
+            $data = [
+                'password' => $this->generator->password(),
+                'login' => $this->generator->login($request->get('prefix'))
+            ];
 
             $user = new User([
-                'login' => $login,
-                'password' => \Hash::make($password)
+                'login' => $data['login'],
+                'password' => \Hash::make($data['password'])
             ]);
-            $user->login_fixed = $login_fixed;
+            $user->login_fixed = (bool) $request->get('login_fixed');
             $user->creator_client_id = $request->get('client_id');
             $user->save();
+            $data['id'] = $user->id;
 
-            $token = '';
             if($request->get('auto_login')) {
-                $token = $this->generator->autoLoginToken();
+                $data['auto_login_token'] = $this->generator->autoLoginToken();
                 $user->autoLoginToken()->save(new AutoLoginToken([
-                    'token' => $token
+                    'token' => $data['auto_login_token']
                 ]));
             }
 
-            $res[] = [
-                'id' => $user->id,
-                'login' => $login,
-                'password' => $password,
-                'auto_login_token' => $token
-            ];
+            if($request->get('participation_code')) {
+                $data['participation_code'] = $this->generator->participationCode();
+                $user->badges()->save(new Badge([
+                    'url' => '',
+                    'code' => $data['participation_code'],
+                    'login_enabled' => true,
+                    'data' => [
+                        // save for future?
+                        'type' => 'participation_code',
+                        'client_id' => $request->get('client_id')
+                    ]
+                ]));
+            }
+            $res[] = $data;
         }
         return $this->makeResponse($res, $request->get('client')->secret);
     }
@@ -60,13 +69,6 @@ class AccountsManagerController extends Controller
             User::where('login', 'like', $prefix)->where('creator_client_id', $request->get('client_id'))->delete();
         }
         return $this->makeResponse(true, $request->get('client')->secret);
-    }
-
-
-    private function makeResponse($res, $secret) {
-        $res = json_encode($res);
-        $res = openssl_encrypt($res, 'AES-128-ECB', $secret);
-        return response($res);
     }
 
 }

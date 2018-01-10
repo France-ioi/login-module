@@ -13,7 +13,8 @@ class Badge extends Model
         'code',
         'do_not_possess',
         'login_enabled',
-        'data'
+        'data',
+        'comments'
     ];
 
     protected $visible = [
