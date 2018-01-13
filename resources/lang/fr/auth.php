@@ -45,5 +45,7 @@ return [
     'logout_hint' => 'Se déconnecter aussi de :',
     'btn_logout' => 'Déconnexion',
 
+    'account_details' => 'Informations du compte',
+
     'session_expired' => 'Votre session a expiré. Veuillez fermer cette fenêtre et vous reconnecter.'
 ];

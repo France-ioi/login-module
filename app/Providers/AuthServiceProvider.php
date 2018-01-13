@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
         Passport::tokensCan([
-            'account' => 'Account details' //TODO: replace by localization key?
+            'account' => trans('auth.account_details')
         ]);
 
         $this->app['auth']->provider('login_module_user_provider', function($app) {

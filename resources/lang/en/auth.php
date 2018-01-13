@@ -45,5 +45,7 @@ return [
     'logout_hint' => 'Also logout from:',
     'btn_logout' => 'Logout',
 
+    'account_details' => 'Account details',
+
     'session_expired' => 'Your session expired. Please close this window and log in again.'
 ];
