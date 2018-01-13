@@ -105,6 +105,8 @@ return [
         ],
     ],
 
+    'login' => "Le tiret bas n'est pas autorisé dans le :attribute",
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes
