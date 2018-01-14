@@ -8,9 +8,9 @@ class SchemaConfig {
 
     public static function login($user = null) {
         $valid = ['login', 'min:3'];
-        if($user) {
+        //if($user) {
             $valid[] = Rule::unique('users')->ignore($user->id);
-        }
+        //}
 
         return [
             'type' => 'login',
