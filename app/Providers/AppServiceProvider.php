@@ -15,9 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('login', function ($attribute, $value, $parameters, $validator) {
-            $no_ = strpos($value, '_') === false;
-            $lowercase = strtolower($value) === $value;
-            return $no_ && $lowercase;
+            return preg_match("/^[a-z0-9-]+$/", $value) == 1;
         });
         Validator::extend('value_different', function ($attribute, $value, $parameters, $validator) {
             $other = array_get($validator->getData(), $parameters[0]);
