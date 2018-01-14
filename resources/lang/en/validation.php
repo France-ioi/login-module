@@ -104,7 +104,7 @@ return [
     ],
 
     'value_different' => 'The :attribute and :other must be different.',
-    'login' => 'The underscore character is not allowed in the :attribute value',
+    'login' => 'The underscore characters or uppercase symbols are not allowed in the :attribute value',
 
     /*
     |--------------------------------------------------------------------------
