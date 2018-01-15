@@ -49,6 +49,7 @@ class ProfileController extends Controller
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
+            $this->context->client()->recommended_attributes,
             $disabled,
             true//$request->has('all')
         );
@@ -61,7 +62,7 @@ class ProfileController extends Controller
                 'id' => 'profile'
             ],
             'schema' => $schema,
-            'toggle_optional_fields_allowed' => $schema->hasRequired(),
+            'has_optional_fields' => $schema->hasOptionalAttributes(),
             'pms_redirect' => $is_pms_user,
             'cancel_url' => $this->context->cancelUrl(),
             'all' => $request->has('all'),
@@ -77,6 +78,7 @@ class ProfileController extends Controller
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes(),
+            $this->context->client()->recommended_attributes,
             $this->disabledAttributes($user, $is_pms_user, $user->login_fixed),
             $request->has('all')
         );

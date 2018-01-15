@@ -69,7 +69,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $required = $this->requiredAttributes();
-        $schema = $this->schema_builder->build(null, $this->requiredAttributes());
+        $schema = $this->schema_builder->build(null, $this->requiredAttributes(), []);
         $validation_rules = $schema->rules();
         $reg_rules = [
             'password' => 'required|min:6|confirmed'

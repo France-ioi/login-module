@@ -23,7 +23,8 @@ class ProfileFormRenderer {
 
 
     private static function wrapper($html, $block) {
-        return '<div required_field="'.($block->required ? 1 : 0).'" id="block_'.$block->name.'">'.$html.'</div>';
+        $optional_field = !$block->required && !$block->recommended ? 1 : 0;
+        return '<div optional_field="'.$optional_field.'" id="block_'.$block->name.'">'.$html.'</div>';
     }
 
 }

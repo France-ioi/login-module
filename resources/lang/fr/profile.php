@@ -2,7 +2,7 @@
 
 return [
     'header' => 'Profil',
-    'display_only_required_fields' => "Afficher seulement les champs requis",
+    'optional_fields_filter' => "Afficher seulement les champs requis",
 
     'login' => 'Identifiant',
     'first_name' => 'Prénom',

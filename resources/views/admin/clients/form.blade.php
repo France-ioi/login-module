@@ -17,11 +17,19 @@
         {!! BootForm::text('badge_url', 'Badge URL') !!}
         {!! BootForm::checkbox('badge_required', 'Badge code required.') !!}
         {!! BootForm::checkbox('badge_autologin', 'Login with a badge code, without asking for a login and password.') !!}
-        <label>Require user attributes</label>
+        <label>Required user attributes</label>
         <div class="row">
             @foreach($user_attributes as $attr)
                 <div class="col-sm-4 col-xs-6">
                     {!! BootForm::checkbox('user_attributes[]', $attr, $attr, in_array($attr, $client->user_attributes)) !!}
+                </div>
+            @endforeach
+        </div>
+        <label>Recommended user attributes</label>
+        <div class="row">
+            @foreach($user_attributes as $attr)
+                <div class="col-sm-4 col-xs-6">
+                    {!! BootForm::checkbox('recommended_attributes[]', $attr, $attr, in_array($attr, $client->recommended_attributes)) !!}
                 </div>
             @endforeach
         </div>
