@@ -17,8 +17,11 @@
 @endpush
 
 @push('badge')
-    <a class="btn btn-block btn-default" data-toggle="collapse" data-target="#badge-form">@lang('badge.header') <span id="badge-caret" class="glyphicon glyphicon-triangle-bottom"></span></a>
-    <div id="badge-form" class="collapse well btn-block">
+    <a class="btn btn-block btn-default" data-toggle="collapse" data-target="#badge-form">
+        @lang('badge.header')
+        <span id="badge-caret" class="{{ $errors->has('code') ? 'glyphicon glyphicon-triangle-top' : 'glyphicon glyphicon-triangle-bottom'}}"></span>
+    </a>
+    <div id="badge-form" class="{{ $errors->has('code') ? 'collapse_in well btn-block' : 'collapse well btn-block'}}">
     {!! BootForm::horizontal(['url' => '/badge/verify']) !!}
         {!! BootForm::text('code', trans('badge.header')) !!}
         {!! BootForm::submit(trans('badge.btn_verify_code')) !!}
@@ -30,13 +33,6 @@
     <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.login_header')</div>
         <div class="panel-body">
-            @if($errors->any())
-                <ul class="alert alert-danger">
-                    @foreach($errors->all() as $error)
-                        <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-            @endif
             <p>@lang('auth.login_intro')</p>
             <div class="list-group">
             @foreach($auth_visible as $method)
