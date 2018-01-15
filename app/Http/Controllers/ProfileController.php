@@ -65,7 +65,8 @@ class ProfileController extends Controller
             'pms_redirect' => $is_pms_user,
             'cancel_url' => $this->context->cancelUrl(),
             'all' => $request->has('all'),
-            'revalidation_fields' => Group::getRevalidationFields($user)
+            'revalidation_fields' => Group::getRevalidationFields($user),
+            'login_change_required' => $user->login_change_required
         ]);
     }
 

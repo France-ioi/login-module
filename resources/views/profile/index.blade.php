@@ -21,6 +21,12 @@
         </div>
     @endif
 
+    @if($login_change_required)
+        <div class="alert alert-warning">
+            @lang('profile.login_change_required')
+        </div>
+    @endif
+
     @if(session('status'))
         <div class="alert alert-success">
             {{ session('status') }}

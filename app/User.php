@@ -92,6 +92,9 @@ class User extends Authenticatable
             }
             if($model->isDirty('login')) {
                 $model->login_updated_at = new \DateTime;
+                if($model->login_change_required && preg_match(config('profile.login_validator.new'), $model->login) == 1) {
+                    $model->login_change_required = false;
+                }
             }
         });
 

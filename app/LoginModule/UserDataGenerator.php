@@ -23,10 +23,9 @@ class UserDataGenerator {
         $first_name = preg_replace('/[^A-Za-z]/', '', $first_name);
         $last_name = array_get($badge_user, 'last_name');
         $last_name = preg_replace('/[^A-Za-z]/', '', $last_name);
-        $last_name = strtoupper(substr($last_name, 0, 1));
-        if($first_name && $last_name) {
+        if($first_name != '' && $last_name != '') {
             do {
-                $login = $prefix.$first_name.$last_name.$this->randomNumber();
+                $login = $prefix.strtolower($first_name.$last_name).$this->randomNumber(3);
             } while (User::where('login', $login)->first());
             return $login;
         }

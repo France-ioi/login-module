@@ -30,7 +30,10 @@ class AuthorizationAvailable
     public function handle($request, Closure $next, $guard = null)
     {
         $user = $request->user();
-        if(!$this->profile->completed($user) || $this->verificator->verify($user) !== true || Group::revalidationRequired($user)) {
+        $completed = $this->profile->completed($user);
+        $verified = $this->verificator->verify($user) === true;
+        $revalidated = !Group::revalidationRequired($user);
+        if(!$completed || !$verified || !$revalidated || $user->login_change_required) {
             return redirect('/profile');
         }
         if(!$this->context->badge()->valid()) {

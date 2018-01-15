@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('login', function ($attribute, $value, $parameters, $validator) {
-            return preg_match("/^[a-z0-9-]+$/", $value) == 1;
+            return preg_match(config('profile.login_validator.new'), $value) == 1;
         });
         Validator::extend('value_different', function ($attribute, $value, $parameters, $validator) {
             $other = array_get($validator->getData(), $parameters[0]);

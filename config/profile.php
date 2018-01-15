@@ -7,5 +7,10 @@ return [
     'login_change_available' => [
         'first_interval' => 'PT1H',
         'second_interval' => 'P1Y'
+    ],
+
+    'login_validator' => [
+        'new' => "/^[a-z0-9-]+$/",
+        'existing' => "/^[a-z0-9-_]+$/"
     ]
 ];
