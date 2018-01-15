@@ -43,6 +43,40 @@ class SchemaConfig {
     }
 
 
+    public static function graduation_year($user = null) {
+        return [
+            'type' => 'text',
+            //'required' => 'required',
+            'valid' => [
+                'nullable',
+                'integer',
+                'between:1900,2100'
+            ],
+            'prepend' => [
+                'graduation_grade'
+            ]
+        ];
+    }
+
+
+    public static function graduation_grade($user = null) {
+        $options = trans('graduation_grades');
+        $date = \App\LoginModule\Graduation::gradeExpirationDate($user);
+        return [
+            'type' => 'select',
+            'options' => ['' => '...'] + $options,
+            //'required' => 'required',
+            'valid' => [
+                'nullable',
+                'in:'.implode(',', array_keys($options))
+            ],
+            'label' => trans('profile.graduation_grade', [
+                'year_begin' => $date->year - 1,
+                'year_end' => $date->year
+            ])
+        ];
+    }
+
     public static function real_name_visible($user = null) {
         return [
             'type' => 'checkbox'
@@ -296,41 +330,6 @@ class SchemaConfig {
         return [
             'type' => 'text',
             'required' => 'required'
-        ];
-    }
-
-
-    public static function graduation_year($user = null) {
-        return [
-            'type' => 'text',
-            //'required' => 'required',
-            'valid' => [
-                'nullable',
-                'integer',
-                'between:1900,2100'
-            ],
-            'prepend' => [
-                'graduation_grade'
-            ]
-        ];
-    }
-
-
-    public static function graduation_grade($user = null) {
-        $options = trans('graduation_grades');
-        $date = \App\LoginModule\Graduation::gradeExpirationDate($user);
-        return [
-            'type' => 'select',
-            'options' => ['' => '...'] + $options,
-            //'required' => 'required',
-            'valid' => [
-                'nullable',
-                'in:'.implode(',', array_keys($options))
-            ],
-            'label' => trans('profile.graduation_grade', [
-                'year_begin' => $date->year - 1,
-                'year_end' => $date->year
-            ])
         ];
     }
 
