@@ -7,7 +7,10 @@ use \Illuminate\Validation\Rule;
 class SchemaConfig {
 
     public static function login($user = null) {
-        $valid = ['login', 'min:3'];
+        $valid = ['min:3'];
+        if(!($user && $user->login === request()->get('login'))) {
+            $valid[] = 'login';
+        }
         if($user) {
             $valid[] = Rule::unique('users')->ignore($user->id);
         } else {
