@@ -120,8 +120,8 @@ class SchemaConfig {
 
 
     public static function secondary_email($user = null) {
-        if($user && $user->primary_email_id) {
-            $valid = Rule::unique('emails', 'email')->ignore($user->primary_email_id);
+        if($user && $user->secondary_email_id) {
+            $valid = Rule::unique('emails', 'email')->ignore($user->secondary_email_id);
         } else {
             $valid = Rule::unique('emails', 'email');
         }
