@@ -114,7 +114,6 @@ class SchemaConfig {
         }
         return [
             'type' => 'teacher_domain',
-            'required' => false,
             'options' => trans('profile.teacher_domain_options')
         ];
     }
@@ -128,9 +127,8 @@ class SchemaConfig {
         }
         return [
             'type' => 'email',
-            'required' => ['required', 'email'],
+            'required' => is_null($user->creator_client_id) ? ['required', 'email'] : ['email'],
             'valid' => [$valid]
-            //'unique:emails,email'.($user && $user->primary_email_id ? ','.$user->primary_email_id : '')
         ];
     }
 
@@ -145,7 +143,6 @@ class SchemaConfig {
         return [
             'type' => 'text',
             'name' => 'primary_email_verification_code',
-            //'required' => 'required',
             'help' => trans('profile.email_verification_help', [
                 'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
             ])
@@ -159,13 +156,13 @@ class SchemaConfig {
         } else {
             $valid = Rule::unique('emails', 'email');
         }
+
         return [
             'type' => 'email',
-            'required' => ['required', 'email'],
+            'required' => is_null($user->creator_client_id) ? ['required', 'email'] : ['email'],
             'valid' => [
                 'value_different:primary_email',
                 $valid
-                //'unique:emails,email'.($user && $user->secondary_email_id ? ','.$user->secondary_email_id : '')
             ]
         ];
     }
@@ -181,7 +178,6 @@ class SchemaConfig {
         return [
             'type' => 'text',
             'name' => 'secondary_email_verification_code',
-            //'required' => 'required',
             'help' => trans('profile.email_verification_help', [
                 'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
             ])
@@ -337,7 +333,6 @@ class SchemaConfig {
     public static function picture($user = null) {
         return [
             'type' => 'picture',
-            //'required' => 'required',
             'valid' => [
                 'image',
                 'max:'.(1024*config('ui.profile_picture.max_file_size'))

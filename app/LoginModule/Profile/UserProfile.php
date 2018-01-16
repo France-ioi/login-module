@@ -88,7 +88,8 @@ class UserProfile {
     public function completed($user) {
         $attributes = SchemaBuilder::availableAttributes();
         if($client = $this->context->client()) {
-            $attributes = array_values(array_intersect($client->user_attributes, $attributes));
+            //$attributes = array_values(array_intersect($client->user_attributes, $attributes));
+            $attributes = $this->getRequiredUserAttributes($user, $client);
             foreach($attributes as $attribute) {
                 $value = $user->getAttribute($attribute);
                 if(is_null($value) || $value == '') {
@@ -97,6 +98,17 @@ class UserProfile {
             }
         }
         return true;
+    }
+
+
+    public function getRequiredUserAttributes($user, $client) {
+        $attributes = SchemaBuilder::availableAttributes();
+        $attributes = array_values(array_intersect($client->user_attributes, $attributes));
+        // We would like to require emails, but only for accounts that were not generated
+        if($user && !is_null($user->creator_client_id)) {
+            $attributes = array_diff($attributes, ['primary_email', 'secondary_email']);
+        }
+        return $attributes;
     }
 
 

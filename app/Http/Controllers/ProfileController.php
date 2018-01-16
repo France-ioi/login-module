@@ -48,7 +48,7 @@ class ProfileController extends Controller
 
         $schema = $this->schema_builder->build(
             $user,
-            $this->requiredAttributes(),
+            $this->requiredAttributes($user),
             $this->context->client()->recommended_attributes,
             $disabled,
             true//$request->has('all')
@@ -77,7 +77,7 @@ class ProfileController extends Controller
         $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
         $schema = $this->schema_builder->build(
             $user,
-            $this->requiredAttributes(),
+            $this->requiredAttributes($user),
             $this->context->client()->recommended_attributes,
             $this->disabledAttributes($user, $is_pms_user, $user->login_fixed),
             $request->has('all')
@@ -98,9 +98,10 @@ class ProfileController extends Controller
 
 
 
-    private function requiredAttributes() {
+    private function requiredAttributes($user) {
         if($client = $this->context->client()) {
-            return $client->user_attributes;
+            return $this->profile->getRequiredUserAttributes($user, $client);
+            //return $client->user_attributes;
         }
         return [];
     }
