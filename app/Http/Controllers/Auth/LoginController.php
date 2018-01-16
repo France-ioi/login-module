@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use App\OAuthClient\Manager;
 use App\LoginModule\Platform\PlatformContext;
-
+use App\LoginModule\AuthList;
 
 class LoginController extends Controller
 {
@@ -38,9 +37,10 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(PlatformContext $context) {
+    public function __construct(PlatformContext $context, AuthList $auth_list) {
         $this->middleware('guest', ['except' => ['logout']]);
         $this->context = $context;
+        $this->auth_list = $auth_list;
     }
 
 
@@ -87,26 +87,11 @@ class LoginController extends Controller
 
 
     public function showLoginForm() {
-        $auth_order = [];
-        $badge_required = false;
-        if($client = $this->context->client()) {
-            $auth_order =  is_array($client->auth_order) ? $client->auth_order : [];
-            $badge_required = (bool) $this->context->badge()->url();
-        }
-        $default_order = array_merge(['login', 'badge'], Manager::providers());
-        if($auth_order) {
-            $auth_visible = $auth_order;
-            $auth_hidden = array_diff($default_order, $auth_order);
-        } else {
-            $auth_visible = $default_order;
-            $auth_hidden = [];
-        }
-        return view('auth.login', compact('auth_visible', 'auth_hidden', 'badge_required'));
+        $client = $this->context->client();
+        return view('auth.login', [
+            'methods' => $this->auth_list->split($client ? $client->auth_order : null)
+        ]);
     }
 
-
-    public function showLoginEmailForm() {
-        return view('auth.login_email');
-    }
 
 }

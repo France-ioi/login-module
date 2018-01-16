@@ -11,7 +11,6 @@ Route::get('/logout', 'Auth\LogoutController@getLogout');
 Route::post('/logout_start', 'Auth\LogoutController@logoutStart');
 Route::get('/logout_loop', 'Auth\LogoutController@logoutLoop');
 Route::get('/logout_finish', 'Auth\LogoutController@logoutFinish');
-Route::get('/login_email', 'Auth\LoginController@showLoginEmailForm');
 Route::post('/badge/verify', 'BadgeController@verify');
 Route::get('/session_expired', 'Auth\OAuthClientController@sessionExpired');
 

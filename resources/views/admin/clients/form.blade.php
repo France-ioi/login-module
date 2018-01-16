@@ -33,14 +33,32 @@
                 </div>
             @endforeach
         </div>
-        <label>Auth config</label>
+        <label>Login page auth methods setup (drag&drop to reorder)</label>
         <div>
-            @foreach($providers as $provider)
-                {!! BootForm::checkbox('auth_order[]', $provider, $provider, is_array($client->auth_order) && in_array($provider, $client->auth_order)) !!}
-            @endforeach
+            <ul class="list-group list-group-sortable" id="auth-order">
+                @foreach($auth_methods as $method)
+                    <li class="list-group-item">
+                        <input type="hidden" name="auth_order[]" value="{{ $method }}"/>
+                        {{ $method == '_' ? '-- Hidden methods divider --' : $method}}
+                    </li>
+                @endforeach
+            </ul>
         </div>
+        <label>Auth config</label>
         {!! BootForm::checkbox('autoapprove_authorization', 'Auto-approve authorizations to this platform') !!}
         {!! BootForm::textArea('public_key', 'Public key (LTI)') !!}
         {!! BootForm::submit() !!}
     {!! BootForm::close() !!}
+
+    <style type="text/css">
+        .list-group-sortable li {
+            cursor: move;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#auth-order').sortable();
+        })
+    </script>
 @endsection

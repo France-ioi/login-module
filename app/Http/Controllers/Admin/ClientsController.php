@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\OAuthClient\Manager;
 use App\Http\Requests\Admin\StoreClientRequest;
 use App\LoginModule\Profile\SchemaBuilder;
+use App\LoginModule\AuthList;
 
 class ClientsController extends Controller
 {
+
+    public function __construct(AuthList $auth_list) {
+        $this->auth_list = $auth_list;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +40,7 @@ class ClientsController extends Controller
         return view('admin.clients.form', [
             'client' => $client,
             'user_attributes' => SchemaBuilder::availableAttributes(),
-            'providers' => $this->getProviders()
+            'auth_methods' => $this->auth_list->all()
         ]);
     }
 
@@ -53,7 +57,8 @@ class ClientsController extends Controller
         $client->badge_required = $request->has('badge_required');
         $client->personal_access_client = false;
         $client->password_client = false;
-        $client->auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
+        $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
+        $client->auth_order = $this->auth_list->normalize($auth_order);
         $client->save();
         return redirect()
             ->route('admin.clients.index')
@@ -81,7 +86,7 @@ class ClientsController extends Controller
         return view('admin.clients.form', [
             'client' => $client,
             'user_attributes' => SchemaBuilder::availableAttributes(),
-            'providers' => $this->getProviders()
+            'auth_methods' => $this->auth_list->normalize($client->auth_order)
         ]);
     }
 
@@ -98,7 +103,8 @@ class ClientsController extends Controller
         $client->fill($request->all());
         $client->badge_autologin = $request->has('badge_autologin');
         $client->badge_required = $request->has('badge_required');
-        $client->auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
+        $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
+        $client->auth_order = $this->auth_list->normalize($auth_order);
         $client->save();
         return redirect()
             ->route('admin.clients.index')
@@ -117,12 +123,6 @@ class ClientsController extends Controller
         return redirect()
             ->route('admin.clients.index')
             ->with('status', 'Client deleted.');
-    }
-
-
-    private function getProviders() {
-        //dd(array_merge(Manager::providers(), ['badge']));
-        return array_merge(Manager::providers(), ['badge']);
     }
 
 }

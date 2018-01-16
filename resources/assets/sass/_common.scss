@@ -2,9 +2,8 @@
     padding: 2px 12px;
     height:auto;
 }
-.collapse {
-    display: none !important;
-}
-.collapse.in {
-    display: block !important;
+
+
+.list-group-sortable li {
+    cursor: move;
 }
