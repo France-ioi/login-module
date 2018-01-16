@@ -80,6 +80,7 @@ class User extends Authenticatable
                 $model->regular_password = true;
             }
             if($model->isDirty('graduation_grade')) {
+                $model->graduation_grade = Graduation::normalizeGrade($model->graduation_grade);
                 if($model->graduation_grade == -1) {
                     $model->graduation_grade_expire_at = null;
                     $model->graduation_year = null;

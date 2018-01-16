@@ -37,4 +37,13 @@ class Graduation
         return $date;
     }
 
+
+    public static function normalizeGrade($grade) {
+        $graduation_grade = (int) $grade;
+        if($graduation_grade != $grade || $graduation_grade < -2 || $graduation_grade > 11) {
+            return -1;
+        }
+        return $graduation_grade;
+    }
+
 }
