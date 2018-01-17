@@ -46,10 +46,11 @@ class ProfileController extends Controller
         };
         $disabled = $this->disabledAttributes($user, $is_pms_user, $user->login_fixed);
 
+        $required_attributes = $this->requiredAttributes($user);
         $client = $this->context->client();
         $schema = $this->schema_builder->build(
             $user,
-            $this->requiredAttributes($user),
+            $required_attributes,
             $client ? $client->recommended_attributes : [],
             $disabled,
             true//$request->has('all')
@@ -66,7 +67,7 @@ class ProfileController extends Controller
             'has_optional_fields' => $schema->hasOptionalAttributes(),
             'pms_redirect' => $is_pms_user,
             'cancel_url' => $this->context->cancelUrl(),
-            'all' => $request->has('all'),
+            'all' => $request->has('all') || count($required_attributes) == 0,
             'revalidation_fields' => Group::getRevalidationFields($user),
             'login_change_required' => $user->login_change_required
         ]);
