@@ -75,7 +75,7 @@ class ProfileFormElements {
 
 
     public static function date($block, $label) {
-        return BootForm::date(
+        return BootForm::text(
             $block->name,
             $label,
             null,

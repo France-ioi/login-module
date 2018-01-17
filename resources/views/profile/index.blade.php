@@ -126,7 +126,8 @@
             $('#birthday').datepicker({
                 format: 'yyyy-mm-dd',
                 endDate: new Date(),
-                autoclose: true
+                autoclose: true,
+                language: '{!! app()->getLocale() !!}'
             });
 
             @if($has_optional_fields)
