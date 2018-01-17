@@ -24,7 +24,7 @@ return [
     'remember_me' => 'Se souvenir de moi',
     'name' => 'Nom',
 
-    'login_header' => 'Connexion',
+    'login_header' => 'Connexion :platform_name / France-ioi',
     'login_intro' => 'Choisissez parmi les modes de connexion suivants :',
     'login_password' => 'Identifiant et mot de passe',
     'btn_login' => 'Se connecter',

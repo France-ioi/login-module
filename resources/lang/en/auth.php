@@ -24,7 +24,7 @@ return [
     'remember_me' => 'Remember Me',
     'name' => 'Name',
 
-    'login_header' => 'Login',
+    'login_header' => 'Connect to :platform_name / France-ioi',
     'login_intro' => 'Choose one of the following authentication methods :',
     'login_password' => 'Login and password',
     'btn_login' => 'Login',

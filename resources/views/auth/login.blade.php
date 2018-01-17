@@ -57,7 +57,7 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">@lang('auth.login_header')</div>
+        <div class="panel-heading">@lang('auth.login_header', ['platform_name' => $platform_name])</div>
         <div class="panel-body">
             <p>@lang('auth.login_intro')</p>
 

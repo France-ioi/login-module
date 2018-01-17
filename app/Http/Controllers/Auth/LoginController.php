@@ -89,7 +89,8 @@ class LoginController extends Controller
     public function showLoginForm() {
         $client = $this->context->client();
         return view('auth.login', [
-            'methods' => $this->auth_list->split($client ? $client->auth_order : null)
+            'methods' => $this->auth_list->split($client ? $client->auth_order : null),
+            'platform_name' => $client ? $client->name : trans('app.name')
         ]);
     }
 
