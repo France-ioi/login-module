@@ -100,14 +100,15 @@ class BadgeController extends Controller
                 $badge->code = $badge_data['code'];
                 $badge->data = $badge_data['user']['data'];
                 $badge->save();
-                BadgeApi::update($badge->url, $badge->code, $badge->user_id);
             } else {
-                Auth::user()->badges()->save(new Badge([
+                $badge = new Badge([
                     'code' => $badge_data['code'],
                     'url' => $badge_data['url'],
                     'data' => $badge_data['user']['data']
-                ]));
+                ]);
+                Auth::user()->badges()->save($badge);
             }
+            BadgeApi::update($badge->url, $badge->code, $badge->user_id);
             $first_name_different = Auth::user()->first_name != $badge_data['user']['first_name'];
             $last_name_different = Auth::user()->last_name != $badge_data['user']['last_name'];
             if($first_name_different || $last_name_different) {
