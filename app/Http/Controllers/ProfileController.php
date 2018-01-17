@@ -46,10 +46,11 @@ class ProfileController extends Controller
         };
         $disabled = $this->disabledAttributes($user, $is_pms_user, $user->login_fixed);
 
+        $client = $this->context->client();
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes($user),
-            $this->context->client()->recommended_attributes,
+            $client ? $client->recommended_attributes : [],
             $disabled,
             true//$request->has('all')
         );
@@ -78,7 +79,7 @@ class ProfileController extends Controller
         $schema = $this->schema_builder->build(
             $user,
             $this->requiredAttributes($user),
-            $this->context->client()->recommended_attributes,
+            [],
             $this->disabledAttributes($user, $is_pms_user, $user->login_fixed),
             $request->has('all')
         );
