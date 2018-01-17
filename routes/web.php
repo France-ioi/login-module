@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth']], function() {
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth','admin'], 'namespace' => 'Admin'], function() {
     Route::get('/', 'DashboardController@index');
     Route::get('/users', 'UsersController@index');
+    Route::get('/users/{id}', 'UsersController@show');
     Route::get('/users/{id}/password', 'UsersController@showPassword');
     Route::post('/users/{id}/password', 'UsersController@updatePassword');
     Route::get('/users/{id}/teacher_status', 'UsersController@showTeacherStatus');

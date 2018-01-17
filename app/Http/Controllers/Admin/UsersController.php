@@ -116,4 +116,11 @@ class UsersController extends Controller
         return redirect('/admin/users')->with('status', 'Password recovery email was sent');
     }
 
+
+    public function show($id) {
+        return view('admin.users.show', [
+            'user' => User::findOrFail($id),
+        ]);
+    }
+
 }
