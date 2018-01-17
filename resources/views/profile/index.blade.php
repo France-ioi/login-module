@@ -201,7 +201,9 @@
             $('#graduation_grade').change(function() {
                 var grade = $(this).val();
                 var year = $('#graduation_year').val();
-                $('#block_graduation_year').toggle((!grade && year) || grade == '-2');
+                var visible1 = (!grade && year) || grade == '-2';
+                var visible2 = !$('#optional_fields_filter').prop('checked');
+                $('#block_graduation_year').toggle(visible1 && visible2);
             }).trigger('change');
 
 

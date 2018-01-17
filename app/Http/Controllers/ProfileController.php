@@ -46,12 +46,17 @@ class ProfileController extends Controller
         };
         $disabled = $this->disabledAttributes($user, $is_pms_user, $user->login_fixed);
 
-        $required_attributes = $this->requiredAttributes($user);
         $client = $this->context->client();
+        $required_attributes = $this->requiredAttributes($user);
+        $recommended_attributes = $client ? $client->recommended_attributes : [];
+        if($user->login_change_required) {
+            $required_attributes = ['login'];
+            $recommended_attributes = [];
+        }
         $schema = $this->schema_builder->build(
             $user,
             $required_attributes,
-            $client ? $client->recommended_attributes : [],
+            $recommended_attributes,
             $disabled,
             true//$request->has('all')
         );
@@ -77,9 +82,13 @@ class ProfileController extends Controller
     public function update(Request $request, Verificator $verificator) {
         $user = $request->user();
         $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
+        $required_attributes = $this->requiredAttributes($user);
+        if($user->login_change_required) {
+            $required_attributes = ['login'];
+        }
         $schema = $this->schema_builder->build(
             $user,
-            $this->requiredAttributes($user),
+            $required_attributes,
             [],
             $this->disabledAttributes($user, $is_pms_user, $user->login_fixed),
             $request->has('all')
