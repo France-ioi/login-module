@@ -11,30 +11,46 @@ use App\LoginModule\Migrators\Merge\Group;
 class UserProvider extends EloquentUserProvider
 {
     public function retrieveByCredentials(array $credentials) {
-         if(empty($credentials)) {
-             return;
-         }
-         // for pwd restore, it available for users with emails only
-         if(isset($credentials['email'])) {
-             $credentials['login'] = $credentials['email'];
-             unset($credentials['email']);
-         }
-
-        $query = User::query();
-        if(strpos($credentials['login'], '@') === false) {
-            $query->where('login', $credentials['login']);
-        } else {
-            $query->whereHas('emails', function($q) use($credentials) {
-                $q->where('email', $credentials['login']);
-                if(isset($credentials['origin_instance_id'])) {
-                    $q->where('origin_instance_id', $credentials['origin_instance_id']);
-                 }
-            });
+        if(empty($credentials)) {
+            return;
         }
-         if(isset($credentials['origin_instance_id'])) {
+        // for pwd restore, it available for users with emails only
+        if(isset($credentials['email'])) {
+            $credentials['login'] = $credentials['email'];
+            unset($credentials['email']);
+        }
+
+        if(strpos($credentials['login'], '@') === false) {
+            return $this->attemptByLogin($credentials);
+        }
+        if($user = $this->attemptByEmail($credentials)) {
+            return $user;
+        }
+        return $this->attemptByLogin($credentials);
+    }
+
+
+    private function createQuery($credentials) {
+        $query = User::query();
+        if(isset($credentials['origin_instance_id'])) {
             $query->where('origin_instance_id', $credentials['origin_instance_id']);
-         }
-        return $query->first();
+        }
+        return $query;
+    }
+
+
+    private function attemptByLogin($credentials) {
+        return $this->createQuery($credentials)->where('login', $credentials['login'])->first();
+    }
+
+
+    private function attemptByEmail($credentials) {
+        return $this->createQuery($credentials)->whereHas('emails', function($q) use ($credentials) {
+            $q->where('email', $credentials['login']);
+            if(isset($credentials['origin_instance_id'])) {
+                $q->where('origin_instance_id', $credentials['origin_instance_id']);
+            }
+        })->first();
     }
 
 
