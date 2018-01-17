@@ -71,8 +71,3 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth','ad
     Route::resource('official_domains', 'OfficialDomainsController');
     Route::resource('origin_instances', 'OriginInstancesController');
 });
-
-
-Route::get('/test', function() {
-    die($_SERVER['REMOTE_ADDR']);
-});
