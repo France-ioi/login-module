@@ -103,6 +103,9 @@ return [
         ],
     ],
 
+    'value_different' => ':attribute und :other müssen sich unterscheiden.',
+    'login' => 'Unterstriche und Großbuchstaben sind nicht in :attribute Wert erlaubt',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes

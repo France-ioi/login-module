@@ -16,18 +16,21 @@ return [
     'failed' => 'Die Login-Angaben sind nicht korrekt.',
     'throttle' => 'Zu viele Login-Versuche. Bitte in :seconds Sekunden noch einmal probieren.',
 
-    'login_or_email' => 'Login oder E-Mail-Adresse',
-    'login' => 'Login',
-    'email' => 'E-Mail-Adress',
+    'login_or_email' => 'Benutzername oder E-Mail-Adresse',
+    'login' => 'Anmelden',
+    'email' => 'E-Mail-Adresse',
     'pwd' => 'Passwort',
     'pwd_confirm' => 'Passwort bestätigen',
     'remember_me' => 'Eingeloggt bleiben',
     'name' => 'Name',
 
-    'login_header' => 'Login',
+    'login_header' => 'Anmelden',
+    'login_intro' => 'Wähle eine der folgenden Authenifizierungmethoden aus:',
+    'login_password' => 'Benutzername und Passwort',
     'btn_login' => 'Login',
     'link_reset_pwd' => 'Passwort vergessen?',
     'link_register' => 'Account anlegen',
+    'show_more' => 'Mehr anzeigen',
 
     'register_header' => 'Registrieren',
     'btn_register' => 'Registrieren',
@@ -36,9 +39,13 @@ return [
     'btn_pwd_reset_email' => 'Link zum Passwort-Zurücksenden zusenden',
     'btn_pwd_reset' => 'Passwort zurücksetzen',
 
+    'emails_list_header' => 'E-Mail-Adresse auswählen',
+
     'logout_header' => 'Logout',
     'logout_hint' => 'Auch ausloggen von:',
     'btn_logout' => 'Logout',
+
+    'account_details' => 'Accountdetails',
 
     'session_expired' => 'Deine Sitzung ist abgelaufen. Bitte Fenster schließen und wieder einloggen.'
 ];
