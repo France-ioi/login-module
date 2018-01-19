@@ -127,7 +127,7 @@ class SchemaConfig {
         }
         return [
             'type' => 'email',
-            'required' => is_null($user->creator_client_id) ? ['required', 'email'] : ['email'],
+            'required' => $user && is_null($user->creator_client_id) ? ['required', 'email'] : ['email'],
             'valid' => [$valid]
         ];
     }
@@ -159,7 +159,7 @@ class SchemaConfig {
 
         return [
             'type' => 'email',
-            'required' => is_null($user->creator_client_id) ? ['required', 'email'] : ['email'],
+            'required' => $user && is_null($user->creator_client_id) ? ['required', 'email'] : ['email'],
             'valid' => [
                 'value_different:primary_email',
                 $valid
