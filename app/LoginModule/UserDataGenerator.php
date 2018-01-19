@@ -55,7 +55,7 @@ class UserDataGenerator {
 
 
     private function randomStr($l = 10) {
-        $c = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $c = '23456789abcdefghijkmnpqrstuvwxyz';
         return substr(str_shuffle(str_repeat($c, 5)), 0, $l);
     }
 
