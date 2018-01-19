@@ -7,6 +7,7 @@ use App\Badge;
 use App\User;
 use App\AutoLoginToken;
 use App\LoginModule\UserDataGenerator;
+use Illuminate\Support\Facades\Validator;
 
 class AccountsManagerController extends PlatformAPIController
 {
@@ -19,14 +20,41 @@ class AccountsManagerController extends PlatformAPIController
     }
 
 
+    private function validatorCreate(array $data) {
+        return Validator::make($data, [
+            'prefix' => 'required|min:1|max:100',
+            'amount' => 'required|integer|min:1|max:50',
+            'postfix_length' => 'integer|min:3|max:50',
+            'password_length' => 'integer|min:6|max:50',
+        ]);
+    }
+
 
     public function create(Request $request) {
-        $res = [];
+        $validator = $this->validatorCreate($request->all());
+        if($validator->fails()) {
+            $res = [
+                'success' => false,
+                'error' => 'Wrong params'
+            ];
+            return $this->makeResponse($res, $request->get('client')->secret);
+        }
+
+
+        $users = [];
         for($i=0; $i<$request->get('amount'); $i++) {
             $data = [
-                'password' => $this->generator->password(),
-                'login' => $this->generator->login($request->get('prefix'))
+                'password' => $this->generator->password($request->get('password_length')),
+                'login' => $this->generator->login($request->get('prefix'), $request->get('postfix_length'))
             ];
+
+            if($data['login'] === null) {
+                $res = [
+                    'success' => false,
+                    'error' => 'Login generation error'
+                ];
+                return $this->makeResponse($res, $request->get('client')->secret);
+            }
 
             $user = new User([
                 'login' => $data['login'],
@@ -57,18 +85,41 @@ class AccountsManagerController extends PlatformAPIController
                     ]
                 ]));
             }
-            $res[] = $data;
+            $users[] = $data;
         }
+        $res = [
+            'success' => true,
+            'data' => $users
+        ];
         return $this->makeResponse($res, $request->get('client')->secret);
     }
 
 
+    private function validatorDelete(array $data) {
+        return Validator::make($data, [
+            'prefix' => 'required|min:1|max:100'
+        ]);
+    }
+
+
     public function delete(Request $request) {
+        $validator = $this->validatorDelete($request->all());
+        if($validator->fails()) {
+            $res = [
+                'success' => false,
+                'error' => 'Wrong params'
+            ];
+            return $this->makeResponse($res, $request->get('client')->secret);
+        }
+
         if(!empty($request->get('prefix'))) {
             $prefix = str_replace('_', '\_', $request->get('prefix')).'%';
             User::where('login', 'like', $prefix)->where('creator_client_id', $request->get('client_id'))->delete();
         }
-        return $this->makeResponse(true, $request->get('client')->secret);
+        $res = [
+            'success' => true
+        ];
+        return $this->makeResponse($res, $request->get('client')->secret);
     }
 
 }

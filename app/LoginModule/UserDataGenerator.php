@@ -9,9 +9,12 @@ use App\AutoLoginToken;
 class UserDataGenerator {
 
 
-    public function login($prefix = '') {
+    public function login($prefix = '', $postfix_length = 6) {
+        $cnt = 0;
         do {
-            $login = $prefix.$this->randomStr();
+            $login = $prefix.$this->randomStr($postfix_length);
+            // something wrong, avoid infinite loop
+            if(++$cnt > 100) return null;
         } while (User::where('login', $login)->first());
         return $login;
     }
@@ -24,8 +27,11 @@ class UserDataGenerator {
         $last_name = array_get($badge_user, 'last_name');
         $last_name = preg_replace('/[^A-Za-z]/', '', $last_name);
         if($first_name != '' && $last_name != '') {
+            $cnt = 0;
             do {
                 $login = $prefix.strtolower($first_name.$last_name).$this->randomNumber(3);
+                // something wrong, avoid infinite loop
+                if(++$cnt > 100) return null;
             } while (User::where('login', $login)->first());
             return $login;
         }
@@ -33,8 +39,8 @@ class UserDataGenerator {
     }
 
 
-    public function password() {
-        return $this->randomStr();
+    public function password($l) {
+        return $this->randomStr($l);
     }
 
 
