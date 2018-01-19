@@ -35,6 +35,8 @@ class BadgeController extends Controller
     public function verify(Request $request) {
         $this->validate($request, $this->validation_rules);
         $code = $request->input('code');
+
+        // attempt login
         if($badge = $this->findBadge($code)) {
             if($badge->login_enabled) {
                 Auth::login($badge->user);
@@ -43,6 +45,8 @@ class BadgeController extends Controller
                 return $this->failedVerificationResponse($code, trans('badge.code_registered'));
             }
         }
+
+        // attempt to use badge api
         if($badge_data = $this->context->badge()->verifyAndStoreData($code)) {
             $client = $this->context->client();
             if($client && $client->badge_autologin) {
@@ -50,6 +54,15 @@ class BadgeController extends Controller
             }
             return redirect()->route('register');
         }
+
+        // attempt to use participation code
+        /*
+        $client = $this->context->client();
+        if($client  && $client->api_url) {
+            if($this->context->platform_api()->verify($client->api_url, $code)) {
+            }
+        }
+        */
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
     }
 

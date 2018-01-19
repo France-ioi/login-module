@@ -17,6 +17,7 @@
         {!! BootForm::text('badge_url', 'Badge URL') !!}
         {!! BootForm::checkbox('badge_required', 'Badge code required.') !!}
         {!! BootForm::checkbox('badge_autologin', 'Login with a badge code, without asking for a login and password.') !!}
+        {!! BootForm::text('api_url', 'Access code verification service url') !!}
         <label>Required user attributes</label>
         <div class="row">
             @foreach($user_attributes as $attr)

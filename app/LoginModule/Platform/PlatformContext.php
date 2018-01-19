@@ -77,4 +77,12 @@ class PlatformContext
         return $this->badge;
     }
 
+/*
+    public function api() {
+        if(!$this->api) {
+            $this->api = new PlatformApi($this->client(), auth()->user());
+        }
+        return $this->api;
+    }
+*/
 }
