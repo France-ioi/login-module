@@ -108,6 +108,9 @@ class UserProfile {
         if($user && !is_null($user->creator_client_id)) {
             $attributes = array_diff($attributes, ['primary_email', 'secondary_email']);
         }
+        if($user && $user->graduation_grade == -1) {
+            $attributes = array_diff($attributes, ['graduation_year']);
+        }
         return $attributes;
     }
 

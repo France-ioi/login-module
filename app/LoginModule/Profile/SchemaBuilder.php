@@ -37,6 +37,7 @@ class SchemaBuilder {
                     if(isset($added[$attr_ex])) continue;
                     $config_ex = SchemaConfig::$attr_ex($user);
                     $blocks[] = $this->createBlock($attr_ex, $config_ex, $required, $recommended, $disabled);
+                    $added[$attr_ex] = true;
                 }
             }
         }

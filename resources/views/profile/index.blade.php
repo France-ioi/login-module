@@ -130,16 +130,7 @@
                 language: '{!! app()->getLocale() !!}'
             });
 
-            @if($has_optional_fields)
-                (function(el) {
-                    function toggleOptionalFields() {
-                        $('[optional_field=1]').toggle(!el.prop('checked'));
-                    }
-                    el.click(toggleOptionalFields);
-                    el.prop('checked', {!! $all ? 'false' : 'true' !!});
-                    toggleOptionalFields(false);
-                })($('#optional_fields_filter'));
-            @endif
+
 
 
 
@@ -198,12 +189,25 @@
             emails.refresh();
 
 
+            @if($has_optional_fields)
+                (function(el) {
+                    function toggleOptionalFields() {
+                        $('[optional_field=1]').toggle(!el.prop('checked'));
+                    }
+                    el.click(toggleOptionalFields);
+                    el.prop('checked', {!! $all ? 'false' : 'true' !!});
+                    toggleOptionalFields();
+                    $('#graduation_grade').trigger('change');
+                })($('#optional_fields_filter'));
+            @endif
+
+
             $('#graduation_grade').change(function() {
                 var grade = $(this).val();
                 var year = $('#graduation_year').val();
-                var visible1 = (!grade && year) || grade == '-2';
-                var visible2 = !$('#optional_fields_filter').prop('checked');
-                $('#block_graduation_year').toggle(visible1 && visible2);
+                var year_visible = (!grade && year) || grade == '-2';
+                var grade_visible = $('#graduation_grade').is(':visible');
+                $('#block_graduation_year').toggle(year_visible && grade_visible);
             }).trigger('change');
 
 
