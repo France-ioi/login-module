@@ -57,6 +57,6 @@ return [
         'no' => 'Nein, habe ich nicht'
     ],
     'teacher_domain_alert' => 'Bitte kontaktieren Sie :email und geben Sie an, warum Sie keine authorisierte E-Mail-Adresse haben.',
-    'login_change_limitations' => 'Falls Sie Ihren Benutzernamen ändern, werden Sie nach einer Stunde für ein Jahr lang keine Möglichkeit haben, ihn nochmal zu ändern'
+    'login_change_limitations' => 'Falls Sie Ihren Benutzernamen ändern, werden Sie nach einer Stunde für ein Jahr lang keine Möglichkeit haben, ihn nochmal zu ändern',
     'login_change_required' => 'Verzeihung, wir müssen Sie leider bitten, einen neuen Benutzernamen auszuwählen. Der angegebene wird bereits verwendet oder entspricht nicht den Vorgaben. Es sind nur Kleinbuchstaben, Ziffern und Bindestriche erlaubt.'
 ];
