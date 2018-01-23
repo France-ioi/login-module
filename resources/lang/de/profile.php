@@ -33,7 +33,7 @@ return [
     'gender' => 'Geschlecht',
     'genders' => [
         'm' => 'männlich',
-        'f' => 'weibliche'
+        'f' => 'weiblich'
     ],
     'presentation'  => 'Präsentation',
     'website' => 'Website',
