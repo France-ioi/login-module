@@ -105,7 +105,7 @@ return [
         ],
     ],
 
-    'login' => "Le tiret bas n'est pas autorisé dans le :attribute",
+    'login' => "Seules les lettres minuscules non accentuées, les chiffres et le tiret - sont autorisés dans l'identifiant.",
 
     /*
     |--------------------------------------------------------------------------
