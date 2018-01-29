@@ -173,7 +173,7 @@ class BadgeController extends Controller
         $url = $this->context->badge()->url();
         if(!$badge = Auth::user()->badges()->where('url', $url)->first()) {
             Auth::user()->badges()->save(new Badge([
-                'code' => '',
+                'code' => null,
                 'url' => $url,
                 'do_not_possess' => true
             ]));
