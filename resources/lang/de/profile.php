@@ -2,7 +2,7 @@
 
 return [
     'header' => 'Profil',
-    'optional_fields_filter' => 'Display required or recommended fields only',
+    'optional_fields_filter' => 'Nur benötigte oder empfohlene Felder anzeigen',
 
     'login' => 'Login',
     'first_name' => 'Vorname',
