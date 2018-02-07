@@ -17,6 +17,7 @@ class AuthOrder extends Migration
     {
         $auth_list = new App\LoginModule\AuthList;
         App\Client::get()->each(function($client) use ($auth_list) {
+            if(!$client->auth_order) { $client->auth_order = []; }
             $client->auth_order = array_merge(array_values($client->auth_order), ['_']);
             $client->auth_order = $auth_list->normalize($client->auth_order);
             $client->save();
