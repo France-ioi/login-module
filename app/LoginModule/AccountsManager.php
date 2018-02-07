@@ -35,6 +35,9 @@ class AccountsManager
         ]);
         $user->login_fixed = isset($params['login_fixed']) && $params['login_fixed'];
         $user->creator_client_id = $params['client_id'];
+        if(isset($params['language'])) {
+            $user->language = $params['language'];
+        }
         $user->save();
         $data['id'] = $user->id;
 

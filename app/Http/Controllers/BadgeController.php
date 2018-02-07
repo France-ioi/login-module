@@ -65,7 +65,8 @@ class BadgeController extends Controller
                 'client_id' => $client->id,
                 'prefix'=> 'user-',
                 'postfix_length' => 8,
-                'participation_code' => true
+                'participation_code' => true,
+                'language' => \App\LoginModule\Locale::get()
             ]);
             Auth::loginUsingId($data['id']);
             Auth::user()->platformGroups()->save(new PlatformGroup([
