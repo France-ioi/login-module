@@ -10,8 +10,10 @@ use App\Badge;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Platform\BadgeApi;
 use App\LoginModule\UserDataGenerator;
+use App\LoginModule\AccountsManager;
 use App\User;
 use App\Email;
+use App\PlatformGroup;
 
 class BadgeController extends Controller
 {
@@ -21,9 +23,10 @@ class BadgeController extends Controller
     ];
 
 
-    public function __construct(PlatformContext $context, UserDataGenerator $generator) {
+    public function __construct(PlatformContext $context, UserDataGenerator $generator, AccountsManager $accounts_manager) {
         $this->context = $context;
         $this->generator = $generator;
+        $this->accounts_manager = $accounts_manager;
     }
 
 
@@ -56,13 +59,22 @@ class BadgeController extends Controller
         }
 
         // attempt to use participation code
-        /*
         $client = $this->context->client();
-        if($client  && $client->api_url) {
-            if($this->context->platform_api()->verify($client->api_url, $code)) {
-            }
+        if($client && $this->context->platformApi()->verify($code)) {
+            $data = $this->accounts_manager->create([
+                'client_id' => $client->id,
+                'prefix'=> 'user-',
+                'postfix_length' => 8,
+                'participation_code' => true
+            ]);
+            Auth::loginUsingId($data['id']);
+            Auth::user()->platformGroups()->save(new PlatformGroup([
+                'group_code' => $code,
+                'client_id' => $client->id,
+                'participation_code' => $data['participation_code']
+            ]));
+            return redirect('/participation_code');
         }
-        */
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
     }
 

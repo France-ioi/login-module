@@ -12,6 +12,7 @@ class PlatformContext
     protected $state;
     protected $client;
     protected $badge;
+    protected $platform_api;
 
 
     public function __construct(PlatformContextState $state) {
@@ -77,12 +78,12 @@ class PlatformContext
         return $this->badge;
     }
 
-/*
-    public function api() {
-        if(!$this->api) {
-            $this->api = new PlatformApi($this->client(), auth()->user());
+
+    public function platformApi() {
+        if(!$this->platform_api) {
+            $this->platform_api = new PlatformApi($this->client());
         }
-        return $this->api;
+        return $this->platform_api;
     }
-*/
+
 }

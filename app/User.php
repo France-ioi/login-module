@@ -164,6 +164,11 @@ class User extends Authenticatable
     }
 
 
+    public function platformGroups() {
+        return $this->hasMany('App\PlatformGroup');
+    }
+
+
     public function tokens() {
         return $this->hasMany('\Laravel\Passport\Token');
     }

@@ -25,6 +25,7 @@ Route::get('/lti', 'Auth\LTIController@login');
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);
 
 Route::group(['middleware' => ['auth']], function() {
+    Route::get('/participation_code', 'ParticipationCodeController@index');
     Route::get('/merging_accounts', 'MergingAccountsController@index');
     Route::post('/merging_accounts/accept', 'MergingAccountsController@acceptMerge');
     Route::post('/merging_accounts/decline', 'MergingAccountsController@declineMerge');
