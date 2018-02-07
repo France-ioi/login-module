@@ -2,8 +2,6 @@
 
 namespace App\LoginModule\Platform;
 
-use App\Badge;
-
 class PlatformApi {
 
     protected $http_client;
