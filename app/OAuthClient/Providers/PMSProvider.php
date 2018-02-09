@@ -66,6 +66,7 @@
         public function getPreferencesURL($auth_connection) {
             $state = str_random(40);
             session()->put(self::STATE_SESSION_KEY, $state);
+            session()->put('pms_profile_callback', 1);
             $client = $this->getClient('preferences');
             $url = $client->getAuthorizationUrl([
                 'state' => $state

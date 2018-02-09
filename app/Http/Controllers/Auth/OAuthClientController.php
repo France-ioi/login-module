@@ -32,9 +32,10 @@ class OAuthClientController extends Controller
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
             if($user = AuthConnector::connect($auth)) {
-                //TODO: check user group here
+                //TODO: check user group here???
                 if($user_was_logged) {
-                    return redirect('/auth_methods');
+                    $pms_profile_callback = session()->pull('pms_profile_callback', 1);
+                    return $pms_profile_callback ? redirect('/profile') : redirect('/auth_methods');
                 }
                 return redirect()->intended('/auth_methods');
             }
