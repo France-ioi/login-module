@@ -48,7 +48,7 @@ return [
     'email_verified' => 'Verifiziert',
     'email_verification_code_error' => 'Ungültiger Verifizierungs-Code.',
 
-    'pms_redirect_msg' => 'Bitte gehe zum PMS, um dein Profil zu bearbeiten. Falls du noch nicht für den JwInf angemeldet bist, kannst du das unter „Wettbewerbe“ gleich mit erledigen. Speichere die Änderungen und klicke dann auf „Zurück zum JwInf“.',
+    'pms_redirect_msg' => 'Einige Profileinstellungen (u. a. Name und E-Mail) wurden aus dem BWINF PMS übernommen. Gehe zum PMS, um diese Daten zu bearbeiten. Speichere die Änderungen und klicke dann auf „Zurück zum JwInf.',
     'pms_redirect_btn' => 'Weiter zum PMS',
 
     'teacher_domain_verified' => 'Haben Sie eine E-Mail-Adresse von einer authorisierten Domain?',
