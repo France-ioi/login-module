@@ -25,7 +25,7 @@ return [
     'name' => 'Name',
 
     'login_header' => 'Anmelden',
-    'login_intro' => 'Wähle eine der folgenden Authenifizierungmethoden aus:',
+    'login_intro' => 'Wähle eine der folgenden Authentifizierungmethoden aus:',
     'login_password' => 'Benutzername und Passwort',
     'btn_login' => 'Login',
     'link_reset_pwd' => 'Passwort vergessen?',
