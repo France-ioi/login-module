@@ -98,8 +98,12 @@ class AuthConnector
                 // Dummy school name, TODO :: fetch school names
                 if($authinfo['userType'] == 't') {
                     // We get an array of schoolIds
-                    foreach($authinfo['schoolId'] as $schoolId) {
-                        $badges[] = 'school://pms.bwinf.de/member/school_'.$schoolId.'/school_'.$schoolId;
+                    if(is_array($authinfo['schoolId'])) {
+                        foreach($authinfo['schoolId'] as $schoolId) {
+                            $badges[] = 'school://pms.bwinf.de/member/school_'.$schoolId.'/school_'.$schoolId;
+                        }
+                    } else {
+                        $badges[] = 'school://pms.bwinf.de/member/school_'.$authinfo['schoolId'].'/school_'.$authinfo['schoolId'];
                     }
                 } else {
                     $badges[] = 'school://pms.bwinf.de/member/school_'.$authinfo['schoolId'].'/school_'.$authinfo['schoolId'];
