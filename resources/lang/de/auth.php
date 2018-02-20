@@ -17,7 +17,7 @@ return [
     'throttle' => 'Zu viele Login-Versuche. Bitte in :seconds Sekunden noch einmal probieren.',
 
     'login_or_email' => 'Benutzername oder E-Mail-Adresse',
-    'login' => 'Anmelden',
+    'login' => 'Benutzername',
     'email' => 'E-Mail-Adresse',
     'pwd' => 'Passwort',
     'pwd_confirm' => 'Passwort bestätigen',
@@ -25,7 +25,7 @@ return [
     'name' => 'Name',
 
     'login_header' => 'Anmelden',
-    'login_intro' => 'Wähle eine der folgenden Authenifizierungmethoden aus:',
+    'login_intro' => 'Wähle eine der folgenden Authentifizierungmethoden aus:',
     'login_password' => 'Benutzername und Passwort',
     'btn_login' => 'Login',
     'link_reset_pwd' => 'Passwort vergessen?',
