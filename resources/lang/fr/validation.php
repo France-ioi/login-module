@@ -69,7 +69,7 @@ return [
     'present'              => 'Le champ :attribute doit être présent.',
     'regex'                => 'Le format du champ :attribute est invalide.',
     'required'             => 'Le champ :attribute est obligatoire.',
-    'required_if'          => 'Le champ :attribute est obligatoire quand la valeur de :other est :value.',
+    'required_if'          => 'Le champ :attribute est obligatoire.',
     'required_unless'      => 'Le champ :attribute est obligatoire sauf si :other est :values.',
     'required_with'        => 'Le champ :attribute est obligatoire quand :values est présent.',
     'required_with_all'    => 'Le champ :attribute est obligatoire quand :values est présent.',

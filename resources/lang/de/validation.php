@@ -67,7 +67,7 @@ return [
     'present'              => ':attribute muss angegeben werden.',
     'regex'                => ':attribute Format ist ungültig.',
     'required'             => ':attribute ist erforderlich.',
-    'required_if'          => ':attribute ist erforderlich, wenn :other :value ist.',
+    'required_if'          => ':attribute ist erforderlich.',
     'required_unless'      => ':attribute ist erforderlich, wenn :other nicht :values ist.',
     'required_with'        => ':attribute ist erforderlich, wenn :values angegeben ist.',
     'required_with_all'    => ':attribute ist erforderlich, wenn :values angegeben ist.',
