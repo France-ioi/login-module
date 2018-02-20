@@ -69,7 +69,7 @@ class SchemaConfig {
         $year = (int) date('Y');
         return [
             'type' => 'text',
-            //'required' => 'required',
+            'required' => 'required_if:graduation_grade,-2',
             'valid' => [
                 'nullable',
                 'integer',

@@ -90,9 +90,10 @@ class UserProfile {
         if($client = $this->context->client()) {
             //$attributes = array_values(array_intersect($client->user_attributes, $attributes));
             $attributes = $this->getRequiredUserAttributes($user, $client);
+
             foreach($attributes as $attribute) {
                 $value = $user->getAttribute($attribute);
-                if(is_null($value) || $value == '') {
+                if(is_null($value) || $value === '') {
                     return false;
                 }
             }
