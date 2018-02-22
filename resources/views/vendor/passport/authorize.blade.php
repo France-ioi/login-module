@@ -17,10 +17,9 @@
             @if (count($scopes) > 0)
                 <div class="scopes">
                         <p><strong>@lang('passport.scopes_title')</strong></p>
-
                         <ul>
                             @foreach ($scopes as $scope)
-                                <li>{{ $scope->description }}</li>
+                                <li>@lang('passport.scopes.'.$scope->description)</li>
                             @endforeach
                         </ul>
                 </div>
