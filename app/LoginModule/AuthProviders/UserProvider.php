@@ -6,6 +6,7 @@ use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use App\LoginModule\UserPassword;
 use App\User;
+use App\Email;
 use App\LoginModule\Migrators\Merge\Group;
 
 class UserProvider extends EloquentUserProvider
@@ -45,12 +46,23 @@ class UserProvider extends EloquentUserProvider
 
 
     private function attemptByEmail($credentials) {
+        $query = Email::where('email', $credentials['login']);
+        if(isset($credentials['origin_instance_id'])) {
+            $query->where('origin_instance_id', $credentials['origin_instance_id']);
+        }
+        if($email = $query->first()) {
+            return $email->user;
+        }
+        return null;
+/*
+        // slow query
         return $this->createQuery($credentials)->whereHas('emails', function($q) use ($credentials) {
             $q->where('email', $credentials['login']);
             if(isset($credentials['origin_instance_id'])) {
                 $q->where('origin_instance_id', $credentials['origin_instance_id']);
             }
         })->first();
+*/
     }
 
 
