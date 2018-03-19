@@ -207,7 +207,12 @@
                 var year = $('#graduation_year').val();
                 var year_visible = (!grade && year) || grade == '-2';
                 var grade_visible = $('#graduation_grade').is(':visible');
-                $('#block_graduation_year').toggle(year_visible && grade_visible);
+                if(year_visible && grade_visible) {
+                    $('#block_graduation_year').show();
+                } else {
+                    $('#graduation_year').val('');
+                    $('#block_graduation_year').hide();
+                }
             }).trigger('change');
 
 
