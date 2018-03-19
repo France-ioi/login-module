@@ -33,8 +33,8 @@ class ClientsSeeder extends Seeder
 
         \App\Client::create(array_merge($this->defaults, [
             'id' => 1,
-            'redirect' => 'http://login-module-example-client.dev/callback_oauth.php',
-            'badge_url' => 'http://login-module-example-client.dev/dummy_badge.php',
+            'redirect' => 'http://login-module-example-client.test/callback_oauth.php',
+            'badge_url' => 'http://login-module-example-client.test/dummy_badge.php',
             'name' => 'Example client - dev',
         ]));
         \App\Client::create(array_merge($this->defaults, [
@@ -66,8 +66,8 @@ class ClientsSeeder extends Seeder
         ];
         \App\Client::create(array_merge($this->defaults, [
             'id' => 3,
-            'redirect' => 'http://algorea-platform.dev/login/callback_oauth.php',
-            'badge_url' => 'http://login-module-example-client.dev/dummy_badge.php',
+            'redirect' => 'http://algorea-platform.test/login/callback_oauth.php',
+            'badge_url' => 'http://login-module-example-client.test/dummy_badge.php',
             'user_attributes' => $user_attributes,
             'name' => 'Algorea - dev',
         ]));
@@ -102,7 +102,7 @@ class ClientsSeeder extends Seeder
         ];
         \App\Client::create(array_merge($this->defaults, [
             'id' => 5,
-            'redirect' => 'http://france-ioi.dev/user/callback_oauth.php',
+            'redirect' => 'http://france-ioi.test/user/callback_oauth.php',
             'badge_url' => '',
             'user_attributes' => $user_attributes,
             'name' => 'franceioi - dev',
@@ -128,7 +128,7 @@ class ClientsSeeder extends Seeder
         ];
         \App\Client::create(array_merge($this->defaults, [
             'id' => 7,
-            'redirect' => 'http://bebras-platform.dev/teacherInterface/login_module/callback_oauth.php',
+            'redirect' => 'http://bebras-platform.test/teacherInterface/login_module/callback_oauth.php',
             'badge_url' => '',
             'user_attributes' => $user_attributes,
             'name' => 'Bebras - dev',

@@ -4,7 +4,7 @@
     <nav class="navbar navbar-default">
         <div class="container">
             @if(Auth::check())
-                <p class="navbar-text">
+                <p class="navbar-text pull-left">
                     @if(Auth::user()->first_name)
                         {{ Auth::user()->first_name }}
                         {{ Auth::user()->last_name }}
