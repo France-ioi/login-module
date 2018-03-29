@@ -45,10 +45,25 @@
                     <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                     <td>{{ $user->role }}</td>
                     <td>
-                        <a href="{{ url('/admin/users/'.$user->id) }}" class="btn btn-xs btn-primary" title="View details">View</a>
-                        <a href="{{ url('/admin/users/'.$user->id.'/emails') }}" class="btn btn-xs btn-primary" title="Send recovery email to user">Send recovery</a>
-                        <a href="{{ url('/admin/users/'.$user->id.'/password') }}" class="btn btn-xs btn-primary" title="Change user password">Password</a>
-                        <a href="{{ url('/admin/users/'.$user->id.'/teacher_status') }}" class="btn btn-xs btn-primary" title="Teacher status">Teacher status</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ url('/admin/users/'.$user->id) }}" title="View details">View</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/admin/users/'.$user->id.'/emails') }}" title="Send recovery email to user">Send recovery</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/admin/users/'.$user->id.'/password') }}" title="Change user password">Password</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/admin/users/'.$user->id.'/permissions') }}" title="Change user permissions">Permissions</a>
+                                </li>
+                            </ul>
+                        </div>
                         <form action="{{ url('/admin/users/'.$user->id) }}" method="POST" style="display: inline" role="delete">
                             {{ csrf_field() }}
                             <input name="_method" type="hidden" value="DELETE"/>

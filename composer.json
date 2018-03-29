@@ -11,16 +11,18 @@
         "google/apiclient": "^2.1",
         "intervention/image": "^2.4",
         "laravel/framework": "5.4.*",
-        "laravel/passport": "dev-master",
+        "laravel/passport": "4.*",
         "laravel/tinker": "~1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "league/oauth2-client": "^2.2",
         "namshi/jose": "^7.2",
+        "spatie/laravel-permission": "^2.9",
         "spomky-labs/jose": "^6.1",
         "watson/bootstrap-form": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
+        "laracasts/generators": "^1.1",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.7"
     },

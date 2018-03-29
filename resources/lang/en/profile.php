@@ -39,7 +39,8 @@ return [
     'website' => 'Website',
     'picture' => 'Picture',
     'picture_size_error' => 'The picture may not be greater than :size megabyte(s).',
-    'graduation_grade' => 'Grade for the school year :year_begin-:year_end',
+    'graduation_grade_range' => 'Grade for the school year :year_begin-:year_end',
+    'graduation_grade' => 'Grade',
     'success' => 'Profile updated.',
 
     'primary_email_verification_code' => 'Primary email verification code',
@@ -58,5 +59,8 @@ return [
     ],
     'teacher_domain_alert' => 'Please contact :email and explain why you don\'t have an authorized email.',
     'login_change_limitations' => 'If you change your login, after one hour, you won\'t be able to change it again for a year',
-    'login_change_required' => 'Sorry, we need to you to pick a new login. This one was already used or doesn\'t follow the rules. Only lowercase letters, digits and -  are allowed'
+    'login_change_required' => 'Sorry, we need to you to pick a new login. This one was already used or doesn\'t follow the rules. Only lowercase letters, digits and -  are allowed',
+
+    'verification_alert_p1' => 'The following information was verified. If you change it, you may need to have it verified again or you may lose access to some platforms or features: ',
+    'verification_alert_p2' => 'Are you sure you want to change them?'
 ];

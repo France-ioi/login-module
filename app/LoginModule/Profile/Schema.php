@@ -39,9 +39,9 @@ class Schema {
         return $res;
     }
 
-    public function hasOptionalAttributes() {
+    public function hasRequiredAttributes() {
         foreach($this->blocks as $block) {
-            if(!$block->required || !$block->recommended) return true;
+            if(!$block->disabled && ($block->required || $block->recommended)) return true;
         }
         return false;
     }

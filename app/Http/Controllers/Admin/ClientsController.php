@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreClientRequest;
 use App\LoginModule\Profile\SchemaBuilder;
 use App\LoginModule\AuthList;
+use App\VerificationMethod;
+use App\LoginModule\Profile\Verification\Verification;
 
 class ClientsController extends Controller
 {
@@ -40,7 +42,10 @@ class ClientsController extends Controller
         return view('admin.clients.form', [
             'client' => $client,
             'user_attributes' => SchemaBuilder::availableAttributes(),
-            'auth_methods' => $this->auth_list->all()
+            'verifiable_attributes' => Verification::ATTRIBUTES,
+            'auth_methods' => $this->auth_list->all(),
+            'verification_methods' => VerificationMethod::get(),
+            'client_verification_methods' => []
         ]);
     }
 
@@ -53,13 +58,12 @@ class ClientsController extends Controller
     public function store(StoreClientRequest $request)
     {
         $client = new Client($request->all());
-        $client->badge_autologin = $request->has('badge_autologin');
-        $client->badge_required = $request->has('badge_required');
         $client->personal_access_client = false;
         $client->password_client = false;
         $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
         $client->save();
+        $this->syncVerificationMethods($client, $request);
         return redirect()
             ->route('admin.clients.index')
             ->with('status', 'New client added.');
@@ -86,7 +90,10 @@ class ClientsController extends Controller
         return view('admin.clients.form', [
             'client' => $client,
             'user_attributes' => SchemaBuilder::availableAttributes(),
-            'auth_methods' => $this->auth_list->normalize($client->auth_order)
+            'verifiable_attributes' => Verification::ATTRIBUTES,
+            'auth_methods' => $this->auth_list->normalize($client->auth_order),
+            'verification_methods' => VerificationMethod::get(),
+            'client_verification_methods' => $client->verification_methods->pluck('pivot', 'id')
         ]);
     }
 
@@ -99,13 +106,11 @@ class ClientsController extends Controller
      */
     public function update(StoreClientRequest $request, Client $client)
     {
-        //dd($request->all());
         $client->fill($request->all());
-        $client->badge_autologin = $request->has('badge_autologin');
-        $client->badge_required = $request->has('badge_required');
         $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
         $client->save();
+        $this->syncVerificationMethods($client, $request);
         return redirect()
             ->route('admin.clients.index')
             ->with('status', 'Client updated.');
@@ -123,6 +128,19 @@ class ClientsController extends Controller
         return redirect()
             ->route('admin.clients.index')
             ->with('status', 'Client deleted.');
+    }
+
+
+    private function syncVerificationMethods($client, $request) {
+        $data = [];
+        $methods = $request->get('verification_methods');
+        $expiration = $request->get('verification_methods_expiration');
+        foreach($methods as $id) {
+            $data[$id] = [
+                'expiration' => isset($expiration[$id]) ? (int) $expiration[$id] : null
+            ];
+        }
+        $client->verification_methods()->sync($data);
     }
 
 }

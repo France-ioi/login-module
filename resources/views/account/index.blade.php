@@ -9,6 +9,9 @@
             <a href="{{ url('/profile') }}" class="list-group-item">
                 @lang('profile.header')
             </a>
+            <a href="{{ url('/verification') }}" class="list-group-item">
+                @lang('verification.header')
+            </a>
             @if($need_badge_verification)
                 <a href="{{ url('/badge') }}" class="list-group-item">
                     @lang('badge.header')

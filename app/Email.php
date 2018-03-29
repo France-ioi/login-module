@@ -8,6 +8,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Notifications\EmailVerificationNotification;
 use App\Notifications\ResetPasswordNotification;
+use App\Notifications\PeerVerificationNotification;
 
 class Email extends Model implements CanResetPasswordContract
 {
@@ -18,27 +19,25 @@ class Email extends Model implements CanResetPasswordContract
         'user_id',
         'email',
         'role',
-        'verified',
         'verification_code',
-    ];
-
-    protected $casts = [
-        'verified' => 'boolean'
     ];
 
 
 
     public function requireVerification() {
-        $this->verified = false;
         $this->code = str_random(10);
         $this->save();
         $this->notify(new EmailVerificationNotification());
     }
 
 
+    public function peerVerificationRequest($code) {
+        $this->notify(new PeerVerificationNotification($code));
+    }
+
+
     public function verifyCode($code) {
         if($this->exists() && $this->code === $code) {
-            $this->verified = true;
             $this->code = null;
             return true;
         }

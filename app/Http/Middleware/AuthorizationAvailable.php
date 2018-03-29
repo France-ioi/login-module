@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\LoginModule\Profile\UserProfile;
-use App\LoginModule\Profile\Verification\Verificator;
+use App\LoginModule\Profile\Verification\Verification;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Migrators\Merge\Group;
 
@@ -12,13 +12,13 @@ class AuthorizationAvailable
 {
 
     protected $profile;
-    protected $verificator;
+    protected $verification;
     protected $context;
 
-    public function __construct(UserProfile $profile, Verificator $verificator, PlatformContext $context) {
+    public function __construct(UserProfile $profile, Verification $verification, PlatformContext $context) {
         $this->context = $context;
         $this->profile = $profile;
-        $this->verificator = $verificator;
+        $this->verification = $verification;
     }
     /**
      * Handle an incoming request.
@@ -31,10 +31,12 @@ class AuthorizationAvailable
     {
         $user = $request->user();
         $completed = $this->profile->completed($user);
-        $verified = $this->verificator->verify($user) === true;
         $revalidated = !Group::revalidationRequired($user);
-        if(!$completed || !$verified || !$revalidated || $user->login_change_required) {
+        if(!$completed || !$revalidated || $user->login_change_required) {
             return redirect('/profile');
+        }
+        if(!$this->verification->authReady($user)) {
+            return redirect('/verification');
         }
         if(!$this->context->badge()->valid()) {
             return redirect('/badge');

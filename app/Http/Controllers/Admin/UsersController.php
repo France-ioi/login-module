@@ -10,6 +10,8 @@ use App\LoginModule\Badges;
 use App\LoginModule\Platform\BadgeApi;
 use Illuminate\Support\Facades\Password;
 use Mail;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UsersController extends Controller
 {
@@ -65,18 +67,20 @@ class UsersController extends Controller
     }
 
 
-    public function showTeacherStatus($id) {
-        return view('admin.users.teacher_status', [
-            'user' => User::findOrFail($id)
+    public function showPermissions($id) {
+        return view('admin.users.permissions', [
+            'user' => User::findOrFail($id),
+            'roles' => Role::get()->pluck('name', 'name')->toArray(),
+            'permissions' => Permission::get()->pluck('name', 'name')->toArray(),
         ]);
     }
 
 
-    public function updateTeacherStatus($id, Request $request) {
+    public function updatePermissions($id, Request $request) {
         $user = User::findOrFail($id);
-        $user->teacher_verified = $request->has('teacher_verified');
-        $user->save();
-        return redirect('/admin/users')->with('status', 'Teacher status saved');
+        $user->syncRoles($request->get('roles', []));
+        $user->syncPermissions($request->get('permissions', []));
+        return redirect('/admin/users')->with('status', 'User roles updated');
     }
 
 

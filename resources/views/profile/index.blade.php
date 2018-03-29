@@ -21,9 +21,19 @@
         </div>
     @endif
 
-    @if($login_change_required)
+    @if($form['model']->login_change_required)
         <div class="alert alert-warning">
             @lang('profile.login_change_required')
+        </div>
+    @endif
+
+    @if(count($unverified_attributes))
+        <div class="alert alert-danger">
+            <strong>@lang('verification.unverified_attributes')</strong>:
+            @foreach($unverified_attributes as $attr)
+                @lang('profile.'.$attr)@if(!$loop->last), @endif
+            @endforeach
+            <a class="btn btn-default btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>
         </div>
     @endif
 
@@ -46,7 +56,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('profile.header')
-            @if($has_optional_fields)
+            @if($schema->hasRequiredAttributes())
                 <div class="pull-right">
                     <div class="checkbox" style="margin: 0">
                         <label>
@@ -96,7 +106,7 @@
 
                 init: function() {
                     this.el = $('form#profile');
-                    this.el.submit(this.onSubmit.bind(this));
+                    //this.el.submit(this.onSubmit.bind(this));
                 }
             }
             form.init();
@@ -138,7 +148,7 @@
             var emails = {
                 country_code: null,
                 is_teacher: false,
-                domains: ['aa.bb', 'vvv.ccc'],
+                domains: [],
 
                 install: function() {
                     if(this.country_code && this.is_teacher) {
@@ -189,17 +199,17 @@
             emails.refresh();
 
 
-            @if($has_optional_fields)
-                (function(el) {
-                    function toggleOptionalFields() {
-                        $('[optional_field=1]').toggle(!el.prop('checked'));
-                    }
-                    el.click(toggleOptionalFields);
-                    el.prop('checked', {!! $all ? 'false' : 'true' !!});
-                    toggleOptionalFields();
-                    $('#graduation_grade').trigger('change');
-                })($('#optional_fields_filter'));
-            @endif
+
+            (function(el) {
+                function toggleOptionalFields() {
+                    $('[optional_field=1]').toggle(!el.prop('checked'));
+                }
+                el.click(toggleOptionalFields);
+                el.prop('checked', {!! $all ? 'false' : 'true' !!});
+                toggleOptionalFields();
+                $('#graduation_grade').trigger('change');
+            })($('#optional_fields_filter'));
+
 
 
             $('#graduation_grade').change(function() {
@@ -273,6 +283,75 @@
                 });
             }
 
+
+
+            (function() {
+
+                var verified_attributes = {!! json_encode($verified_attributes) !!}
+                var initial_values = {};
+                for(var i=0, attr; attr=verified_attributes[i]; i++) {
+                    initial_values[attr] = $('#' + attr).val();
+                }
+
+                function changedAttributes() {
+                    var res = [];
+                    for(var i=0, attr; attr=verified_attributes[i]; i++) {
+                        if(initial_values[attr] && $('#' + attr).val() != initial_values[attr]) {
+                            res.push(attr)
+                        }
+                    }
+                    return res;
+                }
+
+                function showAlert(attributes) {
+                    $('#verification_alert li').hide();
+                    for(var i=0, attr; attr=attributes[i]; i++) {
+                        $('#verification_alert #verification_alert_' + attr).show();
+                    }
+                    $('#verification_alert').modal('show');
+                }
+
+                function onSubmit(e) {
+                    var attributes = changedAttributes();
+                    if(attributes.length) {
+                        e.preventDefault();
+                        $('#verification_alert_save').on('click', function() {
+                            $('#profile').off('submit', onSubmit);
+                            $('#profile').submit();
+                        });
+                        showAlert(attributes);
+                    } else {
+                        form.onSubmit(e);
+                    }
+                }
+                $('#profile').on('submit', onSubmit);
+            })()
         });
     </script>
+
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="verification_alert">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@lang('ui.alert')</h4>
+                </div>
+                <div class="modal-body">
+                    <p>@lang('profile.verification_alert_p1')</p>
+                    <ul>
+                        @foreach($verified_attributes as $attr)
+                            <li id="verification_alert_{{$attr}}">@lang('profile.'.$attr)</li>
+                        @endforeach
+                    </ul>
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@lang('ui.cancel')</button>
+                    <button type="button" class="btn btn-primary" id="verification_alert_save">@lang('ui.save')</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

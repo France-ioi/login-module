@@ -7,7 +7,11 @@ class SchemaBuilder {
 
 
     // TODO: refactor this hell
-    public function build($user, array $required_attributes, array $recommended_attributes, array $disabled_attributes = [], $all_visible = false) {
+    public function build($user,
+                          array $required_attributes,
+                          array $recommended_attributes,
+                          array $disabled_attributes = [],
+                          $all_visible = false) {
         $visible_attributes = $this->visibleAttributes($required_attributes, $all_visible);
         $required_attributes  = array_fill_keys($required_attributes, true);
         $recommended_attributes  = array_fill_keys($recommended_attributes, true);

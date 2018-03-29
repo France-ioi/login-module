@@ -54,7 +54,7 @@ class SchemaConfig {
                 'nullable',
                 'in:'.implode(',', array_keys($options))
             ],
-            'label' => trans('profile.graduation_grade', [
+            'label' => trans('profile.graduation_grade_range', [
                 'year_begin' => $date->year - 1,
                 'year_end' => $date->year
             ]),
@@ -111,6 +111,7 @@ class SchemaConfig {
     }
 
 
+    /*
     public static function teacher_domain_verified($user = null) {
         if($user && $user->role == 'teacher' && $user->teacher_domain_verified) {
             return [
@@ -122,6 +123,7 @@ class SchemaConfig {
             'options' => trans('profile.teacher_domain_options')
         ];
     }
+    */
 
 
     public static function primary_email($user = null) {
@@ -138,6 +140,7 @@ class SchemaConfig {
     }
 
 
+    /*
     public static function primary_email_verified($user = null) {
         if($user && $user->primary_email_id && $user->primary_email_verified) {
             return [
@@ -153,6 +156,7 @@ class SchemaConfig {
             ])
         ];
     }
+    */
 
 
     public static function secondary_email($user = null) {
@@ -173,6 +177,7 @@ class SchemaConfig {
     }
 
 
+    /*
     public static function secondary_email_verified($user = null) {
         if($user && $user->secondary_email_id && $user->secondary_email_verified) {
             return [
@@ -188,6 +193,7 @@ class SchemaConfig {
             ])
         ];
     }
+    */
 
 
     public static function language($user = null) {

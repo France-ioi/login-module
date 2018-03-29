@@ -5,7 +5,6 @@ namespace App\LoginModule\Profile;
 use Illuminate\Support\ServiceProvider;
 use App\LoginModule\Platform\PlatformContext;
 
-
 class UserProfileServiceProvider extends ServiceProvider {
 
     public function register() {

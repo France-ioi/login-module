@@ -6,6 +6,9 @@ use DB;
 use App\User;
 use App\Email;
 use App\ObsoletePassword;
+use App\VerificationMethod;
+use App\Verification;
+use App\LoginModule\TeacherDomain;
 
 class Migrator
 {
@@ -29,8 +32,18 @@ class Migrator
             foreach($users as $user_data) {
                 DB::transaction(function() use ($user_data) {
                     if($user = $this->syncUser($user_data)) {
-                        $this->syncEmail($user, 'primary', $user_data['primary_email'], $user_data['primary_email_verified']);
-                        $this->syncEmail($user, 'secondary', $user_data['secondary_email'], $user_data['secondary_email_verified']);
+                        $this->syncEmail(
+                            $user,
+                            'primary',
+                            $user_data['primary_email'],
+                            $user_data['verifications']['primary_email']
+                        );
+                        $this->syncEmail(
+                            $user,
+                            'secondary',
+                            $user_data['secondary_email'],
+                            $user_data['verifications']['secondary_email']
+                        );
                         $this->syncPassword($user, $user_data);
                     }
                 });
@@ -61,9 +74,19 @@ class Migrator
         }
         $user->save();
 
+        if($user_data['verifications']['role']) {
+            $method = VerificationMethod::where('name', 'imported_data')->first();
+            $verification = new Verification([
+                'user_attributes' => ['role'],
+                'status' => 'approved',
+                'method_id' => $method->id
+            ]);
+            $user->verifications()->save($verification);
+        }
+
         $external_user = [
             'externalID' => $user->id,
-            'manualAccess' => $user_data['validated'] == 1 && $user_data['primary_email_verified'] == 0 ? 1 : 0
+            'manualAccess' => $user_data['validated'] == 1 && !$user_data['verifications']['primary_email'] ? 1 : 0
         ];
         Data::updateExternalUser($this->connection, $user_data['bebras_id'], $external_user);
         return $user;
@@ -75,17 +98,37 @@ class Migrator
         if($row = $user->emails()->where('role', $role)->first()) {
             $row->fill([
                 'email' => $email,
-                'verified' => $verified
+                //'verified' => $verified
             ]);
             $row->save();
         } else {
             $row = new Email([
                 'email' => $email,
                 'role' => $role,
-                'verified' => $verified
+                //'verified' => $verified
             ]);
             $user->emails()->save($row);
         }
+        if($verified) {
+            $method_code = VerificationMethod::where('name', 'email_code')->first();
+            $method_domain = VerificationMethod::where('name', 'email_domain')->first();
+            $verification = new Verification([
+                'user_attributes' => [$role.'_email'],
+                'status' => 'approved',
+                'method_id' => $method_code->id
+            ]);
+            $user->verifications()->save($verification);
+
+            if($user->role == 'teacher' && TeacherDomain::verify($user)) {
+                $verification = new Verification([
+                    'user_attributes' => ['role'],
+                    'status' => 'approved',
+                    'method_id' => $method_domain->id
+                ]);
+                $user->verifications()->save($verification);
+            }
+        }
+
     }
 
 

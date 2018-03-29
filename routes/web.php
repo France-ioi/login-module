@@ -30,6 +30,23 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/merging_accounts/accept', 'MergingAccountsController@acceptMerge');
     Route::post('/merging_accounts/decline', 'MergingAccountsController@declineMerge');
 
+
+    Route::get('/verification', 'Verification\IndexController@index');
+    Route::post('/verification/delete/{id}', 'Verification\IndexController@delete');
+    Route::get('/verification/email_code', 'Verification\Methods\EmailCodeController@index');
+    Route::post('/verification/email_code', 'Verification\Methods\EmailCodeController@store');
+    Route::get('/verification/email_domain', 'Verification\Methods\EmailDomainController@index');
+    Route::post('/verification/email_domain', 'Verification\Methods\EmailDomainController@store');
+    Route::get('/verification/id_upload', 'Verification\Methods\IdUploadController@index');
+    Route::post('/verification/id_upload', 'Verification\Methods\IdUploadController@store');
+    Route::get('/verification/classroom_upload', 'Verification\Methods\ClassroomUploadController@index');
+    Route::post('/verification/classroom_upload', 'Verification\Methods\ClassroomUploadController@store');
+    Route::get('/verification/peer', 'Verification\Methods\PeerValidationController@index');
+    Route::post('/verification/peer', 'Verification\Methods\PeerValidationController@store');
+    Route::get('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@code');
+    Route::post('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@storeCode');
+    Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');
+
     Route::group(['middleware' => ['merging_accounts']], function() {
         Route::get('/badge', 'BadgeController@index');
         Route::post('/badge/attach', 'BadgeController@attach');
@@ -56,19 +73,34 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth','admin'], 'namespace' => 'Admin'], function() {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], function() {
     Route::get('/', 'DashboardController@index');
-    Route::get('/users', 'UsersController@index');
-    Route::get('/users/{id}', 'UsersController@show');
-    Route::get('/users/{id}/password', 'UsersController@showPassword');
-    Route::post('/users/{id}/password', 'UsersController@updatePassword');
-    Route::get('/users/{id}/teacher_status', 'UsersController@showTeacherStatus');
-    Route::post('/users/{id}/teacher_status', 'UsersController@updateTeacherStatus');
-    Route::get('/users/{id}/emails', 'UsersController@showEmails');
-    Route::post('/users/create_reset_link', 'UsersController@createResetLink');
-    Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
-    Route::delete('/users/{id}', 'UsersController@delete');
-    Route::resource('clients', 'ClientsController');
-    Route::resource('official_domains', 'OfficialDomainsController');
-    Route::resource('origin_instances', 'OriginInstancesController');
+    Route::group(['middleware' => 'permission:admin.users.manager'], function() {
+        Route::get('/users', 'UsersController@index');
+        Route::get('/users/{id}', 'UsersController@show');
+        Route::get('/users/{id}/password', 'UsersController@showPassword');
+        Route::post('/users/{id}/password', 'UsersController@updatePassword');
+        Route::get('/users/{id}/permissions', 'UsersController@showPermissions');
+        Route::post('/users/{id}/permissions', 'UsersController@updatePermissions');
+        Route::get('/users/{id}/emails', 'UsersController@showEmails');
+        Route::post('/users/create_reset_link', 'UsersController@createResetLink');
+        Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
+        Route::delete('/users/{id}', 'UsersController@delete');
+    });
+    Route::group(['middleware' => 'permission:admin.clients.manager'], function() {
+        Route::resource('clients', 'ClientsController');
+    });
+    Route::group(['middleware' => 'permission:admin.domains.manager'], function() {
+        Route::resource('official_domains', 'OfficialDomainsController');
+    });
+    Route::group(['middleware' => 'permission:admin.lm_instances.manager'], function() {
+        Route::resource('origin_instances', 'OriginInstancesController');
+    });
+    Route::group(['middleware' => 'permission:admin.verifications.manager'], function() {
+        //Route::get('/verifications', 'VerificationsController@index');
+    });
+    Route::group(['middleware' => 'permission:admin.verifications.verify'], function() {
+        Route::get('/verifications/edit', 'VerificationsController@edit');
+        Route::post('/verifications/update/{id}', 'VerificationsController@update');
+    });
 });

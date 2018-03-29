@@ -62,11 +62,12 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
         'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
-        'admin' => \App\Http\Middleware\Admin::class,
         'reauthentication' => \App\Http\Middleware\CheckReauthentication::class,
         'authorization_available' => \App\Http\Middleware\AuthorizationAvailable::class,
         'auto_authorization' => \App\Http\Middleware\AutoAuthorization::class,
         'merging_accounts' => \App\Http\Middleware\MergingAccounts::class,
-        'platform_api' => \App\Http\Middleware\PlatformAPI::class
+        'platform_api' => \App\Http\Middleware\PlatformAPI::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
     ];
 }

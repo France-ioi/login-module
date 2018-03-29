@@ -32,8 +32,15 @@ class UserProfile {
                 $errors = array_merge($errors, $this->updateEmail($request, $role));
             }
         }
-        return count($errors) > 0 ? $errors : true;
+
+        if(count($errors) > 0) {
+            return $errors;
+        }
+
+        $this->context->badge()->flushData();
+        return true;
     }
+
 
 
     private function updateEmail($request, $role) {
@@ -123,6 +130,12 @@ class UserProfile {
             Carbon::now()->gte($user->graduation_grade_expire_at)) {
             $user->graduation_grade = null;
             $user->save();
+        }
+
+        if($badge_data = $this->context->badge()->restoreData()) {
+            foreach($badge_data['user'] as $k => $v) {
+                if($v) $user->$k = $v;
+            }
         }
         return $user;
     }

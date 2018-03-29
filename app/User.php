@@ -9,10 +9,11 @@ use App\LoginModule\Platform\BadgeApi;
 use App\LoginModule\Profile\Verification\VerifiableUser;
 use Carbon\Carbon;
 use App\LoginModule\Graduation;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens, VerifiableUser;
+    use Notifiable, HasApiTokens, VerifiableUser, HasRoles;
 
 
     protected $fillable = [
@@ -181,6 +182,11 @@ class User extends Authenticatable
 
     public function autoLoginToken() {
         return $this->hasOne('App\AutoLoginToken');
+    }
+
+
+    public function verifications() {
+        return $this->hasMany('App\Verification');
     }
 
 

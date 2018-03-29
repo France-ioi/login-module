@@ -1,17 +1,13 @@
 <?php
-
-namespace App\LoginModule\Profile\Verification;
+namespace App\LoginModule;
 
 use App\OfficialDomain;
 
-class TeacherDomainVerificator {
+class TeacherDomain {
 
 
     public static function verify($user) {
-        if($user->teacher_verified) {
-            return true;
-        }
-        if(!$user->country_code || $user->role != 'teacher') {
+        if(!$user->country_code) {
             return false;
         }
         $emails = $user->emails()->get()->pluck('email');
@@ -31,7 +27,7 @@ class TeacherDomainVerificator {
     }
 
 
-    private static function verifyDomain($domain, $country_code) {
+    public static function verifyDomain($domain, $country_code) {
         return (bool) OfficialDomain::where('country_code', $country_code)->where('domain', $domain)->first();
     }
 

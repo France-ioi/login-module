@@ -19,6 +19,9 @@
                 <li>
                     <a href="{{ route('admin.origin_instances.index') }}">@lang('admin.origin_instances')</a>
                 </li>
+                <li>
+                    <a href="{{ url('admin/verifications/edit') }}">Verification</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>

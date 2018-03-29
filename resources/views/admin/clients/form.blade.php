@@ -8,58 +8,47 @@
             New client
         @endif
     </h2>
+
     {!! BootForm::open(['model' => $client, 'store' => 'admin.clients.store', 'update' => 'admin.clients.update']) !!}
-        {!! BootForm::text('name', 'Name') !!}
-        {!! Bootform::hidden('revoked', 0) !!}
-        {!! BootForm::checkbox('revoked', 'Revoked') !!}
-        {!! BootForm::text('secret', 'Secret') !!}
-        {!! BootForm::text('redirect', 'Redirect') !!}
-        {!! BootForm::text('badge_url', 'Badge URL') !!}
-        {!! BootForm::checkbox('badge_required', 'Badge code required.') !!}
-        {!! BootForm::checkbox('badge_autologin', 'Login with a badge code, without asking for a login and password.') !!}
-        {!! BootForm::text('api_url', 'Access code verification service url') !!}
-        <label>Required user attributes</label>
-        <div class="row">
-            @foreach($user_attributes as $attr)
-                <div class="col-sm-4 col-xs-6">
-                    {!! BootForm::checkbox('user_attributes[]', $attr, $attr, in_array($attr, $client->user_attributes)) !!}
-                </div>
-            @endforeach
-        </div>
-        <label>Recommended user attributes</label>
-        <div class="row">
-            @foreach($user_attributes as $attr)
-                <div class="col-sm-4 col-xs-6">
-                    {!! BootForm::checkbox('recommended_attributes[]', $attr, $attr, in_array($attr, $client->recommended_attributes)) !!}
-                </div>
-            @endforeach
-        </div>
-        <label>Login page auth methods setup (drag&drop to reorder)</label>
         <div>
-            <ul class="list-group list-group-sortable" id="auth-order">
-                @foreach($auth_methods as $method)
-                    <li class="list-group-item">
-                        <input type="hidden" name="auth_order[]" value="{{ $method }}"/>
-                        {{ $method == '_' ? '-- Hidden methods divider --' : $method}}
-                    </li>
-                @endforeach
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#general" aria-controls="general" role="tab" data-toggle="tab">
+                        General
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#user_attributes" aria-controls="user_attributes" role="tab" data-toggle="tab">
+                        User attributes
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#verification" aria-controls="auth" role="tab" data-toggle="tab">
+                        Verification
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#auth" aria-controls="auth" role="tab" data-toggle="tab">
+                        Auth
+                    </a>
+                </li>
             </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="general">
+                    @include('admin.clients.sections.general')
+                </div>
+                <div role="tabpanel" class="tab-pane" id="user_attributes">
+                    @include('admin.clients.sections.user_attributes')
+                </div>
+                <div role="verification" class="tab-pane" id="verification">
+                    @include('admin.clients.sections.verification')
+                </div>
+                <div role="tabpanel" class="tab-pane" id="auth">
+                    @include('admin.clients.sections.auth')
+                </div>
+            </div>
         </div>
-        <label>Auth config</label>
-        {!! BootForm::checkbox('autoapprove_authorization', 'Auto-approve authorizations to this platform') !!}
-        {!! BootForm::textArea('public_key', 'Public key (LTI)') !!}
         {!! BootForm::submit() !!}
     {!! BootForm::close() !!}
 
-    <style type="text/css">
-        .list-group-sortable li {
-            cursor: move;
-        }
-    </style>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#auth-order').sortable();
-        })
-    </script>
 @endsection

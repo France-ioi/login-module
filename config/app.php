@@ -188,7 +188,8 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Watson\BootstrapForm\BootstrapFormServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class
     ],
 
     /*
@@ -243,7 +244,8 @@ return [
         'ProfileFormRenderer' => App\LoginModule\Profile\ProfileFormRenderer::class,
         'EmailMasker' => App\Helpers\EmailMasker::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'PlatformHelper' => App\LoginModule\Platform\PlatformHelper::class
+        'PlatformHelper' => App\LoginModule\Platform\PlatformHelper::class,
+        'Verification' => App\LoginModule\Profile\Verification\Verification::class,
     ],
 
 ];

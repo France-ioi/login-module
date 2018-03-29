@@ -8,7 +8,8 @@ use App\Badge;
 use App\Email;
 use App\ObsoletePassword;
 use App\AuthConnection;
-
+use App\VerificationMethod;
+use App\Verification;
 
 class Migrator
 {
@@ -62,7 +63,6 @@ class Migrator
             $user = new User($user_data);
             $user->id = $user_data['id'];
         }
-        //$user->admin = $user_data['admin'];
         $user->save();
         return $user;
     }
@@ -83,8 +83,7 @@ class Migrator
                 return;
             }
             $email->fill([
-                'email' => $user_data['email'],
-                'verified' => true, //$user_data['email_verified']
+                'email' => $user_data['email']
             ]);
             $email->save();
         } else {
@@ -93,11 +92,17 @@ class Migrator
             }
             $email = new Email([
                 'email' => $user_data['email'],
-                'role' => 'primary',
-                'verified' => true, //$user_data['email_verified']
+                'role' => 'primary'
             ]);
             $user->emails()->save($email);
         }
+        $method = VerificationMethod::where('name', 'imported_data')->first();
+        $verification = new Verification([
+            'user_attributes' => ['role'],
+            'status' => 'approved',
+            'method_id' => $method->id
+        ]);
+        $user->verifications()->save($verification);
     }
 
 

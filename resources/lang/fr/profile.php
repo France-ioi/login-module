@@ -39,14 +39,10 @@ return [
     'website' => 'Site Internet',
     'picture' => 'Image de profil',
     'picture_size_error' => "L'image de profil ne doit pas peser plus de :size mégaoctet(s).",
-    'graduation_grade' => "Indiquez votre classe pour l'année :year_begin-:year_end",
+    'graduation_grade_range' => "Indiquez votre classe pour l'année :year_begin-:year_end",
+    // TODO: check this translation
+    'graduation_grade' => "Indiquez votre classe",
     'success' => 'Profil mis à jour.',
-
-    'primary_email_verification_code' => "Code de vérification de l'adresse mail principale",
-    'secondary_email_verification_code' => "Code de vérification de l'adresse mail secondaire",
-    'email_verification_help' => "Entrez le code reçu par mail. Si vous ne l'avez jamais reçu, vérifiez que l'adresse mail fournie est correcte, vérifiez vos courriers indésirables, sinon contactez-nonus à :email depuis cette adresse mail",
-    'email_verified' => 'Vérifiée',
-    'email_verification_code_error' => "Mauvais code de vérification d'adresse mail",
 
     'pms_redirect_msg' => "En tant qu'utilisateur PMS, vous devez éditer votre profil directement sur PMS. Veuillez ensuite utiliser le bouton \"Zurück zum JwInf\" afin de mettre à jour votre profil ici.",
     'pms_redirect_btn' => 'Continuer vers PMS',

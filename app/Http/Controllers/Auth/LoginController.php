@@ -79,7 +79,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user) {
         //check group here
-        if($user->admin) {
+        if($user->hasRole('admin')) {
             return redirect('/admin');
         }
         return redirect($this->context->continueUrl('/account'));

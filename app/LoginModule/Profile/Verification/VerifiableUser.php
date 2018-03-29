@@ -18,7 +18,7 @@ trait VerifiableUser {
 
     public function getTeacherDomainVerifiedAttribute() {
         if($this->role === 'teacher') {
-            return TeacherDomainVerificator::verify($this);
+            return TeacherDomain::verify($this);
         }
         return true;
     }

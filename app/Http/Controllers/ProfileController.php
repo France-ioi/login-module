@@ -9,7 +9,7 @@ use App\OAuthClient\Manager;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Profile\SchemaBuilder;
 use App\LoginModule\Profile\UserProfile;
-use App\LoginModule\Profile\Verification\Verificator;
+use App\LoginModule\Profile\Verification\Verification;
 use App\LoginModule\Migrators\Merge\Group;
 use Carbon\Carbon;
 
@@ -19,24 +19,23 @@ class ProfileController extends Controller
     protected $context;
     protected $schema_builder;
     protected $profile;
+    protected $verification;
 
 
-    public function __construct(PlatformContext $context, SchemaBuilder $schema_builder, UserProfile $profile) {
+    public function __construct(PlatformContext $context,
+                                SchemaBuilder $schema_builder,
+                                UserProfile $profile,
+                                Verification $verification) {
+
         $this->context = $context;
         $this->schema_builder = $schema_builder;
         $this->profile = $profile;
+        $this->verification = $verification;
     }
 
 
     public function index(Request $request) {
         $user = $this->profile->getUserBeforeEditor();
-        //dd($user);
-
-        if($badge_data = $this->context->badge()->restoreData()) {
-            foreach($badge_data['user'] as $k => $v) {
-                if($v) $user->$k = $v;
-            }
-        }
 
         $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
         if($is_pms_user) {
@@ -60,6 +59,7 @@ class ProfileController extends Controller
             $disabled,
             true//$request->has('all')
         );
+
         return view('profile.index', [
             'form' => [
                 'model' => $user,
@@ -69,18 +69,19 @@ class ProfileController extends Controller
                 'id' => 'profile'
             ],
             'schema' => $schema,
-            'has_optional_fields' => $schema->hasOptionalAttributes(),
             'pms_redirect' => $is_pms_user,
             'cancel_url' => $this->context->cancelUrl(),
             'all' => $request->has('all') || count($required_attributes) == 0,
             'revalidation_fields' => Group::getRevalidationFields($user),
-            'login_change_required' => $user->login_change_required
+            'unverified_attributes' => $this->verification->unverifiedAttributes($user),
+            'verified_attributes' => $this->verification->verifiedAttributes($user)
         ]);
     }
 
 
-    public function update(Request $request, Verificator $verificator) {
+    public function update(Request $request) {
         $user = $request->user();
+
         $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
         $required_attributes = $this->requiredAttributes($user);
         if($user->login_change_required) {
@@ -91,22 +92,31 @@ class ProfileController extends Controller
             $required_attributes,
             [],
             $this->disabledAttributes($user, $is_pms_user, $user->login_fixed),
-            $request->has('all')
+            true
         );
         //\DB::connection()->enableQueryLog();
         //dd($schema->rules());
         $this->validate($request, $schema->rules());
 
+        $this->clearVerifications($user, $request);
+
         if(($result = $this->profile->update($request, $schema->fillableAttributes())) !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
-        if(($result = $verificator->verify($user)) !== true) {
-            return redirect()->back()->withInput()->withErrors($result);
-        }
-        $this->context->badge()->flushData();
         return redirect($this->context->continueUrl('/account'));
     }
 
+
+    private function clearVerifications($user, $request) {
+        $verified_attributes = $this->verification->verifiedAttributes($user);
+        $res = [];
+        foreach($verified_attributes as $attr) {
+            if($user->getAttribute($attr) != $request->get($attr)) {
+                $res[] = $attr;
+            }
+        }
+        Verification::clear($user, $res);
+    }
 
 
     private function requiredAttributes($user) {
@@ -134,5 +144,6 @@ class ProfileController extends Controller
         }
         return [];
     }
+
 
 }

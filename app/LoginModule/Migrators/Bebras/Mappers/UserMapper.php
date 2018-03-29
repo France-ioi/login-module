@@ -7,9 +7,17 @@ class UserMapper {
     static function remap($row) {
         $res = [
             'gender' => null,
-            'primary_email_verified' => !empty($row->officialEmailValidated),
-            'secondary_email_verified' => !empty($row->alternativeEmailValidated),
+            'verifications' => [
+                'primary_email' => !empty($row->officialEmailValidated),
+                'secondary_email' => !empty($row->alternativeEmailValidated),
+                'role' => false
+            ]
         ];
+        if($row->isOwnOfficialEmail) {
+            // TODO: ask Mathias
+            $res['role'] = 'teacher';
+            $res['verifications']['role'] = true;
+        }
         $map = [
             'ID' => 'bebras_id',
             'externalID' => 'login_module_id',
@@ -29,7 +37,6 @@ class UserMapper {
         } else if($row->gender == 'f') {
             $res['gender'] = 'F';
         }
-        $res['teacher_verified'] = (bool) $row->isOwnOfficialEmail;
         return $res;
     }
 

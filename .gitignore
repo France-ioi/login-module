@@ -2,6 +2,7 @@
 /storage/*.key
 /vendor
 /public/profile_pictures/*
+/public/verifications/*
 /.idea
 Homestead.json
 Homestead.yaml
