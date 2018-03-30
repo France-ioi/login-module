@@ -1,6 +1,7 @@
 <?php
 return [
 
+    'header' => 'Verification',
     'header_verifications' => 'Recent verifications',
     'header_methods' => 'Available verification methods',
 
