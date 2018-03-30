@@ -140,4 +140,15 @@ class UserProfile {
         return $user;
     }
 
+
+    public function attributesCompleted($user, $attributes) {
+        foreach($attributes as $attribute) {
+            $value = $user->getAttribute($attribute);
+            if(is_null($value) || $value === '') {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

@@ -9,8 +9,18 @@ use App\Verification;
 
 class ClassroomUploadController extends Controller
 {
+
+    const SESSION_KEY = 'verification.classroom_upload.code';
+
+
     public function index(Request $request) {
+        if(!($code = $request->session()->get(self::SESSION_KEY))) {
+            $code = mt_rand(10000, 99999).mt_rand(10000, 99999);
+            $request->session()->put(self::SESSION_KEY, $code);
+        }
+
         return view('verification.methods.classroom_upload', [
+            'code' => $code,
             'max_file_size' => config('ui.profile_picture.max_file_size')
         ]);
     }
@@ -21,6 +31,13 @@ class ClassroomUploadController extends Controller
             'file' => 'required|image'
         ]);
 
+        $code = $request->session()->pull(self::SESSION_KEY);
+        if(!$code) {
+            return redirect()->back()->withErrors([
+                'code' => 'Code expired'
+            ]);
+        }
+
         $method = VerificationMethod::where('name', 'classroom_upload')->firstOrFail();
 
         $filename = str_random(40).'.'.$request->file('file')->extension();
@@ -28,7 +45,8 @@ class ClassroomUploadController extends Controller
             'method_id' => $method->id,
             'user_attributes' => $method->user_attributes,
             'status' => 'pending',
-            'file' => $filename
+            'file' => $filename,
+            'code' => $code
         ]);
         $request->user()->verifications()->save($verification);
 

@@ -42,7 +42,7 @@ class PeerValidationController extends Controller
             'method_id' => $method->id,
             'user_attributes' => $method->user_attributes,
             'status' => 'pending',
-            'data' => str_random(10)
+            'code' => str_random(10)
         ]);
         $request->user()->verifications()->save($verification);
         return redirect('/verification');
@@ -66,12 +66,12 @@ class PeerValidationController extends Controller
 
     public function storeCode($id, Request $request) {
         $verification = $request->user()->verifications()->findOrFail($id);
-        if($verification->data != $request->get('code')) {
+        if($verification->code != $request->get('code')) {
             return redirect()->back()->withErrors([
                 'code' => trans('verification.peer.wrong_code')
             ]);
         }
-        $verification->data = null;
+        $verification->code = null;
         $verification->status = 'approved';
         $verification->save();
         return redirect('/verification');

@@ -60,6 +60,9 @@ class ProfileController extends Controller
             true//$request->has('all')
         );
 
+        $unverified_attributes = $this->verification->unverifiedAttributes($user);
+        $verification_ready = $this->profile->attributesCompleted($user, $unverified_attributes);
+
         return view('profile.index', [
             'form' => [
                 'model' => $user,
@@ -73,7 +76,8 @@ class ProfileController extends Controller
             'cancel_url' => $this->context->cancelUrl(),
             'all' => $request->has('all') || count($required_attributes) == 0,
             'revalidation_fields' => Group::getRevalidationFields($user),
-            'unverified_attributes' => $this->verification->unverifiedAttributes($user),
+            'unverified_attributes' => $unverified_attributes,
+            'verification_ready' => $verification_ready,
             'verified_attributes' => $this->verification->verifiedAttributes($user)
         ]);
     }

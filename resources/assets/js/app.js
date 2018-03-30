@@ -14,3 +14,5 @@ require('../../../node_modules/bootstrap-datepicker/dist/locales/bootstrap-datep
 require('../../../node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.de.min.js');
 require('bootstrap-3-typeahead');
 require('./jquery.sortable');
+require('../../../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js');
+require('../../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css');

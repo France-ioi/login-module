@@ -1,6 +1,9 @@
 @extends('layouts.popup')
 
 @section('content')
+
+    @include('ui.errors')
+
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('verification.methods.classroom_upload')
@@ -8,6 +11,10 @@
         <div class="panel-body">
             <p>@lang('verification.classroom_upload.help')</p>
             {!! BootForm::open(['url' => '/verification/classroom_upload', 'files' => true]) !!}
+                <div class="well text-center">
+                    <strong>Code</strong>
+                    <h2>{{$code}}</h2>
+                </div>
                 {!! BootForm::file(
                     'file',
                     trans('verification.upload.file'),

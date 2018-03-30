@@ -21,6 +21,7 @@ class OfficialDomainsController extends Controller
             $query->where('domain', 'LIKE','%'.$request->get('domain').'%');
         }
         return view('admin.official_domains.index', [
+            'countries' => trans('countries'),
             'models' => $query->paginate()
         ]);
     }

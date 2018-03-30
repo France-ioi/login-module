@@ -1,6 +1,20 @@
 @extends('layouts.popup')
 
 @section('content')
+    @if(count($unverified_attributes))
+        <div class="alert alert-danger">
+            @if($verification_ready)
+                <strong>@lang('verification.unverified_attributes')</strong>:
+                @foreach($unverified_attributes as $attr)
+                    @lang('profile.'.$attr)@if(!$loop->last), @endif
+                @endforeach
+                <a class="btn btn-default btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>
+            @else
+                @lang('verification.profile_not_completed')
+            @endif
+        </div>
+    @endif
+
     @if(count($errors) > 0)
         <div class="alert alert-danger">
             <ul>
@@ -24,16 +38,6 @@
     @if($form['model']->login_change_required)
         <div class="alert alert-warning">
             @lang('profile.login_change_required')
-        </div>
-    @endif
-
-    @if(count($unverified_attributes))
-        <div class="alert alert-danger">
-            <strong>@lang('verification.unverified_attributes')</strong>:
-            @foreach($unverified_attributes as $attr)
-                @lang('profile.'.$attr)@if(!$loop->last), @endif
-            @endforeach
-            <a class="btn btn-default btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>
         </div>
     @endif
 

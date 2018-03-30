@@ -12,15 +12,23 @@ class Verification extends Model
         'user_id',
         'method_id',
         'user_attributes',
+        'rejected_attributes',
         'status',
         'approved_at',
         'confidence',
-        'data',
-        'file'
+        'message',
+        'file',
+        'code'
     ];
 
     protected $casts = [
-        'user_attributes' => 'array'
+        'user_attributes' => 'array',
+        'rejected_attributes' => 'array'
+    ];
+
+    protected $attributes = [
+        'user_attributes' => '[]',
+        'rejected_attributes' => '[]'
     ];
 
     protected static function boot() {

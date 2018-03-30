@@ -98,12 +98,6 @@ class Verification {
         $states = $this->attributesState($user);
         $res = [];
         foreach($states as $attribute => $state) {
-            /*
-            $value = $user->getAttribute($attribute);
-            if(!is_null($value) && $value !== '') {
-                continue;
-            }
-            */
             if($state != self::STATE_VERIFIED) {
                 $res[] = $attribute;
             }

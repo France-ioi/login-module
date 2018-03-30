@@ -30,21 +30,28 @@ class VerificationsController extends Controller
     public function update($id, Request $request) {
         $this->validate($request, [
             'status' => 'required|in:approved,rejected',
-            'user_attributes' => 'required|array',
+            'user_attributes' => 'required_if:status,approved|array',
             'confidence' => 'nullable|integer|min:0|max:100'
         ]);
         $verification = Verification::findOrFail($id);
 
         if($request->get('status') == 'approved') {
-            $user_attributes = array_intersect($verification->method->user_attributes, $request->get('user_attributes'));
-            if(!count($user_attributes)) {
+            $approved_attributes = array_intersect(
+                $verification->method->user_attributes,
+                $request->get('user_attributes'
+            ));
+            if(!count($approved_attributes)) {
                 return redirect()->back()->withErrors([
                     'user_attributes' => 'Choose one at least'
                 ]);
             }
-            $verification->user_attributes = $user_attributes;
+            $verification->rejected_attributes = array_diff(
+                $verification->user_attributes,
+                $approved_attributes
+            );
+            $verification->user_attributes = $approved_attributes;
         }
-        $verification->data = $request->get('message');
+        $verification->message = $request->get('message');
         $verification->status = $request->get('status');
         $verification->confidence = $request->get('confidence');
         if(!is_null($verification->file)) {

@@ -17,6 +17,9 @@
     "lodash": "^4.16.2",
     "style-loader": "^0.13.1",
     "vue": "^2.0.1",
-    "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master"
+    "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master",
+    "bootstrap-slider": "^10.0.0"
+  },
+  "dependencies": {
   }
 }

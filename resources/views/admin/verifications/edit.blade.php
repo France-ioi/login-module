@@ -1,12 +1,22 @@
 @extends('layouts.admin')
 
 @section('content')
+    @include('ui.errors')
+
     {{ $verifications->links() }}
 
     <div class="well">
         <div>Verification request #{{$verification->id}}</div>
         <div>{{$verification->created_at}}</div>
     </div>
+
+    @if($verification->code)
+        <div class="well text-center">
+            <strong>Code</strong>
+            <h2>{{$verification->code}}</h2>
+        </div>
+    @endif
+
     <div class="well">
         <img style="width: 100%" src="/verifications/{{$verification->file}}"/>
     </div>
@@ -32,20 +42,24 @@
                     <tr>
                         <td>@lang('profile.'.$attr)</td>
                         <td>{{ $verification->user->getAttribute($attr) }}</td>
-                        <td><input type="checkbox" name="user_attributes[]" value="{{$attr}}" checked="checked"/></td>
+                        <td><input type="checkbox" name="user_attributes[]" value="{{$attr}}"/></td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
         {!! BootForm::textarea('message', 'Message to user') !!}
-        {!! BootForm::text('confidence', 'Confidence value (0...100)') !!}
+        {!! BootForm::text('confidence', 'Confidence value') !!}
         <input type="hidden" name="status" id="status"/>
         <button class="btn btn-success" id="btn_approve">Approve</button>
         <button class="btn btn-danger" id="btn_reject">Reject</button>
     {!! BootForm::close() !!}
-
     <script>
     $(document).ready(function() {
+        $('input[name=confidence]').slider({
+            value: 0,
+            min: 0,
+            max: 100,
+        });
         $('#btn_approve').on('click', function() {
             $('#status').val('approved');
         })

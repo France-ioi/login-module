@@ -5,9 +5,7 @@
             @lang('verification.upload.link_view_file')
         </a>
         <button type="submit" class="btn btn-danger btn-xs">
-            @lang('ui.cancel')
+            @lang('ui.delete')
         </button>
     </form>
-@elseif($verification->status == 'rejected' && !is_null($verification->data))
-    <pre>{!! $verification->data !!}</pre>
 @endif

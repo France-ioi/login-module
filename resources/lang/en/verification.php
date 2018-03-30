@@ -8,8 +8,11 @@ return [
     'btn_verify' => 'Verify',
 
     'unverified_attributes' => 'Verification required for',
-
+    'profile_not_completed' => 'Please complete your profile. Some fields may be required before you can continue.',
     'user_attributes' => 'Informations',
+
+    'approved_attributes' => 'Verified informations',
+    'rejected_attributes' => 'Rejected informations',
 
     'methods' => [
         'email_code' => 'Sending a code by email',

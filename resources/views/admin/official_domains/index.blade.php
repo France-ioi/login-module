@@ -5,6 +5,14 @@
         <a href="{{ route('admin.official_domains.create') }}" class="btn btn-default">Add</a>
     </p>
 
+    <div class="well">
+        {!! BootForm::inline(['method' => 'GET', 'url' => 'admin/official_domains']) !!}
+            {!! BootForm::select('country_code', false, $countries, request()->get('country_code')) !!}
+            {!! BootForm::text('domain', false, request()->get('domain'), ['placeholder' => 'Domain']) !!}
+            {!! BootForm::submit('Filter') !!}
+        {!! BootForm::close() !!}
+    </div>
+
     <table class="table table-bordered table-condensed">
         <thead>
             <tr>

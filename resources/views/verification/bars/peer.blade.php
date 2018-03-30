@@ -5,7 +5,7 @@
             @lang('verification.peer.link_code')
         </a>
         <button type="submit" class="btn btn-danger btn-xs">
-            @lang('ui.cancel')
+            @lang('ui.delete')
         </button>
     </form>
 @endif

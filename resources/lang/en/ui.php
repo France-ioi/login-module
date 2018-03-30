@@ -5,5 +5,6 @@ return [
     'continue' => 'Continue',
     'cancel' => 'Cancel',
     'close' => 'Close',
-    'alert' => 'Alert'
+    'alert' => 'Alert',
+    'delete' => 'Delete'
 ];

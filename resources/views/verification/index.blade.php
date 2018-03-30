@@ -29,11 +29,24 @@
                             @lang('verification.methods.'.$verification->method->name)
                         </strong>
                         <div>
-                            @lang('verification.user_attributes'):
+                            @lang('verification.approved_attributes'):
                             @foreach($verification->user_attributes as $attr)
                                 @lang('profile.'.$attr)@if(!$loop->last), @endif
                             @endforeach
                         </div>
+                        @if($verification->status != 'pending')
+                            @if(count($verification->rejected_attributes))
+                                <div class="alert alert-warning">
+                                    @lang('verification.rejected_attributes'):
+                                    @foreach($verification->rejected_attributes as $attr)
+                                        @lang('profile.'.$attr)@if(!$loop->last), @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if(!is_null($verification->message))
+                                <pre>{!! $verification->message !!}</pre>
+                            @endif
+                        @endif
                         <div>
                             @include('verification.bars.'.$verification->method->name)
                         </div>
