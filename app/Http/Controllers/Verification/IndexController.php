@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Verification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\LoginModule\Profile\Verification\Verification;
+use App\LoginModule\Platform\PlatformContext;
 
 
 class IndexController extends Controller
@@ -17,11 +18,13 @@ class IndexController extends Controller
     }
 
 
-    public function index(Request $request) {
+    public function index(Request $request, PlatformContext $context) {
+
         return view('verification.index', [
             'unverified_attributes' => $this->verification->unverifiedAttributes($request->user()),
             'verifications' => $this->verification->verifications($request->user()),
-            'methods' => $this->verification->methods()
+            'methods' => $this->verification->methods(),
+            'continue_url' => $context->continueURL('/account')
         ]);
     }
 

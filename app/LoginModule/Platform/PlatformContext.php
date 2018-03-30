@@ -20,6 +20,15 @@ class PlatformContext
     }
 
 
+    public function setClientId($client_id) {
+        $this->state->set([
+            'client_id' => (int) $client_id,
+            'redirect_uri' => null,
+            'cancelable' => false
+        ]);
+    }
+
+
     public function request($request) {
         $this->state->session($request->session());
         if($request->has('redirect_uri') && $request->has('client_id')) {

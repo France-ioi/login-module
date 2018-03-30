@@ -20,15 +20,13 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'admin.lm_instances.manager']);
 
         // create roles and assign created permissions
-        $role_admin = Role::create(['name' => 'admin']);
-
-        $role_superadmin = Role::create(['name' => 'superadmin']);
-        $role_superadmin->givePermissionTo(Permission::all());
+        $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo(Permission::all());
 
         // create admin user
         $user = \App\User::where('login', 'admin')->first();
         if($user) {
-            $user->syncRoles(['admin', 'superadmin']);
+            $user->syncRoles(['admin']);
         }
     }
 }

@@ -17,13 +17,13 @@ class UsersSeeder extends Seeder
         // admin user
         $user = \App\User::create([
             'login' => 'admin',
-            'password' => $pwd,
-            'admin' => true
+            'password' => $pwd
         ]);
         $user->emails()->save(new \App\Email([
             'email' => 'admin@admin.admin',
             'role' => 'primary'
         ]));
+        $user->syncRoles(['admin']);
 
         // user with email/pwd
         $user = \App\User::create([

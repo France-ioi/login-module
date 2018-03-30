@@ -5,9 +5,16 @@ namespace App\Http\Controllers\UserAPI;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\LoginModule\Platform\PlatformContext;
+use App\LoginModule\Profile\Verification\Verification;
 
 class AccountController extends Controller
 {
+
+    public function __construct(PlatformContext $context, Verification $verification) {
+        $this->context = $context;
+        $this->verification = $verification;
+    }
 
     public function show(Request $request) {
         $client_id = $request->user()->token()->client_id;
@@ -19,7 +26,11 @@ class AccountController extends Controller
             $res['platform_group_code'] = $platform_group->group_code;
             $platform_group->delete();
         }
+        $this->context->setClientId($client_id);
+        $res['verification'] = $this->verification->attributesState($request->user());
         return response()->json($res);
     }
+
+
 
 }

@@ -16,7 +16,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "league/oauth2-client": "^2.2",
         "namshi/jose": "^7.2",
-        "spatie/laravel-permission": "^2.9",
+        "spatie/laravel-permission": "^1",
         "spomky-labs/jose": "^6.1",
         "watson/bootstrap-form": "^1.1"
     },

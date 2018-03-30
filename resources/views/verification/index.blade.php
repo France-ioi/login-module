@@ -65,6 +65,10 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <a class="btn btn-default" href="/profile">@lang('verification.btn_profile')</a>
+
+            @if(!count($unverified_attributes))
+                <a class="btn btn-default pull-right" href="{!! $continue_url !!}">@lang('ui.continue')</a>
+            @endif
         </div>
     </div>
 @endsection
