@@ -1,67 +1,13 @@
 @extends('layouts.popup')
 
 @section('content')
-    @if(count($unverified_attributes))
-        <div class="alert alert-danger">
-            @if($verification_ready)
-                <div>
-                    @lang('verification.unverified_attributes', [
-                        'platform_name' => $platform_name
-                    ])
-                </div>
-                <strong>
-                    @foreach($unverified_attributes as $attr)
-                        @lang('profile.'.$attr)@if(!$loop->last), @endif
-                    @endforeach
-                </strong>
-                <a class="btn btn-default btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>
-            @else
-                @lang('verification.profile_not_completed')
-            @endif
-        </div>
-    @endif
-
-    @if(count($errors) > 0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @if(count($revalidation_fields) > 0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($revalidation_fields as $field)
-                    <li>{{ trans('merging_accounts.profile_messages')[$field] }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @if($form['model']->login_change_required)
-        <div class="alert alert-warning">
-            @lang('profile.login_change_required')
-        </div>
-    @endif
-
-    @if(session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
-
-<!-- move to render -->
-    @if($pms_redirect)
-        <div class="alert alert-info">
-            @lang('profile.pms_redirect_msg')
-            <a class="btn btn-block btn-primary" href="/oauth_client/preferences/pms">
-                @lang('profile.pms_redirect_btn')
-            </a>
-        </div>
-    @endif
+    @include('profile.alerts.filter')
+    @include('profile.alerts.verification')
+    @include('profile.alerts.revalidation')
+    @include('profile.alerts.login_change_required')
+    @include('profile.alerts.pms_redirect')
+    @include('ui.status')
+    @include('ui.errors')
 
     <div class="panel panel-default">
         <div class="panel-heading">

@@ -62,5 +62,7 @@ return [
     'login_change_required' => 'Sorry, we need to you to pick a new login. This one was already used or doesn\'t follow the rules. Only lowercase letters, digits and -  are allowed',
 
     'verification_alert_p1' => 'The following information was verified. If you change it, you may need to have it verified again or you may lose access to some platforms or features: ',
-    'verification_alert_p2' => 'Are you sure you want to change them?'
+    'verification_alert_p2' => 'Are you sure you want to change them?',
+
+    'profile_filter' => 'In order to give you access to :platform_name, you need to change the following information:'
 ];

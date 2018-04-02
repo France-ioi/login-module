@@ -12,6 +12,7 @@ use App\LoginModule\Profile\UserProfile;
 use App\LoginModule\Profile\Verification\Verification;
 use App\LoginModule\Migrators\Merge\Group;
 use Carbon\Carbon;
+use App\LoginModule\Profile\ProfileFilter;
 
 class ProfileController extends Controller
 {
@@ -26,7 +27,6 @@ class ProfileController extends Controller
                                 SchemaBuilder $schema_builder,
                                 UserProfile $profile,
                                 Verification $verification) {
-
         $this->context = $context;
         $this->schema_builder = $schema_builder;
         $this->profile = $profile;
@@ -34,7 +34,7 @@ class ProfileController extends Controller
     }
 
 
-    public function index(Request $request) {
+    public function index(Request $request, ProfileFilter $profile_filter) {
         $user = $this->profile->getUserBeforeEditor();
 
         $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
@@ -79,7 +79,8 @@ class ProfileController extends Controller
             'unverified_attributes' => $unverified_attributes,
             'verification_ready' => $verification_ready,
             'verified_attributes' => $this->verification->verifiedAttributes($user),
-            'platform_name' => $client ? $client->name : trans('app.name')
+            'platform_name' => $client ? $client->name : trans('app.name'),
+            'rejected_attributes' => $profile_filter->rejectedAttributes($user)
         ]);
     }
 

@@ -7,18 +7,25 @@ use App\LoginModule\Profile\UserProfile;
 use App\LoginModule\Profile\Verification\Verification;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Migrators\Merge\Group;
+use App\LoginModule\Profile\ProfileFilter;
 
 class AuthorizationAvailable
 {
 
     protected $profile;
+    protected $filter;
     protected $verification;
     protected $context;
 
-    public function __construct(UserProfile $profile, Verification $verification, PlatformContext $context) {
+
+    public function __construct(UserProfile $profile,
+                                ProfileFilter $filter,
+                                Verification $verification,
+                                PlatformContext $context) {
         $this->context = $context;
         $this->profile = $profile;
         $this->verification = $verification;
+        $this->filter = $filter;
     }
     /**
      * Handle an incoming request.
@@ -32,7 +39,8 @@ class AuthorizationAvailable
         $user = $request->user();
         $completed = $this->profile->completed($user);
         $revalidated = !Group::revalidationRequired($user);
-        if(!$completed || !$revalidated || $user->login_change_required) {
+        $filter_passed = $this->filter->pass($user);
+        if(!$completed || !$revalidated || !$filter_passed || $user->login_change_required) {
             return redirect('/profile');
         }
         if(!$this->verification->authReady($user)) {

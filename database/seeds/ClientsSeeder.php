@@ -16,9 +16,7 @@ class ClientsSeeder extends Seeder
             'login',
             'primary_email',
             'first_name',
-            'last_name',
-            'primary_email_verified',
-            'teacher_domain_verified'
+            'last_name'
         ],
         'auth_order' => [
             'login',

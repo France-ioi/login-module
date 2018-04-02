@@ -62,6 +62,7 @@ class ClientsController extends Controller
         $client->password_client = false;
         $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
+        $client->attributes_filter = $this->cleanAtrributesfilter($request);
         $client->save();
         $this->syncVerificationMethods($client, $request);
         return redirect()
@@ -109,6 +110,7 @@ class ClientsController extends Controller
         $client->fill($request->all());
         $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
+        $client->attributes_filter = $this->cleanAtrributesfilter($request);
         $client->save();
         $this->syncVerificationMethods($client, $request);
         return redirect()
@@ -141,6 +143,16 @@ class ClientsController extends Controller
             ];
         }
         $client->verification_methods()->sync($data);
+    }
+
+
+    private function cleanAtrributesfilter($request) {
+        $res = [];
+        foreach($request->get('attributes_filter') as $key => $value) {
+            if($value === null || trim($value) == '') continue;
+            $res[$key] = $value;
+        }
+        return $res;
     }
 
 }
