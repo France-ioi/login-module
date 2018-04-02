@@ -136,11 +136,13 @@ class ClientsController extends Controller
     private function syncVerificationMethods($client, $request) {
         $data = [];
         $methods = $request->get('verification_methods');
-        $expiration = $request->get('verification_methods_expiration');
-        foreach($methods as $id) {
-            $data[$id] = [
-                'expiration' => isset($expiration[$id]) ? (int) $expiration[$id] : null
-            ];
+        if(is_array($methods)) {
+            $expiration = $request->get('verification_methods_expiration');
+            foreach($methods as $id) {
+                $data[$id] = [
+                    'expiration' => isset($expiration[$id]) ? (int) $expiration[$id] : null
+                ];
+            }
         }
         $client->verification_methods()->sync($data);
     }
@@ -148,9 +150,12 @@ class ClientsController extends Controller
 
     private function cleanAtrributesfilter($request) {
         $res = [];
-        foreach($request->get('attributes_filter') as $key => $value) {
-            if($value === null || trim($value) == '') continue;
-            $res[$key] = $value;
+        $attributes_filter = $request->get('attributes_filter');
+        if(is_array($attributes_filter)) {
+            foreach($attributes_filter as $attr => $value) {
+                if($value === null || trim($value) == '') continue;
+                $res[$attr] = $value;
+            }
         }
         return $res;
     }
