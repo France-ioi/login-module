@@ -3,10 +3,16 @@
 @section('content')
     @if(count($unverified_attributes))
         <div class="alert alert-danger">
-            <strong>@lang('verification.unverified_attributes')</strong>:
-            @foreach($unverified_attributes as $attr)
-                @lang('profile.'.$attr)@if(!$loop->last), @endif
-            @endforeach
+            <div>
+                @lang('verification.unverified_attributes', [
+                    'platform_name' => $platform_name
+                ])
+            </div>
+            <strong>
+                @foreach($unverified_attributes as $attr)
+                    @lang('profile.'.$attr)@if(!$loop->last), @endif
+                @endforeach
+            </strong>
         </div>
     @endif
 

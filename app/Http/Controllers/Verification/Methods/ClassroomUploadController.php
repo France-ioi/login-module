@@ -15,7 +15,7 @@ class ClassroomUploadController extends Controller
 
     public function index(Request $request) {
         if(!($code = $request->session()->get(self::SESSION_KEY))) {
-            $code = mt_rand(10000, 99999).mt_rand(10000, 99999);
+            $code = mt_rand(100, 999).mt_rand(100, 999);
             $request->session()->put(self::SESSION_KEY, $code);
         }
 

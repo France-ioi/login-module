@@ -18,7 +18,7 @@
     <tr>
         <th class="col-md-5">Verification method</th>
         <th class="col-md-3">Attributes</th>
-        <th class="col-md-2">Status</th>
+        <th class="col-md-2">Accepted</th>
         <th class="col-md-2">Expiration (days)</th>
     </tr>
     @foreach($verification_methods as $method)

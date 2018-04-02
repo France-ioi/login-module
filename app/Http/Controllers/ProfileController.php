@@ -78,7 +78,8 @@ class ProfileController extends Controller
             'revalidation_fields' => Group::getRevalidationFields($user),
             'unverified_attributes' => $unverified_attributes,
             'verification_ready' => $verification_ready,
-            'verified_attributes' => $this->verification->verifiedAttributes($user)
+            'verified_attributes' => $this->verification->verifiedAttributes($user),
+            'platform_name' => $client ? $client->name : trans('app.name')
         ]);
     }
 
