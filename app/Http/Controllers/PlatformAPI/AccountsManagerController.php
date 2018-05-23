@@ -19,7 +19,7 @@ class AccountsManagerController extends PlatformAPIController
     private function validatorCreate(array $data) {
         return Validator::make($data, [
             'prefix' => 'required|min:1|max:100',
-            'amount' => 'required|integer|min:1|max:50',
+            'amount' => 'required|integer|min:1',
             'postfix_length' => 'required|integer|min:3|max:50',
             'password_length' => 'required|integer|min:6|max:50',
         ]);
