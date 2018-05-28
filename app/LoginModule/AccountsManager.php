@@ -21,14 +21,12 @@ class AccountsManager
 
     public function create($params) {
         $password_length = isset($params['password_length']) ? $params['password_length'] : 8;
-        $postfix_length = isset($params['postfix_length']) ? $params['postfix_length'] : 8;
+        //$postfix_length = isset($params['postfix_length']) ? $params['postfix_length'] : 8;
         $data = [
             'password' => $this->generator->password($password_length),
-            'login' => $this->generator->login($params['prefix'], $postfix_length)
+            //'login' => $this->generator->login($params['prefix'], $postfix_length)
+            'login' => $params['login']
         ];
-        if($data['login'] === null) {
-            return false;
-        }
         $user = new User([
             'login' => $data['login'],
             'password' => \Hash::make($data['password'])

@@ -20,6 +20,30 @@ class UserDataGenerator {
     }
 
 
+    public function batchLogins($amount, $prefix = '', $postfix_length = 6) {
+        $logins = [];
+        $attempts = 0;
+        do {
+            if(++$attempts > 100) return null;
+
+            // fill logins
+            $cnt = $amount - count($logins);
+            for($i=0; $i<$cnt; $i++) {
+                do {
+                    $login = $prefix.$this->randomStr($postfix_length);
+                } while (array_search($login, $logins) !== false);
+                $logins[] = $login;
+            }
+
+
+            // remove existent
+            $exists = User::whereIn('login', $logins)->get()->toArray();
+            $logins = array_diff($logins, $exists);
+        } while(count($logins) < $amount);
+        return $logins;
+    }
+
+
     public function loginFromBadge($badge_user, $prefix = '') {
         //badge_[firstname][first letter of lastname][3 digits]
         $first_name = array_get($badge_user, 'first_name');

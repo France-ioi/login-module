@@ -5,14 +5,16 @@ namespace App\Http\Controllers\PlatformAPI;
 use Illuminate\Http\Request;
 use App\LoginModule\AccountsManager;
 use Illuminate\Support\Facades\Validator;
+use App\LoginModule\UserDataGenerator;
 
 class AccountsManagerController extends PlatformAPIController
 {
 
     protected $accounts_manager;
 
-    public function __construct(AccountsManager $accounts_manager) {
+    public function __construct(AccountsManager $accounts_manager, UserDataGenerator $generator) {
         $this->accounts_manager = $accounts_manager;
+        $this->generator = $generator;
     }
 
 
@@ -37,22 +39,27 @@ class AccountsManagerController extends PlatformAPIController
         }
 
 
+
         $users = [];
-        for($i=0; $i<$request->get('amount'); $i++) {
-            $data = $this->accounts_manager->create($request->all());
-            if(!$data) {
-                $res = [
-                    'success' => false,
-                    'error' => 'Login generation error'
-                ];
-                return $this->makeResponse($res, $request->get('client')->secret);
-            }
-            $users[] = $data;
+        $params = $request->all();
+        $postfix_length = isset($params['postfix_length']) ? $params['postfix_length'] : 8;
+        $logins = $this->generator->batchLogins($request->get('amount'), $params['prefix'], $postfix_length);
+        if(!$logins) {
+            $res = [
+                'success' => false,
+                'error' => 'Login generation error'
+            ];
+            return $this->makeResponse($res, $request->get('client')->secret);
+        }
+        for($i=0; $i<count($logins); $i++) {
+            $params['login'] = $logins[$i];
+            $users[] = $this->accounts_manager->create($params);
         }
         $res = [
             'success' => true,
             'data' => $users
         ];
+
         return $this->makeResponse($res, $request->get('client')->secret);
     }
 

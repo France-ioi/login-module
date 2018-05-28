@@ -25,6 +25,14 @@ class AppServiceProvider extends ServiceProvider
             $other = str_replace('_', ' ', $parameters[0]);
             return str_replace([':other'], $other, $message);
         });
+
+        if ($this->app->environment('local')) {
+            \DB::listen(function($query) {
+                $dbLog = new \Monolog\Logger('Query');
+                $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.log'), 5, \Monolog\Logger::DEBUG));
+                $dbLog->info($query->sql, ['Bindings' => $query->bindings, 'Time' => $query->time]);
+            });
+        }
     }
 
     /**
