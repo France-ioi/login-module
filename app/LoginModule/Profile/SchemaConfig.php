@@ -43,6 +43,13 @@ class SchemaConfig {
     }
 
 
+    public static function real_name_visible($user = null) {
+        return [
+            'type' => 'checkbox'
+        ];
+    }
+
+
     public static function graduation_grade($user = null) {
         $options = trans('graduation_grades');
         $date = \App\LoginModule\Graduation::gradeExpirationDate($user);
@@ -82,9 +89,13 @@ class SchemaConfig {
     }
 
 
-    public static function real_name_visible($user = null) {
+    public static function nationality($user = null) {
+        $options = trans('countries');
         return [
-            'type' => 'checkbox'
+            'type' => 'select',
+            'options' => ['' => '...'] + $options,
+            'required' => 'required',
+            'valid' => 'in:,'.implode(',', array_keys($options))
         ];
     }
 

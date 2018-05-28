@@ -135,8 +135,12 @@ class ProfileController extends Controller
 
 
     private function disabledAttributes($user, $is_pms_user, $login_fixed) {
+        $res = [];
         if($is_pms_user) {
-            return Manager::provider('pms')->getFixedFields();
+            $res =  array_merge(
+                $res,
+                Manager::provider('pms')->getFixedFields()
+            );
         }
         $login_change_restricted = false;
         if(!is_null($user->login) && !is_null($user->login_updated_at) && $login_change_available = config('profile.login_change_available')) {
@@ -146,9 +150,15 @@ class ProfileController extends Controller
             $login_change_restricted = $now > $first && $now < $second;
         }
         if($login_fixed || $login_change_restricted) {
-            return ['login'];
+            $res[] = 'login';
         }
-        return [];
+        $gdpr = ['address', 'city', 'zipcode', 'primary_phone', 'secondary_phone'];
+        foreach($gdpr as $field) {
+            if(!$user->$field) {
+                $res[] = $field;
+            }
+        }
+        return array_unique($res);
     }
 
 

@@ -24,4 +24,21 @@
             {!! BootForm::close() !!}
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            var tooltips = {!! json_encode(trans('profile.tooltips')) !!}
+            $('form').find('label').each(function() {
+                var label = $(this)
+                var text = tooltips[label.attr('for')];
+                if(text) {
+                    var icon = $('<span class="glyphicon glyphicon-question-sign profile-tooltip-icon"></span>');
+                    icon.tooltip({
+                        title: text
+                    })
+                    label.append(icon);
+                }
+            });
+        });
+    </script>
 @endsection

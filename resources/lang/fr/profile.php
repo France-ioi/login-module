@@ -54,5 +54,23 @@ return [
     ],
     'teacher_domain_alert' => "Veuillez contacter :email en expliquant pourquoi vous n'avez pas d'adresse mail avec un nom de domaine reconnu.",
     'login_change_limitations' => "Si vous changez d'identifiant, après une heure, vous ne pourrez plus le changer pendant une année.",
-    'login_change_required' => 'Veuillez nous excuser, vous devez choisir un nouvel identifiant. Celui que vous avez choisi est déjà pris, ou bien ne respecte pas les règles. Seules les lettres minuscules, les chiffres et le tiret - sont autorisés.'
+    'login_change_required' => 'Veuillez nous excuser, vous devez choisir un nouvel identifiant. Celui que vous avez choisi est déjà pris, ou bien ne respecte pas les règles. Seules les lettres minuscules, les chiffres et le tiret - sont autorisés.',
+
+    'tooltips' => [
+        'login' => 'Évitez d’inclure votre nom dans votre login, car il sera rendu public. Choisissez plutôt un pseudo dont vous pouvez facilement vous souvenir.',
+        'first_name' => 'Knowing your name makes it possible for us to give you access to your account if you lose access, and didn’t provide an email address that you have access to. You may also decide to make it public if you want other users to know who you are (see field below). This field is required if you want to participate officially to contests.',
+        'last_name' => 'Knowing your name makes it possible for us to give you access to your account if you lose access, and didn’t provide an email address that you have access to. You may also decide to make it public if you want other users to know who you are (see field below). This field is required if you want to participate officially to contests.',
+        'grade' => 'Knowing your grade makes it possible for us to determine what events you can participate in (training camps we organize, for example), or to rank you in the correct category when you participate in online contests.',
+        'graduation_year' => 'Knowing your graduation year makes it possible for us to determine what events you can participate in (training camps we organize, for example), or to rank you in the correct category when you participate in online contests.',
+        'country_code' => 'Knowing your country of residence makes it possible for us to determine what events you can participate in (training camps we organize, for example), or to rank you in the correct category when you participate in online contests.',
+        'role' => 'Knowing and checking your role, makes it possible to give you access to tools reserved for some types of users.',
+        'primary_email' => 'Knowing your email address gives us a way to help you if you lost password, or contact you about events or content you might be interested in (if you accept, see below).',
+        'secondary_email' => 'Knowing your email address gives us a way to help you if you lost password, or contact you about events or content you might be interested in (if you accept, see below).',
+        'language' => 'This information will be used to determine in what language the platform and content should be displayed.',
+        'birthday' => 'Knowing your birthday makes it possible for us to determine what events you can participate in (training camps we organize, for example), or to rank you in the correct category when you participate in online contests.',
+        'gender' => 'Knowing your genre will help us publish some general statistics about who uses our platform, as well as analyze if some content should be better adapted to different genders.',
+        'presentation' => 'This is information about you you decide to make public to all users.',
+        'website' => 'This is information about you you decide to make public to all users.',
+        'student_id' => 'Only provide this information if required by your school. This will make it possible for your teachers to check who you are.'
+    ]
 ];

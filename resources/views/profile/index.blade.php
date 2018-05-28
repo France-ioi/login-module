@@ -9,6 +9,8 @@
     @include('ui.status')
     @include('ui.errors')
 
+    <div class="alert alert-info">@lang('profile.required_fields_explanation')</div>
+
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('profile.header')
@@ -282,6 +284,20 @@
                 }
                 $('#profile').on('submit', onSubmit);
             })()
+
+            var tooltips = {!! json_encode(trans('profile.tooltips')) !!}
+            $('form#profile').find('label').each(function() {
+                var label = $(this)
+                var text = tooltips[label.attr('for')];
+                if(text) {
+                    var icon = $('<span class="glyphicon glyphicon-question-sign profile-tooltip-icon"></span>');
+                    icon.tooltip({
+                        title: text
+                    })
+                    label.append(icon);
+                }
+            });
+
         });
     </script>
 
