@@ -152,7 +152,7 @@ class ProfileController extends Controller
         if($login_fixed || $login_change_restricted) {
             $res[] = 'login';
         }
-        $gdpr = ['address', 'city', 'zipcode', 'primary_phone', 'secondary_phone'];
+        $gdpr = config('gdpr.attributes');
         foreach($gdpr as $field) {
             if(!$user->$field) {
                 $res[] = $field;

@@ -68,6 +68,7 @@ return [
     'profile_filter' => 'In order to give you access to :platform_name, you need to change the following information:',
 
     'required_fields_explanation' => 'Only fields marked with (*) are required',
+    'collected_data' => 'Manage or delete data collected about me',
 
     'tooltips' => [
         'login' => 'Avoid including your real name in your login, as it will be made publicly visible. Instead, use a pseudonym that you can easily remember.',

@@ -26,7 +26,7 @@ class ClientsController extends Controller
     {
         return view('admin.clients.index', [
             'clients' => Client::get()
-        ]);       //
+        ]);
     }
 
     /**
@@ -41,7 +41,7 @@ class ClientsController extends Controller
         ]);
         return view('admin.clients.form', [
             'client' => $client,
-            'user_attributes' => SchemaBuilder::availableAttributes(),
+            'user_attributes' => $this->availableAttributes(),
             'verifiable_attributes' => Verification::ATTRIBUTES,
             'auth_methods' => $this->auth_list->all(),
             'verification_methods' => VerificationMethod::get(),
@@ -90,7 +90,7 @@ class ClientsController extends Controller
     {
         return view('admin.clients.form', [
             'client' => $client,
-            'user_attributes' => SchemaBuilder::availableAttributes(),
+            'user_attributes' => $this->availableAttributes(),
             'verifiable_attributes' => Verification::ATTRIBUTES,
             'auth_methods' => $this->auth_list->normalize($client->auth_order),
             'verification_methods' => VerificationMethod::get(),
@@ -158,6 +158,14 @@ class ClientsController extends Controller
             }
         }
         return $res;
+    }
+
+
+    private function availableAttributes() {
+        return array_diff(
+            SchemaBuilder::availableAttributes(),
+            config('gdpr.attributes')
+        );
     }
 
 }

@@ -9,7 +9,10 @@
     @include('ui.status')
     @include('ui.errors')
 
-    <div class="alert alert-info">@lang('profile.required_fields_explanation')</div>
+    <div class="alert alert-info">
+        @lang('profile.required_fields_explanation')
+        <a class="btn btn-primary btn-xs pull-right" href="/collected_data">@lang('profile.collected_data')</a>
+    </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
