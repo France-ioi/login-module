@@ -21,7 +21,8 @@ class PlatformApi {
         }
         $data = [
             'form_params' => [
-                'action' => 'verify_code',
+                'module' => 'group_code',
+                'action' => 'verify',
                 'code' => $code
             ]
         ];

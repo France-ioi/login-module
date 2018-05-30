@@ -107,6 +107,8 @@ class User extends Authenticatable
                     throw new \Exception('Error occured during deleting badge '.$badge->url);
                 }
             }
+
+            //tokens
         });
     }
 

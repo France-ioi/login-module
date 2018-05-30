@@ -31,6 +31,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/merging_accounts/decline', 'MergingAccountsController@declineMerge');
 
 
+    Route::get('/collected_data/summary', 'CollectedDataController@summary');
+    Route::get('/collected_data/export', 'CollectedDataController@export');
+    Route::get('/collected_data', 'CollectedDataController@index');
+    Route::post('/collected_data/delete', 'CollectedDataController@delete');
+
     Route::get('/verification', 'Verification\IndexController@index');
     Route::post('/verification/delete/{id}', 'Verification\IndexController@delete');
     Route::get('/verification/email_code', 'Verification\Methods\EmailCodeController@index');
