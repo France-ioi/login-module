@@ -1,6 +1,15 @@
 @extends('layouts.popup')
 
 @section('content')
+
+    @if($errors->any())
+        <ul class="alert alert-danger">
+            @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+            @endforeach
+        </ul>
+    @endif
+
     <div class="panel panel-default">
         <div class="panel-heading">
             @lang('collected_data.header')
@@ -71,13 +80,8 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="delete-alert">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">
-                        @lang('collected_data.alert.title')
-                    </h4>
-                </div>
                 <div class="modal-body">
-                    <p>@lang('collected_data.alert.p1')</p>
+                    <p>@lang('collected_data.alert')</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -117,7 +121,6 @@
 
 
             var clients_linked = {!! count($clients) > 0 !!};
-            clients_linked = 0;
             $('#btn-delete').click(function(e) {
                 if(clients_linked) {
                     $('#delete-alert').modal('show');

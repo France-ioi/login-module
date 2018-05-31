@@ -36,6 +36,11 @@ class CollectedDataController extends Controller
 
 
     public function delete(Request $request) {
+        if($this->clients($request->user())->count() > 0) {
+            return redirect()->back()->withErrors([
+                'clients_linked' => trans('collected_data.alert')
+            ]);
+        }
         $user = \User::find($request->user()->id);
         \Auth::logout();
         $user->delete();

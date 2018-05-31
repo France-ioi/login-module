@@ -21,8 +21,5 @@ return [
         'submit' => 'Confirm'
     ],
 
-    'alert' => [
-        'title' => 'Alert',
-        'p1' => 'You should delete your data from each platform first.',
-    ],
+    'alert' => 'You should delete your data from each platform first.'
 ];
