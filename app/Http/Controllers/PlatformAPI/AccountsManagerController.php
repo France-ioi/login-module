@@ -80,4 +80,33 @@ class AccountsManagerController extends PlatformAPIController
         return $this->makeResponse($res, $request->get('client')->secret);
     }
 
+
+
+    // Unlink login module account from platform (remove all auth tokens)
+
+    private function validatorUnlinkClient(array $data) {
+        return Validator::make($data, [
+            'user_id' => 'required|exists:users,id'
+        ]);
+    }
+
+
+    public function unlinkClient(Request $request) {
+        $validator = $this->validatorUnlinkClient($request->all());
+        if($validator->fails()) {
+            $res = [
+                'success' => false,
+                'error' => 'Wrong params'
+            ];
+            return $this->makeResponse($res, $request->get('client')->secret);
+        }
+        $ids = \Laravel\Passport\Token::where('user_id', $request->get('user_id'))
+            ->where('client_id', $request->get('client')->id)
+            ->delete();
+        $res = [
+            'success' => true
+        ];
+        return $this->makeResponse($res, $request->get('client')->secret);
+    }
+
 }

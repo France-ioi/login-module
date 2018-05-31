@@ -3,7 +3,7 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('collected_data.s1.self')
+            @lang('collected_data.item_self')
         </div>
         <table class="table table-bordered">
             @foreach($data as $item)

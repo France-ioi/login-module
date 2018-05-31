@@ -29,14 +29,17 @@ class CollectedDataController extends Controller
 
 
     public function summary(Request $request) {
-        return view('collected_data.self_summary', [
+        return view('collected_data.summary', [
             'data' => $this->data($request->user())
         ]);
     }
 
 
     public function delete(Request $request) {
-
+        $user = \User::find($request->user()->id);
+        \Auth::logout();
+        $user->delete();
+        return redirect('/');
     }
 
 
