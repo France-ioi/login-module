@@ -81,7 +81,18 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>@lang('collected_data.alert')</p>
+                    <p>@lang('collected_data.alert.p1')</p>
+                    <ul>
+                        @foreach($clients as $client)
+                            <li>
+                                <strong>{{$client->name }}</strong>
+                                @if($client->email)
+                                    <a href="mailto:{{$client->email}}">{{$client->email}}</a>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                    <p>@lang('collected_data.alert.p2', ['email' => config('mail.from.address')])</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">

@@ -15,11 +15,13 @@ return [
     'api_not_available' => 'actions not available',
 
     'confirmation' => [
-        'title' => 'Delete all data about user',
-        'cb1' => 'I confirm that I request for all the data stored about me on the authentication module to be deleted.',
+        'p1' => 'I confirm that I request for all the data stored about me on the authentication module to be deleted.',
         'cb2' => 'I understand that this operation can’t be cancelled, and that everything I did on this platform will be deleted without any way for me to recover it.',
         'submit' => 'Confirm'
     ],
 
-    'alert' => 'You should delete your data from each platform first.'
+    'alert' => [
+        'p1' => 'There still may be data attached to your account on some platforms. If deletion of data on these platforms doesn\'t work, contact the email listed:',
+        'p2' => 'If you don\'t receive any answer, you may contact :email'
+    ]
 ];
