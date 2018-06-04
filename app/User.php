@@ -80,7 +80,10 @@ class User extends Authenticatable
             if(!is_null($model->password)) {
                 $model->regular_password = true;
             }
-            if($model->isDirty('graduation_grade')) {
+            // Disable condition, to make sure the year is always computed,
+            // especially in some cases around user creation and import where
+            // isDirty returns false
+//            if($model->isDirty('graduation_grade')) {
                 $model->graduation_grade = Graduation::normalizeGrade($model->graduation_grade);
                 if($model->graduation_grade == -1) {
                     $model->graduation_grade_expire_at = null;
@@ -91,7 +94,7 @@ class User extends Authenticatable
                     $model->graduation_grade_expire_at = Graduation::gradeExpirationDate($model);
                     $model->graduation_year = $year;
                 }
-            }
+//            }
             if($model->isDirty('login')) {
                 $model->login_updated_at = new \DateTime;
                 if($model->login_change_required && preg_match(config('profile.login_validator.new'), $model->login) == 1) {
