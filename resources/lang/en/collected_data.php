@@ -15,7 +15,7 @@ return [
     'api_not_available' => 'actions not available',
 
     'confirmation' => [
-        'p1' => 'I confirm that I request for all the data stored about me on the authentication module to be deleted.',
+        'cb1' => 'I confirm that I request for all the data stored about me on the authentication module to be deleted.',
         'cb2' => 'I understand that this operation can’t be cancelled, and that everything I did on this platform will be deleted without any way for me to recover it.',
         'submit' => 'Confirm'
     ],

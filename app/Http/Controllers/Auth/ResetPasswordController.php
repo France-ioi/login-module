@@ -53,7 +53,7 @@ class ResetPasswordController extends Controller
             'remember_token' => str_random(60),
             'last_password_recovery_at' => new \DateTime
         ])->save();
-        $email->user->obsolete_passwords()->delete();
+        $email->user->obsoletePasswords()->delete();
         $this->guard()->login($email->user);
     }
 

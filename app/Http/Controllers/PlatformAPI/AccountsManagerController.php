@@ -103,6 +103,11 @@ class AccountsManagerController extends PlatformAPIController
         $ids = \Laravel\Passport\Token::where('user_id', $request->get('user_id'))
             ->where('client_id', $request->get('client')->id)
             ->delete();
+
+        \App\UserDeletion::create([
+            'user_id' => $request->get('user_id'),
+            'client_id' => $request->get('client')->id,
+        ]);
         $res = [
             'success' => true
         ];

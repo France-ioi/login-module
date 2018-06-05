@@ -22,7 +22,7 @@ class LogoutController extends Controller
             return $this->redirectAfterLogout($request->get('redirect_uri'));
         }
         $request->session()->put('logout_redirect', $request->get('redirect_uri'));
-        $active_connections = \Auth::user()->auth_connections()->where('active', true)->whereIn('provider', Manager::SUPPORT_LOGOUT)->get();
+        $active_connections = \Auth::user()->authConnections()->where('active', true)->whereIn('provider', Manager::SUPPORT_LOGOUT)->get();
         if(count($active_connections) == 0) {
             return $this->logoutFinish($request);
         }
@@ -58,7 +58,7 @@ class LogoutController extends Controller
 
     public function logoutLoop(Request $request) {
         if($request->has('provider')) {
-            if($connection = Auth::user()->auth_connections()->where('provider', $request->get('provider'))->first()) {
+            if($connection = Auth::user()->authConnections()->where('provider', $request->get('provider'))->first()) {
                 $connection->active = 0;
                 $connection->save();
             }
@@ -79,7 +79,7 @@ class LogoutController extends Controller
     private function getNextActiveConnection() {
         $logout_providers = session()->get('logout_providers');
         if(!is_array($logout_providers)) return false;
-        return Auth::user()->auth_connections()->where('active', true)->whereIn('provider', $logout_providers)->first();
+        return Auth::user()->authConnections()->where('active', true)->whereIn('provider', $logout_providers)->first();
     }
 
 

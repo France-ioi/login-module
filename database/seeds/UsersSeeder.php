@@ -51,11 +51,11 @@ class UsersSeeder extends Seeder
             'login' => 'test2',
             'regular_password' => false
         ]);
-        $user->obsolete_passwords()->save(new \App\ObsoletePassword([
+        $user->obsoletePasswords()->save(new \App\ObsoletePassword([
             'password' => md5('123123'),
             'salt' => ''
         ]));
-        $user->obsolete_passwords()->save(new \App\ObsoletePassword([
+        $user->obsoletePasswords()->save(new \App\ObsoletePassword([
             'password' => md5('123'.'123123'),
             'salt' => '123'
         ]));

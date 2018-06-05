@@ -15,7 +15,7 @@ class AuthMethodsController extends Controller
         return view('auth_methods.index', [
             'providers'  => Manager::providers(),
             'support_remove'  => array_flip(Manager::SUPPORT_REMOVE),
-            'connected' => Auth::user()->auth_connections()->get()->pluck('id', 'provider')->toArray(),
+            'connected' => Auth::user()->authConnections()->get()->pluck('id', 'provider')->toArray(),
             'badges' => Auth::user()->badges()->where('do_not_possess', false)->whereNotNull('code')->get(),
             'cancel_url' => $context->cancelUrl(),
             'has_password' => Auth::user()->has_password

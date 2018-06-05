@@ -38,12 +38,12 @@ class AuthConnector
             $connection->active = true;
             if(Auth::check()) {
                 $user = Auth::user();
-                $user->auth_connections()->save($connection);
+                $user->authConnections()->save($connection);
             } else {
                 if(isset($auth['email']) && $auth['email'] != '') {
                     $email = Email::where('email', $auth['email'])->first();
                     if($email) {
-                        if($email->user->auth_connections()->where('provider', $auth['provider'])->first()) {
+                        if($email->user->authConnections()->where('provider', $auth['provider'])->first()) {
                             abort(403, 'Provided email exists but not linked with provided UID.');
                         }
                         session()->put('auth_connection_exists', [
@@ -54,7 +54,7 @@ class AuthConnector
                     }
                 }
                 $user = User::create($auth);
-                $user->auth_connections()->save($connection);
+                $user->authConnections()->save($connection);
                 if(isset($auth['email'])) {
                     $user->emails()->save(new Email([
                         'role' => 'primary',
@@ -185,7 +185,7 @@ class AuthConnector
 
     static function disconnect($provider) {
         if(Auth::check()) {
-            Auth::user()->auth_connections()->where('provider', $provider)->delete();
+            Auth::user()->authConnections()->where('provider', $provider)->delete();
         }
     }
 

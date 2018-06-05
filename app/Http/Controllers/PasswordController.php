@@ -22,7 +22,7 @@ class PasswordController extends Controller
         ]);
         $request->user()->password = bcrypt($request->input('password'));
         $request->user()->save();
-        $request->user()->obsolete_passwords()->delete();
+        $request->user()->obsoletePasswords()->delete();
         return back()->with(['success' => true]);
     }
 }

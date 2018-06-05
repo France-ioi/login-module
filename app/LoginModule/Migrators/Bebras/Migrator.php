@@ -134,8 +134,8 @@ class Migrator
 
     private function syncPassword($user, $user_data) {
         if(!empty($user_data['password']) &&
-            !$user->obsolete_passwords()->where('password', $user_data['password'])->first()) {
-            $user->obsolete_passwords()->save(new ObsoletePassword($user_data));
+            !$user->obsoletePasswords()->where('password', $user_data['password'])->first()) {
+            $user->obsoletePasswords()->save(new ObsoletePassword($user_data));
         }
     }
 

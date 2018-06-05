@@ -49,15 +49,12 @@
         </div>
     </div>
 
+    <a class="btn btn-default" href="/profile">@lang('ui.cancel')</a>
+
 
     <div class="modal fade" tabindex="-1" role="dialog" id="delete-confirmation">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">
-                        @lang('collected_data.confirmation.title')
-                    </h4>
-                </div>
                 <div class="modal-body">
                     {!! BootForm::open(['url' => '/collected_data/delete', 'id' => 'delete']) !!}
                         {!! BootForm::checkbox('confirm1', trans('collected_data.confirmation.cb1')) !!}
@@ -131,7 +128,7 @@
             })
 
 
-            var clients_linked = {!! count($clients) > 0 !!};
+            var clients_linked = {!! count($clients) > 0 ? 'true' : 'false' !!};
             $('#btn-delete').click(function(e) {
                 if(clients_linked) {
                     $('#delete-alert').modal('show');

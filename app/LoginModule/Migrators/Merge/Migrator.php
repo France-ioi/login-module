@@ -121,7 +121,7 @@ class Migrator
     private function savePasswords($new_user, $passwords) {
         foreach($passwords as $pwd) {
             $new_pwd = new ObsoletePassword(collect($pwd->getAttributes())->except('id')->toArray());
-            $new_user->obsolete_passwords()->save($new_pwd);
+            $new_user->obsoletePasswords()->save($new_pwd);
         }
     }
 
@@ -137,7 +137,7 @@ class Migrator
     private function saveAuthConnections($new_user, $auth_connections) {
         foreach($auth_connections as $auth_connection) {
             $new_connection = new AuthConnection(collect($auth_connection->getAttributes())->except('id')->toArray());
-            $new_user->auth_connections()->save($new_connection);
+            $new_user->authConnections()->save($new_connection);
         }
     }
 

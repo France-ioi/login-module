@@ -20,7 +20,7 @@ class OAuthClientController extends Controller
 
 
     public function preferences($provider) {
-        $auth_connection = Auth::user()->auth_connections()->where('provider', $provider)->firstOrFail();
+        $auth_connection = Auth::user()->authConnections()->where('provider', $provider)->firstOrFail();
         $url = Manager::provider($provider)->getPreferencesURL($auth_connection);
         return redirect($url);
     }

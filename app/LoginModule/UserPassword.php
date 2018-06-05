@@ -31,7 +31,7 @@ class UserPassword {
                     $user->password = Hash::make($password);
                     $user->regular_password = 1;
                     $user->save();
-                    $user->obsolete_passwords()->delete();
+                    $user->obsoletePasswords()->delete();
                 });
                 return true;
             }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\LoginModule\Profile\SchemaBuilder;
+use App\User;
 
 class CollectedDataController extends Controller
 {
@@ -41,9 +42,17 @@ class CollectedDataController extends Controller
                 'clients_linked' => trans('collected_data.alert')
             ]);
         }
-        $user = \User::find($request->user()->id);
+        $user = User::findOrFail($request->user()->id);
+        $user->accessTokenCounters()->delete();
+        $user->authConnections()->delete();
+        $user->autoLoginToken()->delete();
+        $user->badges()->delete();
+        $user->emails()->delete();
+        $user->obsoletePasswords()->delete();
+        $user->verifications()->delete();
         \Auth::logout();
-        $user->delete();
+        $user->clearUserDataAttributes();
+        $user->save();
         return redirect('/');
     }
 

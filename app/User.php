@@ -40,7 +40,6 @@ class User extends Authenticatable
         'gender',
         'graduation_year',
         'graduation_grade',
-        'graduation_updated_at',
         'website',
         'last_login',
         'ip',
@@ -146,11 +145,11 @@ class User extends Authenticatable
 
 
     public function getHasPasswordAttribute() {
-        return $this->regular_password ? !is_null($this->password) : $this->obsolete_passwords()->first();
+        return $this->regular_password ? !is_null($this->password) : $this->obsoletePasswords()->first();
     }
 
 
-    public function auth_connections() {
+    public function authConnections() {
         return $this->hasMany('App\AuthConnection');
     }
 
@@ -165,7 +164,7 @@ class User extends Authenticatable
     }
 
 
-    public function obsolete_passwords() {
+    public function obsoletePasswords() {
         return $this->hasMany('App\ObsoletePassword');
     }
 
@@ -195,6 +194,11 @@ class User extends Authenticatable
     }
 
 
+    public function accessTokenCounters() {
+        return $this->hasMany('App\AccessTokenCounter');
+    }
+
+
     public function getHasPictureAttribute() {
         return (bool) $this->attributes['picture'];
     }
@@ -202,6 +206,21 @@ class User extends Authenticatable
 
     public function getPictureAttribute() {
         return $this->attributes['picture'] ? $this->attributes['picture'] : asset(config('ui.profile_picture.default'));
+    }
+
+
+    public function clearUserDataAttributes() {
+        $values = [
+            'boolean' => false,
+            'integer' => 0,
+            'array' => []
+        ];
+        foreach($this->fillable as $attr) {
+            if($attr == 'login') continue;
+            $type = isset($this->casts[$attr]) ? $this->casts[$attr] : '';
+            $v = isset($values[$type]) ? $values[$type] : null;
+            $this->$attr = $v;
+        }
     }
 
 }

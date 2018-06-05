@@ -37,7 +37,7 @@ class ProfileController extends Controller
     public function index(Request $request, ProfileFilter $profile_filter) {
         $user = $this->profile->getUserBeforeEditor();
 
-        $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
+        $is_pms_user = (bool) $user->authConnections()->where('provider', 'pms')->where('active', '1')->first();
         if($is_pms_user) {
             if($redirect = $request->get('redirect_uri')) {
                 $request->session()->put('url.intended', $request->get('redirect_uri'));
@@ -88,7 +88,7 @@ class ProfileController extends Controller
     public function update(Request $request) {
         $user = $request->user();
 
-        $is_pms_user = (bool) $user->auth_connections()->where('provider', 'pms')->where('active', '1')->first();
+        $is_pms_user = (bool) $user->authConnections()->where('provider', 'pms')->where('active', '1')->first();
         $required_attributes = $this->requiredAttributes($user);
         if($user->login_change_required) {
             $required_attributes = ['login'];
