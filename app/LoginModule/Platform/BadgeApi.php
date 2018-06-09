@@ -42,7 +42,7 @@ class BadgeApi {
                 'student_id' => array_get($res, 'sStudentId'),
                 'gender' => strtolower(substr(array_get($res, 'sSex'), 0, 1)),
                 'data' => array_get($res, 'data'),
-                'grade' => array_get($res, 'grade')
+                'graduation_grade' => array_get($res, 'grade')
             ];
         }
         return false;
