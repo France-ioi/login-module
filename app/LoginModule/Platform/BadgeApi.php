@@ -34,6 +34,18 @@ class BadgeApi {
         ];
         $res = self::post($url, $request);
         if($res && is_array($res) && !isset($res['error'])) {
+            // Convert grade to graduation_grade
+            $grade = array_get($res, 'grade');
+            if($grade >= 16 && $grade <= 19) {
+                $graduation_grade = 22 - $grade;
+            } elseif($grade >= 13 && $grade <= 15) {
+                $graduation_grade = $grade - 3;
+            } elseif($grade >= 4 && $grade <= 12) {
+                $graduation_grade = 12 - $grade;
+            } else {
+                $graduation_grade = null;
+            }
+
             return [
                 'login' => array_get($res, 'sLogin'),
                 'email' => array_get($res, 'sEmail'),
@@ -42,7 +54,7 @@ class BadgeApi {
                 'student_id' => array_get($res, 'sStudentId'),
                 'gender' => strtolower(substr(array_get($res, 'sSex'), 0, 1)),
                 'data' => array_get($res, 'data'),
-                'graduation_grade' => array_get($res, 'grade')
+                'graduation_grade' => $graduation_grade
             ];
         }
         return false;
