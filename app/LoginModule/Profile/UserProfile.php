@@ -99,8 +99,10 @@ class UserProfile {
             $attributes = $this->getRequiredUserAttributes($user, $client);
 
             //we would like to display the profile every time the user logs in and still has recommended fields that are empty
-            $attributes = array_merge($attributes, $client->recommended_attributes);
-            $attributes = array_unique($attributes);
+            if(session()->get('check_profile_recommended_attributes')) {
+                $attributes = array_merge($attributes, $client->recommended_attributes);
+                $attributes = array_unique($attributes);
+            }
 
             foreach($attributes as $attribute) {
                 $value = $user->getAttribute($attribute);
