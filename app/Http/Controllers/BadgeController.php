@@ -126,6 +126,10 @@ class BadgeController extends Controller
             }
         }
         if($badge_data = $this->context->badge()->verify($request->input('code'))) {
+            if($badge_data['user']['id'] && $badge_data['user']['id'] != Auth::user()->id
+                    && ($badge_user = \App\User::where('id', $badge_data['user']['id'])->first())) {
+                return $this->failedVerificationResponse($code, trans('badge.code_in_use', ['username' => $badge_user->login]));
+            }
             if($badge = Auth::user()->badges()->where('url', $badge_data['url'])->first()) {
                 $badge->do_not_possess = false;
                 $badge->code = $badge_data['code'];
