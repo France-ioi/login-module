@@ -11,9 +11,14 @@
                     @lang('profile.'.$attr)@if(!$loop->last), @endif
                 @endforeach
             </strong>
-            <a class="btn btn-default btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>
+            <a class="btn btn-danger btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>
         @else
             @lang('verification.profile_not_completed')
         @endif
+    </div>
+@elseif($show_email_verification_alert)
+    <div class="alert alert-info">
+        @lang('profile.email_verification_alert')
+        <a class="btn btn-primary btn-xs pull-right" href="/verification/email_code">Verify</a>
     </div>
 @endif

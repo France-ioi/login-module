@@ -79,6 +79,7 @@ class ProfileController extends Controller
             'unverified_attributes' => $unverified_attributes,
             'verification_ready' => $verification_ready,
             'verified_attributes' => $this->verification->verifiedAttributes($user),
+            'show_email_verification_alert' => $this->emailVerificationAvailable($user),
             'platform_name' => $client ? $client->name : trans('app.name'),
             'rejected_attributes' => $profile_filter->rejectedAttributes($user)
         ]);
@@ -159,6 +160,20 @@ class ProfileController extends Controller
             }
         }
         return array_unique($res);
+    }
+
+
+
+    private function emailVerificationAvailable($user) {
+        $attributes = ['primary_email', 'secondary_email'];
+        foreach($attributes as $attr) {
+            $completed = $this->profile->attributesCompleted($user, [$attr]);
+            $verified = $this->verification->attributeVerifiedGlobal($user, $attr);
+            if($completed && !$verified) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

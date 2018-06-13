@@ -65,6 +65,8 @@ return [
     'verification_alert_p1' => 'The following information was verified. If you change it, you may need to have it verified again or you may lose access to some platforms or features: ',
     'verification_alert_p2' => 'Are you sure you want to change them?',
 
+    'email_verification_alert' => 'Email not verified',
+
     'profile_filter' => 'In order to give you access to :platform_name, you need to change the following information:',
 
     'required_fields_explanation' => 'Only fields marked with (*) are required',

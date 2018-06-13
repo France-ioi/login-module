@@ -35,6 +35,7 @@ class Verification {
     protected $context;
     protected $methods_cache = null;
     protected $verifications_cache = null;
+    protected $verifications_global_cache = null;
 
 
     public function __construct(PlatformContext $context) {
@@ -65,8 +66,7 @@ class Verification {
     public function verifications($user) {
         if($this->verifications_cache === null) {
             $this->verifications_cache = $user->verifications()
-                ->whereIn('method_id', $this->methods()
-                ->pluck('id'))
+                ->whereIn('method_id', $this->methods()->pluck('id'))
                 ->get()
                 ->map(function($verification) {
                     $verification->state = $this->verificationState($verification);
@@ -74,6 +74,27 @@ class Verification {
                 });
         }
         return $this->verifications_cache;
+    }
+
+
+    public function verificationState($verification) {
+        if(!$verification) {
+            return self::STATE_NOT_VERIFIED;
+        }
+        if($this->verificationExpired($verification, true)) {
+            return self::STATE_REFRESH_REQUIRED;
+        }
+        if($this->verificationExpired($verification)) {
+            return self::STATE_OBSOLETE;
+        }
+        if($verification->status == 'pending') {
+            $has_action = $verification->method->name == 'peer';
+            return $has_action ? self::STATE_ACTION_REQUIRED : self::STATE_IN_PROCESS;
+        }
+        if($verification->status == 'approved') {
+            return self::STATE_VERIFIED;
+        }
+        return self::STATE_REJECTED;
     }
 
 
@@ -107,6 +128,32 @@ class Verification {
 
 
 
+    public function verificationsGlobal($user) {
+        if($this->verifications_global_cache === null) {
+            $this->verifications_global_cache = $user->verifications()
+                ->get()
+                ->map(function($verification) {
+                    $verification->state = $this->verificationState($verification);
+                    return $verification;
+                });
+        }
+        return $this->verifications_global_cache;
+    }
+
+
+    public function attributeVerifiedGlobal($user, $attribute) {
+        $verifications = $this->verificationsGlobal($user);
+        foreach($verifications as $verification) {
+            foreach($verification->user_attributes as $attr) {
+                if($attr == $attribute && $verification->state == self::STATE_VERIFIED) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public function attributesState($user) {
         $verifications = $this->verifications($user);
         $res = array_fill_keys($this->attributes(), self::STATE_NOT_VERIFIED);
@@ -122,28 +169,6 @@ class Verification {
         }
         return $res;
     }
-
-
-    public function verificationState($verification) {
-        if(!$verification) {
-            return self::STATE_NOT_VERIFIED;
-        }
-        if($this->verificationExpired($verification, true)) {
-            return self::STATE_REFRESH_REQUIRED;
-        }
-        if($this->verificationExpired($verification)) {
-            return self::STATE_OBSOLETE;
-        }
-        if($verification->status == 'pending') {
-            $has_action = $verification->method->name == 'peer';
-            return $has_action ? self::STATE_ACTION_REQUIRED : self::STATE_IN_PROCESS;
-        }
-        if($verification->status == 'approved') {
-            return self::STATE_VERIFIED;
-        }
-        return self::STATE_REJECTED;
-    }
-
 
 
     private function verificationExpired($verification, $expiration_alert = false) {

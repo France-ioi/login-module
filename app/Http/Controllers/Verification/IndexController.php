@@ -19,12 +19,16 @@ class IndexController extends Controller
 
 
     public function index(Request $request, PlatformContext $context) {
+        $methods = $this->verification->methods();
+        if(count($methods) == 0) {
+            return redirect('/profile');
+        }
         $client = $context->client();
         return view('verification.index', [
             'unverified_attributes' => $this->verification->unverifiedAttributes($request->user()),
             'platform_name' => $client ? $client->name : trans('app.name'),
             'verifications' => $this->verification->verifications($request->user()),
-            'methods' => $this->verification->methods(),
+            'methods' => $methods,
             'continue_url' => $context->continueURL('/account')
         ]);
     }

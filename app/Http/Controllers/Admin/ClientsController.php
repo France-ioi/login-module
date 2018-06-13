@@ -62,7 +62,7 @@ class ClientsController extends Controller
         $client->password_client = false;
         $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
-        $client->attributes_filter = $this->cleanAtrributesfilter($request);
+        $client->attributes_filter = $this->cleanAtrributesFilter($request);
         $client->save();
         $this->syncVerificationMethods($client, $request);
         return redirect()
@@ -108,9 +108,12 @@ class ClientsController extends Controller
     public function update(StoreClientRequest $request, Client $client)
     {
         $client->fill($request->all());
+        if(!$request->has('verifiable_attributes')) {
+            $client->verifiable_attributes = [];
+        }
         $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
-        $client->attributes_filter = $this->cleanAtrributesfilter($request);
+        $client->attributes_filter = $this->cleanAtrributesFilter($request);
         $client->save();
         $this->syncVerificationMethods($client, $request);
         return redirect()
@@ -148,7 +151,7 @@ class ClientsController extends Controller
     }
 
 
-    private function cleanAtrributesfilter($request) {
+    private function cleanAtrributesFilter($request) {
         $res = [];
         $attributes_filter = $request->get('attributes_filter');
         if(is_array($attributes_filter)) {
