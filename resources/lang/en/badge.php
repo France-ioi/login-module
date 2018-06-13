@@ -5,6 +5,7 @@ return [
     'btn_verify_code' => 'Validate',
     'code_verification_fail' => 'Code verification failed',
     'code_registered' => 'Code registered by another user',
+    'code_in_use' => 'This code belongs to user :username, please log in as this user then use the code.',
     'do_not_have' => 'I dont have this code',
 
     'badge' => 'Badge',

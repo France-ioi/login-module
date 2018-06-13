@@ -51,6 +51,10 @@ class BadgeController extends Controller
 
         // attempt to use badge api
         if($badge_data = $this->context->badge()->verifyAndStoreData($code)) {
+            if($badge_data['user']['id'] && ($badge_user = \App\User::where('id', $badge_data['user']['id'])->first())) {
+                return $this->failedVerificationResponse($code, trans('badge.code_in_use', ['username' => $badge_user->login]));
+            }
+
             $client = $this->context->client();
             if($client && $client->badge_autologin) {
                 return $this->authWithBadge($badge_data);
@@ -105,6 +109,7 @@ class BadgeController extends Controller
                 'email' => $user_data['email']
             ]));
         }
+        BadgeApi::update($badge_data['url'], $badge_data['code'], $user->id);
         Auth::login($user);
 
         return redirect($this->context->continueUrl('/account'));
@@ -121,6 +126,10 @@ class BadgeController extends Controller
             }
         }
         if($badge_data = $this->context->badge()->verify($request->input('code'))) {
+            if($badge_data['user']['id'] && $badge_data['user']['id'] != Auth::user()->id
+                    && ($badge_user = \App\User::where('id', $badge_data['user']['id'])->first())) {
+                return $this->failedVerificationResponse($code, trans('badge.code_in_use', ['username' => $badge_user->login]));
+            }
             if($badge = Auth::user()->badges()->where('url', $badge_data['url'])->first()) {
                 $badge->do_not_possess = false;
                 $badge->code = $badge_data['code'];
