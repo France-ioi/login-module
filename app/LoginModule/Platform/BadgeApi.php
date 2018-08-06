@@ -47,7 +47,7 @@ class BadgeApi {
             }
 
             return [
-                'id' => isset($res['franceioiID']) : $res['franceioiID'] : null,
+                'id' => isset($res['franceioiID']) ? $res['franceioiID'] : null,
                 'login' => array_get($res, 'sLogin'),
                 'email' => array_get($res, 'sEmail'),
                 'first_name' => array_get($res, 'sFirstName'),

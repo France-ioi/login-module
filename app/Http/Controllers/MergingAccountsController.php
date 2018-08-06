@@ -51,7 +51,7 @@ class MergingAccountsController extends Controller
         $request->session()->regenerate();
         $request->session()->put('merge_account_id', $group_user->id);
         $this->context->setData($context_data);
-        return redirect('/login'); // ??
+        return redirect('/auth'); // ??
     }
 
 

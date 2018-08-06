@@ -1,17 +1,18 @@
 <?php
 
-Route::get('/', function() { return redirect('login'); });
+Route::get('/', function() { return redirect('/auth'); });
 
 Route::get('/password/reset/new', ['uses' => 'Auth\ResetPasswordController@showNewPasswordForm', 'as' => 'password.reset.new']);
 Auth::routes();
 Route::get('/password/emails/{login}', ['uses' => 'Auth\ForgotPasswordController@showEmails', 'as' => 'passwords.emails']);
 Route::post('/logout', 'Auth\LogoutController@logoutFinish');
+Route::post('/login_with_code', 'Auth\LoginWithCodeController@login');
+Route::get('/auth', 'Auth\IndexController@index');
 
 Route::get('/logout', 'Auth\LogoutController@getLogout');
 Route::post('/logout_start', 'Auth\LogoutController@logoutStart');
 Route::get('/logout_loop', 'Auth\LogoutController@logoutLoop');
 Route::get('/logout_finish', 'Auth\LogoutController@logoutFinish');
-Route::post('/badge/verify', 'BadgeController@verify');
 Route::get('/session_expired', 'Auth\OAuthClientController@sessionExpired');
 
 Route::get('/oauth_client/redirect/{provider}', 'Auth\OAuthClientController@redirect');

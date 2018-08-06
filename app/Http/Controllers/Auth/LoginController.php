@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\LoginModule\Platform\PlatformContext;
-use App\LoginModule\AuthList;
 
 class LoginController extends Controller
 {
@@ -37,10 +36,9 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(PlatformContext $context, AuthList $auth_list) {
+    public function __construct(PlatformContext $context) {
         $this->middleware('guest', ['except' => ['logout']]);
         $this->context = $context;
-        $this->auth_list = $auth_list;
     }
 
 
@@ -89,7 +87,6 @@ class LoginController extends Controller
     public function showLoginForm() {
         $client = $this->context->client();
         return view('auth.login', [
-            'methods' => $this->auth_list->split($client ? $client->auth_order : null),
             'platform_name' => $client ? $client->name : trans('app.name')
         ]);
     }

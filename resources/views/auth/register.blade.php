@@ -17,7 +17,7 @@
                     <button type="submit" class="btn btn-primary">
                         @lang('auth.btn_register')
                     </button>
-                    <a class="btn btn-link" href="{{ route('login') }}">
+                    <a class="btn btn-link" href="{{ url('auth') }}">
                         @lang('ui.cancel')
                     </a>
                 </div>

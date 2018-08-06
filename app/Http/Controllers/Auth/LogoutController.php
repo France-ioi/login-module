@@ -87,7 +87,7 @@ class LogoutController extends Controller
         if($redirect_uri) {
             return redirect($redirect_uri);
         } else {
-            return redirect(route('login'));
+            return redirect('/auth');
         }
     }
 

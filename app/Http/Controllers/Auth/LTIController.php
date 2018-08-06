@@ -42,7 +42,7 @@ class LTIController extends Controller
             $url = $this->getRedirect($request, $token);
             return redirect($url);
         }
-        return redirect()->route('login');
+        return redirect('/auth');
     }
 
 

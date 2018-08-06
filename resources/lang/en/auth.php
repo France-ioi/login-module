@@ -17,6 +17,7 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
     'login_or_email' => 'Login or Email',
+    'login_email_badge' => 'Login, Email or Participation сode',
     'login' => 'Login',
     'email' => 'Email address',
     'pwd' => 'Password',
@@ -45,5 +46,7 @@ return [
     'logout_hint' => 'Also logout from:',
     'btn_logout' => 'Logout',
 
-    'session_expired' => 'Your session expired. Please close this window and log in again.'
+    'session_expired' => 'Your session expired. Please close this window and log in again.',
+
+    'select_another_method' => 'Select another authentication method'
 ];

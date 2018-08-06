@@ -55,7 +55,7 @@ class OAuthClientController extends Controller
             $data['login'] = $data['login'] ? $data['login'] : trans('auth_connections.email_exists_login_empty');
             return view('oauth_client.email_exists', $data);
         }
-        return redirect()->route('login');
+        return redirect('/auth');
     }
 
 

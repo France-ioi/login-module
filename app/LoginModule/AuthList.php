@@ -9,7 +9,7 @@ class AuthList {
     // default list of all available auth methods
     public function all() {
         return array_merge(
-            ['login', 'badge'],
+            ['login'],
             Manager::providers(),
             ['_']
         );
