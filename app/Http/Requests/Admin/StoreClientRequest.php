@@ -25,7 +25,7 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'secret' => 'required',
+            'secret' => 'required|alpha_num',
             'redirect' => 'required'
         ];
     }
