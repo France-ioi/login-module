@@ -21,7 +21,6 @@ class UserDataGenerator {
 
 
     public function loginFromBadge($badge_user, $prefix = '') {
-        //badge_[firstname][first letter of lastname][3 digits]
         $first_name = array_get($badge_user, 'first_name');
         $first_name = preg_replace('/[^A-Za-z]/', '', $first_name);
         $first_name = substr($first_name, 0, 10);
