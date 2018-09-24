@@ -11,6 +11,10 @@ return [
 
     'login_validator' => [
         'new' => "/^[a-z0-9-]+$/",
-        'existing' => "/^[a-z0-9-_]+$/"
+        'existing' => "/^[a-z0-9-_]+$/",
+        'length' => [
+            'min' => 3,
+            'max' => 30
+        ]
     ]
 ];

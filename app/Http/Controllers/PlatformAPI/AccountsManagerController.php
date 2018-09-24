@@ -18,9 +18,9 @@ class AccountsManagerController extends PlatformAPIController
 
     private function validatorCreate(array $data) {
         return Validator::make($data, [
-            'prefix' => 'required|min:1|max:100',
+            'prefix' => 'required|min:1|max:29',
             'amount' => 'required|integer|min:1',
-            'postfix_length' => 'required|integer|min:3|max:50',
+            'postfix_length' => 'required|integer|min:3|max:29',
             'password_length' => 'required|integer|min:6|max:50',
         ]);
     }
@@ -28,15 +28,17 @@ class AccountsManagerController extends PlatformAPIController
 
     public function create(Request $request) {
         $validator = $this->validatorCreate($request->all());
-        if($validator->fails()) {
+        $login_length = strlen($request->get('prefix')) + (int) $request->get('postfix_length');
+
+        $wrong_length = $login_length < config('profile.login_validator.length.min') ||
+            $login_length > config('profile.login_validator.length.max');
+        if($wrong_length || $validator->fails()) {
             $res = [
                 'success' => false,
                 'error' => 'Wrong params'
             ];
             return $this->makeResponse($res, $request->get('client')->secret);
         }
-
-
         $users = [];
         for($i=0; $i<$request->get('amount'); $i++) {
             $data = $this->accounts_manager->create($request->all());

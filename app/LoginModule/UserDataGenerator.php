@@ -24,8 +24,10 @@ class UserDataGenerator {
         //badge_[firstname][first letter of lastname][3 digits]
         $first_name = array_get($badge_user, 'first_name');
         $first_name = preg_replace('/[^A-Za-z]/', '', $first_name);
+        $first_name = substr($first_name, 0, 10);
         $last_name = array_get($badge_user, 'last_name');
         $last_name = preg_replace('/[^A-Za-z]/', '', $last_name);
+        $last_name = substr($last_name, 0, 10);
         if($first_name != '' && $last_name != '') {
             $cnt = 0;
             do {

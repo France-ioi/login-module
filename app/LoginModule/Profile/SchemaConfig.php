@@ -7,9 +7,13 @@ use \Illuminate\Validation\Rule;
 class SchemaConfig {
 
     public static function login($user = null) {
-        $valid = ['min:3'];
+        $valid = [
+            'min:'.config('profile.login_validator.length.min')
+        ];
+        // login was changed
         if(!($user && $user->login === request()->get('login'))) {
             $valid[] = 'login';
+            $valid[] = 'max:'.config('profile.login_validator.length.max');
         }
         if($user) {
             $valid[] = Rule::unique('users')->ignore($user->id);
