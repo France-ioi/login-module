@@ -78,6 +78,7 @@ class LTIController extends Controller
             'last_name' => $login_data['lastName'],
             'login' => $login
         ];
+        \Auth::logout();
         return AuthConnector::connect($auth);
     }
 
