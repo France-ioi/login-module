@@ -223,4 +223,9 @@ class User extends Authenticatable
         }
     }
 
+
+    public function ltiConnections() {
+        return $this->hasMany('App\LtiConnection');
+    }
+
 }

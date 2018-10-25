@@ -21,6 +21,8 @@ Route::get('/oauth_client/callback/{provider}', ['uses' => 'Auth\OAuthClientCont
 Route::post('/oauth_client/remove/{provider}', ['uses' => 'Auth\OAuthClientController@remove', 'middleware' => 'auth']);
 Route::get('/oauth_client/email_exists', 'Auth\OAuthClientController@emailExists');
 Route::get('/oauth_client/logout/{provider}', 'Auth\OAuthClientController@logout');
+
+Route::post('/lti/entry', 'Auth\LTIEntryController@handle');
 Route::get('/lti', 'Auth\LTIController@login');
 
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);
@@ -108,5 +110,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
     Route::group(['middleware' => 'permission:admin.verifications.verify'], function() {
         Route::get('/verifications/edit', 'VerificationsController@edit');
         Route::post('/verifications/update/{id}', 'VerificationsController@update');
+    });
+    Route::group(['middleware' => 'permission:admin.misc'], function() {
+        Route::resource('lti_configs', 'LtiConfigsController');
     });
 });

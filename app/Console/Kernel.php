@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\LoginModuleImportCommand::class,
         Commands\LoginModuleMergeCommand::class,
         Commands\BebrasImportCommand::class,
+        Commands\SendLTIResultsCommand::class,
     ];
 
     /**

@@ -22,6 +22,13 @@
                 <li>
                     <a href="{{ url('admin/verifications/edit') }}">Verification</a>
                 </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Misc
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{{ route('admin.lti_configs.index') }}">LTI config</a></li>
+                    </ul>
+                  </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
