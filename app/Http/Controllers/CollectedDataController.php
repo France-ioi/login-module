@@ -19,7 +19,7 @@ class CollectedDataController extends Controller
     public function export(Request $request) {
         $data = $this->data($request->user());
         return response(
-            json_encode($data),
+            json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
             200,
             [
                 'Content-Type' => 'application/json',
