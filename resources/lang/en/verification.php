@@ -41,7 +41,8 @@ return [
         'help' => 'Input the code received on your email. If you never received it, make sure the email address provided is correct, check your spam folder, then contact us at :email from that email address.',
         'email' => 'Email',
         'code' => 'Code',
-        'error' => 'Wrong email verification code.'
+        'error' => 'Wrong email verification code.',
+        'no_emails' => 'You need to edit your profile and add an email, before using the email verification.'
     ],
 
     'email_domain' => [
