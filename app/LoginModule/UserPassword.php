@@ -24,6 +24,7 @@ class UserPassword {
 
 
     static function checkObsoletePassword($user, $password) {
+        if(!$user->obsolete_passwords) { return null; }
         foreach($user->obsolete_passwords as $opwd) {
             if(($opwd->type == 'md5' && md5($password, $opwd->salt) == $opwd->password) ||
                ($opwd->type == 'sha512' && hash('sha512', $password) == $opwd->password)) {

@@ -18,7 +18,7 @@
     @endif
 
     <div class="well">
-        <img style="width: 100%" src="/verifications/{{$verification->file}}"/>
+        <img style="width: 100%" src="{{Storage::url('verifications/'.$verification->file)}}"/>
     </div>
 
 
