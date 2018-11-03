@@ -99,7 +99,11 @@ class Verification {
 
 
     public function authReady($user) {
-        return count($this->unverifiedAttributes($user)) == 0;
+        $unverified_attributes = array_intersect(
+            $this->attributes(),
+            $this->unverifiedAttributes($user)
+        );
+        return count($unverified_attributes) == 0;
     }
 
 
@@ -157,6 +161,7 @@ class Verification {
     public function attributesState($user) {
         $verifications = $this->verifications($user);
         $res = array_fill_keys($this->attributes(), self::STATE_NOT_VERIFIED);
+
         foreach($verifications as $verification) {
             foreach($verification->user_attributes as $attribute) {
                 if(!isset($res[$attribute])) {
