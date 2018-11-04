@@ -11,6 +11,7 @@ return [
     'primary_email'  => 'Adresse mail principale',
     'secondary_email'  => 'Adresse mail secondaire',
     'language' => 'Langue',
+    'nationality' => 'Nationalité',
     'country_code' => 'Pays',
     'address' => 'Addresse',
     'city' => 'Ville',
@@ -44,6 +45,12 @@ return [
     'graduation_grade' => "Indiquez votre classe",
     'success' => 'Profil mis à jour.',
 
+    'primary_email_verification_code' => "Code de vérification de l'adresse mail principale",
+    'secondary_email_verification_code' => "Code de vérification de l'adresse mail secondaire",
+    'email_verification_help' => "Veuillez entrer le code reçu par mail. Si vous ne l'avez pas reçu, veuillez vérifier que l'adresse mail est correcte, que le courrier n'est pas dans votre boîte spam, puis contactez-nous à :email depuis cette adresse mail.",
+    'email_verified' => 'Vérifiée',
+    'email_verification_code_error' => 'Mauvais code de vérification.',
+
     'pms_redirect_msg' => "En tant qu'utilisateur PMS, vous devez éditer votre profil directement sur PMS. Veuillez ensuite utiliser le bouton \"Zurück zum JwInf\" afin de mettre à jour votre profil ici.",
     'pms_redirect_btn' => 'Continuer vers PMS',
 
@@ -55,6 +62,16 @@ return [
     'teacher_domain_alert' => "Veuillez contacter :email en expliquant pourquoi vous n'avez pas d'adresse mail avec un nom de domaine reconnu.",
     'login_change_limitations' => "Si vous changez d'identifiant, après une heure, vous ne pourrez plus le changer pendant une année.",
     'login_change_required' => 'Veuillez nous excuser, vous devez choisir un nouvel identifiant. Celui que vous avez choisi est déjà pris, ou bien ne respecte pas les règles. Seules les lettres minuscules, les chiffres et le tiret - sont autorisés.',
+
+    'verification_alert_p1' => "Cette information a été vérifiée. Si vous la modifiez, vous devrez refaire le processus de vérification ou vous pourriez perdre l'accès à certaines plateformes ou fonctionnalités : ",
+    'verification_alert_p2' => 'Voulez-vous vraiment les changer ?',
+
+    'email_verification_alert' => 'Adresse mail non vérifiée',
+
+    'profile_filter' => 'Pour accéder à :platform_name, vous devez modifier les informations suivantes :',
+
+    'required_fields_explanation' => 'Seuls les champs marqués avec (*) sont requis',
+    'collected_data' => 'Gérer ou effacer les données collectées sur moi',
 
     'tooltips' => [
         'login' => 'Évitez d’inclure votre nom dans votre login, car il sera rendu public. Choisissez plutôt un pseudo dont vous pouvez facilement vous souvenir.',
