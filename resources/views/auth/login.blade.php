@@ -21,4 +21,15 @@
             {!! BootForm::close() !!}
         </div>
     </div>
+
+    <script type="text/javascript">
+    // Auto-focus either login or password field
+    $(function() {
+        if($('#login').val()) {
+            $('#password').focus();
+        } else {
+            $('#login').focus();
+        }
+    });
+    </script>
 @endsection
