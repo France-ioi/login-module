@@ -48,14 +48,13 @@ class LoginWithCodeController extends Controller
     private function attemptCodeLogin($request) {
         $code = $request->input('identity');
 
-        // attempt badge code login
+        // attempt user badge code login
         if($badge = $this->findBadge($code)) {
             if($badge->login_enabled) {
                 Auth::login($badge->user, $request->has('remember'));
                 return redirect($this->context->continueUrl('/account'));
-            } else {
-                return $this->sendLoginPasswordResponse($request);
             }
+            return false;
         }
 
         // attempt to use badge api
