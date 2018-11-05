@@ -17,6 +17,7 @@ return [
     'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
 
     'login_or_email' => 'Identifiant ou adresse mail',
+    'login_email_badge' => 'Identifiant, adresse mail ou code de participation',
     'login' => 'Identifiant',
     'email' => 'Adresse mail',
     'pwd' => 'Mot de passe',
