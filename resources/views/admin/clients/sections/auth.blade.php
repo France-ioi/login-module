@@ -4,7 +4,13 @@
         @foreach($auth_methods as $method)
             <li class="list-group-item">
                 <input type="hidden" name="auth_order[]" value="{{ $method }}"/>
-                {{ $method == '_' ? '-- Hidden methods divider --' : $method}}
+                @if($method == '_HIDDEN')
+                    <strong>Hidden by default methods</strong>
+                @elseif($method == '_DISABLED')
+                    <strong>Always hidden methods</strong>
+                @else
+                    @lang('auth_methods.titles.'.$method)
+                @endif
             </li>
         @endforeach
     </ul>

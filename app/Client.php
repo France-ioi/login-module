@@ -16,11 +16,9 @@ class Client extends \Laravel\Passport\Client
         'verifiable_attributes',
         'recommended_attributes',
         'attributes_filter',
-        //'auth_order',
-        'badge_url',
+        'badge_api_id',
         'api_url',
         'badge_required',
-        'badge_autologin',
         'autoapprove_authorization',
         'email'
     ];
@@ -37,7 +35,6 @@ class Client extends \Laravel\Passport\Client
         'attributes_filter' => 'array',
         'auth_order' => 'array',
         'autoapprove_authorization' => 'boolean',
-        'badge_autologin' => 'boolean',
         'badge_required' => 'boolean',
     ];
 
@@ -53,5 +50,10 @@ class Client extends \Laravel\Passport\Client
     public function verification_methods() {
         return $this->belongsToMany('App\VerificationMethod', 'oauth_client_verification_method')
             ->withPivot('expiration');
+    }
+
+
+    public function badgeApi() {
+        return $this->belongsTo('App\BadgeApi');
     }
 }

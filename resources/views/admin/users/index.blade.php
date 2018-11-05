@@ -76,13 +76,4 @@
     </table>
 
     {{ $users->links() }}
-
-    <script type="text/javascript">
-        $("form[role=delete]").submit(function(e) {
-            if(!confirm('Are you sure you want to delete this user?')) {
-                e.preventDefault();
-                return false;
-            }
-        });
-    </script>
 @endsection

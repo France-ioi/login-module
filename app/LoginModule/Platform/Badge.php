@@ -16,7 +16,7 @@ class Badge {
 
 
     public function url() {
-        return $this->client ? $this->client->badge_url : null;
+        return $this->client && $this->client->badge_api_id ? $this->client->badgeApi->url : null;
     }
 
 
@@ -49,14 +49,25 @@ class Badge {
 
 
     public function verifyAndStoreData($code) {
+        $auth_enabled = $this->client && $this->client->badge_api_id ? $this->client->badgeApi->auth_enabled : false;
+        if(!$auth_enabled) {
+            return false;
+        }
         if($badge_data = $this->verify($code)) {
             Session::put(self::SESSION_KEY, $badge_data);
             return $badge_data;
         } else {
             $this->flushData();
         }
+        return false;
     }
 
+
+    public function update($code, $user_id) {
+        if($url = $this->url()) {
+            BadgeApi::update($url, $code, $user_id);
+        }
+    }
 
     public function restoreData() {
         return Session::get(self::SESSION_KEY);

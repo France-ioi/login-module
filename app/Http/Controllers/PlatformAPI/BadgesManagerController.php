@@ -10,11 +10,14 @@ class BadgesManagerController extends PlatformAPIController
 {
     public function resetDoNotPossess(Request $request) {
         $res = false;
-        $badge = Badge::where('user_id', $request->get('user_id'))
+        if($request->get('client')->badge_api_id) {
+            $badge = Badge::where('user_id', $request->get('user_id'))
             ->where('code', $request->get('code'))
-            ->where('url', $request->get('client')->badge_url)
+            ->where('url', $request->get('client')->badgeApi->url)
             ->where('do_not_possess', true)
             ->first();
+        }
+
         if($badge) {
             $badge->delete();
             $res = true;

@@ -9,24 +9,31 @@ class AuthList {
     // default list of all available auth methods
     public function all() {
         return array_merge(
-            ['login'],
+            ['login_email_code'],
             Manager::providers(),
-            ['_']
+            ['_HIDDEN'],
+            ['_DISABLED'],
+            ['login_email'],
+            ['code']
         );
     }
 
 
     public function split($methods) {
         $methods = $this->normalize($methods);
-
         $res = [
             'visible' => [],
-            'hidden' => []
+            'hidden' => [],
+            'disabled' => []
         ];
         $target = 'visible';
         foreach($methods as $method) {
-            if($method == '_') {
+            if($method == '_HIDDEN' && $target != 'disabled') {
                 $target = 'hidden';
+                continue;
+            }
+            if($method == '_DISABLED') {
+                $target = 'disabled';
                 continue;
             }
             $res[$target][] = $method;

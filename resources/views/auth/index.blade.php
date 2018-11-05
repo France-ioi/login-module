@@ -1,13 +1,15 @@
 @extends('layouts.popup')
 
-@push('login')
-    <a class="btn btn-block btn-default" data-toggle="collapse" data-target="#login-form">
-        @lang('auth.login_password')
+@push('login_email_code')
+    <a class="btn btn-block btn-default" data-toggle="collapse" data-target="#box-login_email_code">
+        @lang('auth.login_email_badge')
         <span id="login-caret" class="glyphicon glyphicon-triangle-top"></span>
     </a>
-    <div id="login-form" class="collapse in btn-block">
+    <div id="box-login_email_code" class="collapse in btn-block">
         <div class="well">
             {!! BootForm::open(['url' => 'login_with_code']) !!}
+                {!! BootForm::hidden('try_code', 1) !!}
+                {!! BootForm::hidden('try_password', 1) !!}
                 {!! BootForm::text('identity', trans('auth.login_email_badge')) !!}
                 {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
                 {!! BootForm::submit(trans('auth.btn_login')) !!}
@@ -17,6 +19,46 @@
                         @lang('auth.link_register')
                     </a>
                 </div>
+            {!! BootForm::close() !!}
+        </div>
+    </div>
+@endpush
+
+@push('login_email')
+    <a class="btn btn-block btn-default" data-toggle="collapse" data-target="#box-login_email">
+        @lang('auth.login_or_email')
+        <span id="login-caret" class="glyphicon glyphicon-triangle-top"></span>
+    </a>
+    <div id="box-login_email" class="collapse in btn-block">
+        <div class="well">
+            {!! BootForm::open(['url' => 'login_with_code']) !!}
+                {!! BootForm::hidden('try_password', 1) !!}
+                {!! BootForm::text('identity', trans('auth.login_or_email')) !!}
+                {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
+                {!! BootForm::submit(trans('auth.btn_login')) !!}
+                <hr/>
+                <div class="form-group">
+                    <a class="btn btn-link" href="{{ route('register') }}">
+                        @lang('auth.link_register')
+                    </a>
+                </div>
+            {!! BootForm::close() !!}
+        </div>
+    </div>
+@endpush
+
+@push('code')
+    <a class="btn btn-block btn-default" data-toggle="collapse" data-target="#box-code">
+        @lang('badge.header')
+        <span id="login-caret" class="glyphicon glyphicon-triangle-top"></span>
+    </a>
+    <div id="box-code" class="collapse in btn-block">
+        <div class="well">
+            {!! BootForm::open(['url' => 'login_with_code']) !!}
+                {!! BootForm::hidden('try_code', 1) !!}
+                {!! BootForm::text('identity', trans('badge.header')) !!}
+                {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
+                {!! BootForm::submit(trans('auth.btn_login')) !!}
             {!! BootForm::close() !!}
         </div>
     </div>

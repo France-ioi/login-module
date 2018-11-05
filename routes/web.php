@@ -6,7 +6,9 @@ Route::get('/password/reset/new', ['uses' => 'Auth\ResetPasswordController@showN
 Auth::routes();
 Route::get('/password/emails/{login}', ['uses' => 'Auth\ForgotPasswordController@showEmails', 'as' => 'passwords.emails']);
 Route::post('/logout', 'Auth\LogoutController@logoutFinish');
+
 Route::post('/login_with_code', 'Auth\LoginWithCodeController@login');
+
 Route::get('/auth', 'Auth\IndexController@index');
 
 Route::get('/logout', 'Auth\LogoutController@getLogout');
@@ -113,5 +115,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
     });
     Route::group(['middleware' => 'permission:admin.misc'], function() {
         Route::resource('lti_configs', 'LtiConfigsController');
+        Route::resource('badge_apis', 'BadgeApisController');
     });
 });

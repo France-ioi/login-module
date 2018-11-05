@@ -8,28 +8,47 @@ use App\LoginModule\AccountsManager;
 use App\LoginModule\Platform\PlatformContext;
 use App\Badge;
 use App\PlatformGroup;
+use App\User;
 use Auth;
+use App\LoginModule\UserDataGenerator;
 
 class LoginWithCodeController extends Controller
 {
 
 
     public function __construct(PlatformContext $context,
-                                AccountsManager $accounts_manager) {
+                                AccountsManager $accounts_manager,
+                                UserDataGenerator $generator) {
         $this->middleware('guest');
         $this->context = $context;
         $this->accounts_manager = $accounts_manager;
+        $this->generator = $generator;
     }
 
 
-    // attempt auth by participation code
+
     public function login(Request $request) {
         $this->validate($request, [
             'identity' => 'required|string'
         ]);
+        if($request->has('try_code')) {
+            $res = $this->attemptCodeLogin($request);
+            if($res !== false) {
+                return $res;
+            }
+        }
+        if($request->has('try_password')) {
+            return $this->sendLoginPasswordResponse($request);
+        }
+        return $this->sendFailedCodeResponse($request);
+    }
+
+
+
+    private function attemptCodeLogin($request) {
         $code = $request->input('identity');
 
-        // attempt login
+        // attempt badge code login
         if($badge = $this->findBadge($code)) {
             if($badge->login_enabled) {
                 Auth::login($badge->user, $request->has('remember'));
@@ -44,11 +63,7 @@ class LoginWithCodeController extends Controller
             if($badge_data['user']['id'] && ($badge_user = \App\User::where('id', $badge_data['user']['id'])->first())) {
                 return $this->sendFailedCodeResponse($request);
             }
-            $client = $this->context->client();
-            if($client && $client->badge_autologin) {
-                return $this->authWithBadge($badge_data);
-            }
-            return redirect()->route('register');
+            return $this->authWithBadge($badge_data);
         }
 
         // attempt to use participation code
@@ -69,7 +84,7 @@ class LoginWithCodeController extends Controller
             ]));
             return redirect('/participation_code');
         }
-        return $this->sendLoginPasswordResponse($request);
+        return false;
     }
 
 
@@ -98,7 +113,7 @@ class LoginWithCodeController extends Controller
                 'email' => $user_data['email']
             ]));
         }
-        BadgeApi::update($badge_data['url'], $badge_data['code'], $user->id);
+        $this->context->badge()->update($badge_data['url'], $badge_data['code'], $user->id);
         Auth::login($user);
 
         return redirect($this->context->continueUrl('/account'));

@@ -26,7 +26,8 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Misc
                     <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      <li><a href="{{ route('admin.lti_configs.index') }}">LTI config</a></li>
+                        <li><a href="{{ route('admin.lti_configs.index') }}">LTI config</a></li>
+                        <li><a href="{{ route('admin.badge_apis.index') }}">Badge API</a></li>
                     </ul>
                   </li>
             </ul>
@@ -51,4 +52,16 @@
             </div>
         </div>
     @endif
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("form[role=delete]").submit(function(e) {
+                if(!confirm('Are you sure you want to delete this record?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        })
+    </script>
 @endsection

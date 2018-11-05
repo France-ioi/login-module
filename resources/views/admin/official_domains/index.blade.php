@@ -40,13 +40,4 @@
             @endforeach
         </tbody>
     </table>
-
-    <script type="text/javascript">
-        $("form[role=delete]").submit(function(e) {
-            if(!confirm('Are you sure you want to delete this domain?')) {
-                e.preventDefault();
-                return false;
-            }
-        });
-    </script>
 @endsection
