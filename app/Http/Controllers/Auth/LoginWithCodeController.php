@@ -31,6 +31,7 @@ class LoginWithCodeController extends Controller
         $this->validate($request, [
             'identity' => 'required|string'
         ]);
+
         if($request->has('try_code')) {
             $res = $this->attemptCodeLogin($request);
             if($res !== false) {
@@ -38,7 +39,12 @@ class LoginWithCodeController extends Controller
             }
         }
         if($request->has('try_password')) {
-            return $this->sendLoginPasswordResponse($request);
+            if(strpos($request->input('identity'), '@') !== false) {
+                return $this->sendLoginPasswordResponse($request);
+            }
+            if(User::where('login', $request->input('identity'))->first()) {
+                return $this->sendLoginPasswordResponse($request);
+            }
         }
         return $this->sendFailedCodeResponse($request);
     }
