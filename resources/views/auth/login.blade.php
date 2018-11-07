@@ -25,9 +25,9 @@
     <script type="text/javascript">
     // Auto-focus either login or password field
     $(function() {
-        if($('#login').val()) {
+        if($('#login').val() && $('#password').is(':visible')) {
             $('#password').focus();
-        } else {
+        } else if($('#login').is(':visible')) {
             $('#login').focus();
         }
     });

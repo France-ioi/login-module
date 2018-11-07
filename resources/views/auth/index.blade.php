@@ -114,6 +114,12 @@
         $('#login-form').on('hide.bs.collapse', function() {
             $('#login-caret').removeClass('glyphicon-triangle-top').addClass('glyphicon-triangle-bottom');
         });
+        $(function() {
+            // Auto-focus identity field if visible
+            if($('#identity').is(':visible')) {
+                $('#identity').focus();
+            }
+        });
     </script>
 
 @endsection
