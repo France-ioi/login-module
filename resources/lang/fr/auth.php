@@ -42,9 +42,8 @@ return [
 
     'emails_list_header' => "Sélectionner l'adresse mail",
 
-    'logout_header' => 'Déconnexion',
     'logout_hint' => 'Se déconnecter aussi de :',
-    'btn_logout' => 'Déconnexion',
+    'logout' => 'Déconnexion',
 
     'session_expired' => 'Votre session a expiré. Veuillez fermer cette fenêtre et vous reconnecter.'
 ];

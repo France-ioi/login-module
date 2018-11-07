@@ -13,42 +13,38 @@
                     @endif
                 </p>
             @endif
-            <div class="navbar-header pull-right">
-                <ul class="nav pull-left">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                            {{ config('app.locales')[app()->getLocale()] }}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            @foreach(config('app.locales') as $locale => $locale_name)
-                                @if($locale != app()->getLocale())
-                                    <li>
-                                        <a href="{{ route('set_locale', ['locale'=>$locale]) }}">
-                                            {{ $locale_name }}
-                                        </a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    </li>
-                </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                        {{ config('app.locales')[app()->getLocale()] }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @foreach(config('app.locales') as $locale => $locale_name)
+                            @if($locale != app()->getLocale())
+                                <li>
+                                    <a href="{{ route('set_locale', ['locale'=>$locale]) }}">
+                                        {{ $locale_name }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </li>
+                <li>
+                    <a href="/badges" className="">@lang('badges.header')</a>
+                </li>
                 @if(Auth::check())
-                    <ul class="nav pull-left">
-                        <li>
-                            <a href="/logout" className="">@lang('admin.logout')</a>
-                        </li>
-                    </ul>
-
-                @if(PlatformHelper::cancelUrl())
-                    <ul class="nav pull-left">
-                        <li>
-                            <a href="{{ PlatformHelper::cancelUrl() }}">@lang('ui.close')</a>
-                        </li>
-                        @endif
-                    </ul>
+                    <li>
+                        <a href="/logout" className="">@lang('auth.logout')</a>
+                    </li>
                 @endif
-            </div>
+                @if(PlatformHelper::cancelUrl())
+                    <li>
+                        <a href="{{ PlatformHelper::cancelUrl() }}">@lang('ui.close')</a>
+                    </li>
+                @endif
+            </ul>
         </div>
     </nav>
 @endsection

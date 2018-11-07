@@ -56,7 +56,7 @@ class UserDataGenerator {
     public function participationCode() {
         do {
             $code = $this->randomStr(10);
-        } while (Badge::where('code', $code)->where('url', '')->first());
+        } while (Badge::where('code', $code)->where('url', '')->whereNull('badge_api_id')->first());
         return $code;
     }
 

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Email;
 use App\LoginModule\Badges;
-use App\LoginModule\Platform\BadgeApi;
+use App\LoginModule\Platform\BadgeRequest;
 use Illuminate\Support\Facades\Password;
 use Mail;
 use Spatie\Permission\Models\Role;

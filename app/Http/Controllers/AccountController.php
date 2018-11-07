@@ -11,7 +11,7 @@ class AccountController extends Controller
 
     public function index(Request $request, PlatformContext $context) {
         return view('account.index', [
-            'need_badge_verification' => (bool) $context->badge()->url()
+            'need_badge_verification' => (bool) $context->badge()->api()
         ]);
     }
 

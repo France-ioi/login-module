@@ -33,7 +33,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="{{ url('/logout') }}">@lang('admin.logout')</a>
+                    <a href="{{ url('/logout') }}">@lang('auth.logout')</a>
                 </li>
             </ul>
         </div>

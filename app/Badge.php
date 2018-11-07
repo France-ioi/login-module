@@ -10,6 +10,7 @@ class Badge extends Model
     protected $fillable = [
         'user_id',
         'url',
+        'badge_api_id',
         'code',
         'do_not_possess',
         'login_enabled',
@@ -35,6 +36,19 @@ class Badge extends Model
 
     public function user() {
         return $this->belongsTo('App\User');
+    }
+
+
+    public function badgeApi() {
+        return $this->belongsTo('App\BadgeApi');
+    }
+
+
+    public function getUrlAttribute() {
+        if($this->badge_api_id) {
+            return $this->badgeApi->url;
+        }
+        return $this->url;
     }
 
 }

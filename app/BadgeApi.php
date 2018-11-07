@@ -11,4 +11,9 @@ class BadgeApi extends Model
         'url',
         'auth_enabled'
     ];
+
+    protected $visible = [
+        'id',
+        'url'
+    ];
 }

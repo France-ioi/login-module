@@ -7,7 +7,7 @@ use Illuminate\Support\MessageBag;
 use Auth;
 use Session;
 use App\LoginModule\Platform\PlatformContext;
-use App\LoginModule\Platform\BadgeApi;
+use App\LoginModule\Platform\BadgeRequest;
 use App\LoginModule\UserDataGenerator;
 use App\User;
 use App\Email;
@@ -47,7 +47,7 @@ class BadgeController extends Controller
                     && ($badge_user = \App\User::where('id', $badge_data['user']['id'])->first())) {
                 return $this->failedVerificationResponse($code, trans('badge.code_in_use', ['username' => $badge_user->login]));
             }
-            if($badge = Auth::user()->badges()->where('url', $badge_data['url'])->first()) {
+            if($badge = Auth::user()->badges()->where('badge_api_id', $badge_data['badge_api_id'])->first()) {
                 $badge->do_not_possess = false;
                 $badge->code = $badge_data['code'];
                 $badge->data = $badge_data['user']['data'];
@@ -55,12 +55,16 @@ class BadgeController extends Controller
             } else {
                 $badge = new Badge([
                     'code' => $badge_data['code'],
-                    'url' => $badge_data['url'],
+                    'url' => '',
+                    'badge_api_id' => $badge_data['badge_api_id'],
                     'data' => $badge_data['user']['data']
                 ]);
                 Auth::user()->badges()->save($badge);
             }
-            BadgeApi::update($badge->url, $badge->code, $badge->user_id);
+            if($badge->badge_api_id) {
+                BadgeRequest::update($badge->badgeApi->url, $badge->code, $badge->user_id);
+            }
+
             $first_name_different = Auth::user()->first_name != $badge_data['user']['first_name'];
             $last_name_different = Auth::user()->last_name != $badge_data['user']['last_name'];
             if($first_name_different || $last_name_different) {
@@ -83,8 +87,8 @@ class BadgeController extends Controller
 
 
     public function confirmDifference(Request $request) {
-        $url = $this->context->badge()->url();
-        if($badge = Auth::user()->badges()->where('url', $url)->first()) {
+        $api = $this->context->badge()->api();
+        if($api && ($badge = Auth::user()->badges()->where('badge_api_id', $api->id)->first())) {
             $badge->comments = $request->get('comments');
             $badge->override_profile = $request->has('override_profile');
             $badge->save();
@@ -109,11 +113,12 @@ class BadgeController extends Controller
 
 
     public function doNotHave() {
-        $url = $this->context->badge()->url();
-        if(!$badge = Auth::user()->badges()->where('url', $url)->first()) {
+        $api = $this->context->badge()->api();
+        if($api && !($badge = Auth::user()->badges()->where('badge_api_id', $api->id)->first())) {
             Auth::user()->badges()->save(new Badge([
                 'code' => null,
-                'url' => $url,
+                'url' => '',
+                'badge_api_id' => $api->id,
                 'do_not_possess' => true
             ]));
         }

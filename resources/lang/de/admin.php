@@ -5,7 +5,5 @@ return [
     'users' => 'Benutzer',
     'clients' => 'OAuth-Clients',
     'official_domains' => 'Offizielle Domains',
-    'origin_instances' => 'LM-Instanzen',
-
-    'logout' => 'Logout',
+    'origin_instances' => 'LM-Instanzen'
 ];

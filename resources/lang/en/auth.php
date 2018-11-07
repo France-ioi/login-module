@@ -42,9 +42,8 @@ return [
 
     'emails_list_header' => 'Select Email address',
 
-    'logout_header' => 'Logout',
     'logout_hint' => 'Also logout from:',
-    'btn_logout' => 'Logout',
+    'logout' => 'Logout',
 
     'session_expired' => 'Your session expired. Please close this window and log in again.',
 

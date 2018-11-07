@@ -16,7 +16,12 @@ class Badge {
 
 
     public function url() {
-        return $this->client && $this->client->badge_api_id ? $this->client->badgeApi->url : null;
+        return $this->api() ? $this->api()->url : null;
+    }
+
+
+    public function api() {
+        return $this->client && $this->client->badge_api_id ? $this->client->badgeApi : null;
     }
 
 
@@ -26,21 +31,22 @@ class Badge {
 
 
     public function valid() {
-        $url = $this->url();
-        if(!$url || !$this->required()) {
+        $api = $this->api();
+        if(!$api || !$this->required()) {
             return true;
         }
-        $badge = $this->user->badges()->where('url', $url)->first();
+        $badge = $this->user->badges()->where('badge_api_id', $api->id)->first();
         return (bool) $badge;// && $badge->do_not_possess;
     }
 
 
     public function verify($code) {
-        if($url = $this->url()) {
-            if($user = BadgeApi::verify($url, $code)) {
+        if($api = $this->api()) {
+            if($user = BadgeRequest::verify($api->url, $code)) {
                 return [
                     'user' => $user,
                     'code' => $code,
+                    'badge_api_id' => $api->id,
                     'url' => $url
                 ];
             }
@@ -65,7 +71,7 @@ class Badge {
 
     public function update($code, $user_id) {
         if($url = $this->url()) {
-            BadgeApi::update($url, $code, $user_id);
+            BadgeRequest::update($url, $code, $user_id);
         }
     }
 

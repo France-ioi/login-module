@@ -147,7 +147,9 @@ class Group
         $src_user->badges
             ->reject(function($src_badge) use ($dst_user) {
                 $exist = $dst_user->badges->search(function($dst_badge) {
-                    return $src_badge->url && $dst_badge->url === $src_badge->url;
+                    $same_url = $src_badge->url && $dst_badge->url === $src_badge->url;
+                    $same_api_id = $src_badge->badge_api_id && $dst_badge->badge_api_id === $src_badge->badge_api_id;
+                    return $same_url || $same_api_id;
                 });
                 if($exist) return true;
             })

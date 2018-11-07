@@ -19,7 +19,7 @@ class AccountController extends Controller
     public function show(Request $request) {
         $client_id = $request->user()->token()->client_id;
         $res = $request->user()->toArray();
-        $res['badges'] = $request->user()->badges()->where('do_not_possess', false)->where('url', '<>', '')->get();
+        $res['badges'] = $this->getBadges($request->user());
         $res['client_id'] = $client_id;
         $platform_group = $request->user()->platformGroups()->where('client_id', $client_id)->first();
         if($platform_group) {
@@ -32,5 +32,14 @@ class AccountController extends Controller
     }
 
 
+    private function getBadges($user) {
+        return $user->badges()
+            ->where('do_not_possess', false)
+            ->where(function($q) {
+                $q->whereNotNull('badge_api_id')->orWhere('url', '<>', '');
+            })
+            ->with('badgeApi')
+            ->get();
+    }
 
 }

@@ -41,9 +41,8 @@ return [
 
     'emails_list_header' => 'E-Mail-Adresse auswählen',
 
-    'logout_header' => 'Logout',
     'logout_hint' => 'Auch ausloggen von:',
-    'btn_logout' => 'Logout',
+    'logout' => 'Logout',
 
     'session_expired' => 'Deine Sitzung ist abgelaufen. Bitte Fenster schließen und wieder einloggen.'
 ];

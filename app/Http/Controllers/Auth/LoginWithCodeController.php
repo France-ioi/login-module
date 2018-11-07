@@ -109,7 +109,8 @@ class LoginWithCodeController extends Controller
         $user = User::create($user_data);
         $user->badges()->save(new Badge([
             'code' => $badge_data['code'],
-            'url' => $badge_data['url'],
+            'url' => '',//$badge_data['url'],
+            'badge_api_id' => $badge_data['badge_api_id'],
             'data' => $badge_data['user']['data']
         ]));
         if($user_data['email']) {

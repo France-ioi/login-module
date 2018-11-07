@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-use App\LoginModule\Platform\BadgeApi;
+use App\LoginModule\Platform\BadgeRequest;
 use App\LoginModule\Profile\Verification\VerifiableUser;
 use Carbon\Carbon;
 use App\LoginModule\Graduation;
@@ -106,11 +106,11 @@ class User extends Authenticatable
         static::deleting(function($model) {
             $badges = $model->badges()->where('do_not_possess', false)->get();
             foreach($badges as $badge) {
-                if(!BadgeApi::remove($badge->url, $badge->code)) {
-                    throw new \Exception('Error occured during deleting badge '.$badge->url);
+                if(!$badge->badge_api_id) continue;
+                if(!BadgeRequest::remove($badge->badgeApi->url, $badge->code)) {
+                    throw new \Exception('Error occured during deleting badge '.$badge->badgeApi->url);
                 }
             }
-
             //tokens
         });
     }
