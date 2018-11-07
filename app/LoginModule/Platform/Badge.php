@@ -47,7 +47,7 @@ class Badge {
                     'user' => $user,
                     'code' => $code,
                     'badge_api_id' => $api->id,
-                    'url' => $url
+                    'url' => $api->url
                 ];
             }
         }

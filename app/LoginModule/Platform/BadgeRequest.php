@@ -4,7 +4,7 @@ namespace App\LoginModule\Platform;
 
 use App\Badge;
 
-class BadgeApi {
+class BadgeRequest {
 
     static function callableUrl($url) {
         return strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0;

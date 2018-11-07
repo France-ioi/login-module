@@ -14,6 +14,4 @@
             @endif
         </div>
     </div>
-
-    <a class="btn btn-default" href="/account">@lang('ui.cancel')</a>
 @endsection
