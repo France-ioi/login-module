@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PlatformAPI;
 use Illuminate\Http\Request;
 use App\LoginModule\AccountsManager;
 use Illuminate\Support\Facades\Validator;
+use App\Badge;
 
 class AccountsManagerController extends PlatformAPIController
 {
@@ -137,9 +138,12 @@ class AccountsManagerController extends PlatformAPIController
             return $this->makeResponse($res, $request->get('client')->secret);
         }
 
-        $data = Badges::where('origin_client_id', $request->get('client')->id)
+
+        $data = Badge::where('origin_client_id', $request->get('client')->id)
             ->whereIn('user_id', $request->get('user_ids'))
-            ->get();
+            ->where('login_enabled', 1)
+            ->get()
+            ->pluck('code', 'user_id');
         $res = [
             'success' => true,
             'data' => $data
