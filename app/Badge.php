@@ -15,7 +15,8 @@ class Badge extends Model
         'do_not_possess',
         'login_enabled',
         'data',
-        'comments'
+        'comments',
+        'origin_client_id'
     ];
 
     protected $visible = [

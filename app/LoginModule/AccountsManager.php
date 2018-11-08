@@ -54,6 +54,7 @@ class AccountsManager
                 'url' => '',
                 'code' => $data['participation_code'],
                 'login_enabled' => true,
+                'origin_client_id' => $params['client_id'],
                 'data' => [
                     // save for future?
                     'type' => 'participation_code',

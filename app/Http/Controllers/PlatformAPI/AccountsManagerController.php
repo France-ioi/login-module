@@ -116,4 +116,35 @@ class AccountsManagerController extends PlatformAPIController
         return $this->makeResponse($res, $request->get('client')->secret);
     }
 
+
+
+
+    private function validatorParticipationCodes(array $data) {
+        return Validator::make($data, [
+            'user_ids' => 'required',
+            'user_ids.*' => 'sometimes|integer'
+        ]);
+    }
+
+
+    public function participationCodes(Request $request) {
+        $validator = $this->validatorParticipationCodes($request->all());
+        if($validator->fails()) {
+            $res = [
+                'success' => false,
+                'error' => 'Wrong params'
+            ];
+            return $this->makeResponse($res, $request->get('client')->secret);
+        }
+
+        $data = Badges::where('origin_client_id', $request->get('client')->id)
+            ->whereIn('user_id', $request->get('user_ids'))
+            ->get();
+        $res = [
+            'success' => true,
+            'data' => $data
+        ];
+        return $this->makeResponse($res, $request->get('client')->secret);
+    }
+
 }

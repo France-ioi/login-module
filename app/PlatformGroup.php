@@ -12,4 +12,11 @@ class PlatformGroup extends Model
         'client_id'
     ];
 
+
+    protected $visible = [
+        'user_id',
+        'group_code',
+        'participation_code'
+    ];
+
 }
