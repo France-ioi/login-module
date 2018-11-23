@@ -49,7 +49,7 @@ class Badge extends Model
         if($this->badge_api_id) {
             return $this->badgeApi->url;
         }
-        return $this->url;
+        return $this->getOriginal('url');
     }
 
 }
