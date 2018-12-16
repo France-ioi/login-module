@@ -42,6 +42,7 @@
                             @lang('ui.close')
                         </a>
                     @endif
+                </div>
             {!! BootForm::close() !!}
         </div>
     </div>

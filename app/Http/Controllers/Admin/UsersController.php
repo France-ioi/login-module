@@ -1,17 +1,19 @@
 <?php
-
+//TODO: split code and move to ./users
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Email;
+use App\Client;
 use App\LoginModule\Badges;
 use App\LoginModule\Platform\BadgeRequest;
 use Illuminate\Support\Facades\Password;
 use Mail;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+
 
 class UsersController extends Controller
 {
@@ -126,5 +128,6 @@ class UsersController extends Controller
             'user' => User::findOrFail($id),
         ]);
     }
+
 
 }

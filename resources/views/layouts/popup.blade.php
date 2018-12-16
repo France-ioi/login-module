@@ -34,6 +34,11 @@
                 <li>
                     <a href="/badges" className="">@lang('badges.header')</a>
                 </li>
+                @can('admin.user_helper')
+                    <li>
+                        <a href="{{ url('/admin/user_helper') }}">User helper</a>
+                    </li>
+                @endcan
                 @if(Auth::check())
                     <li>
                         <a href="/logout" className="">@lang('auth.logout')</a>

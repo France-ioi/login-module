@@ -62,6 +62,9 @@
                                 <li>
                                     <a href="{{ url('/admin/users/'.$user->id.'/permissions') }}" title="Change user permissions">Permissions</a>
                                 </li>
+                                <li>
+                                    <a href="{{ url('/admin/users/'.$user->id.'/user_helper') }}" title="User helper settings">User helper</a>
+                                </li>
                             </ul>
                         </div>
                         <form action="{{ url('/admin/users/'.$user->id) }}" method="POST" style="display: inline" role="delete">

@@ -229,4 +229,22 @@ class User extends Authenticatable
         return $this->hasMany('App\LtiConnection');
     }
 
+
+
+    public function userHelper() {
+        return $this->hasOne('App\UserHelper');
+    }
+
+    public function userHelperActions() {
+        return $this->hasMany('App\UserHelperAction');
+    }
+
+    public function userHelperSearches() {
+        return $this->hasMany('App\UserHelperSearch');
+    }
+
+    public function userHelperClients() {
+        return $this->belongsToMany('App\Client', 'user_helper_oauth_client', 'user_id', 'client_id');
+    }
+
 }

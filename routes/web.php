@@ -98,6 +98,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
         Route::get('/users/{id}/emails', 'UsersController@showEmails');
         Route::post('/users/create_reset_link', 'UsersController@createResetLink');
         Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
+        Route::get('/users/{id}/user_helper', 'Users\UserHelperController@show');
+        Route::post('/users/{id}/user_helper', 'Users\UserHelperController@store');
         Route::delete('/users/{id}', 'UsersController@delete');
     });
     Route::group(['middleware' => 'permission:admin.clients.manager'], function() {
@@ -116,8 +118,24 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
         Route::get('/verifications/edit', 'VerificationsController@edit');
         Route::post('/verifications/update/{id}', 'VerificationsController@update');
     });
+
+    Route::group(['middleware' => 'permission:admin.user_helper'], function() {
+        Route::get('user_helper', 'UserHelper\SearchController@index');
+        Route::get('user_helper/{id}/password', 'UserHelper\PasswordController@index');
+        Route::post('user_helper/{id}/password', 'UserHelper\PasswordController@update');
+        Route::get('user_helper/{id}/profile', 'UserHelper\ProfileController@index');
+        Route::post('user_helper/{id}/profile', 'UserHelper\ProfileController@update');
+    });
+
     Route::group(['middleware' => 'permission:admin.misc'], function() {
         Route::resource('lti_configs', 'LtiConfigsController');
         Route::resource('badge_apis', 'BadgeApisController');
+        Route::get('user_helper_log', 'UserHelperLogController@index');
+        Route::get('user_helper_log/{id}/details', 'UserHelperLogController@details');
+    });
+
+
+    Route::group(['middleware' => 'permission:admin.user_helper'], function() {
+
     });
 });

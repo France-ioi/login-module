@@ -18,6 +18,11 @@
                     </a>
                 </li>
                 <li role="presentation">
+                    <a href="#oauth" aria-controls="oauth" role="tab" data-toggle="tab">
+                        OAuth
+                    </a>
+                </li>
+                <li role="presentation">
                     <a href="#user_attributes" aria-controls="user_attributes" role="tab" data-toggle="tab">
                         User attributes
                     </a>
@@ -34,13 +39,16 @@
                 </li>
                 <li role="presentation">
                     <a href="#auth" aria-controls="auth" role="tab" data-toggle="tab">
-                        Auth
+                        Auth methods
                     </a>
                 </li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="general">
                     @include('admin.clients.sections.general')
+                </div>
+                <div role="tabpanel" class="tab-pane" id="oauth">
+                    @include('admin.clients.sections.oauth')
                 </div>
                 <div role="tabpanel" class="tab-pane" id="user_attributes">
                     @include('admin.clients.sections.user_attributes')

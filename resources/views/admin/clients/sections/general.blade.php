@@ -1,13 +1,11 @@
 {!! BootForm::text('name', 'Name') !!}
-{!! Bootform::hidden('revoked', 0) !!}
-{!! BootForm::checkbox('revoked', 'Revoked') !!}
-{!! BootForm::text('secret', 'Secret') !!}
-{!! BootForm::text('redirect', 'Redirect') !!}
 {!! BootForm::select('badge_api_id', 'Badge API', ['' => '...'] + $badge_apis) !!}
 {!! Bootform::hidden('badge_required', 0) !!}
-{!! BootForm::checkbox('badge_required', 'Badge code required.') !!}
+{!! BootForm::checkbox('badge_required', 'Badge code required') !!}
 {!! BootForm::text('api_url', 'Access code verification service url') !!}
 {!! BootForm::text('email', 'Email') !!}
+{!! Bootform::hidden('user_helper_search_exclude', 0) !!}
+{!! BootForm::checkbox('user_helper_search_exclude', 'Exclude from user search if not explicitly allowed') !!}
 
 
 <script type="text/javascript">

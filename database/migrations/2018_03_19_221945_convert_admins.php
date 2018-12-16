@@ -13,7 +13,7 @@ class ConvertAdmins extends Migration
      */
     public function up()
     {
-        \Artisan::call('db:seed', array('--class' => 'RolesAndPermissionsSeeder'));
+        \Artisan::call('db:seed', array('--class' => 'RolesAndPermissionsSeeder', '--force' => true));
 
         App\User::where('admin', 1)->get()->each(function($user) {
             if($user->hasRole('admin')) return;
