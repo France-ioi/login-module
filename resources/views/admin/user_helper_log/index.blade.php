@@ -32,9 +32,9 @@
             <tbody>
                 @foreach($items as $item)
                     <tr>
-                        <td>{{ $client->created_at }}</td>
-                        <td>{{ $client->user_id }}</td>
-                        <td>{{ $client->target_user_id }}</td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->user_id }}</td>
+                        <td>{{ $item->target_user_id }}</td>
                         <td>
                             <a href="{{ url('admin/user_helper_log/'.$item->id.'/details') }}" class="btn btn-xs btn-primary">Details</a>
                         </td>
