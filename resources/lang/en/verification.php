@@ -20,7 +20,8 @@ return [
         'id_upload' => 'Uploading a picture of user holding their ID and a code',
         'classroom_upload' => 'Uploading a picture of teacher in his classroom with a few students or colleagues, and holding a code',
         'peer' => 'Having a verified colleague confirm their status',
-        'imported_data' => 'Imported data'
+        'imported_data' => 'Imported data',
+        'user_helper' => 'User helper'
     ],
 
 

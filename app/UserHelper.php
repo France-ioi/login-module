@@ -10,15 +10,18 @@ class UserHelper extends Model
         'user_id',
         'searches_amount',
         'changes_amount',
-        'user_attributes'
+        'user_attributes',
+        'verifiable_attributes'
     ];
 
     protected $casts = [
-        'user_attributes' => 'array'
+        'user_attributes' => 'array',
+        'verifiable_attributes' => 'array'
     ];
 
     protected $attributes = [
-        'user_attributes' => '[]'
+        'user_attributes' => '[]',
+        'verifiable_attributes' => '[]'
     ];
 
 

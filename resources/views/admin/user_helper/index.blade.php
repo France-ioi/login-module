@@ -32,6 +32,7 @@
                         <td>
                             <a href="{{ url('admin/user_helper/'.$user->id.'/profile') }}" class="btn btn-xs btn-primary">Edit</a>
                             <a href="{{ url('admin/user_helper/'.$user->id.'/password') }}" class="btn btn-xs btn-primary">Password</a>
+                            <a href="{{ url('admin/user_helper/'.$user->id.'/verification') }}" class="btn btn-xs btn-primary">Verification</a>
                             <form action="{{ url('admin/user_helper/'.$user->id.'/login') }}" method="POST" style="display: inline" role="auth">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-xs btn-success" title="Authenticate as this user">Auth</button>

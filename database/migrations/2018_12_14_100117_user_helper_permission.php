@@ -16,12 +16,13 @@ class UserHelperPermission extends Migration
     public function up()
     {
         app()['cache']->forget('spatie.permission.cache');
-        Permission::create(['name' => 'admin.user_helper']);
-
-        // create roles and assign created permissions
-        $role = Role::where('name', 'admin')->first();
-        if($role) {
-            $role->givePermissionTo('admin.user_helper');
+        if(!Permission::where('name', 'admin.user_helper')->first()) {
+            Permission::create(['name' => 'admin.user_helper']);
+            // create roles and assign created permissions
+            $role = Role::where('name', 'admin')->first();
+            if($role) {
+                $role->givePermissionTo('admin.user_helper');
+            }
         }
     }
 

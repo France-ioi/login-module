@@ -20,7 +20,8 @@ class CreateUserHelpersTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('searches_amount');
             $table->integer('changes_amount');
-            $table->text('user_attributes')->nullable();
+            $table->text('user_attributes');
+            $table->text('verifiable_attributes');
         });
     }
 

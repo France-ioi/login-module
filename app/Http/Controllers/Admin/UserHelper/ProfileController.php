@@ -13,9 +13,13 @@ class ProfileController extends Controller
 {
 
     public function index($id, Request $request) {
+        $user = User::findOrFail($id);
         $user_helper = $request->user()->userHelper;
+        if(!$request->user()->userHelperClients->pluck('id')->search($user->creator_client_id)) {
+            abort(403);
+        }
         return view('admin.user_helper.profile', [
-            'user' => User::findOrFail($id),
+            'user' => $user,
             'user_helper' => $user_helper
         ]);
     }
@@ -26,6 +30,9 @@ class ProfileController extends Controller
             return view('admin.user_helper.errors.change_limit');
         }
         $user = User::findOrFail($id);
+        if(!$request->user()->userHelperClients->pluck('id')->search($user->creator_client_id)) {
+            abort(403);
+        }
 
         $validator = \Validator::make(
             $request->all(),

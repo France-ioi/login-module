@@ -20,7 +20,7 @@ class CreateUserHelperActionsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('target_user_id')->unsigned()->nullable();
             $table->foreign('target_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('type', ['search', 'change', 'password']);
+            $table->enum('type', ['search', 'change', 'password', 'verification']);
             $table->string('hash', 32);
             $table->index(['user_id', 'created_at']);
             $table->text('details');

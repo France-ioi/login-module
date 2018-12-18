@@ -9,6 +9,7 @@ use App\UserHelper;
 use App\Client;
 use App\LoginModule\Profile\SchemaBuilder;
 use App\Http\Requests\Admin\StoreUserHelperRequest;
+use App\LoginModule\Profile\Verification\Verification;
 
 class UserHelperController extends Controller
 {
@@ -27,7 +28,8 @@ class UserHelperController extends Controller
             'user_helper' => $user_helper,
             'clients' => Client::get(),
             'user_helper_clients' => $user->userHelperClients->pluck('id', 'id'),
-            'user_attributes' => $user_attributes
+            'user_attributes' => $user_attributes,
+            'all_verifiable_attributes' => Verification::ATTRIBUTES
         ]);
 
     }
