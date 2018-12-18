@@ -10,6 +10,7 @@ use App\User;
 class SearchController extends Controller
 {
 
+
     public function index(Request $request) {
         if(!$this->searchAvailable($request)) {
             return view('admin.user_helper.errors.search_limit');
@@ -22,15 +23,16 @@ class SearchController extends Controller
 
     private function searchAvailable($request) {
         $user = $request->user();
-        if($user->hasRole('admin') || !$request->has('keywords')) {
+        if($user->hasRole('admin') || !$request->has('keyword')) {
             return true;
-        }
-        if(!$request->user()->userHelper) {
-            return false;
         }
         $hash = $this->makeHash($request);
         $date = \Carbon\Carbon::today()->subHours(24);
-        $amount = $user->userHelperSearches->where('hash', '<>', $hash)->where('created_at', '>', $date)->count();
+        $search_exists = $user->userHelperSearches->where('created_at', '>', $date)->where('hash', $hash)->first();
+        if($search_exists) {
+            return true;
+        }
+        $amount = $user->userHelperSearches->where('created_at', '>', $date)->count();
         $res = $amount < $request->user()->userHelper->searches_amount;
         if($res) {
             $search = new UserHelperSearch([
@@ -53,14 +55,17 @@ class SearchController extends Controller
         if(!$request->has('keyword') || $k == '') {
             return null;
         }
+        $clients = $request->user()->userHelperClients->pluck('id');
         $k = '%'.$k.'%';
-        return User::whereHas('emails', function($query) use ($k) {
+        return User::whereIn('creator_client_id', $clients)
+            ->whereHas('emails', function($query) use ($k) {
                 $query->where('email', 'LIKE', $k);
             })
             ->orWhere('login', 'LIKE', $k)
             ->orWhere('first_name', 'LIKE', $k)
             ->orWhere('last_name', 'LIKE', $k)
             ->limit(5)
+            ->orderBy('last_login', 'desc')
             ->get();
     }
 

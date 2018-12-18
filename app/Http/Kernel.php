@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'merging_accounts' => \App\Http\Middleware\MergingAccounts::class,
         'platform_api' => \App\Http\Middleware\PlatformAPI::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
-        'permission' => \App\Http\Middleware\PermissionMiddleware::class
+        'permission' => \App\Http\Middleware\PermissionMiddleware::class,
+        'user_helper' => \App\Http\Middleware\UserHelperMiddleware::class
     ];
 }

@@ -28,10 +28,14 @@
                     <tr>
                         <td>{{ $user->login }}</td>
                         <td>{{ $user->first_name.' '.$user->last_name }}</td>
-                        <td>todo</td>
+                        <td>{{ $user->last_login }}</td>
                         <td>
                             <a href="{{ url('admin/user_helper/'.$user->id.'/profile') }}" class="btn btn-xs btn-primary">Edit</a>
                             <a href="{{ url('admin/user_helper/'.$user->id.'/password') }}" class="btn btn-xs btn-primary">Password</a>
+                            <form action="{{ url('admin/user_helper/'.$user->id.'/login') }}" method="POST" style="display: inline" role="auth">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-xs btn-success" title="Authenticate as this user">Auth</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -40,4 +44,15 @@
     @elseif(request()->has('keyword'))
         <div class="alert alert-warning">User not found.</div>
     @endif
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("form[role=auth]").submit(function(e) {
+                if(!confirm('Authenticate as this user?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        })
+    </script>
 @endsection
