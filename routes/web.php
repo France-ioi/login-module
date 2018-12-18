@@ -125,6 +125,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
         Route::post('user_helper/{id}/password', 'UserHelper\PasswordController@update');
         Route::get('user_helper/{id}/profile', 'UserHelper\ProfileController@index');
         Route::post('user_helper/{id}/profile', 'UserHelper\ProfileController@update');
+        Route::post('user_helper/{id}/login', 'UserHelper\LoginController@login');
     });
 
     Route::group(['middleware' => 'permission:admin.misc'], function() {

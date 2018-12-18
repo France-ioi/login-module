@@ -58,12 +58,14 @@ class SearchController extends Controller
         $clients = $request->user()->userHelperClients->pluck('id');
         $k = '%'.$k.'%';
         return User::whereIn('creator_client_id', $clients)
-            ->whereHas('emails', function($query) use ($k) {
-                $query->where('email', 'LIKE', $k);
+            ->where(function($q) use ($k) {
+                return $q->whereHas('emails', function($query) use ($k) {
+                    $query->where('email', 'LIKE', $k);
+                })
+                ->orWhere('login', 'LIKE', $k)
+                ->orWhere('first_name', 'LIKE', $k)
+                ->orWhere('last_name', 'LIKE', $k);
             })
-            ->orWhere('login', 'LIKE', $k)
-            ->orWhere('first_name', 'LIKE', $k)
-            ->orWhere('last_name', 'LIKE', $k)
             ->limit(5)
             ->orderBy('last_login', 'desc')
             ->get();
