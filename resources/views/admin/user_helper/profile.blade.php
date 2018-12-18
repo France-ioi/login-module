@@ -2,8 +2,9 @@
 
 @section('content')
     @include('admin.users.user_info', $user)
-    @include('admin.user_helper.user_attributes')
-    {!! BootForm::open(['/admin/user_helper/'.$user->id.'/password', 'model' => $user ]) !!}
+
+    {!! BootForm::open(['/admin/user_helper/'.$user->id.'/password', 'model' => $user, 'method' => 'POST' ]) !!}
+        @include('admin.user_helper.user_attributes')
         @foreach($user_helper->user_attributes as $attr => $permission)
             @if($permission == 'write')
                 @stack($attr)
@@ -20,4 +21,16 @@
         @endforeach
         {!! BootForm::submit('Save') !!}
     {!! BootForm::close() !!}
+
+    <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#birthday').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: new Date(),
+                autoclose: true,
+                language: '{!! app()->getLocale() !!}'
+            });
+        })
+    </script>
 @endsection

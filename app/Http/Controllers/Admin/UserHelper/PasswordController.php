@@ -23,9 +23,8 @@ class PasswordController extends Controller
         ]);
         $request->user()->userHelperActions()->save(new UserHelperAction([
             'target_user_id' => $id,
-            'details' => [
-                'action' => 'change_password'
-            ]
+            'type' => 'password',
+            'hash' => md5($id.$request->input('password'))
         ]));
         return redirect('/admin/user_helper')->with('status', 'Password changed');
     }

@@ -26,6 +26,7 @@
                     <th>Date</th>
                     <th>User ID</th>
                     <th>Target user ID</th>
+                    <th>Type</th>
                     <th></th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                         <td>{{ $item->created_at }}</td>
                         <td>{{ $item->user_id }}</td>
                         <td>{{ $item->target_user_id }}</td>
+                        <td>{{ $item->type }}</td>
                         <td>
                             <a href="{{ url('admin/user_helper_log/'.$item->id.'/details') }}" class="btn btn-xs btn-primary">Details</a>
                         </td>

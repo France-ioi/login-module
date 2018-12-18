@@ -9,6 +9,8 @@ class UserHelperAction extends Model
 
     protected $fillable = [
         'target_user_id',
+        'type',
+        'hash',
         'details'
     ];
 

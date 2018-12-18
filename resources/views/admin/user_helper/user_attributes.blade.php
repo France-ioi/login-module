@@ -23,6 +23,10 @@
     {!! BootForm::select('language', trans('profile.language'), config('app.locales')) !!}
 @endpush
 
+@push('nationality')
+    {!! BootForm::select('nationality', trans('profile.nationality'), trans('countries')) !!}
+@endpush
+
 @push('country_code')
     {!! BootForm::select('country_code', trans('profile.country_code'), ['' => '...'] + trans('countries')) !!}
 @endpush
@@ -68,7 +72,7 @@
 @endpush
 
 @push('birthday')
-    {!! BootForm::date('birthday', trans('profile.birthday')) !!}
+    {!! BootForm::text('birthday', trans('profile.birthday')) !!}
 @endpush
 
 @push('presentation')

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\UserHelper;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\UserHelperSearch;
+use App\UserHelperAction;
 use App\User;
 
 class SearchController extends Controller
@@ -27,25 +27,33 @@ class SearchController extends Controller
             return true;
         }
         $hash = $this->makeHash($request);
-        $date = \Carbon\Carbon::today()->subHours(config('user_helper.limits_time_interval'));
-        $search_exists = $user->userHelperSearches->where('created_at', '>', $date)->where('hash', $hash)->first();
+        $date = \Carbon\Carbon::now()->subHours(config('user_helper.limits_time_interval'));
+        $search_exists = $user->userHelperActions
+            ->where('created_at', '>', $date)
+            ->where('type', 'search')
+            ->where('hash', $hash)->first();
         if($search_exists) {
             return true;
         }
-        $amount = $user->userHelperSearches->where('created_at', '>', $date)->count();
+        $amount = $user->userHelperActions
+            ->where('created_at', '>', $date)
+            ->where('type', 'search')
+            ->count();
         $res = $amount < $request->user()->userHelper->searches_amount;
         if($res) {
-            $search = new UserHelperSearch([
-                'hash' => $hash
+            $search = new UserHelperAction([
+                'hash' => $hash,
+                'type' => 'search',
+                'details' => ['keyword' => $request->get('keyword')]
             ]);
-            $user->userHelperSearches()->save($search);
+            $user->userHelperActions()->save($search);
         }
         return $res;
     }
 
 
     private function makeHash($request) {
-        return sha1($request->get('keyword'));
+        return md5($request->get('keyword'));
     }
 
 
