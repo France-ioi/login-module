@@ -27,7 +27,7 @@ class SearchController extends Controller
             return true;
         }
         $hash = $this->makeHash($request);
-        $date = \Carbon\Carbon::today()->subHours(24);
+        $date = \Carbon\Carbon::today()->subHours(config('user_helper.limits_time_interval'));
         $search_exists = $user->userHelperSearches->where('created_at', '>', $date)->where('hash', $hash)->first();
         if($search_exists) {
             return true;
@@ -66,7 +66,7 @@ class SearchController extends Controller
                 ->orWhere('first_name', 'LIKE', $k)
                 ->orWhere('last_name', 'LIKE', $k);
             })
-            ->limit(5)
+            ->limit(config('user_helper.search_results_length'))
             ->orderBy('last_login', 'desc')
             ->get();
     }
