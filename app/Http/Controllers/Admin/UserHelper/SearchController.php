@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin\UserHelper;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\UserHelperAction;
 use App\User;
+use App\Client;
 
-class SearchController extends Controller
+class SearchController extends UserHelperController
 {
 
 
@@ -63,12 +63,19 @@ class SearchController extends Controller
         if(!$request->has('keyword') || $k == '') {
             return null;
         }
-        $clients = $request->user()->userHelperClients->pluck('id');
+        $alowed_clients = $request->user()->userHelperClients->pluck('id');
+        $restricted_clients = Client::where('user_helper_search_exclude', true)->get()->pluck('id');
         $k = '%'.$k.'%';
-        return User::whereIn('creator_client_id', $clients)
+        return User::query()
+            ->whereHas('accessTokenCounters', function ($q) use ($alowed_clients) {
+                $q->whereIn('client_id', $alowed_clients);
+            })
+            ->whereDoesntHave('accessTokenCounters', function ($q) use ($restricted_clients) {
+                $q->whereIn('client_id', $restricted_clients);
+            })
             ->where(function($q) use ($k) {
-                return $q->whereHas('emails', function($query) use ($k) {
-                    $query->where('email', 'LIKE', $k);
+                return $q->whereHas('emails', function($q) use ($k) {
+                    $q->where('email', 'LIKE', $k);
                 })
                 ->orWhere('login', 'LIKE', $k)
                 ->orWhere('first_name', 'LIKE', $k)

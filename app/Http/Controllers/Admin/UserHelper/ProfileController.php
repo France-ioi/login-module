@@ -3,21 +3,16 @@
 namespace App\Http\Controllers\Admin\UserHelper;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\User;
 use App\Email;
 use App\UserHelperAction;
 use App\LoginModule\Profile\SchemaConfig;
 
-class ProfileController extends Controller
+class ProfileController extends UserHelperController
 {
 
     public function index($id, Request $request) {
-        $user = User::findOrFail($id);
+        $user = $this->getTargetUser($id, $request);
         $user_helper = $request->user()->userHelper;
-        if(!$request->user()->userHelperClients->pluck('id')->search($user->creator_client_id)) {
-            abort(403);
-        }
         return view('admin.user_helper.profile', [
             'user' => $user,
             'user_helper' => $user_helper
@@ -29,10 +24,7 @@ class ProfileController extends Controller
         if(!$this->changeAvailable($id, $request)) {
             return view('admin.user_helper.errors.change_limit');
         }
-        $user = User::findOrFail($id);
-        if(!$request->user()->userHelperClients->pluck('id')->search($user->creator_client_id)) {
-            abort(403);
-        }
+        $user = $this->getTargetUser($id, $request);
 
         $validator = \Validator::make(
             $request->all(),

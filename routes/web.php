@@ -119,6 +119,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
         Route::post('/verifications/update/{id}', 'VerificationsController@update');
     });
 
+    Route::get('user_helper_messages/{message}', 'UserHelper\MessagesController@index');
     Route::group(['middleware' => 'user_helper'], function() {
         Route::get('user_helper', 'UserHelper\SearchController@index');
         Route::get('user_helper/{id}/password', 'UserHelper\PasswordController@index');
