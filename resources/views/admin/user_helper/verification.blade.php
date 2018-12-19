@@ -10,7 +10,7 @@
             <tr>
                 <th>Attribute</th>
                 <th>Value</th>
-                <th>Verified</th>
+                <th>Verified by user helper</th>
             </tr>
 
             @foreach($user_helper->verifiable_attributes as $attr)
