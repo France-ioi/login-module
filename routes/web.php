@@ -128,6 +128,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
         Route::post('user_helper/{id}/login', 'UserHelper\LoginController@login');
         Route::get('user_helper/{id}/verification', 'UserHelper\VerificationController@index');
         Route::post('user_helper/{id}/verification', 'UserHelper\VerificationController@verify');
+        Route::get('user_helper/{id}/details', 'UserHelper\DetailsController@index');
     });
 
     Route::group(['middleware' => 'permission:admin.misc'], function() {

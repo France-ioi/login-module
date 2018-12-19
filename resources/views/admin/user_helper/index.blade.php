@@ -30,6 +30,7 @@
                         <td>{{ $user->first_name.' '.$user->last_name }}</td>
                         <td>{{ $user->last_login }}</td>
                         <td>
+                            <a href="{{ url('admin/user_helper/'.$user->id.'/details') }}" class="btn btn-xs btn-primary">Details</a>
                             <a href="{{ url('admin/user_helper/'.$user->id.'/profile') }}" class="btn btn-xs btn-primary">Edit</a>
                             <a href="{{ url('admin/user_helper/'.$user->id.'/password') }}" class="btn btn-xs btn-primary">Password</a>
                             <a href="{{ url('admin/user_helper/'.$user->id.'/verification') }}" class="btn btn-xs btn-primary">Verification</a>

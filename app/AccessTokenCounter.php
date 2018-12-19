@@ -28,4 +28,8 @@ class AccessTokenCounter extends Model
             ->where('client_id', $this->client_id);
     }
 
+    public function client() {
+        return $this->belongsTo('App\Client');
+    }
+
 }

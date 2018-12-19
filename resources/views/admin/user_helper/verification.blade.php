@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+    <a class="btn btn-default" onclick="window.history.back()">Go back</a>
     <h3>Verification</h3>
     @include('admin.users.user_info', $user)
 
