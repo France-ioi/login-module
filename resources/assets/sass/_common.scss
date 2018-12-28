@@ -1,20 +1,131 @@
+/*
+*
+*	GENERIC ELEMENTS
+*
+*/
+.btn {
+	border-radius: 50px;
+	padding: 6px 15px;
+	width: 100%;
+	text-transform: uppercase;
+	font-weight: bold;
+	line-height: 1;
+	border: none;
+}
 .filestyle {
     padding: 2px 12px;
     height:auto;
 }
-
-
 .list-group-sortable li {
     cursor: move;
 }
-
-.nav > li > a {
-    padding: 14px 15px;
-}
-
 .profile-tooltip-icon {
     cursor: default;
     margin-left: 10px;
     font-weight: normal;
     color: #999;
+}
+/* Switch checkbox */
+.checkboxSwitch {
+	input {
+		display: none;
+	}
+	label {
+		padding: 0;
+		.bg {
+			display: inline-block;
+			background: rgba(0,0,0,0.05);
+			border-radius: 10px;
+			box-shadow: inset 0 1px 0 0 rgba(0,0,0,0.05);
+			height: 15px;
+			width: 50px;
+			position: absolute;
+			right: 0;
+			cursor: pointer;
+
+			.cursor {
+				position: absolute;
+				left: 0;
+				top: 1px;
+				height: 12px;
+				width: 25px;
+				border-radius: 6px;
+				background-color: #9B9B9B;
+				box-shadow: 0 1px 0 0 #727273;
+				transition: all 250ms;
+			}
+		}
+		input:checked + span .cursor {
+			background-color: $brand-primary;
+			left: 50%;
+		}
+	}
+}
+.bgDropdown {
+	background-color: $brand-primary;
+	border-radius: 10px;
+
+	.dropdown-toggle {
+		color: $text-color-light;
+		padding: 3px 10px;
+	}
+}
+.sectionTitle {
+	font-weight: bold;
+	text-align: center;
+	line-height: 30px;
+}
+
+/*
+*
+* SPECIFIC ELEMENTS
+*
+*/
+/* Header */
+.header {
+	margin-top: 20px;
+}
+.headerNav {
+	& > div {
+		display: inline-block;
+	}
+}
+.platformTitle {
+	font-size: 1.8rem;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+/* Login screens title */
+.pageTitle_wrapper {
+	text-align: center;
+	margin-top: 3em;
+	margin-bottom: 3em;
+}
+.pageTitle {
+	font-size: 2.8rem;
+}
+
+/* Login method selection screen */
+.panel-auth {
+	background: rgba(0,0,0,0.05);
+	box-shadow: inset 0 1px 0 0 rgba(0,0,0,0.05);
+	border-radius: 5px;
+	overflow: hidden;
+	.row {
+		margin: 0;
+	}
+	.row .hasBorder {
+		border-right: 1px solid #D8D8D8;
+	}
+}
+.highlightBlock {
+	background-color: rgba(0,0,0,0.9);
+	color: $text-color-light;
+	text-align: center;
+	a, a:hover {
+		color: $text-color-light;
+		text-decoration: underline;
+		font-weight: bold;
+	}
 }

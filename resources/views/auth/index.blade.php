@@ -1,23 +1,15 @@
 @extends('layouts.popup')
 
 @push('login_email_code')
-    <a class="btn btn-block btn-default" data-toggle="collapse" data-target="#box-login_email_code">
-        @lang('auth.login_email_badge')
-        <span id="login-caret" class="glyphicon glyphicon-triangle-top"></span>
-    </a>
-    <div id="box-login_email_code" class="collapse in btn-block">
-        <div class="well">
+    <div id="box-login_email_code" class="btn-block">
+        <div class="">
             {!! BootForm::open(['url' => 'login_with_code']) !!}
                 {!! BootForm::hidden('try_code', 1) !!}
                 {!! BootForm::hidden('try_password', 1) !!}
                 {!! BootForm::text('identity', trans('auth.login_email_badge')) !!}
-                {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
                 {!! BootForm::submit(trans('auth.btn_login')) !!}
-                <hr/>
-                <div class="form-group">
-                    <a class="btn btn-link" href="{{ route('register') }}">
-                        @lang('auth.link_register')
-                    </a>
+                <div class="checkboxSwitch">
+                {!! BootForm::checkbox('remember', trans('auth.remember_me') . '<span class="bg"><span class="cursor"></span></span>') !!}
                 </div>
             {!! BootForm::close() !!}
         </div>
@@ -30,18 +22,12 @@
         <span id="login-caret" class="glyphicon glyphicon-triangle-top"></span>
     </a>
     <div id="box-login_email" class="collapse in btn-block">
-        <div class="well">
+        <div class="">
             {!! BootForm::open(['url' => 'login_with_code']) !!}
                 {!! BootForm::hidden('try_password', 1) !!}
                 {!! BootForm::text('identity', trans('auth.login_or_email')) !!}
                 {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
                 {!! BootForm::submit(trans('auth.btn_login')) !!}
-                <hr/>
-                <div class="form-group">
-                    <a class="btn btn-link" href="{{ route('register') }}">
-                        @lang('auth.link_register')
-                    </a>
-                </div>
             {!! BootForm::close() !!}
         </div>
     </div>
@@ -79,29 +65,47 @@
 
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">@lang('auth.login_header', ['platform_name' => $platform_name])</div>
-        <div class="panel-body">
-            <p>@lang('auth.login_intro')</p>
-
-            <div class="list-group">
+    <div class="pageTitle_wrapper">
+        <div class="pageTitle">@lang('auth.login_header')</div>
+        <div class="subtitle">@lang('auth.login_intro')</div>
+    </div>
+    <div class="panel panel-auth">
+        <div class="row">
+            <div class="col-sm-6 hasBorder">
                 @foreach($methods['visible'] as $method)
+                    @if ($method == 'login_email_code' )
+                            @stack($method)
+                    @endif
+                @endforeach
+            </div>
+            <div class="col-sm-6">
+                <div class="sectionTitle">@lang('auth.login_services')</div>
+                @foreach($methods['visible'] as $method)
+                    @if ($method == 'login_email_code' )
+                        @continue
+                    @endif
+                        @stack($method)
+                @endforeach
+            </div>
+        </div>
+
+        <div class="highlightBlock">
+            <a class="btn btn-link" href="{{ route('register') }}">
+                @lang('auth.link_register')
+            </a>
+        </div>
+
+        @if(count($methods['hidden']))
+            <div>
+                <hr>
+                <button id="btn-show-hidden" class="btn btn-block btn-link" data-toggle="collapse" data-target="#auth-hidden">@lang('auth.show_more')</button>
+            </div>
+            <div id="auth-hidden" class="collapse">
+                @foreach($methods['hidden'] as $method)
                     @stack($method)
                 @endforeach
             </div>
-
-            @if(count($methods['hidden']))
-                <div>
-                    <hr>
-                    <button id="btn-show-hidden" class="btn btn-block btn-link" data-toggle="collapse" data-target="#auth-hidden">@lang('auth.show_more')</button>
-                </div>
-                <div id="auth-hidden" class="collapse">
-                    @foreach($methods['hidden'] as $method)
-                        @stack($method)
-                    @endforeach
-                </div>
-            @endif
-        </div>
+        @endif
     </div>
 
     <script type="text/javascript">

@@ -25,9 +25,10 @@ return [
     'remember_me' => 'Remember Me',
     'name' => 'Name',
 
-    'login_header' => 'Connect to :platform_name / France-ioi',
+    'login_header' => 'Connect with',
     'login_intro' => 'Choose one of the following authentication methods :',
     'login_password' => 'Login and password',
+    'login_services' => 'With one of those services',
     'btn_login' => 'Login',
     'link_reset_pwd' => 'Forgot Your Password?',
     'link_register' => 'Register account',
