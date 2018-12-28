@@ -88,5 +88,13 @@ return [
         'presentation' => 'This is information about you you decide to make public to all users.',
         'website' => 'This is information about you you decide to make public to all users.',
         'student_id' => 'Only provide this information if required by your school. This will make it possible for your teachers to check who you are.'
+    ],
+
+
+    'sections' => [
+        'personal' => 'Personal informations',
+        'school' => 'Scholar informations',
+        'contact' => 'Contact informations',
+        'settings' => 'Parameters',
     ]
 ];

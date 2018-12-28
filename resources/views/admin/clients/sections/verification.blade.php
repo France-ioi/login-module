@@ -24,7 +24,7 @@
     @foreach($verification_methods as $method)
         <tr>
             <td>
-                {{ trans('verification.methods')[$method->name] }}
+                {{ trans('verification.methods.'.$method->name) }}
             </td>
             <td>
                 {{ implode($method->user_attributes, ', ') }}

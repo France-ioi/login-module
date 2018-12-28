@@ -163,7 +163,17 @@
 
             (function(el) {
                 function toggleOptionalFields() {
-                    $('[optional_field=1]').toggle(!el.prop('checked'));
+                    var visible = !el.prop('checked');
+                    $('#profile div[optional_field=1]').toggle(visible);
+                    $('#profile fieldset').each(function(idx, el) {
+                        el = $(el);
+                        if(visible) {
+                            el.show();
+                        } else {
+                            var has_visible_blocks = el.find('div[role=block]:visible').length > 0;
+                            el.toggle(has_visible_blocks);
+                        }
+                    });
                 }
                 el.click(toggleOptionalFields);
                 el.prop('checked', {!! $all ? 'false' : 'true' !!});

@@ -18,6 +18,13 @@ class Schema {
     }
 
 
+    public function block($name) {
+        foreach($this->blocks as $block) {
+            if($block->name == $name) return $block;
+        }
+    }
+
+
     public function rules() {
         $rules = [];
         foreach($this->blocks as $block) {

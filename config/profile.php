@@ -16,5 +16,40 @@ return [
             'min' => 3,
             'max' => 30
         ]
+    ],
+
+    'sections' => [
+        'personal' => [
+            'login',
+            'first_name',
+            'last_name',
+            'real_name_visible',
+            'birthday',
+            'gender',
+            'presentation',
+            'website',
+            'student_id'
+        ],
+        'school' => [
+            'graduation_year',
+            'graduation_grade',
+            'nationality',
+            'country_code',
+            'role'
+        ],
+        'contact' => [
+            'primary_email',
+            'secondary_email',
+            'address',
+            'city',
+            'zipcode',
+            'primary_phone',
+            'secondary_phone'
+        ],
+        'settings' => [
+            'language',
+            'timezone'
+        ]
     ]
+
 ];
