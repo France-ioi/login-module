@@ -4,7 +4,7 @@
     <div class="header">
         <div class="container">
             <div class="headerTop clearfix">
-                <div class="platformTitle pull-left">Platform Name</div>
+                <div class="platformTitle pull-left">{{$platform_name}}</div>
                 <div class="pull-right headerNav">
                     <div class="dropdown bgDropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
