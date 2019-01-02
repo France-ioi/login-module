@@ -52,10 +52,12 @@ class RegisterController extends Controller
         $required = $this->requiredAttributes();
         $badge_data = $this->context->badge()->restoreData();
         $values = $badge_data ? $badge_data['user'] : [];
+        $client = $this->context->client();
 
         return view('auth.register', [
             'login_required' => array_search('login', $required) !== false,
             'email_required' => array_search('primary_email', $required) !== false,
+            'platform_name' => $client ? $client->name : trans('app.name'),
             'values' => $values
         ]);
     }
