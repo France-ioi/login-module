@@ -7,5 +7,10 @@ class PlatformHelper
     public static function cancelUrl() {
         return \App::make(PlatformContext::class)->cancelUrl();
     }
+
+    public static function platformName() {
+        $context = \App::make(PlatformContext::class);
+        return $context->client() ? $context->client()->name : trans('app.name');
+    }
 }
 
