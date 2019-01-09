@@ -3,14 +3,22 @@
 *	GENERIC ELEMENTS
 *
 */
+hr {
+	border-color: #D8D8D8;
+}
 .btn {
-	border-radius: 50px;
-	padding: 6px 15px;
-	width: 100%;
 	text-transform: uppercase;
 	font-weight: bold;
 	line-height: 1;
 	border: none;
+	font-size: 1.2rem;
+}
+.btn-wide {
+	width: 100%;
+}
+.btn-rounded {
+	border-radius: 50px;
+	padding: 6px 15px;
 }
 .filestyle {
     padding: 2px 12px;
@@ -21,9 +29,18 @@
 }
 .profile-tooltip-icon {
     cursor: default;
-    margin-left: 10px;
     font-weight: normal;
     color: #999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow: visible;
+}
+:placeholder-shown {
+	font-style: italic;
+}
+.relativeP {
+	position: relative;
 }
 /* Switch checkbox */
 .checkboxSwitch {
@@ -71,11 +88,17 @@
 	}
 }
 .sectionTitle {
+	font-size: 1.2rem;
 	font-weight: bold;
 	text-align: center;
 	line-height: 30px;
+	text-transform: uppercase;
+	margin: 10px 0;
 }
-
+.col-centered {
+	margin: 0 auto;
+	float: none;
+}
 /*
 *
 * SPECIFIC ELEMENTS
@@ -111,18 +134,35 @@
 	background: rgba(0,0,0,0.05);
 	box-shadow: inset 0 1px 0 0 rgba(0,0,0,0.05);
 	border-radius: 5px;
-	overflow: hidden;
+	width: 561px;
+	margin: 0 auto;
+
 	.row {
 		margin: 0;
+		.col-sm-6 {
+			padding: 10px 20px 30px;
+		}
 	}
 	.row .hasBorder {
 		border-right: 1px solid #D8D8D8;
 	}
+	.panel-heading {
+		border-bottom: 1px solid #D8D8D8;
+		.back_link {
+			color: #787878;
+			font-weight: bold;
+		}
+	}
+	.panel-body {
+		padding: 0;
+	}
 }
 .highlightBlock {
-	background-color: rgba(0,0,0,0.9);
+	background-color: rgba(0,0,0,0.68);
 	color: $text-color-light;
 	text-align: center;
+	border-radius: 0 0 5px 5px;
+
 	a, a:hover {
 		color: $text-color-light;
 		text-decoration: underline;

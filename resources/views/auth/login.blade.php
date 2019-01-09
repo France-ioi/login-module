@@ -1,24 +1,38 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">@lang('auth.login_header', ['platform_name' => $platform_name])</div>
+    <div class="pageTitle_wrapper">
+        <div class="pageTitle">@lang('auth.login_pwd_header')</div>
+        <div class="subtitle">@lang('auth.login_pwd_intro')</div>
+    </div>
+    <div class="panel panel-auth">
+        <div class="panel-heading">
+            <a class="back_link" href="{{ url('/auth') }}">
+                <i class="fas fa-arrow-left"></i>
+                @lang('auth.select_another_method')
+            </a>
+        </div>
         <div class="panel-body">
-            {!! BootForm::open(['route' => 'login']) !!}
-                {!! BootForm::text('login', trans('auth.login_or_email')) !!}
-                {!! BootForm::password('password', trans('auth.pwd')) !!}
-                {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
-                {!! BootForm::submit(trans('auth.btn_login')) !!}
-                <hr/>
-                <div class="form-group">
-                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                        @lang('auth.link_reset_pwd')
-                    </a>
-                    <a class="btn btn-link pull-right" href="{{ url('/auth') }}">
-                        @lang('auth.select_another_method')
-                    </a>
+            <div class="row">
+                <div class="col-sm-6 col-centered">
+                {!! BootForm::open(['route' => 'login']) !!}
+                    {!! BootForm::text('login', false, null, ['placeholder' => trans('auth.login_or_email')]) !!}
+                    {!! BootForm::password('password', false, ['placeholder' => trans('auth.pwd')]) !!}
+                    {!! BootForm::submit(trans('auth.btn_login'), ['class' => 'btn btn-rounded btn-wide btn-primary']) !!}
+                    <div class="checkboxSwitch">
+                    {!! BootForm::checkbox('remember', trans('auth.remember_me') . '<span class="bg"><span class="cursor"></span></span>') !!}
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <label>@lang('auth.link_reset_pwd_label')</label>
+
+                        <a class="btn-link pull-right" href="{{ route('password.request') }}">
+                            @lang('auth.link_reset_pwd_link')
+                        </a>
+                    </div>
+                {!! BootForm::close() !!}
                 </div>
-            {!! BootForm::close() !!}
+            </div>
         </div>
     </div>
 

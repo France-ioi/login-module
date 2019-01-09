@@ -4,7 +4,7 @@
     <div class="header">
         <div class="container">
             <div class="headerTop clearfix">
-                <div class="platformTitle pull-left">{{$platform_name}}</div>
+                <div class="platformTitle pull-left">{{ PlatformHelper::platformName() }}</div>
                 <div class="pull-right headerNav">
                     <div class="dropdown bgDropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
@@ -23,12 +23,9 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div>
-                        <a href="/badges" className="">@lang('badges.header')</a>
-                    </div>
                     @if(Auth::check())
                         <div>
-                            <a href="/logout" className=""><i class="fas fa-power-off"></i></a>
+                            <a href="/logout" className=""><i class="fas fa-power-off">X</i></a>
                         </div>
                     @endif
                     @if(PlatformHelper::cancelUrl())
@@ -48,6 +45,7 @@
                     @endif
                 </div>
             @endif
+
         </div>
     </div>
 @endsection

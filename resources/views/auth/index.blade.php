@@ -6,8 +6,8 @@
             {!! BootForm::open(['url' => 'login_with_code']) !!}
                 {!! BootForm::hidden('try_code', 1) !!}
                 {!! BootForm::hidden('try_password', 1) !!}
-                {!! BootForm::text('identity', trans('auth.login_email_badge')) !!}
-                {!! BootForm::submit(trans('auth.btn_login')) !!}
+                {!! BootForm::text('identity', false, null, ['placeholder' => trans('auth.login_email_badge')]) !!}
+                {!! BootForm::submit(trans('auth.btn_login'), ['class' => 'btn btn-rounded btn-wide btn-primary']) !!}
                 <div class="checkboxSwitch">
                 {!! BootForm::checkbox('remember', trans('auth.remember_me') . '<span class="bg"><span class="cursor"></span></span>') !!}
                 </div>
@@ -51,27 +51,34 @@
 @endpush
 
 @push('google')
-    <a class="btn btn-block btn-default" href="/oauth_client/redirect/google">Google</a>
+    <div class="form-group">
+        <a class="btn btn-primary btn-wide btn-rounded" href="/oauth_client/redirect/google">Google</a>
+    </div>
 @endpush
 
 @push('facebook')
-    <a class="btn btn-block btn-default" href="/oauth_client/redirect/facebook">Facebook</a>
+    <div class="form-group">
+        <a class="btn btn-primary btn-wide btn-rounded" href="/oauth_client/redirect/facebook">Facebook</a>
+    </div>
 @endpush
 
 @push('pms')
-    <a class="btn btn-block btn-default" href="/oauth_client/redirect/pms">PMS</a>
+    <div class="form-group">
+        <a class="btn btn-primary btn-wide btn-rounded" href="/oauth_client/redirect/pms">PMS</a>
+    </div>
 @endpush
 
 
 
 @section('content')
     <div class="pageTitle_wrapper">
-        <div class="pageTitle">@lang('auth.login_header')</div>
-        <div class="subtitle">@lang('auth.login_intro')</div>
+        <div class="pageTitle">@lang('auth.login_choice_header')</div>
+        <div class="subtitle">@lang('auth.login_choice_intro')</div>
     </div>
     <div class="panel panel-auth">
         <div class="row">
             <div class="col-sm-6 hasBorder">
+                <div class="sectionTitle">@lang('auth.login_email_badge')</div>
                 @foreach($methods['visible'] as $method)
                     @if ($method == 'login_email_code' )
                             @stack($method)
