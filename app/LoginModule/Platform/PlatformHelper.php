@@ -12,5 +12,10 @@ class PlatformHelper
         $context = \App::make(PlatformContext::class);
         return $context->client() ? $context->client()->name : trans('app.name');
     }
+
+    public static function needBadgeVerification() {
+        $context = \App::make(PlatformContext::class);
+        return (bool) $context->badge()->api();
+    }
 }
 

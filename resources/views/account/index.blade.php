@@ -15,7 +15,7 @@
             <a href="{{ url('/badges') }}" class="list-group-item">
                 @lang('badges.header')
             </a>
-            @if($need_badge_verification)
+            @if(PlatformHelper::needBadgeVerification())
                 <a href="{{ url('/badge') }}" class="list-group-item">
                     @lang('badge.header')
                 </a>
