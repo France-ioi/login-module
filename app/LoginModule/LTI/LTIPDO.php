@@ -22,6 +22,9 @@ class LTIPDO {
 
 
     private function connectDB() {
+        // Disable for now
+        return null;
+
         $now = new \DateTime();
         $mins = $now->getOffset() / 60;
         $sgn = ($mins < 0 ? -1 : 1);
@@ -37,7 +40,7 @@ class LTIPDO {
             $connexionString = "mysql:host=".$conf['host'].";dbname=".$conf['database'].";charset=utf8";
             $db = new PDO($connexionString, $conf['user'], $conf['password'], $pdo_options);
             $db->exec("SET time_zone='".$offset."';");
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             die("Erreur : " . $e->getMessage());
         }
         return $db;
