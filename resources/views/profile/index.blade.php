@@ -1,18 +1,6 @@
 @extends('layouts.popup')
 
 @section('content')
-    @include('profile.alerts.filter')
-    @include('profile.alerts.verification')
-    @include('profile.alerts.revalidation')
-    @include('profile.alerts.login_change_required')
-    @include('profile.alerts.pms_redirect')
-    @include('ui.status')
-    @include('ui.errors')
-
-    <div class="alert alert-info">
-        @lang('profile.required_fields_explanation')
-        <a class="btn btn-primary btn-xs pull-right" href="/collected_data">@lang('profile.collected_data')</a>
-    </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -28,6 +16,17 @@
             @endif
         </div>
         <div class="panel-body">
+            @include('profile.alerts.filter')
+            @include('profile.alerts.verification')
+            @include('profile.alerts.revalidation')
+            @include('profile.alerts.login_change_required')
+            @include('profile.alerts.pms_redirect')
+            @include('ui.status')
+            @include('ui.errors')
+            <div class="alert alert-info">
+                @lang('profile.required_fields_explanation')
+                <a class="btn btn-primary btn-xs pull-right" href="/collected_data">@lang('profile.collected_data')</a>
+            </div>
             {!! BootForm::open($form) !!}
                 @if($all)
                     {!! BootForm::hidden('all', 1) !!}

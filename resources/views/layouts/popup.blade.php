@@ -44,6 +44,8 @@
                         {{ Auth::user()->login }}
                     @endif
                 </div>
+
+                @include('layouts.components.tabs_menu')
             @endif
 
         </div>
