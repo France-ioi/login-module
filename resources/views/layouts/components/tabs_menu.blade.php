@@ -5,7 +5,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ url('/verification') }}" class="{!! Request::is('verification') ? 'active' : '' !!}">
+        <a href="{{ url('/verification') }}" class="{!! Request::is('verification', 'verification/*') ? 'active' : '' !!}">
             @lang('verification.header')
         </a>
     </li>
