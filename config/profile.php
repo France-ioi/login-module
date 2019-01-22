@@ -28,7 +28,8 @@ return [
             'gender',
             'presentation',
             'website',
-            'student_id'
+            'student_id',
+            'picture'
         ],
         'school' => [
             'graduation_year',

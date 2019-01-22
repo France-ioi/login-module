@@ -85,8 +85,9 @@ class UserProfile {
         });
         $resource = $img->stream()->detach();
         $path = 'profile_pictures/'.$user->id.'.'.$file->extension();
+
         if(\Storage::put($path, $resource)) {
-            $user->picture = \Storage::url($path);
+            $user->picture = $path;
             $user->save();
         }
     }

@@ -206,7 +206,7 @@ class User extends Authenticatable
 
 
     public function getPictureAttribute() {
-        return $this->attributes['picture'] ? $this->attributes['picture'] : asset(config('ui.profile_picture.default'));
+        return $this->attributes['picture'] ? \Storage::url($this->attributes['picture']) : asset(config('ui.profile_picture.default'));
     }
 
 

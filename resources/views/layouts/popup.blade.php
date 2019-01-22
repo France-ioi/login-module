@@ -37,6 +37,7 @@
             </div>
             @if(Auth::check())
                 <div class="pageTitle">
+                    <img src="{!! Auth::user()->picture !!}" class="user-picture"/>
                     @if(Auth::user()->real_name_visible)
                         {{ Auth::user()->first_name }}
                         {{ Auth::user()->last_name }}
