@@ -29,7 +29,7 @@ class IndexController extends Controller
             'platform_name' => $client ? $client->name : trans('app.name'),
             'verifications' => $this->verification->verifications($request->user()),
             'methods' => $methods,
-            'continue_url' => $context->continueURL('/account')
+            'continue_url' => $context->continueURL()
         ]);
     }
 

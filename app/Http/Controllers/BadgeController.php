@@ -93,7 +93,7 @@ class BadgeController extends Controller
             $badge->override_profile = $request->has('override_profile');
             $badge->save();
         }
-        return redirect($this->context->continueUrl('/account'));
+        return redirect($this->context->continueUrl());
     }
 
 

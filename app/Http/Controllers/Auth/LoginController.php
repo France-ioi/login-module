@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/account';
+    protected $redirectTo = '/profile';
 
     protected $context;
 
@@ -80,7 +80,7 @@ class LoginController extends Controller
         if($user->hasRole('admin')) {
             return redirect('/admin');
         }
-        return redirect($this->context->continueUrl('/account'));
+        return redirect($this->context->continueUrl());
     }
 
 

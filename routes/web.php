@@ -70,10 +70,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/profile', 'ProfileController@update');
         Route::get('/official_domains', 'OfficialDomainsController@index');
         Route::get('/timezone', 'TimezoneController@index');
-
-        Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
-        Route::post('/account/details', ['uses' => 'AccountController@updateAccount', 'as' => 'update_account']);
-
         Route::get('/reauthentication', 'Auth\ReauthenticationController@index');
         Route::post('/reauthentication', 'Auth\ReauthenticationController@update');
         Route::group(['middleware' => ['reauthentication']], function() {

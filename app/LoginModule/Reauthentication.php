@@ -35,7 +35,7 @@ class Reauthentication {
     }
 
 
-    static function getRedirectUrl($alternative = '/account') {
+    static function getRedirectUrl($alternative = '/profile') {
         if(!$url = Session::pull(self::REDIRECT_URL_KEY)) {
             $url = $alternative;
         }

@@ -33,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/account';
+    protected $redirectTo = '/profile';
 
     /**
      * Create a new controller instance.
@@ -126,7 +126,7 @@ class RegisterController extends Controller
 
 
     public function registered($request, $user) {
-        return redirect()->intended('/account');
+        return redirect()->intended('/profile');
     }
 
 

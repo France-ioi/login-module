@@ -14,7 +14,7 @@ class ParticipationCodeController extends Controller
 
 
     public function index(Request $request) {
-        $url =  $this->context->continueUrl('/account');
+        $url =  $this->context->continueUrl();
 
         $client = $this->context->client();
         if($client) {
