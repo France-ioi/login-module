@@ -12,9 +12,10 @@ hr {
 .btn {
 	text-transform: uppercase;
 	font-weight: bold;
-	line-height: 1;
+	line-height: 1.5;
 	border: none;
 	font-size: 1.2rem;
+	position: relative;
 }
 .btn-wide {
 	width: 100%;
@@ -22,6 +23,39 @@ hr {
 .btn-rounded {
 	border-radius: 50px;
 	padding: 6px 15px;
+}
+.btn .icon {
+	position: absolute;
+	left: 16px;
+	top: 7px;
+	top: calc(50% - 0.5em);
+}
+.form-group {
+	position: relative;
+}
+.form-control {
+	background-color: $input-background;
+	border: 1px solid $input-border;
+	border-radius: 5px;
+	box-shadow: none;
+	font-size: 16px;
+}
+.input-group {
+	background-color: $input-background;
+	border: 1px solid $input-border;
+	border-radius: 5px;
+
+	.input-group-addon {
+		border: none;
+		background-color: transparent;
+	}
+	.form-control {
+		background-color: transparent;
+		border: none;
+	}
+}
+:placeholder-shown {
+	font-style: italic;
 }
 .filestyle {
     padding: 2px 12px;
@@ -31,19 +65,14 @@ hr {
     cursor: move;
 }
 .profile-tooltip-icon {
-    cursor: default;
-    font-weight: normal;
-    color: #999;
-    position: absolute;
-    top: 0;
-    right: 0;
-    overflow: visible;
-}
-:placeholder-shown {
-	font-style: italic;
-}
-.relativeP {
-	position: relative;
+    cursor: help;
+	font-weight: normal;
+	color: #999;
+	position: absolute;
+	top: 6px;
+	right: 142px;
+	overflow: visible;
+	font-size: 23px;
 }
 /* Switch checkbox */
 .checkboxSwitch {
@@ -90,7 +119,7 @@ hr {
 		padding: 3px 10px;
 	}
 }
-.sectionTitle {
+.panelTitle {
 	font-size: 1.2rem;
 	font-weight: bold;
 	text-align: center;
@@ -101,6 +130,9 @@ hr {
 .col-centered {
 	margin: 0 auto;
 	float: none;
+}
+.centered_form .form-group {
+	padding: 0 165px;
 }
 /*
 *

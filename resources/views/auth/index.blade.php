@@ -78,7 +78,7 @@
     <div class="panel panel-auth">
         <div class="row">
             <div class="col-sm-6 hasBorder">
-                <div class="sectionTitle">@lang('auth.login_email_badge')</div>
+                <div class="panelTitle">@lang('auth.login_email_badge')</div>
                 @foreach($methods['visible'] as $method)
                     @if ($method == 'login_email_code' )
                             @stack($method)
@@ -86,7 +86,7 @@
                 @endforeach
             </div>
             <div class="col-sm-6">
-                <div class="sectionTitle">@lang('auth.login_services')</div>
+                <div class="panelTitle">@lang('auth.login_services')</div>
                 @foreach($methods['visible'] as $method)
                     @if ($method == 'login_email_code' )
                         @continue

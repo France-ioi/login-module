@@ -8,14 +8,14 @@
     <div class="panel panel-auth">
         <div class="panel-heading">
             <a class="back_link" href="{{ url('/auth') }}">
-                <i class="fas fa-arrow-left"></i>
+                <i class="fa fa-arrow-left"></i>
                 @lang('auth.select_another_method')
             </a>
         </div>
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-6 col-centered">
-                    <div class="sectionTitle">@lang('auth.pwd_reset_title')</div>
+                    <div class="panelTitle">@lang('auth.pwd_reset_title')</div>
                     @if(session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}

@@ -39,6 +39,7 @@ return [
 
     'register_header' => 'Register',
     'register_intro' => 'Create your :platform_name account ',
+    'register_title' => 'Create login',
     'btn_register' => 'Register',
 
     'pwd_reset_header' => 'Password lost?',

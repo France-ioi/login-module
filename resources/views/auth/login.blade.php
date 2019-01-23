@@ -8,7 +8,7 @@
     <div class="panel panel-auth">
         <div class="panel-heading">
             <a class="back_link" href="{{ url('/auth') }}">
-                <i class="fas fa-arrow-left"></i>
+                <i class="fa fa-arrow-left"></i>
                 @lang('auth.select_another_method')
             </a>
         </div>
@@ -16,8 +16,8 @@
             <div class="row">
                 <div class="col-sm-6 col-centered">
                 {!! BootForm::open(['route' => 'login']) !!}
-                    {!! BootForm::text('login', false, null, ['placeholder' => trans('auth.login_or_email')]) !!}
-                    {!! BootForm::password('password', false, ['placeholder' => trans('auth.pwd')]) !!}
+                    {!! BootForm::text('login', false, null, ['placeholder' => trans('auth.login_or_email'), 'prefix' => BootForm::addonIcon('i-cursor')]) !!}
+                    {!! BootForm::password('password', false, ['placeholder' => trans('auth.pwd'), 'prefix' => BootForm::addonIcon('key')]) !!}
                     {!! BootForm::submit(trans('auth.btn_login'), ['class' => 'btn btn-rounded btn-wide btn-primary']) !!}
                     <div class="checkboxSwitch">
                     {!! BootForm::checkbox('remember', trans('auth.remember_me') . '<span class="bg"><span class="cursor"></span></span>') !!}

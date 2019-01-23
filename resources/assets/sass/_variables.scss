@@ -33,7 +33,8 @@ $navbar-default-bg: #fff;
 $btn-default-color: $text-color;
 
 // Inputs
-$input-border: lighten($text-color, 40%);
+$input-background: lighten($text-color, 50%);
+$input-border: lighten($text-color, 41%);
 $input-border-focus: lighten($brand-primary, 25%);
 $input-color-placeholder: lighten($text-color, 30%);
 

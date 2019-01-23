@@ -9,27 +9,30 @@
     <div class="panel panel-auth">
         <div class="panel-heading">
             <a class="back_link" href="{{ url('auth') }}">
-                <i class="fas fa-arrow-left"></i>@lang('auth.select_another_method')
+                <i class="fa fa-arrow-left"></i>@lang('auth.select_another_method')
             </a>
         </div>
         <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-6 col-centered">
-                {!! BootForm::horizontal(['route' => 'register', 'left_column_offset_class' => ' ', 'right_column_class' => ' ']) !!}
+            <div class="panelTitle">@lang('auth.register_title')</div>
+            <div class="">
+                <div class="">
+                {!! BootForm::horizontal(['route' => 'register', 'class' => 'centered_form', 'left_column_offset_class' => ' ', 'right_column_class' => ' ']) !!}
                     @if($login_required)
                         {!! BootForm::text('login', false, array_get($values, 'login'),
-                            ['placeholder' => trans('auth.login')]) !!}
+                            ['placeholder' => trans('auth.login'), 'prefix' => BootForm::addonIcon('i-cursor')]) !!}
                     @endif
                     @if($email_required)
                         {!! BootForm::text('primary_email', false, array_get($values, 'email'),
-                            ['placeholder' => trans('auth.email')]) !!}
+                            ['placeholder' => trans('auth.email'), 'prefix' => BootForm::addonIcon('i-cursor')]) !!}
                     @endif
-                    {!! BootForm::password('password', false, ['placeholder' => trans('auth.pwd')]) !!}
-                    {!! BootForm::password('password_confirmation', false, ['placeholder' => trans('auth.pwd_confirm')]) !!}
-                    {!! BootForm::submit(trans('auth.btn_register'), ['class' => 'btn btn-rounded btn-wide btn-primary']) !!}
+                    {!! BootForm::password('password', false, ['placeholder' => trans('auth.pwd'),  'prefix' => BootForm::addonIcon('key')]) !!}
+                    {!! BootForm::password('password_confirmation', false, ['placeholder' => trans('auth.pwd_confirm'),  'prefix' => BootForm::addonIcon('key')]) !!}
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-rounded btn-wide btn-primary"><i class="fa fa-check icon"></i>@lang('auth.btn_register')</button>
+                    </div>
                     <div class="form-group">
                         <a class="btn btn-danger btn-wide btn-rounded" href="{{ url('/auth') }}">
-                            <i class="fas fa-times"></i>
+                            <i class="fa fa-times icon"></i>
                             @lang('ui.cancel')
                         </a>
                     </div>
@@ -46,11 +49,11 @@
                 var el = $(this);
                 var text = tooltips[el.attr('name')];
                 if (text) {
-                    var icon = $('<span class="glyphicon glyphicon-question-sign profile-tooltip-icon"></span>');
+                    var icon = $('<span class="fa fa-question-circle-o profile-tooltip-icon"></span>');
                     icon.tooltip({
                         title: text
                     })
-                    el.parents('.form-group').addClass('relativeP').append(icon);
+                    el.parents('.form-group').append(icon);
                 }
             });
         });
