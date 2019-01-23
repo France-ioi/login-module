@@ -6,6 +6,7 @@
     "production": "set NODE_ENV=development && webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.6.3",
     "axios": "^0.15.2",
     "bootstrap-datepicker": "^1.6.4",
     "bootstrap-sass": "^3.3.7",
@@ -13,7 +14,6 @@
     "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master",
     "cross-env": "^3.2.4",
     "css-loader": "^0.26.1",
-    "font-awesome": "^4.7.0",
     "jquery": "^3.1.0",
     "laravel-mix": "^0.10.0",
     "lodash": "^4.16.2",
