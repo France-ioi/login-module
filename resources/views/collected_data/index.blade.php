@@ -11,26 +11,33 @@
     @endif
 
     <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('collected_data.header')
-        </div>
         <div class="panel-body">
+            <div class="sectionTitle">
+                <i class="fas fa-shield-alt icon"></i>
+                @lang('collected_data.header')
+            </div>
+            <div class="panel-content">
             <p>@lang('collected_data.p1')</p>
             <p>@lang('collected_data.p2')</p>
             <p>@lang('collected_data.p3')</p>
 
-            <ul>
+            <ul class="actionsList">
                 <li>
-                    @lang('collected_data.item_self'):
-                    <a class="btn btn-default btn-xs" href="/collected_data/summary">
-                        @lang('collected_data.summary')
-                    </a>
-                    <a class="btn btn-default btn-xs" href="/collected_data/export">
-                        @lang('collected_data.export')
-                    </a>
-                    <a class="btn btn-danger btn-xs" href="#" id="btn-delete">
-                        @lang('collected_data.delete')
-                    </a>
+                    <span class="actionsLabel">@lang('collected_data.item_self'):</span>
+                    <span class="actionsButtons pull-right">
+                        <a class="" href="/collected_data/summary">
+                            <i class="fas fa-eye icon"></i>
+                            @lang('collected_data.summary')
+                        </a>
+                        <a class="" href="/collected_data/export">
+                            <i class="fas fa-download icon"></i>
+                            @lang('collected_data.export')
+                        </a>
+                        <a class="" href="#" id="btn-delete">
+                            <i class="far fa-trash-alt icon"></i>
+                            @lang('collected_data.delete')
+                        </a>
+                    </span>
                 </li>
                 @foreach($clients as $client)
                     <li>
@@ -46,11 +53,9 @@
                     </li>
                 @endforeach
             </ul>
+            </div>
         </div>
     </div>
-
-    <a class="btn btn-default" href="/profile">@lang('ui.cancel')</a>
-
 
     <div class="modal fade" tabindex="-1" role="dialog" id="delete-confirmation">
         <div class="modal-dialog" role="document">

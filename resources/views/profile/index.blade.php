@@ -20,9 +20,8 @@
             @include('profile.alerts.pms_redirect')
             @include('ui.status')
             @include('ui.errors')
-            <div class="alert alert-info">
+            <div class="">
                 @lang('profile.required_fields_explanation')
-                <a class="btn btn-primary btn-xs pull-right" href="/collected_data">@lang('profile.collected_data')</a>
             </div>
             {!! BootForm::open($form) !!}
                 @if($all)
