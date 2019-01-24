@@ -3,6 +3,8 @@
 /vendor
 /public/profile_pictures/*
 /public/verifications/*
+/public/css/app.css
+/public/js/app.js
 /.idea
 Homestead.json
 Homestead.yaml
