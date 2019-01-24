@@ -2,7 +2,6 @@
 
 @section('navigation')
     <div class="header">
-        <div class="container">
             <div class="headerTop clearfix">
                 <div class="platformTitle pull-left">{{ PlatformHelper::platformName() }}</div>
                 <div class="pull-right headerNav">
@@ -36,19 +35,19 @@
                 </div>
             </div>
             @if(Auth::check())
-                <div class="pageTitle">
-                    <img src="{!! Auth::user()->picture !!}" class="user-picture"/>
-                    @if(Auth::user()->real_name_visible)
-                        {{ Auth::user()->first_name }}
-                        {{ Auth::user()->last_name }}
-                    @else
-                        {{ Auth::user()->login }}
-                    @endif
+                <div class="container">
+                    <div class="userHeader pageTitle">
+                        <img src="{!! Auth::user()->picture !!}" class="user-picture"/>
+                        @if(Auth::user()->real_name_visible)
+                            {{ Auth::user()->first_name }}
+                            {{ Auth::user()->last_name }}
+                        @else
+                            {{ Auth::user()->login }}
+                        @endif
+                    </div>
+
+                    @include('layouts.components.tabs_menu')
                 </div>
-
-                @include('layouts.components.tabs_menu')
             @endif
-
-        </div>
     </div>
 @endsection

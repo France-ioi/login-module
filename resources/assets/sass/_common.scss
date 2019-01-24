@@ -3,6 +3,10 @@
 *	GENERIC ELEMENTS
 *
 */
+.container {
+	padding-left: 0;
+	padding-right: 0;
+}
 a {
 	color: $text-color-secondary;
 }
@@ -145,7 +149,7 @@ hr {
 */
 /* Header */
 .header {
-	margin-top: 20px;
+	margin: 10px 15px 0;
 }
 .headerNav {
 	& > div {
@@ -216,6 +220,8 @@ hr {
 	margin: 0;
 	padding: 0;
 }
+.userHeader {
+	margin-bottom: 30px;
 .tabs-menu li {
 	text-align: center;
 	width: 100%;
@@ -268,10 +274,9 @@ hr {
 .tabs-menu li.current a {
 	color: $brand-primary;
 }
-
 .user-picture {
-	width: 32px;
-	height: 32px;
-	vertical-align: middle;
+	width: 100px;
+	height: 100px;
 	margin-right: 8px;
+	border-radius: 50%;
 }

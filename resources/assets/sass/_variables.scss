@@ -1,6 +1,13 @@
 
 // Body
 $body-bg: #f5f8fa;
+$container-base: 661px;
+$container-tablet: $container-base;
+$container-sm: $container-base;
+$container-md: $container-base;
+$container-lg: $container-base;
+$container-desktop: $container-base;
+$container-large-desktop : $container-base;
 
 // Borders
 $laravel-border-color: darken($body-bg, 10%);
