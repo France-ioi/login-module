@@ -15,6 +15,7 @@ $list-group-border: $laravel-border-color;
 $navbar-default-border: $laravel-border-color;
 $panel-default-border: $laravel-border-color;
 $panel-inner-border: $laravel-border-color;
+$border-radius-base: 5px;
 
 // Brands
 $brand-primary: #4A90E2;
@@ -45,6 +46,8 @@ $input-border: lighten($text-color, 41%);
 $input-border-focus: lighten($brand-primary, 25%);
 $input-color-placeholder: lighten($text-color, 30%);
 $input-icon: lighten($text-color, 30%);
+$input-border-radius: $border-radius-base;
+$input-group-addon-bg: $input-background;
 
 // Panels
 $panel-border-radius: 0 0 $border-radius-base $border-radius-base;

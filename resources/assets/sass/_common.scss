@@ -40,24 +40,18 @@ hr {
 .form-control {
 	background-color: $input-background;
 	border: 1px solid $input-border;
-	border-radius: 5px;
 	box-shadow: none;
 	font-size: 16px;
 }
 .input-group {
-	background-color: $input-background;
-	border: 1px solid $input-border;
-	border-radius: 5px;
 
 	.input-group-addon {
 		border: none;
-		background-color: transparent;
 		color: $input-icon;
 		padding: 6px 9px;
 		font-weight: bold;
 	}
 	.form-control {
-		background-color: transparent;
 		border: none;
 		padding-left: 3px;
 	}
