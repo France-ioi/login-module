@@ -3,8 +3,7 @@
 @section('content')
 
     <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('profile.header')
+        <div class="panel-body">
             @if($schema->hasRequiredAttributes())
                 <div class="pull-right">
                     <div class="checkbox" style="margin: 0">
@@ -14,8 +13,6 @@
                     </div>
                 </div>
             @endif
-        </div>
-        <div class="panel-body">
             @include('profile.alerts.filter')
             @include('profile.alerts.verification')
             @include('profile.alerts.revalidation')

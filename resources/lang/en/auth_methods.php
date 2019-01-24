@@ -1,6 +1,7 @@
 <?php
 return [
-    'header' => 'Authentication methods',
+    'header' => 'Authentications',
+    'title' => 'Authentication methods',
     'active' => 'Active',
     'btn_add' => 'Add',
     'btn_remove' => 'Remove',
