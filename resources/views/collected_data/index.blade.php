@@ -25,10 +25,10 @@
                 <li>
                     <span class="actionsLabel">@lang('collected_data.item_self'):</span>
                     <span class="actionsButtons pull-right">
-                        <a class="" href="/collected_data/summary">
+                        <button type="button" class="btn-link" data-toggle="modal" data-target="#data-summary">
                             <i class="fas fa-eye icon"></i>
                             @lang('collected_data.summary')
-                        </a>
+                        </button>
                         <a class="" href="/collected_data/export">
                             <i class="fas fa-download icon"></i>
                             @lang('collected_data.export')
@@ -53,6 +53,13 @@
                     </li>
                 @endforeach
             </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="data-summary">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                Collected data summary
             </div>
         </div>
     </div>
