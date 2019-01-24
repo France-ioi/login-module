@@ -9,7 +9,7 @@
                     <div class="dropdown bgDropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             {{ config('app.locales')[app()->getLocale()] }}
-                            <span class="caret"></span>
+                            <i class="fas fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             @foreach(config('app.locales') as $locale => $locale_name)
@@ -25,7 +25,7 @@
                     </div>
                     @if(Auth::check())
                         <div>
-                            <a href="/logout" className=""><i class="fas fa-power-off">X</i></a>
+                            <a href="/logout" className=""><i class="fas fa-power-off"></i></a>
                         </div>
                     @endif
                     @if(PlatformHelper::cancelUrl())

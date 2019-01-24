@@ -6,7 +6,7 @@
             {!! BootForm::open(['url' => 'login_with_code']) !!}
                 {!! BootForm::hidden('try_code', 1) !!}
                 {!! BootForm::hidden('try_password', 1) !!}
-                {!! BootForm::text('identity', false, null, ['placeholder' => trans('auth.login_email_badge')]) !!}
+                {!! BootForm::text('identity', false, null, ['placeholder' => trans('auth.login_email_badge'), 'prefix' => BootForm::addonText('Aa')]) !!}
                 {!! BootForm::submit(trans('auth.btn_login'), ['class' => 'btn btn-rounded btn-wide btn-primary']) !!}
                 <div class="checkboxSwitch">
                 {!! BootForm::checkbox('remember', trans('auth.remember_me') . '<span class="bg"><span class="cursor"></span></span>') !!}
@@ -25,9 +25,9 @@
         <div class="">
             {!! BootForm::open(['url' => 'login_with_code']) !!}
                 {!! BootForm::hidden('try_password', 1) !!}
-                {!! BootForm::text('identity', trans('auth.login_or_email')) !!}
-                {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
+                {!! BootForm::text('identity', false, null, ['placeholder' => trans('auth.login_or_email'), 'prefix' => BootForm::addonText('Aa')]) !!}
                 {!! BootForm::submit(trans('auth.btn_login')) !!}
+                {!! BootForm::checkbox('remember', trans('auth.remember_me')) !!}
             {!! BootForm::close() !!}
         </div>
     </div>
@@ -52,13 +52,13 @@
 
 @push('google')
     <div class="form-group">
-        <a class="btn btn-primary btn-wide btn-rounded" href="/oauth_client/redirect/google">Google</a>
+        <a class="btn btn-primary btn-wide btn-rounded" href="/oauth_client/redirect/google"><i class="fab fa-google icon"></i>Google</a>
     </div>
 @endpush
 
 @push('facebook')
     <div class="form-group">
-        <a class="btn btn-primary btn-wide btn-rounded" href="/oauth_client/redirect/facebook">Facebook</a>
+        <a class="btn btn-primary btn-wide btn-rounded" href="/oauth_client/redirect/facebook"><i class="fab fa-facebook-f icon"></i>Facebook</a>
     </div>
 @endpush
 

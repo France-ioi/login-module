@@ -48,10 +48,14 @@ hr {
 	.input-group-addon {
 		border: none;
 		background-color: transparent;
+		color: $input-icon;
+		padding: 6px 9px;
+		font-weight: bold;
 	}
 	.form-control {
 		background-color: transparent;
 		border: none;
+		padding-left: 3px;
 	}
 }
 :placeholder-shown {
@@ -69,10 +73,10 @@ hr {
 	font-weight: normal;
 	color: #999;
 	position: absolute;
-	top: 6px;
+	top: 8px;
 	right: 142px;
 	overflow: visible;
-	font-size: 23px;
+	font-size: 18px;
 }
 /* Switch checkbox */
 .checkboxSwitch {
