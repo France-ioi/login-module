@@ -219,60 +219,77 @@ hr {
 	justify-content: space-between;
 	margin: 0;
 	padding: 0;
+	font-size: 1.2rem;
+
+	li {
+		text-align: center;
+		width: 100%;
+		white-space: nowrap;
+		&:not(.active):not(.prev):not(:last-child) {
+			border-right-width: 2px;
+			border-right-style: solid;
+			-webkit-border-image:
+			  -webkit-linear-gradient(rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
+			-moz-border-image:
+			  -moz-linear-gradient(rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
+			-o-border-image:
+			  -o-linear-gradient(rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
+			border-image:
+			  linear-gradient(to bottom, rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
+		}
+		a {
+			padding: 10px 0;
+			display: block;
+			text-decoration: none;
+			i {
+				padding-right: 8px;
+			}
+		}
+		&.active {
+			background-color: #fff;
+			border-radius: 5px 5px 0 0;
+			position: relative;
+			padding-left: 4px;
+			left: -4px;
+			&:first-child {
+				padding-left: 0;
+				left: 0;
+			}
+			&:last-child {
+				margin-right: -4px;
+			}
+			&::before,
+			&::after {
+				content: " ";
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				background: transparent;
+			}
+			&:first-child::before,
+			&:last-child::after {
+				content: normal;
+			}
+			&::before {
+				border-radius: 50% 0;
+				box-shadow: 10px 0px 0 #fff;
+				bottom: 0;
+				left: -20px;
+			}
+			&::after {
+				border-radius: 0 50%;
+				box-shadow: -10px 0px 0 #fff;
+				bottom: 0;
+				right: -20px;
+			}
+			a {
+				color: $brand-primary;
+			}
+		}
+	}
 }
 .userHeader {
 	margin-bottom: 30px;
-.tabs-menu li {
-	text-align: center;
-	width: 100%;
-	white-space: nowrap;
-}
-.tabs-menu li:not(.current):not(.prev):not(:last-child) {
-	border-right-width: 2px;
-	border-right-style: solid;
-	-webkit-border-image:
-	  -webkit-linear-gradient(rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
-	-moz-border-image:
-	  -moz-linear-gradient(rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
-	-o-border-image:
-	  -o-linear-gradient(rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
-	border-image:
-	  linear-gradient(to bottom, rgba(0,0,0,0.01),rgba(0,0,0,0.1), rgba(0,0,0,0.01)) 1 100%;
-}
-.tabs-menu li.current {
-	background-color: #fff;
-	border-radius: 5px 5px 0 0;
-	position: relative;
-	padding-left: 4px;
-	left: -4px;
-}
-.tabs-menu li.current::before,
-.tabs-menu li.current::after {
-	content: " ";
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	background: transparent;
-}
-.tabs-menu li.current::before {
-	border-radius: 50% 0;
-	box-shadow: 10px 0px 0 #fff;
-	bottom: 0;
-	left: -20px;
-}
-.tabs-menu li.current::after {
-	border-radius: 0 50%;
-	box-shadow: -10px 0px 0 #fff;
-	bottom: 0;
-	right: -20px;
-}
-.tabs-menu a {
-	padding: 10px 0;
-	display: block;
-	text-decoration: none;
-}
-.tabs-menu li.current a {
-	color: $brand-primary;
 }
 .user-picture {
 	width: 100px;
