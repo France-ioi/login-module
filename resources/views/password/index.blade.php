@@ -1,10 +1,3 @@
-@extends('layouts.popup')
-
-@section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('password.header')
-        </div>
         <div class="panel-body">
             @if(Session::get('success'))
                 <div class="alert alert-success">
@@ -27,5 +20,3 @@
                 </div>
             {!! BootForm::close() !!}
         </div>
-    </div>
-@endsection

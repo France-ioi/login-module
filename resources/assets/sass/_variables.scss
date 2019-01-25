@@ -83,5 +83,14 @@ $alert-danger-bg: lighten($brand-danger, 46%);
 $alert-danger-text: $brand-danger;
 $alert-danger-border: transparent;
 
+// Labels
+$label-default-bg: transparent;
+$label-primary-bg: $label-default-bg;
+$label-success-bg: $label-default-bg;
+$label-info-bg: $label-default-bg;
+$label-warning-bg: $label-default-bg;
+$label-danger-bg: $label-default-bg;
+$label-color: $text-color;
+
 // Navs
 $nav-link-padding: 0;
