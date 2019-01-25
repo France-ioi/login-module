@@ -96,5 +96,6 @@ return [
         'school' => 'Scholar informations',
         'contact' => 'Contact informations',
         'settings' => 'Parameters',
-    ]
+    ],
+    'quick_menu' => 'Quick menu'
 ];

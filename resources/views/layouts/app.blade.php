@@ -9,7 +9,7 @@
     <link href="/css/app.css" rel="stylesheet">
     <script src="/js/app.js" charset="UTF-8"></script>
 </head>
-<body>
+<body {!! Request::is('profile') ? 'data-spy="scroll" data-target="#contextualNav"' : '' !!}>
     @yield('navigation')
     <div class="container">
         @yield('content')
