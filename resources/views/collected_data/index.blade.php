@@ -59,7 +59,24 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="data-summary">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                Collected data summary
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">+</span>
+                    </button>
+                    <div class="sectionTitle">
+                        <i class="fas fa-shield-alt icon"></i>
+                        @lang('collected_data.item_self')
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-content">
+                        @include('collected_data.summary', ['data' => $data])
+                    </div>
+                    <button type="button" class="btn btn-primary btn-rounded btn-centered" data-dismiss="modal">
+                        <i class="fas fa-times icon"></i>
+                        @lang('ui.close')
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,17 +84,28 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="delete-confirmation">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body">
-                    {!! BootForm::open(['url' => '/collected_data/delete', 'id' => 'delete']) !!}
-                        {!! BootForm::checkbox('confirm1', trans('collected_data.confirmation.cb1')) !!}
-                        {!! BootForm::checkbox('confirm2', trans('collected_data.confirmation.cb2')) !!}
-                    {!! BootForm::close() !!}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">+</span>
+                    </button>
+                    <div class="sectionTitle">
+                        <i class="fas fa-shield-alt icon"></i>
+                        @lang('collected_data.confirmation.header')
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn-confirm">
+                <div class="modal-body">
+                    <div class="modal-body-content">
+                        {!! BootForm::open(['url' => '/collected_data/delete', 'id' => 'delete']) !!}
+                            {!! BootForm::checkbox('confirm1', trans('collected_data.confirmation.cb1')) !!}
+                            {!! BootForm::checkbox('confirm2', trans('collected_data.confirmation.cb2')) !!}
+                        {!! BootForm::close() !!}
+                    </div>
+                    <button type="button" class="btn btn-danger btn-rounded btn-centered" data-dismiss="modal" id="btn-confirm">
+                        <i class="fas fa-trash-alt icon"></i>
                         @lang('collected_data.confirmation.submit')
                     </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" class="btn btn-primary btn-rounded btn-centered" data-dismiss="modal">
+                        <i class="fas fa-times icon"></i>
                         @lang('ui.cancel')
                     </button>
                 </div>

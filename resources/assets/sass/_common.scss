@@ -28,6 +28,11 @@ hr {
 	border-radius: 50px;
 	padding: 6px 15px;
 }
+.btn-centered {
+	margin: 10px auto 0;
+	min-width: 200px;
+	display: block;
+}
 .btn .icon {
 	position: absolute;
 	left: 16px;
@@ -348,5 +353,42 @@ hr {
 			color: $brand-primary;
 			margin-left: 20px;
 		}
+	}
+}
+.modal-header .close {
+	color: $brand-primary;
+	opacity: 1;
+	transform: rotate(45deg);
+	font-size: 32px;
+	font-weight: lighter;
+}
+@media (min-width: 768px) {
+	.modal-dialog {
+		margin: 100px auto;
+		.modal-content {
+			box-shadow: none;
+			border: none;
+			border-radius: $border-radius-base;
+			.modal-body-content {
+				margin-left: 35px;
+			}
+		}
+	}
+}
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td {
+	border-top: none;
+	border-bottom: 1px solid $table-border-color;
+}
+.table {
+	font-size: 1.2rem;
+	.value {
+		text-align: right;
+		color: $brand-primary;
+		font-weight: bold;
 	}
 }

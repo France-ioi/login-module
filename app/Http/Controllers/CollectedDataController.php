@@ -11,7 +11,8 @@ class CollectedDataController extends Controller
 
     public function index(Request $request) {
         return view('collected_data.index', [
-            'clients' => $this->clients($request->user())
+            'clients' => $this->clients($request->user()),
+            'data' => $this->data($request->user())
         ]);
     }
 
@@ -26,13 +27,6 @@ class CollectedDataController extends Controller
                 'Content-Disposition' => 'attachment; filename="login-module-export.json"',
             ]
         );
-    }
-
-
-    public function summary(Request $request) {
-        return view('collected_data.summary', [
-            'data' => $this->data($request->user())
-        ]);
     }
 
 
