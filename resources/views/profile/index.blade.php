@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="alert-section">
             @if($schema->hasRequiredAttributes())
                 <div class="pull-right">
                     <div class="checkbox" style="margin: 0">
@@ -37,9 +37,11 @@
             @include('profile.alerts.pms_redirect')
             @include('ui.status')
             @include('ui.errors')
-            <div class="">
-                @lang('profile.required_fields_explanation')
-            </div>
+        </div>
+        <div class="info-message">
+            @lang('profile.required_fields_explanation')
+        </div>
+        <div class="panel-body">
             {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm'])) !!}
                 @if($all)
                     {!! BootForm::hidden('all', 1) !!}
@@ -318,7 +320,8 @@
                 if(text) {
                     var icon = $('<span class="fas fa-question-circle profile-tooltip-icon"></span>');
                     icon.tooltip({
-                        title: text
+                        title: text,
+                        placement: 'left'
                     })
                     label.parents('.form-group').append(icon);
                 }

@@ -97,5 +97,11 @@ return [
         'contact' => 'Contact informations',
         'settings' => 'Parameters',
     ],
+    'icons' => [
+        'personal' => 'user',
+        'school' => 'graduation-cap',
+        'contact' => 'envelope',
+        'settings' => 'flag'
+    ],
     'quick_menu' => 'Quick menu'
 ];

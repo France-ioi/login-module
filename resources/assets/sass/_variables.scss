@@ -42,7 +42,7 @@ $navbar-default-bg: #fff;
 // Buttons
 $btn-default-color: $text-color;
 
-// Inputs
+// Forms
 $input-background: lighten($text-color, 50%);
 $input-border: $default-border-color;
 $input-border-focus: lighten($brand-primary, 25%);
@@ -50,6 +50,7 @@ $input-color-placeholder: lighten($text-color, 30%);
 $input-icon: lighten($text-color, 30%);
 $input-border-radius: $border-radius-base;
 $input-group-addon-bg: $input-background;
+$legend-border-color: transparent;
 
 // Panels
 $panel-border-radius: 0 0 $border-radius-base $border-radius-base;

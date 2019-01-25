@@ -38,7 +38,7 @@ class ProfileFormRenderer {
     private static function section($name, $html) {
         return
             '<fieldset id="section_'.$name.'">'.
-                '<legend>'.trans('profile.sections.'.$name).'</legend>'.
+                '<legend class="sectionTitle"><i class="fas fa-'.trans('profile.icons.'.$name).' icon"></i>'.trans('profile.sections.'.$name).'</legend>'.
                 $html.
             '</fieldset>';
     }
