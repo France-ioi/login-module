@@ -40,7 +40,7 @@
             <div class="">
                 @lang('profile.required_fields_explanation')
             </div>
-            {!! BootForm::open($form) !!}
+            {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm'])) !!}
                 @if($all)
                     {!! BootForm::hidden('all', 1) !!}
                 @endif
@@ -54,6 +54,7 @@
                             @lang('ui.close')
                         </a>
                     @endif
+                </div>
             {!! BootForm::close() !!}
         </div>
     </div>
@@ -315,11 +316,11 @@
                 var label = $(this)
                 var text = tooltips[label.attr('for')];
                 if(text) {
-                    var icon = $('<span class="glyphicon glyphicon-question-sign profile-tooltip-icon"></span>');
+                    var icon = $('<span class="fas fa-question-circle profile-tooltip-icon"></span>');
                     icon.tooltip({
                         title: text
                     })
-                    label.append(icon);
+                    label.parents('.form-group').append(icon);
                 }
             });
 

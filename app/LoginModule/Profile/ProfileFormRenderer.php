@@ -37,7 +37,7 @@ class ProfileFormRenderer {
 
     private static function section($name, $html) {
         return
-            '<fieldset id="section_'.$name.'" class="form-group">'.
+            '<fieldset id="section_'.$name.'">'.
                 '<legend>'.trans('profile.sections.'.$name).'</legend>'.
                 $html.
             '</fieldset>';

@@ -29,11 +29,11 @@
                             <i class="fas fa-eye icon"></i>
                             @lang('collected_data.summary')
                         </button>
-                        <a class="" href="/collected_data/export">
+                        <a class="btn-link" href="/collected_data/export">
                             <i class="fas fa-download icon"></i>
                             @lang('collected_data.export')
                         </a>
-                        <a class="" href="#" id="btn-delete">
+                        <a class="btn-link" href="#" id="btn-delete">
                             <i class="far fa-trash-alt icon"></i>
                             @lang('collected_data.delete')
                         </a>
