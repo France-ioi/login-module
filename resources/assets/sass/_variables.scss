@@ -9,21 +9,6 @@ $container-lg: $container-base;
 $container-desktop: $container-base;
 $container-large-desktop : $container-base;
 
-// Borders
-$laravel-border-color: darken($body-bg, 10%);
-$list-group-border: $laravel-border-color;
-$navbar-default-border: $laravel-border-color;
-$panel-default-border: $laravel-border-color;
-$panel-inner-border: $laravel-border-color;
-$border-radius-base: 5px;
-
-// Brands
-$brand-primary: #4A90E2;
-$brand-info: #8eb4cb;
-$brand-success: #2ab27b;
-$brand-warning: #cbb956;
-$brand-danger: #FF001F;
-
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 //$font-family-sans-serif: "Raleway", sans-serif;
@@ -34,6 +19,23 @@ $text-color-secondary: #9b9b9b;
 $text-color-light: #fff;
 $font-family-sans-serif: "Titillium Web", sans-serif;
 
+// Borders
+$laravel-border-color: darken($body-bg, 10%);
+$list-group-border: $laravel-border-color;
+$navbar-default-border: $laravel-border-color;
+$panel-default-border: $laravel-border-color;
+$panel-inner-border: $laravel-border-color;
+$border-radius-base: 5px;
+$default-border-color: lighten($text-color, 41%);
+
+// Brands
+$brand-primary: #4A90E2;
+$brand-info: #8eb4cb;
+$brand-success: #2ab27b;
+$brand-warning: #cbb956;
+$brand-danger: #FF001F;
+
+
 // Navbar
 $navbar-default-bg: #fff;
 
@@ -42,7 +44,7 @@ $btn-default-color: $text-color;
 
 // Inputs
 $input-background: lighten($text-color, 50%);
-$input-border: lighten($text-color, 41%);
+$input-border: $default-border-color;
 $input-border-focus: lighten($brand-primary, 25%);
 $input-color-placeholder: lighten($text-color, 30%);
 $input-icon: lighten($text-color, 30%);
@@ -63,4 +65,20 @@ $modal-inner-padding: 30px;
 $modal-title-padding: 20px 20px 0;
 
 // Tables
-$table-border-color: lighten($text-color, 41%);
+$table-border-color: $default-border-color;
+
+// Alerts
+$alert-padding: 2px 30px 2px 4px;
+$alert-border-radius: 50px;
+$alert-success-bg: lighten($brand-success, 46%);
+$alert-success-text: $brand-success;
+$alert-success-border: transparent;
+$alert-info-bg: lighten($brand-info, 46%);
+$alert-info-text: $brand-info;
+$alert-info-border: transparent;
+$alert-warning-bg: lighten($brand-warning, 46%);
+$alert-warning-text: $brand-warning;
+$alert-warning-border: transparent;
+$alert-danger-bg: lighten($brand-danger, 46%);
+$alert-danger-text: $brand-danger;
+$alert-danger-border: transparent;
