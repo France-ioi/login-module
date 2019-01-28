@@ -12,7 +12,14 @@ class ProfileFormElements {
             $block->name,
             $label,
             null,
-            $block->disabled ? ['disabled'] : []
+            array_merge(
+                $block->disabled ? ['disabled'] : [],
+                [
+                    'prefix' => BootForm::addonText('Aa'),
+                    'suffix' => BootForm::addonButton(trans('verification.btn_verify').'  <i class="fas fa-check"></i>',
+                        ['class' => 'btn-danger'])
+                ]
+            )
         );
     }
 
@@ -29,7 +36,9 @@ class ProfileFormElements {
     public static function checkbox($block, $label) {
         return
             BootForm::hidden($block->name, 0).
-            BootForm::checkbox($block->name, $label);
+            '<div class="checkboxSwitch">'.
+                BootForm::checkbox($block->name, $label.'<span class="bg"><span class="cursor"></span></span>').
+            '</div>';
     }
 
 
@@ -38,7 +47,7 @@ class ProfileFormElements {
             $block->name,
             $label,
             null,
-            array_merge($block->disabled ? ['disabled'] : [], ['autocomplete' => 'off'])
+            array_merge($block->disabled ? ['disabled'] : [], ['autocomplete' => 'off', 'prefix' => BootForm::addonText('Aa')])
         );
     }
 
@@ -79,7 +88,7 @@ class ProfileFormElements {
             $block->name,
             $label,
             null,
-            $block->disabled ? ['disabled'] : []
+            array_merge($block->disabled ? ['disabled'] : [], ['prefix' => BootForm::addonText('<i class="fa-calendar-alt far"></i>')])
         );
     }
 
