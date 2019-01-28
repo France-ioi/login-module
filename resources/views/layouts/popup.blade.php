@@ -23,8 +23,8 @@
                         </ul>
                     </div>
                     @if(Auth::check())
-                        <div>
-                            <a href="/logout" className=""><i class="fas fa-power-off"></i></a>
+                        <div class="logout">
+                            <a href="/logout"><i class="fas fa-power-off"></i></a>
                         </div>
                     @endif
                     @if(PlatformHelper::cancelUrl())

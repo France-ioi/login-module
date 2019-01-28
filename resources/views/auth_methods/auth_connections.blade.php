@@ -15,7 +15,10 @@
                 <li class="list-group-item">
                     {{ trans('auth_methods.password') }}
                     @if($has_password)
-                        <span class="label label-success">@lang('auth_methods.active')</span>
+                        <span class="label label-success">
+                            <i class="fas fa-check"></i>
+                            @lang('auth_methods.active')
+                        </span>
                     @endif
                     <button type="button" class="btn-link pull-right" data-toggle="modal" data-target="#edit-password">
                         <i class="fas fa-pencil-alt icon"></i>
@@ -26,7 +29,10 @@
                     <li class="list-group-item">
                         {{ trans('auth_connections')[$provider] }}
                         @if(isset($connected[$provider]))
-                            <span class="label label-success">@lang('auth_methods.active')</span>
+                            <span class="label label-success">
+                                <i class="fas fa-check"></i>
+                                @lang('auth_methods.active')
+                            </span>
                             @if(isset($support_remove[$provider]))
                                 <form method="post" action="/oauth_client/remove/{{ $provider }}" style="display: inline">
                                     {{ csrf_field() }}

@@ -187,6 +187,11 @@ fieldset .form-group {
 			right: 0;
 		}
 	}
+	.logout a {
+		color: $brand-primary;
+		font-size: 20px;
+		line-height: 1;
+	}
 }
 .platformTitle {
 	font-size: 1.8rem;
@@ -500,4 +505,11 @@ fieldset .form-group {
 	padding: 30px 30px 10px;
 	font-size: 1rem;
 	font-weight: bold;
+}
+.label {
+	font-size: 1.2rem;
+	font-weight: normal;
+}
+.label-success {
+	color: #B8E986;
 }
