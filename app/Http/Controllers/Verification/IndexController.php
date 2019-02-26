@@ -19,7 +19,9 @@ class IndexController extends Controller
 
 
     public function index(Request $request, PlatformContext $context) {
-        $methods = $this->verification->methods();
+        $methods = $this->verification->methods()->filter(function($method) {
+            return $method->public;
+        });
         if(count($methods) == 0) {
             return redirect('/profile');
         }

@@ -43,7 +43,7 @@ class ProfileController extends Controller
                 $request->session()->put('url.intended', $request->get('redirect_uri'));
             }
         };
-        $disabled = $this->disabledAttributes($user, $is_pms_user, $user->login_fixed);
+        $disabled_attributes = $this->disabledAttributes($user, $is_pms_user, $user->login_fixed);
 
         $client = $this->context->client();
         $required_attributes = $this->requiredAttributes($user);
@@ -56,7 +56,7 @@ class ProfileController extends Controller
             $user,
             $required_attributes,
             $recommended_attributes,
-            $disabled,
+            $disabled_attributes,
             true//$request->has('all')
         );
 

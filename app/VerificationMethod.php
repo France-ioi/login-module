@@ -9,7 +9,8 @@ class VerificationMethod extends Model
     protected $fillable = [
         'id',
         'name',
-        'user_attributes'
+        'user_attributes',
+        'public'
     ];
 
     protected $casts = [
