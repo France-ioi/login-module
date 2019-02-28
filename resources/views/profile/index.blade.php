@@ -43,8 +43,8 @@
         </div>
         <div class="panel-body">
             {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm'])) !!}
-                @if($all)
-                    {!! BootForm::hidden('all', 1) !!}
+                @if($optional_fields_visible)
+                    {!! BootForm::hidden('optional_fields_visible', 1) !!}
                 @endif
                 {!! ProfileFormRenderer::render($schema) !!}
                 <div class="form-group">
@@ -191,7 +191,7 @@
                     });
                 }
                 el.click(toggleOptionalFields);
-                el.prop('checked', {!! $all ? 'false' : 'true' !!});
+                el.prop('checked', {!! $optional_fields_visible ? 'false' : 'true' !!});
                 toggleOptionalFields();
                 $('#graduation_grade').trigger('change');
             })($('#optional_fields_filter'));

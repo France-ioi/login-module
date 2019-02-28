@@ -56,8 +56,7 @@ class ProfileController extends Controller
             $user,
             $required_attributes,
             $recommended_attributes,
-            $disabled_attributes,
-            true//$request->has('all')
+            $disabled_attributes
         );
 
         $unverified_attributes = $this->verification->unverifiedAttributes($user);
@@ -74,7 +73,7 @@ class ProfileController extends Controller
             'schema' => $schema,
             'pms_redirect' => $is_pms_user,
             'cancel_url' => $this->context->cancelUrl(),
-            'all' => $request->has('all') || count($required_attributes) == 0,
+            'optional_fields_visible' => $request->has('optional_fields_visible') || count($required_attributes) == 0,
             'revalidation_fields' => Group::getRevalidationFields($user),
             'unverified_attributes' => $unverified_attributes,
             'verification_ready' => $verification_ready,
@@ -98,8 +97,7 @@ class ProfileController extends Controller
             $user,
             $required_attributes,
             [],
-            $this->disabledAttributes($user, $is_pms_user, $user->login_fixed),
-            true
+            $this->disabledAttributes($user, $is_pms_user, $user->login_fixed)
         );
         //\DB::connection()->enableQueryLog();
         //dd($schema->rules());

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\LoginModule\Locale;
 use App\LoginModule\Platform\PlatformContext;
-use App\LoginModule\Profile\SchemaBuilder;
+use App\LoginModule\Profile\SchemaConfig;
 
 
 class RegisterController extends Controller
@@ -40,10 +40,9 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct(PlatformContext $context, SchemaBuilder $schema_builder) {
+    public function __construct(PlatformContext $context) {
         $this->middleware('guest');
         $this->context = $context;
-        $this->schema_builder = $schema_builder;
     }
 
 
@@ -70,19 +69,22 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $required = $this->requiredAttributes();
-        $schema = $this->schema_builder->build(null, $this->requiredAttributes(), []);
-        $validation_rules = $schema->rules();
-        $reg_rules = [
+        $attributes = $this->requiredAttributes();
+        $rules = [
             'password' => 'required|min:6|confirmed'
         ];
-        if(isset($validation_rules['login'])) {
-            $reg_rules['login'] = $validation_rules['login'];
+        foreach($attributes as $attr) {
+            $config = SchemaConfig::$attr();
+            $rule = [];
+            if(isset($config['required']))  {
+                $rule = (array) $config['required'];
+            }
+            if(isset($config['valid'])) {
+                $rule = array_merge($rule, (array) $config['valid']);
+            }
+            $rules[$attr] = $rule;
         }
-        if(isset($validation_rules['primary_email'])) {
-            $reg_rules['primary_email'] = $validation_rules['primary_email'];
-        }
-        return Validator::make($data, $reg_rules);
+        return Validator::make($data, $rules);
     }
 
     /**

@@ -10,9 +10,8 @@ class SchemaBuilder {
     public function build($user,
                           array $required_attributes,
                           array $recommended_attributes,
-                          array $disabled_attributes = [],
-                          $all_visible = false) {
-        $visible_attributes = $this->visibleAttributes($required_attributes, $all_visible);
+                          array $disabled_attributes = []) {
+        $visible_attributes = $this->availableAttributes();
         $required_attributes  = array_fill_keys($required_attributes, true);
         $recommended_attributes  = array_fill_keys($recommended_attributes, true);
         $disabled_attributes = array_fill_keys($disabled_attributes, true);
@@ -61,15 +60,6 @@ class SchemaBuilder {
             'label' => isset($config['label']) ? $config['label'] : null,
             'help' => isset($config['help']) ? $config['help'] : null,
         ];
-    }
-
-
-    private function visibleAttributes(array $required_attributes, $all_visible = false) {
-        $available = $this->availableAttributes();
-        if($all_visible || count($required_attributes) == 0) {
-            return $available;
-        }
-        return array_values(array_intersect($available, $required_attributes));
     }
 
 
