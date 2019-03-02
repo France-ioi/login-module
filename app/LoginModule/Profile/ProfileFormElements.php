@@ -7,19 +7,37 @@ use BootForm;
 class ProfileFormElements {
 
 
+    private static function verificationButton($name) {
+        $url = route('verification/select_method', [
+            'attribute' => $name
+        ]);
+        $opts = [
+            'class' => 'btn-danger',
+            'onclick' => 'location.href=\''.$url.'\';'
+        ];
+        return BootForm::addonButton(
+            trans('verification.btn_verify').'  <i class="fas fa-check"></i>',
+            $opts
+        );
+    }
+
+
     public static function text($block, $label) {
+        $opts = [
+            'prefix' => BootForm::addonText('Aa')
+        ];
+        if($block->disabled) {
+            $opts[] = 'disabled';
+        }
+        if($block->display_verification) {
+            $opts['suffix'] = self::verificationButton($block->name);
+        }
+
         return BootForm::text(
             $block->name,
             $label,
             null,
-            array_merge(
-                $block->disabled ? ['disabled'] : [],
-                [
-                    'prefix' => BootForm::addonText('Aa'),
-                    'suffix' => BootForm::addonButton(trans('verification.btn_verify').'  <i class="fas fa-check"></i>',
-                        ['class' => 'btn-danger'])
-                ]
-            )
+            $opts
         );
     }
 
@@ -43,11 +61,22 @@ class ProfileFormElements {
 
 
     public static function email($block, $label) {
+        $opts = [
+            'prefix' => BootForm::addonText('Aa'),
+            'autocomplete' => 'off'
+        ];
+        if($block->disabled) {
+            $opts[] = 'disabled';
+        }
+        if($block->display_verification) {
+            $opts['suffix'] = self::verificationButton($block->name);
+        }
+
         return BootForm::email(
             $block->name,
             $label,
             null,
-            array_merge($block->disabled ? ['disabled'] : [], ['autocomplete' => 'off', 'prefix' => BootForm::addonText('Aa')])
+            $opts
         );
     }
 
@@ -61,12 +90,16 @@ class ProfileFormElements {
 
 
     public static function select($block, $label) {
+        $opts = $block->disabled ? ['disabled'] : [];
+        if($block->display_verification) {
+            $opts['suffix'] = self::verificationButton($block->name);
+        }
         return BootForm::select(
             $block->name,
             $label,
             $block->options,
             null,
-            $block->disabled ? ['disabled'] : []
+            $opts
         );
     }
 
@@ -84,11 +117,20 @@ class ProfileFormElements {
 
 
     public static function date($block, $label) {
+        $opts = [
+            'prefix' => BootForm::addonText('<i class="fa-calendar-alt far"></i>')
+        ];
+        if($block->disabled) {
+            $opts[] = 'disabled';
+        }
+        if($block->display_verification) {
+            $opts['suffix'] = self::verificationButton($block->name);
+        }
         return BootForm::text(
             $block->name,
             $label,
             null,
-            array_merge($block->disabled ? ['disabled'] : [], ['prefix' => BootForm::addonText('<i class="fa-calendar-alt far"></i>')])
+            $opts
         );
     }
 

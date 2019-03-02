@@ -52,15 +52,16 @@ class ProfileController extends Controller
             $required_attributes = ['login'];
             $recommended_attributes = [];
         }
+        $unverified_attributes = $this->verification->unverifiedAttributes($user);
+        $verification_ready = $this->profile->attributesCompleted($user, $unverified_attributes);
+
         $schema = $this->schema_builder->build(
             $user,
             $required_attributes,
             $recommended_attributes,
-            $disabled_attributes
+            $disabled_attributes,
+            $unverified_attributes
         );
-
-        $unverified_attributes = $this->verification->unverifiedAttributes($user);
-        $verification_ready = $this->profile->attributesCompleted($user, $unverified_attributes);
 
         return view('profile.index', [
             'form' => [

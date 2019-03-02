@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/collected_data/delete', 'CollectedDataController@delete');
 
     Route::get('/verification', 'Verification\IndexController@index');
+    Route::get('/verification/select_method/{attribute}', 'Verification\IndexController@selectMethod')->name('verification/select_method');;
     Route::post('/verification/delete/{id}', 'Verification\IndexController@delete');
     Route::get('/verification/email_code', 'Verification\Methods\EmailCodeController@index');
     Route::post('/verification/email_code', 'Verification\Methods\EmailCodeController@store');

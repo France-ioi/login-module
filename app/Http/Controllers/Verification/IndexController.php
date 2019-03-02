@@ -46,4 +46,18 @@ class IndexController extends Controller
         return redirect('/verification');
     }
 
+
+    public function selectMethod($attribute) {
+        $methods = $this->verification->methods()->filter(function($method) use ($attribute) {
+            return $method->public && in_array($attribute, $method->user_attributes);
+        })->values()->all();
+        if(count($methods) == 1) {
+            return redirect('/verification/'.$methods[0]->name);
+        }
+        return view('verification.select_method', [
+            'methods' => $methods
+        ]);
+    }
+
+
 }
