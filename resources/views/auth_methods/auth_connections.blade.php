@@ -1,11 +1,3 @@
-<div class="panel panel-default">
-    <div class="alert-section">
-        <div class="alert alert-danger">
-            <i class="fas fa-bell icon"></i>
-            @lang('auth_methods.alert')
-        </div>
-    </div>
-    <div class="panel-body">
         <div class="sectionTitle">
             <i class="fas fa-unlock-alt icon"></i>
             @lang('auth_methods.title')
@@ -53,8 +45,6 @@
                 @endforeach
             </ul>
         </div>
-    </div>
-</div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="edit-password">
     <div class="modal-dialog" role="document">
