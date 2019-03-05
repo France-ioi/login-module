@@ -45,6 +45,11 @@ class Badge extends Model
     }
 
 
+    public function getNameAttribute() {
+        return $this->badge_api_id ? $this->badgeApi->url : '';
+    }
+
+
     public function getUrlAttribute() {
         if($this->badge_api_id) {
             return $this->badgeApi->url;
