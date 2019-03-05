@@ -140,6 +140,31 @@ hr {
 		}
 	}
 }
+.selfToggleItem {
+	display: inline-block;
+	cursor: pointer;
+	.code {
+		display: none;
+	}
+	.toggle {
+		display: inline;
+	}
+	input {
+		display: none;
+	}
+	input:checked {
+		& ~ .toggle {
+			display: none;
+		}
+		& ~ .code {
+			display: inline;
+		}
+	}
+	label {
+		font-weight: normal;
+		color: $brand-primary;
+	}
+}
 .bgDropdown {
 	background-color: $brand-primary;
 	border-radius: 10px;
@@ -512,4 +537,7 @@ fieldset .form-group {
 }
 .label-success {
 	color: #B8E986;
+}
+.badgeList .selfToggleItem {
+	margin-right: 2em;
 }

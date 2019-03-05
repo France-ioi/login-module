@@ -9,7 +9,11 @@ return [
     'btn_change' => 'Change',
     'password' => 'Password',
 
-    'badges_header' => 'Qualification сodes',
+    'badges_header' => 'Qualification codes',
+    'badge_title' => 'Qualification code',
+    'label_enabled_login' => 'Active for',
+    'label_disabled_login' => 'For',
+    'badge_code_toggle' => 'See',
     'btn_enable_login' => 'Enable login',
     'btn_disable_login' => 'Disable login',
 
