@@ -19,6 +19,7 @@
 
 @if($errors->has('password') || $errors->has('password_confirmation'))
     <script type="text/javascript">
-        $('#edit-password').show();
+        $('[data-target="#edit-password"]').attr('aria-expanded', true);
+        $('#edit-password').addClass('in').attr('aria-expanded', true);
     </script>
 @endif
