@@ -16,3 +16,9 @@
 	    </div>
 	</div>
 </li>
+
+@if($errors->has('password') || $errors->has('password_confirmation'))
+    <script type="text/javascript">
+        $('#edit-password').show();
+    </script>
+@endif
