@@ -20,6 +20,7 @@ hr {
 	border: none;
 	font-size: 1.2rem;
 	position: relative;
+	min-width: 200px;
 }
 .btn-wide {
 	width: 100%;
@@ -30,7 +31,6 @@ hr {
 }
 .btn-centered {
 	margin: 10px auto 0;
-	min-width: 200px;
 	display: block;
 }
 .btn .icon {
@@ -60,6 +60,13 @@ hr {
 	border: 1px solid $input-border;
 	box-shadow: none;
 	font-size: 16px;
+}
+.form-inset {
+	label {
+		font-weight: normal;
+		color: $brand-primary;
+		line-height: 3.6rem;
+	}
 }
 .input-group {
 
@@ -106,6 +113,19 @@ hr {
 }
 .panel-auth .profile-tooltip-icon {
 	right: 142px;
+}
+button[aria-expanded="true"] {
+	.openCollapseItem {
+		display: none;
+	}
+}
+button:not([aria-expanded="true"]) {
+	.closeCollapseItem {
+		display: none;
+	}
+}
+.collapse {
+	margin-top: 2em;
 }
 /* Switch checkbox */
 .checkboxSwitch {
