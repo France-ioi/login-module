@@ -2,10 +2,11 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('badges.header')
-        </div>
         <div class="panel-body">
+            <div class="sectionTitle">
+                <i class="fas fa-qrcode icon"></i>
+                @lang('badges.header')
+            </div>
             @include('ui.status')
             @if(!count($available))
                 <div class="alert alert-success">@lang('badges.nothing_to_add')</div>

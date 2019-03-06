@@ -11,7 +11,7 @@
             @lang('verification.header')
         </a>
     </li>
-    <li>
+    <li class="{!! Request::is('badges', 'badges/*') ? 'active' : '' !!}">
         <a href="{{ url('/badges') }}">
             <i class="fas fa-qrcode"></i>
             @lang('badges.header')

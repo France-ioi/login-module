@@ -9,7 +9,7 @@
             @if(isset($support_remove[$provider]))
                 <form method="post" action="/oauth_client/remove/{{ $provider }}" style="display: inline">
                     {{ csrf_field() }}
-                    <button class="btn-link btn-danger pull-right" type="submit">
+                    <button class="btn-link btn-link-danger pull-right" type="submit">
                         <i class="fas fa-trash-alt icon"></i>
                         @lang('auth_methods.btn_remove')
                     </button>
