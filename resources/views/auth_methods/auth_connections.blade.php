@@ -11,7 +11,7 @@
             @lang('auth_methods.title')
         </div>
         <div class="panel-content">
-            <ul class="list-group">
+            <ul class="list-group data-table">
                 <li class="list-group-item">
                     {{ trans('auth_methods.password') }}
                     @if($has_password)
@@ -66,13 +66,12 @@
                                 <span class="selfToggleItem">
                                     <label>
                                         <input type="checkbox" />
-                                        <span class="toggle">@lang('auth_methods.badge_code_toggle') <i class="fas fa-eye icon"></i></span>
-                                        <span class="code">{{ $badge->code }} <i class="fas fa-eye-slash icon"></i></span>
+                                        <span class="toggle-btn">@lang('auth_methods.badge_code_toggle') <i class="fas fa-eye icon"></i></span> <span class="code">{{ $badge->code }} <i class="fas fa-eye-slash icon"></i></span>
                                     </label>
                                 </span>
                                 <form method="post" action="/auth_methods/badge_login_ability/{{ $badge->id }}/{{ $badge->login_enabled ? '0' : '1' }}" style="display: inline">
                                     {{ csrf_field() }}
-                                    <button class="btn-link {{ $badge->login_enabled ? 'btn-danger' : 'btn-primary'}}" type="submit">
+                                    <button class="btn-link {{ $badge->login_enabled ? 'btn-link-danger' : 'btn-link-primary'}}" type="submit">
                                          <i class="fas fa-{{ $badge->login_enabled ? 'times' : 'plus' }} icon"></i> @lang($badge->login_enabled ? 'auth_methods.btn_disable_login' : 'auth_methods.btn_enable_login')
                                     </button>
                                 </form>

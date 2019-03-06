@@ -46,6 +46,9 @@ hr {
 	.icon {
 		padding-right: 5px;
 	}
+	&.btn-link-danger {
+		color: $brand-danger;
+	}
 }
 .form-group {
 	position: relative;
@@ -142,18 +145,21 @@ hr {
 }
 .selfToggleItem {
 	display: inline-block;
-	cursor: pointer;
 	.code {
 		display: none;
+		font-family: monospace;
 	}
-	.toggle {
+	.toggle-btn {
 		display: inline;
+		i {
+			margin-left: 6px;
+		}
 	}
 	input {
 		display: none;
 	}
 	input:checked {
-		& ~ .toggle {
+		& ~ .toggle-btn {
 			display: none;
 		}
 		& ~ .code {
@@ -163,6 +169,7 @@ hr {
 	label {
 		font-weight: normal;
 		color: $brand-primary;
+		cursor: pointer;
 	}
 }
 .bgDropdown {
@@ -456,7 +463,7 @@ fieldset .form-group {
 	border-top: none;
 	border-bottom: 1px solid $table-border-color;
 }
-.table {
+.data-table {
 	font-size: 1.2rem;
 	.value {
 		text-align: right;

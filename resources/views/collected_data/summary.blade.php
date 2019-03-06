@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table data-table">
     @foreach($data as $item)
         <tr>
             <td class="name">{{$item->title}}</td>
