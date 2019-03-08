@@ -2,7 +2,6 @@
 
 @section('content')
 
-    <div class="panel panel-default">
         <div class="alert-section">
             <div class="alert alert-danger">
                 <i class="fas fa-bell icon"></i>
@@ -22,7 +21,6 @@
                 </ul>
             </div>
         </div>
-    </div>
 
     @if($cancel_url)
         <a class="btn btn-link" href="{{ $cancel_url }}">

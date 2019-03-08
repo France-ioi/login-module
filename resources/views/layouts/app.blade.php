@@ -11,8 +11,12 @@
 </head>
 <body {!! Request::is('profile') ? 'data-spy="scroll" data-target="#contextualNav"' : '' !!}>
     @yield('navigation')
+    @yield('header')
     <div class="container">
+        @yield('aside')
+        @yield('startcontentwrapper')
         @yield('content')
+        @yield('endcontentwrapper')
     </div>
 </body>
 </html>

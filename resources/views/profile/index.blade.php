@@ -19,7 +19,6 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-default">
         <div class="alert-section">
             @if($schema->hasRequiredAttributes())
                 <div class="pull-right">
@@ -59,7 +58,6 @@
                 </div>
             {!! BootForm::close() !!}
         </div>
-    </div>
 
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
     <script type="text/javascript">

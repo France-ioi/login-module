@@ -1,11 +1,13 @@
 @extends('layouts.popup')
 
-@section('content')
+@section('header')
     <div class="pageTitle_wrapper">
         <div class="pageTitle">@lang('auth.login_pwd_header')</div>
         <div class="subtitle">@lang('auth.login_pwd_intro')</div>
     </div>
-    <div class="panel panel-auth">
+@endsection
+
+@section('content')
         <div class="panel-heading">
             <a class="back_link" href="{{ url('/auth') }}">
                 <i class="fas fa-arrow-left"></i>
@@ -34,7 +36,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <script type="text/javascript">
     // Auto-focus either login or password field

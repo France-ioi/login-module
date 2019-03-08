@@ -68,14 +68,14 @@
     </div>
 @endpush
 
-
-
-@section('content')
+@section('header')
     <div class="pageTitle_wrapper">
         <div class="pageTitle">@lang('auth.login_choice_header')</div>
         <div class="subtitle">@lang('auth.login_choice_intro')</div>
     </div>
-    <div class="panel panel-auth">
+@endsection
+
+@section('content')
         <div class="row">
             <div class="col-sm-6 hasBorder">
                 <div class="panelTitle">@lang('auth.login_email_badge')</div>
@@ -113,7 +113,6 @@
                 @endforeach
             </div>
         @endif
-    </div>
 
     <script type="text/javascript">
         $('#btn-show-hidden').click(function(e) {

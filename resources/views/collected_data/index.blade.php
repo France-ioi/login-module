@@ -10,7 +10,6 @@
         </ul>
     @endif
 
-    <div class="panel panel-default">
         <div class="panel-body">
             <div class="sectionTitle">
                 <i class="fas fa-shield-alt icon"></i>
@@ -55,7 +54,6 @@
             </ul>
             </div>
         </div>
-    </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="data-summary">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

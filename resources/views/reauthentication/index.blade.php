@@ -1,7 +1,6 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
         <div class="alert-section">
             <div class="alert alert-danger">
                 <i class="fas fa-bell icon"></i>
@@ -25,5 +24,4 @@
                 </div>
             {!! BootForm::close() !!}
         </div>
-    </div>
 @endsection

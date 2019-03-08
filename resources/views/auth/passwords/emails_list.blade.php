@@ -1,7 +1,6 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.emails_list_header')</div>
         <div class="panel-body">
             @foreach($emails as $email)
@@ -11,7 +10,6 @@
                 {!! BootForm::close() !!}
             @endforeach
         </div>
-    </div>
 
     <script type="text/javascript">
         $(document).ready(function() {

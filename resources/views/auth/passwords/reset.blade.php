@@ -1,7 +1,6 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.pwd_reset_header')</div>
 
         <div class="panel-body">
@@ -33,5 +32,4 @@
                 </div>
             {!! BootForm::close() !!}
         </div>
-    </div>
 @endsection

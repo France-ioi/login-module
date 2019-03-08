@@ -1,12 +1,13 @@
 @extends('layouts.popup')
 
-@section('content')
-
+@section('header')
     <div class="pageTitle_wrapper">
         <div class="pageTitle">@lang('auth.register_header')</div>
         <div class="subtitle">@lang('auth.register_intro', ['platform_name' => $platform_name])</div>
     </div>
-    <div class="panel panel-auth">
+@endsection
+
+@section('content')
         <div class="panel-heading">
             <a class="back_link" href="{{ url('auth') }}">
                 <i class="fas fa-arrow-left"></i>@lang('auth.select_another_method')
@@ -40,7 +41,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <script>
         $(document).ready(function() {

@@ -1,7 +1,6 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
         <div class="panel-heading">
             @lang('merging_accounts.header')
         </div>
@@ -28,5 +27,4 @@
                 {!! BootForm::close() !!}
             </p>
         </div>
-    </div>
 @endsection

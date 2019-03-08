@@ -1,7 +1,6 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
         <div class="panel-heading">
             @lang('badge.header')
         </div>
@@ -18,7 +17,6 @@
                 </div>
             {!! BootForm::close() !!}
         </div>
-    </div>
 
 
     <script type="text/javascript">

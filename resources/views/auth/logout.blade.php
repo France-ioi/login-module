@@ -1,7 +1,6 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
         <div class="panel-heading">@lang('auth.logout')</div>
         <div class="panel-body">
             {!! BootForm::open(['url' => '/logout_start']) !!}
@@ -14,5 +13,4 @@
                 {!! BootForm::submit(trans('auth.logout')) !!}
             {!! BootForm::close() !!}
         </div>
-    </div>
 @endsection

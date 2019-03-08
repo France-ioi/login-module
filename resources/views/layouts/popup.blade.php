@@ -1,5 +1,35 @@
 @extends('layouts.app')
 
+@section('startcontentwrapper')
+    @if(Auth::check())
+        <div class="panel panel-default">
+    @else
+        <div class="panel panel-auth">
+    @endif
+@endsection
+
+@section('endcontentwrapper')
+    </div>
+@endsection
+
+@section('header')
+    @if(Auth::check())
+        <div class="container">
+            <div class="userHeader pageTitle">
+                <img src="{!! Auth::user()->picture !!}" class="user-picture"/>
+                @if(Auth::user()->real_name_visible)
+                    {{ Auth::user()->first_name }}
+                    {{ Auth::user()->last_name }}
+                @else
+                    {{ Auth::user()->login }}
+                @endif
+            </div>
+
+            @include('layouts.components.tabs_menu')
+        </div>
+    @endif
+@endsection
+
 @section('navigation')
     <div class="header">
             <div class="headerTop clearfix">
@@ -34,20 +64,5 @@
                     @endif
                 </div>
             </div>
-            @if(Auth::check())
-                <div class="container">
-                    <div class="userHeader pageTitle">
-                        <img src="{!! Auth::user()->picture !!}" class="user-picture"/>
-                        @if(Auth::user()->real_name_visible)
-                            {{ Auth::user()->first_name }}
-                            {{ Auth::user()->last_name }}
-                        @else
-                            {{ Auth::user()->login }}
-                        @endif
-                    </div>
-
-                    @include('layouts.components.tabs_menu')
-                </div>
-            @endif
     </div>
 @endsection
