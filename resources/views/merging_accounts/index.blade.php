@@ -1,10 +1,10 @@
 @extends('layouts.popup')
 
 @section('content')
-        <div class="panel-heading">
-            @lang('merging_accounts.header')
-        </div>
         <div class="panel-body">
+            <div class="sectionTitle">
+                @lang('merging_accounts.header')
+            </div>
             {{ \Session::get('merge_account_id' )}}
             <p>
                 @lang('merging_accounts.intoduction', ['instance_name' => $instance_name])

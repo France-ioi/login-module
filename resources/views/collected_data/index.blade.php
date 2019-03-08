@@ -3,13 +3,14 @@
 @section('content')
 
     @if($errors->any())
-        <ul class="alert alert-danger">
-            @foreach($errors->all() as $error)
-            <li>{{$error}}</li>
-            @endforeach
-        </ul>
+        <div class="alert-section">
+            <ul class="alert alert-danger">
+                @foreach($errors->all() as $error)
+                <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
-
         <div class="panel-body">
             <div class="sectionTitle">
                 <i class="fas fa-shield-alt icon"></i>

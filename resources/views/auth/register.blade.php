@@ -10,13 +10,13 @@
 @section('content')
         <div class="panel-heading">
             <a class="back_link" href="{{ url('auth') }}">
-                <i class="fas fa-arrow-left"></i>@lang('auth.select_another_method')
+                <i class="fas fa-arrow-left"></i>
+                @lang('auth.select_another_method')
             </a>
         </div>
         <div class="panel-body">
             <div class="panelTitle">@lang('auth.register_title')</div>
-            <div class="">
-                <div class="">
+            <div>
                 {!! BootForm::horizontal(['route' => 'register', 'class' => 'centered_form', 'left_column_offset_class' => ' ', 'right_column_class' => ' ']) !!}
                     @if($login_required)
                         {!! BootForm::text('login', false, array_get($values, 'login'),
@@ -38,7 +38,6 @@
                         </a>
                     </div>
                 {!! BootForm::close() !!}
-                </div>
             </div>
         </div>
 

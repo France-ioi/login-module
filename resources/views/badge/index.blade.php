@@ -1,10 +1,10 @@
 @extends('layouts.popup')
 
 @section('content')
-        <div class="panel-heading">
-            @lang('badge.header')
-        </div>
         <div class="panel-body">
+            <div class="sectionTitle">
+                @lang('badge.header')
+            </div>
             {!! BootForm::open(['url' => '/badge/attach']) !!}
                 {!! BootForm::text('code', false) !!}
                 <div class="form-group">
