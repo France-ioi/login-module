@@ -132,6 +132,10 @@ button:not([aria-expanded="true"]) {
 	input {
 		display: none;
 	}
+	.checkbox,
+	.form-group {
+		margin-bottom: 0;
+	}
 	label {
 		padding: 0;
 		.bg {
@@ -142,6 +146,7 @@ button:not([aria-expanded="true"]) {
 			height: 15px;
 			width: 50px;
 			position: absolute;
+			top: 3px;
 			right: 0;
 			cursor: pointer;
 
@@ -273,7 +278,7 @@ fieldset .form-group {
 	.row {
 		margin: 0;
 		.col-sm-6 {
-			padding: 10px 20px 30px;
+			padding: 10px 20px 10px;
 		}
 	}
 	.row .hasBorder {
