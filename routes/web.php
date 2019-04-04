@@ -96,6 +96,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], '
         Route::post('/users/create_reset_link', 'UsersController@createResetLink');
         Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
         Route::delete('/users/{id}', 'UsersController@delete');
+        Route::get('/reset_passwords', 'ResetPasswordsController@index');
+        Route::post('/reset_passwords', 'ResetPasswordsController@reset');
     });
     Route::group(['middleware' => 'permission:admin.clients.manager'], function() {
         Route::resource('clients', 'ClientsController');

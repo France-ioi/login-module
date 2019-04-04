@@ -8,7 +8,13 @@
                     <a href="{{ url('/admin') }}">@lang('admin.dashboard')</a>
                 </li>
                 <li>
-                    <a href="{{ url('/admin/users') }}">@lang('admin.users')</a>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Users
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('/admin/users') }}">Users manager</a></li>
+                        <li><a href="{{ url('/admin/reset_passwords') }}">Reset passwords</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a href="{{ route('admin.clients.index') }}">@lang('admin.clients')</a>
@@ -29,7 +35,7 @@
                         <li><a href="{{ route('admin.lti_configs.index') }}">LTI config</a></li>
                         <li><a href="{{ route('admin.badge_apis.index') }}">Badge API</a></li>
                     </ul>
-                  </li>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
