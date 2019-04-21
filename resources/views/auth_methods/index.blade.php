@@ -1,13 +1,14 @@
 @extends('layouts.popup')
 
 @section('content')
-
-        <div class="alert-section">
-            <div class="alert alert-danger">
-                <i class="fas fa-bell icon"></i>
-                @lang('auth_methods.alert')
+        @if(!$has_password)
+            <div class="alert-section">
+                <div class="alert alert-danger">
+                    <i class="fas fa-bell icon"></i>
+                    @lang('auth_methods.alert')
+                </div>
             </div>
-        </div>
+        @endif
         <div class="panel-body">
             <div class="sectionTitle">
                 <i class="fas fa-unlock-alt icon"></i>
