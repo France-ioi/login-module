@@ -2,6 +2,7 @@
 return [
 
     'header' => 'Verification',
+    'not_required' => 'No verifications are required to use this platform.',
     'header_verifications' => 'Recent verifications',
     'header_methods' => 'Available verification methods',
 

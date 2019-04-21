@@ -1,7 +1,7 @@
 @extends('layouts.popup')
 
 @section('content')
-    @if(count($unverified_attributes))
+    @if(count($unverified_attributes) && count($methods))
         <div class="alert alert-danger">
             <div>
                 @lang('verification.unverified_attributes', [
@@ -62,24 +62,28 @@
         </div>
     @endif
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            @lang('verification.header_methods')
+    @if(count($methods))
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @lang('verification.header_methods')
+            </div>
+            <ul class="list-group">
+                @foreach($methods as $method)
+                    <a href="/verification/{{$method->name}}" class="list-group-item">
+                        <strong>@lang('verification.methods.'.$method->name)</strong>
+                        <div>
+                            @lang('verification.user_attributes'):
+                            @foreach($method->user_attributes as $attr)
+                                @lang('profile.'.$attr)@if(!$loop->last), @endif
+                            @endforeach
+                        </div>
+                    </a>
+                @endforeach
+            </ul>
         </div>
-        <ul class="list-group">
-            @foreach($methods as $method)
-                <a href="/verification/{{$method->name}}" class="list-group-item">
-                    <strong>@lang('verification.methods.'.$method->name)</strong>
-                    <div>
-                        @lang('verification.user_attributes'):
-                        @foreach($method->user_attributes as $attr)
-                            @lang('profile.'.$attr)@if(!$loop->last), @endif
-                        @endforeach
-                    </div>
-                </a>
-            @endforeach
-        </ul>
-    </div>
+    @else
+        <div class="alert alert-success">@lang('verification.not_required')</div>
+    @endif
 
     <div class="panel panel-default">
         <div class="panel-body">

@@ -22,9 +22,6 @@ class IndexController extends Controller
         $methods = $this->verification->methods()->filter(function($method) {
             return $method->public;
         });
-        if(count($methods) == 0) {
-            return redirect('/profile');
-        }
         $client = $context->client();
         return view('verification.index', [
             'unverified_attributes' => $this->verification->unverifiedAttributes($request->user()),
