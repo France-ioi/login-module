@@ -12,7 +12,10 @@ $container-large-desktop : $container-base;
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 //$font-family-sans-serif: "Raleway", sans-serif;
-$font-size-base: 14px;
+$font-size-base: 16px;
+$icon-small: $font-size-base * 0.75;
+$icon-medium: $font-size-base * 1.125;
+$icon-big: $font-size-base * 2;
 $line-height-base: 1.6;
 $text-color: #787878;
 $text-color-secondary: #9b9b9b;
@@ -94,4 +97,4 @@ $label-danger-bg: $label-default-bg;
 $label-color: $text-color;
 
 // Navs
-$nav-link-padding: 0;
+$nav-link-padding: 3px 10px;
