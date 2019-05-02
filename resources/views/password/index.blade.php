@@ -4,7 +4,7 @@
     </div>
 @endif
 
-{!! BootForm::horizontal(['url' => '/password', 'class' => 'form-inset', 'left_column_offset_class' => ' ', 'right_column_class' => ' ']) !!}
+{!! BootForm::horizontal(['url' => '/password', 'class' => 'form-inset', 'left_column_offset_class' => ' ', 'right_column_class' => 'col-sm-9 col-md-8', 'left_column_class' => 'col-sm-3 col-md-4']) !!}
     {!! BootForm::password('password', trans('password.pwd_new'), ['prefix' => BootForm::addonIcon('key fas')]) !!}
     {!! BootForm::password('password_confirmation', trans('auth.pwd_confirm'), ['prefix' => BootForm::addonIcon('key fas')]) !!}
     <div class="form-group">

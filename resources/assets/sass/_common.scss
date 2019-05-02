@@ -63,7 +63,6 @@ hr {
 	label {
 		font-weight: normal;
 		color: $brand-primary;
-		line-height: 3.6rem;
 	}
 }
 .input-group {
@@ -166,7 +165,6 @@ button:not([aria-expanded="true"]) {
 	}
 }
 .selfToggleItem {
-	display: inline-block;
 	.code {
 		display: none;
 		font-family: monospace;
@@ -493,6 +491,9 @@ fieldset .form-group {
 		color: $brand-primary;
 		font-weight: bold;
 	}
+	&.table > tbody > tr > td {
+		padding: 10px 0;
+	}
 }
 .alert-section {
 	border-bottom: 1px solid $default-border-color;
@@ -511,6 +512,7 @@ fieldset .form-group {
 	border-left: none;
 	border-bottom: 1px solid $default-border-color;
 	margin-bottom: 0;
+	padding: 10px 0;
 }
 .list-group-item:first-child,
 .list-group-item:last-child {
