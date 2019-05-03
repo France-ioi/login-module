@@ -499,6 +499,11 @@ fieldset .form-group {
 	border-bottom: 1px solid $default-border-color;
 	padding: 2.5rem 20px 0;
 }
+ul.alert {
+	list-style-position: inside;
+	list-style-type: none;
+	padding: 2px 40px;
+}
 .alert .icon {
 	margin-right: 10px;
 	color: $text-color-light;

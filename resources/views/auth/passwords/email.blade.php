@@ -13,9 +13,9 @@
             </a>
         </div>
         <div class="panel-body">
+            <div class="panelTitle">@lang('auth.pwd_reset_title')</div>
             <div class="row">
                 <div class="col-sm-6 col-centered">
-                    <div class="panelTitle">@lang('auth.pwd_reset_title')</div>
                     @if(session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
