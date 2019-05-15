@@ -2,6 +2,7 @@
 @section('header')
     <div class="pageTitle_wrapper">
         <div class="pageTitle">@lang('auth.pwd_reset_header')</div>
+        <div class="subtitle">@lang('auth.pwd_reset_intro')</div>
     </div>
 @endsection
 @section('content')
@@ -13,7 +14,6 @@
         </div>
 
         <div class="panel-body">
-            <div class="panelTitle">@lang('auth.pwd_reset_header')</div>
             <div class="alert-section">
             @if (session('status'))
                 <div class="alert alert-success">

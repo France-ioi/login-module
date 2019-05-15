@@ -43,8 +43,9 @@ return [
     'btn_register' => 'Register',
 
     'pwd_reset_header' => 'Password lost?',
-    'pwd_reset_intro' => 'We\'ll send you an email to reinitialize.',
+    'pwd_reset_receive_email_intro' => 'We\'ll send you an email to reinitialize.',
     'pwd_reset_title' => 'Your login?',
+    'pwd_reset_intro' => 'Provide recovery token and reset your password',
     'btn_pwd_reset_email' => 'Receive a link',
     'btn_pwd_reset' => 'Reset password',
 
