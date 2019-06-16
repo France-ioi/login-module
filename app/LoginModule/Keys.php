@@ -31,6 +31,7 @@ class Keys
 
     static function generate() {
         // TODO :: make it work; it's currently NOT working properly
+        // LTI will NOT work without proper keys
         $rsa = new RSA;
         $keys = $rsa->createKey(512);
         file_put_contents(self::getPath('private'), array_get($keys, 'privatekey'));

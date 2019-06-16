@@ -7,24 +7,24 @@ use PDO;
 class LTIPDO {
 
     public function __construct() {
-        $this->db = $this->connectDB();
+        $this->connected = false;
     }
 
 
     public function db() {
+        if(!$this->connected) {
+            $this->db = $this->connectDB();
+        }
         return $this->db;
     }
 
 
     public function connector() {
-        return LTI_Data_Connector::getDataConnector($this->db, 'PDO');
+        return LTI_Data_Connector::getDataConnector($this->db(), 'PDO');
     }
 
 
     private function connectDB() {
-        // Disable for now
-        return null;
-
         $now = new \DateTime();
         $mins = $now->getOffset() / 60;
         $sgn = ($mins < 0 ? -1 : 1);
@@ -43,6 +43,7 @@ class LTIPDO {
         } catch (PDOException $e) {
             die("Erreur : " . $e->getMessage());
         }
+        $this->connected = true;
         return $db;
     }
 }

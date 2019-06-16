@@ -24,12 +24,22 @@ class LTIHelper {
 
 
     public function __construct(LTIPDO $pdo) {
-        $this->db = $pdo->db();
-        $this->data_connector = $pdo->connector();
+        $this->pdo = $pdo;
+        $this->connected = false;
+    }
+
+
+    private function connectPDO() {
+        if(!$this->connected) {
+            $this->db = $this->pdo->db();
+            $this->data_connector = $this->pdo->connector();
+            $this->connected = true;
+        }
     }
 
 
     public function handleRequest($origin = null) {
+        $this->connectPDO();
         $tool = new LTI_Tool_Provider(function() {}, $this->data_connector, $origin);
         $tool->handle_request();
         return $this->syncConnection($tool->user);
@@ -38,6 +48,7 @@ class LTIHelper {
 
 
     private function syncConnection($lti_user) {
+        $this->connectPDO();
         $lti_user_id = $lti_user->getId();
         $lti_context_id = $lti_user->getResourceLink()->lti_resource_link_id;
         $lti_consumer_key = $lti_user->getResourceLink()->getConsumer()->getKey();
@@ -69,6 +80,7 @@ class LTIHelper {
 
 
     private function createUser($lti_user) {
+        $this->connectPDO();
         $prefix = $this->getLoginPrefix($lti_user);
         $login = LoginGenerator::genLogin(
             $lti_user->firstname,
@@ -90,6 +102,7 @@ class LTIHelper {
 
 
     private function getLoginPrefix($lti_user) {
+        $this->connectPDO();
         $lti_consumer_key = $lti_user->getResourceLink()->getConsumer()->getKey();
         $conf = LtiConfig::where('lti_consumer_key', $lti_consumer_key)->first();
         if($conf) {
@@ -100,6 +113,7 @@ class LTIHelper {
 
 
     public function sendResult($lti_connection_id, $score) {
+        $this->connectPDO();
         $lc = LtiConnection::find($lti_connection_id);
         if(!$lc) {
             return false;
