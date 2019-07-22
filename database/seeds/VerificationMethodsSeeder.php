@@ -30,12 +30,12 @@ class VerificationMethodsSeeder extends Seeder
         VerificationMethod::create([
             'name' => 'imported_data',
             'user_attributes' => ['role'],
-            'public' => false
+            //'public' => false
         ]);
         VerificationMethod::create([
             'name' => 'user_helper',
             'user_attributes' => ['first_name','last_name','graduation_grade','graduation_year','country_code','role','primary_email','secondary_email','student_id','birthday'],
-            'public' => false
+            //'public' => false
         ]);
     }
 }
