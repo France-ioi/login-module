@@ -63,10 +63,16 @@ class LTIController extends Controller
 			die('missing lti_consumer_key or lti_user_id in loginData');
 		};
 
+        $prefix = config('lti.default_login_prefix');;
+        $prefixes_by_consumer = config('lti.prefixes_by_consumer');
+        if(isset($prefixes_by_consumer[$login_data['lti_consumer_key']])) {
+            $prefix = $prefixes_by_consumer[$login_data['lti_consumer_key']];
+        }
+
         $login = LoginGenerator::genLogin(
             $login_data['firstName'],
             $login_data['lastName'],
-            'ups_'
+            $prefix
         );
 
         $auth = [

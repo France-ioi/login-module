@@ -9,6 +9,9 @@ return [
 
     'default_login_prefix' => 'lti_',
 
+    'prefixes_by_consumer' => [
+    ],
+
     'send_result' => [
         'period' => 'PT600S', // DateInterval format, min period between attempts
         'attempts_max' => 5   // false for unlimited
