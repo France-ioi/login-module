@@ -80,6 +80,7 @@ class LTIController extends Controller
             'provider' => 'lti',
             'access_token' => 'none',
             'email' => $login_data['email'],
+            'login_enabled' => false,
             'first_name' => $login_data['firstName'],
             'last_name' => $login_data['lastName'],
             'login' => $login

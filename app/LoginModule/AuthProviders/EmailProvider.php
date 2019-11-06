@@ -16,7 +16,7 @@ class EmailProvider extends EloquentUserProvider
         if(isset($credentials['email_id'])) {
             return $q->where('id', $credentials['email_id'])->first();
         } elseif (isset($credentials['email'])) {
-            return $q->where('email', $credentials['email'])->first();
+            return $q->where('email', $credentials['email'])->where('login_enabled', true)->first();
         }
     }
 

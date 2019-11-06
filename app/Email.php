@@ -20,6 +20,11 @@ class Email extends Model implements CanResetPasswordContract
         'email',
         'role',
         'verification_code',
+        'login_enabled'
+    ];
+
+    protected $casts = [
+        'login_enabled' => 'bool'
     ];
 
 

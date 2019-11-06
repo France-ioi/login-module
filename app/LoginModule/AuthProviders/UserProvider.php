@@ -46,7 +46,7 @@ class UserProvider extends EloquentUserProvider
 
 
     private function attemptByEmail($credentials) {
-        $query = Email::where('email', $credentials['login']);
+        $query = Email::where('email', $credentials['login'])->where('login_enabled', true);
         if(isset($credentials['origin_instance_id'])) {
             $query->where('origin_instance_id', $credentials['origin_instance_id']);
         }

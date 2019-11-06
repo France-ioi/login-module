@@ -94,7 +94,8 @@ class LTIHelper {
         ]);
         $email = new Email([
             'role' => 'primary',
-            'email' => $lti_user->email
+            'email' => $lti_user->email,
+            'login_enabled' => false
         ]);
         $user->emails()->save($email);
         return $user;
