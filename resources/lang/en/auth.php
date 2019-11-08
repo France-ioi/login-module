@@ -34,13 +34,16 @@ return [
     'btn_login' => 'Login',
     'link_reset_pwd_label' => 'Forgot Your Password?',
     'link_reset_pwd_link' => 'Reinitialize',
-    'link_register' => 'Register account',
-    'show_more' => 'Show more',
+    'not_member' => 'Not yet a member?',
+    'link_register' => 'Create an account',
+    'show_more' => 'More services',
+
 
     'register_header' => 'Register',
     'register_intro' => 'Create your :platform_name account ',
     'register_title' => 'Create login',
     'btn_register' => 'Register',
+
 
     'pwd_reset_header' => 'Password lost?',
     'pwd_reset_receive_email_intro' => 'We\'ll send you an email to reinitialize.',

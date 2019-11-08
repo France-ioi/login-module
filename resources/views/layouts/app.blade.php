@@ -14,9 +14,7 @@
     @yield('header')
     <div class="container">
         @yield('aside')
-        @yield('startcontentwrapper')
-        @yield('content')
-        @yield('endcontentwrapper')
+        @include('layouts.components.content_wrapper')
     </div>
 </body>
 </html>

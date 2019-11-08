@@ -121,7 +121,7 @@ button:not([aria-expanded="true"]) {
 	}
 }
 .collapse {
-	margin-top: 2em;
+	/* margin-top: 2em; */
 }
 /* Switch checkbox */
 .checkboxSwitch {
@@ -298,6 +298,7 @@ fieldset .form-group {
 	color: $text-color-light;
 	text-align: center;
 	border-radius: 0 0 5px 5px;
+	padding: 4px 0;
 
 	a, a:hover {
 		color: $text-color-light;

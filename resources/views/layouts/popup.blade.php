@@ -1,17 +1,5 @@
 @extends('layouts.app')
 
-@section('startcontentwrapper')
-    @if(Auth::check())
-        <div class="panel panel-default">
-    @else
-        <div class="panel panel-auth">
-    @endif
-@endsection
-
-@section('endcontentwrapper')
-    </div>
-@endsection
-
 @section('header')
     @if(Auth::check())
         <div class="container">

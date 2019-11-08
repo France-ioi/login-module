@@ -7,7 +7,13 @@
                 {!! BootForm::hidden('try_code', 1) !!}
                 {!! BootForm::hidden('try_password', 1) !!}
                 {!! BootForm::text('identity', false, null, ['placeholder' => trans('auth.login_email_badge'), 'prefix' => BootForm::addonText('Aa')]) !!}
-                {!! BootForm::submit(trans('auth.btn_login'), ['class' => 'btn btn-rounded btn-wide btn-primary']) !!}
+                <!--
+                {!! BootForm::submit('<i class="fa fa-chevron-down"></i>'.trans('auth.btn_login'), ['class' => 'btn btn-rounded btn-wide btn-primary']) !!}
+                -->
+                <button type="submit" class="btn btn-rounded btn-wide btn-primary">
+                    <i class="fa fa-chevron-down icon"></i>
+                    @lang('ui.continue')
+                </button>
                 <div class="checkboxSwitch">
                 {!! BootForm::checkbox('remember', trans('auth.remember_me') . '<span class="bg"><span class="cursor"></span></span>') !!}
                 </div>
@@ -76,47 +82,54 @@
 @endsection
 
 @section('content')
-        <div class="row">
-            <div class="col-sm-6 hasBorder">
-                <div class="panelTitle">@lang('auth.login_email_badge')</div>
-                @foreach($methods['visible'] as $method)
-                    @if ($method == 'login_email_code' )
-                            @stack($method)
-                    @endif
-                @endforeach
-            </div>
-            <div class="col-sm-6">
-                <div class="panelTitle">@lang('auth.login_services')</div>
-                @foreach($methods['visible'] as $method)
-                    @if ($method == 'login_email_code' )
-                        @continue
-                    @endif
+    <div class="row">
+        <div class="col-sm-6 hasBorder">
+            <div class="panelTitle">@lang('auth.login_email_badge')</div>
+            @foreach($methods['visible'] as $method)
+                @if ($method == 'login_email_code' )
                         @stack($method)
-                @endforeach
-            </div>
+                @endif
+            @endforeach
         </div>
-
-        <div class="highlightBlock">
-            <a class="btn btn-link" href="{{ route('register') }}">
-                @lang('auth.link_register')
-            </a>
-        </div>
-
-        @if(count($methods['hidden']))
-            <div>
-                <hr>
-                <button id="btn-show-hidden" class="btn btn-block btn-link" data-toggle="collapse" data-target="#auth-hidden">@lang('auth.show_more')</button>
-            </div>
-            <div id="auth-hidden" class="collapse">
-                @foreach($methods['hidden'] as $method)
+        <div class="col-sm-6">
+            <div class="panelTitle">@lang('auth.login_services')</div>
+            @foreach($methods['visible'] as $method)
+                @if ($method == 'login_email_code' )
+                    @continue
+                @endif
                     @stack($method)
-                @endforeach
-            </div>
-        @endif
+            @endforeach
+
+            @if(count($methods['hidden']))
+                <div id="box-show-hidden">
+                    <hr>
+                    <div id="btn-show-hidden">
+                        @lang('auth.show_more')
+                        <i class="fa fa-2x fa-angle-down"></i>
+                    </div>
+                </div>
+                <div id="auth-hidden" class="collapse">
+                    @foreach($methods['hidden'] as $method)
+                        @stack($method)
+                    @endforeach
+                </div>
+            @endif
+
+        </div>
+    </div>
+
+    <div class="highlightBlock">
+        @lang('auth.not_member')
+        <a class="btn-link" href="{{ route('register') }}">
+            @lang('auth.link_register')
+        </a>
+    </div>
+
 
     <script type="text/javascript">
         $('#btn-show-hidden').click(function(e) {
-            $(e.target).closest('div').hide();
+            $('#box-show-hidden').hide();
+            $('#auth-hidden').collapse('show');
         });
         $('#login-form').on('show.bs.collapse', function() {
             $('#login-caret').removeClass('glyphicon-triangle-bottom').addClass('glyphicon-triangle-top');
