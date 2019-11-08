@@ -7,15 +7,6 @@
 @section('content')
 
         <div class="alert-section">
-            @if($schema->hasRequiredAttributes())
-                <div class="pull-right">
-                    <div class="checkbox" style="margin: 0">
-                        <label>
-                            <input type="checkbox" id="optional_fields_filter"/> @lang('profile.optional_fields_filter')
-                        </label>
-                    </div>
-                </div>
-            @endif
             @include('profile.alerts.filter')
             @include('profile.alerts.verification')
             @include('profile.alerts.revalidation')
@@ -26,6 +17,17 @@
         </div>
         <div class="info-message">
             @lang('profile.required_fields_explanation')
+            @if($schema->hasRequiredAttributes())
+                <div class="checkboxSwitch">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="optional_fields_filter"/>
+                            @lang('profile.optional_fields_filter')
+                            <span class="bg"><span class="cursor"></span></span>
+                        </label>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="panel-body">
             {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm'])) !!}
