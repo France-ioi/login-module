@@ -1,5 +1,8 @@
 @extends('layouts.popup')
 
+@section('tabs_menu')
+@endsection
+
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
