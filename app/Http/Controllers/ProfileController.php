@@ -81,7 +81,8 @@ class ProfileController extends Controller
             'verified_attributes' => $this->verification->verifiedAttributes($user),
             'show_email_verification_alert' => $this->emailVerificationAvailable($user),
             'platform_name' => $client ? $client->name : trans('app.name'),
-            'rejected_attributes' => $profile_filter->rejectedAttributes($user)
+            'rejected_attributes' => $profile_filter->rejectedAttributes($user),
+            'profile_completed' => $this->profile->completed($user)
         ]);
     }
 

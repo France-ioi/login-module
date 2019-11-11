@@ -13,6 +13,7 @@
             @include('profile.alerts.filter')
             @include('profile.alerts.verification')
             @include('profile.alerts.revalidation')
+            @include('profile.alerts.profile_not_completed')
             @include('profile.alerts.login_change_required')
             @include('profile.alerts.pms_redirect')
             @include('ui.status')
