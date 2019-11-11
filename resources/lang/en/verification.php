@@ -9,7 +9,7 @@ return [
     'btn_verify' => 'Verify',
 
     'unverified_attributes' => 'In order to give you access to :platform_name, we need to verify the following information:',
-    'profile_not_completed' => 'Please complete your profile. Some fields may be required before you can continue.',
+    'profile_not_completed' => 'Some fields require verfification before you can continue.',
     'user_attributes' => 'Informations',
 
     'approved_attributes' => 'Verified informations',

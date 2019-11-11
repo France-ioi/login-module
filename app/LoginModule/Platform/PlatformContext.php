@@ -4,7 +4,7 @@ namespace App\LoginModule\Platform;
 
 use App\Client;
 use App\LoginModule\Locale;
-
+use \Laravel\Passport\TokenRepository;
 
 class PlatformContext
 {
@@ -13,7 +13,7 @@ class PlatformContext
     protected $client;
     protected $badge;
     protected $platform_api;
-
+    protected $platform_authorized;
 
     public function __construct(PlatformContextState $state) {
         $this->state = $state;
@@ -93,6 +93,20 @@ class PlatformContext
             $this->platform_api = new PlatformApi($this->client());
         }
         return $this->platform_api;
+    }
+
+
+    public function platformAuthorized() {
+        if($this->platform_authorized === null) {
+            $this->platform_authorized = true;
+            $client = $this->client();
+            $user = auth()->user();
+            if($user && $client) {
+                $token_repository = new TokenRepository();
+                $this->platform_authorized = !!$token_repository->getValidToken($user, $client);
+            }
+        }
+        return $this->platform_authorized;
     }
 
 }
