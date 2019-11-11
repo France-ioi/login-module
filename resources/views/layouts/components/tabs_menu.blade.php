@@ -1,11 +1,13 @@
 @section('tabs_menu')
     <ul class="tabs-menu" role="tablist">
+        <!--
         <li class="{!! Request::is('profile') ? 'active' : '' !!}">
             <a href="{{ url('/profile') }}">
                 <i class="fas fa-user"></i>
                 @lang('profile.header')
             </a>
         </li>
+        -->
         <li class="{!! Request::is('verification', 'verification/*') ? 'active' : '' !!}">
             <a href="{{ url('/verification') }}">
                 <i class="fas fa-check"></i>

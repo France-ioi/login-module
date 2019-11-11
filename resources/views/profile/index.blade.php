@@ -1,5 +1,8 @@
 @extends('layouts.popup')
 
+@section('tabs_menu')
+@endsection
+
 @section('aside')
     @include('layouts.components.left_menu')
 @endsection
