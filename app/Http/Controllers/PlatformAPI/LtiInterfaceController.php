@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\PlatformAPI;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\LoginModule\LTI\LTIHelper;
 use App\LoginModule\LTI\LTITokenGenerator;
 
