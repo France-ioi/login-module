@@ -14,7 +14,7 @@
     "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master",
     "cross-env": "^3.2.4",
     "css-loader": "^0.26.1",
-    "jquery": "^3.1.0",
+    "jquery": "^3.4.0",
     "laravel-mix": "^0.10.0",
     "lodash": "^4.17.13",
     "style-loader": "^0.13.1",
