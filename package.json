@@ -9,7 +9,7 @@
     "@fortawesome/fontawesome-free": "^5.6.3",
     "axios": "^0.18.1",
     "bootstrap-datepicker": "^1.6.4",
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap-sass": "^3.4.1",
     "bootstrap-slider": "^10.0.0",
     "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master",
     "cross-env": "^3.2.4",
