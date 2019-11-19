@@ -8,6 +8,7 @@ return [
     "AI" => "Anguilla",
     "AL" => "Albanie",
     "AM" => "Arménie",
+    "AN" => "Antilles néerlandaises",
     "AO" => "Angola",
     "AQ" => "Antarctique",
     "AR" => "Argentine",

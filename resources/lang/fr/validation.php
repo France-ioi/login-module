@@ -105,6 +105,7 @@ return [
         ],
     ],
 
+    'value_different' => ':attribute et :other doivent être différents.',
     'login' => "Seules les lettres minuscules non accentuées, les chiffres et le tiret - sont autorisés dans l'identifiant.",
 
     /*

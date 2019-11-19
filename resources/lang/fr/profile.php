@@ -3,6 +3,7 @@
 return [
     'header' => 'Profil',
     'optional_fields_filter' => "Afficher seulement les champs requis ou recommandés",
+    'not_completed' => 'Afin de vous connecter, veuillez remplir les champs requis.',
 
     'login' => 'Identifiant',
     'first_name' => 'Prénom',
@@ -89,5 +90,19 @@ return [
         'presentation' => 'This is information about you you decide to make public to all users.',
         'website' => 'This is information about you you decide to make public to all users.',
         'student_id' => 'Only provide this information if required by your school. This will make it possible for your teachers to check who you are.'
-    ]
+    ],
+
+    'sections' => [
+        'personal' => 'Informations personnelles',
+        'school' => 'Informations sur les études',
+        'contact' => 'Informations de contact',
+        'settings' => 'Paramètres',
+    ],
+    'icons' => [
+        'personal' => 'user',
+        'school' => 'graduation-cap',
+        'contact' => 'envelope',
+        'settings' => 'flag'
+    ],
+    'quick_menu' => 'Menu rapide'
 ];

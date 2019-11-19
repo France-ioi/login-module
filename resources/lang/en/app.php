@@ -1,4 +1,4 @@
 <?php
 return [
-    'name' => 'Login Module'
+    'name' => 'Module de connexion'
 ];
