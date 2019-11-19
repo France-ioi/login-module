@@ -59,5 +59,5 @@ return [
 
     'session_expired' => 'Votre session a expiré. Veuillez fermer cette fenêtre et vous reconnecter.',
 
-    'select_another_method' => 'Veuillez sélectionner un autre mode de connexion'
+    'select_another_method' => 'Sélectionner un autre mode de connexion'
 ];
