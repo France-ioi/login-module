@@ -13,7 +13,7 @@ return [
     'export' => 'Exporter',
     'delete' => 'Supprimer',
     'manage' => 'Gérer',
-    'api_not_available' => 'actions non disponible',
+    'api_not_available' => 'action non disponible',
 
     'confirmation' => [
         'header' => 'Supprimer mes données collectées',
