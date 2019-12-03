@@ -7,7 +7,7 @@ return [
     'p3' => 'You may choose to delete some or all of the data this authentication module stores about you, or that any of the connected platform stores about you.',
 
 
-    'item_client' => 'Data stored about me by :platform_name',
+    'item_client' => 'Data stored about me by',
     'item_self' => 'Data stored by this <span class="em">authentication module</span>',
     'summary' => 'View',
     'export' => 'Export',

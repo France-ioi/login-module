@@ -2,12 +2,12 @@
 return [
     'header' => 'Données collectées',
     'title' => "Droit à l'accès, portabilité, et droit à l'oubli",
-    'p1' => 'En accord avec les régulations du GDPR, cet outil vous permet de contrôler quelles données personnelles sont stockées par ce module, ainsi que par les plateformées connectées.',
+    'p1' => 'En accord avec les régulations du RGPD, cet outil vous permet de contrôler quelles données personnelles sont stockées par ce module, ainsi que par les plateformées connectées.',
     'p2' => "Vous pouvez voir ou exporter toutes les données que nous stockons vous concernant. Ce module de connexion n'a pas accès aux données stockées sur chacune des plateformes, mais peut vous rediriger vers leurs pages de gestion.",
     'p3' => 'Vous pouvez supprimer certaines ou toutes les données que ce module, ou une plateforme connectée, stockent vous concernant.',
 
 
-    'item_client' => 'Données me concernant stockées par :platform_name',
+    'item_client' => 'Données me concernant stockées par',
     'item_self' => 'Données stockées par ce <span class="em">module de connexion</span>',
     'summary' => 'Voir',
     'export' => 'Exporter',
