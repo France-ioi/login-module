@@ -8,7 +8,7 @@ return [
     'login' => 'Login',
     'first_name' => 'First name',
     'last_name' => 'Last name',
-    'real_name_visible' => 'Display my real name on my public profile',
+    'real_name_visible' => 'I would like my firstName and lastName to be visible on my public profile',
     'primary_email'  => 'Primary email',
     'secondary_email'  => 'Secondary email',
     'language' => 'Language',

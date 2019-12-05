@@ -23,7 +23,6 @@ return [
             'login',
             'first_name',
             'last_name',
-            'real_name_visible',
             'birthday',
             'gender',
             'student_id'
@@ -45,6 +44,9 @@ return [
             'secondary_phone'
         ],
         'public' => [
+            'public_info',
+            'real_name_visible',
+            'public_name',
             'picture',
             'presentation',
             'website'

@@ -47,12 +47,6 @@ class SchemaConfig {
     }
 
 
-    public static function real_name_visible($user = null) {
-        return [
-            'type' => 'checkbox'
-        ];
-    }
-
 
     public static function graduation_grade($user = null) {
         $options = trans('graduation_grades');
@@ -367,5 +361,23 @@ class SchemaConfig {
     }
 
 
+    public static function public_info($user) {
+        return [
+            'type' => 'public_info'
+        ];
+    }
+
+
+    public static function real_name_visible($user = null) {
+        return [
+            'type' => 'checkbox'
+        ];
+    }
+
+    public static function public_name($user = null) {
+        return [
+            'type' => 'public_name'
+        ];
+    }
 
 }

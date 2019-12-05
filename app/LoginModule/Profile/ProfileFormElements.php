@@ -207,4 +207,37 @@ class ProfileFormElements {
         '</div>';
     }
 
+
+    public static function public_info($block, $label) {
+        return self::help('Information provided in other sections:').
+            BootForm::staticField(
+                $block->name.'_login',
+                'Your login',
+                '',
+                ['id' => 'public_info_login']
+            ).
+            BootForm::staticField(
+                $block->name.'_grade',
+                'Your grade or graduation year',
+                '',
+                ['id' => 'public_info_grade']
+            );
+    }
+
+
+    public static function public_name($block, $label) {
+        return BootForm::staticField(
+                $block->name.'_first_name',
+                'First name',
+                '',
+                ['id' => 'public_name_first_name']
+            ).
+            BootForm::staticField(
+                $block->name.'_grade',
+                'Last name',
+                '',
+                ['id' => 'public_name_last_name']
+            );
+    }
+
 }

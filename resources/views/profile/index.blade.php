@@ -77,7 +77,9 @@
 
             $('#login').on('change', function(e) {
                 $('#login_change_limitations').show();
+                refreshPublicInfo();
             });
+
 
 
             $('#picture').on('change', function(e) {
@@ -186,6 +188,23 @@
 
 
 
+            function refreshPublicInfo() {
+                $('#public_info_login').html($('#login').val());
+                var grade = $('#graduation_grade').val();
+                if(grade == '-2') {
+                    var grade_info = $('#graduation_year').val()
+                } else {
+                    var grade_info = $('#graduation_grade').find('option:selected').text();
+                }
+                $('#public_info_grade').html(grade_info);
+            }
+
+
+            $('#graduation_year').change(function() {
+                refreshPublicInfo();
+            });
+
+
             $('#graduation_grade').change(function() {
                 var grade = $(this).val();
                 var year = $('#graduation_year').val();
@@ -197,7 +216,16 @@
                     $('#graduation_year').val('');
                     $('#block_graduation_year').hide();
                 }
+                refreshPublicInfo();
             }).trigger('change');
+
+
+            function refreshPublicName() {
+                $('#public_name_first_name').html($('#first_name').val());
+                $('#public_name_last_name').html($('#last_name').val());
+            }
+            $('#first_name').change(refreshPublicName);
+            $('#last_name').change(refreshPublicName).trigger('change');
 
 
             function updateTeacherDomainBlock() {
