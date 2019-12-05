@@ -37,7 +37,8 @@ return [
     'gender' => 'Gender',
     'genders' => [
         'm' => 'Male',
-        'f' => 'Female'
+        'f' => 'Female',
+        'o' => 'Other / Do not wish to answer'
     ],
     'presentation'  => 'Presentation',
     'website' => 'Website',
