@@ -99,6 +99,7 @@ return [
         'personal' => 'Personal information',
         'school' => 'Scholar information',
         'contact' => 'Contact information',
+        'public' => 'Public information',
         'settings' => 'Parameters',
     ],
     'icons' => [

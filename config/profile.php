@@ -26,10 +26,7 @@ return [
             'real_name_visible',
             'birthday',
             'gender',
-            'presentation',
-            'website',
-            'student_id',
-            'picture'
+            'student_id'
         ],
         'school' => [
             'graduation_year',
@@ -46,6 +43,11 @@ return [
             'zipcode',
             'primary_phone',
             'secondary_phone'
+        ],
+        'public' => [
+            'picture',
+            'presentation',
+            'website'
         ],
         'settings' => [
             'language',
