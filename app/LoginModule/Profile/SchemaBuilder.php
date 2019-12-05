@@ -11,16 +11,19 @@ class SchemaBuilder {
                           array $required_attributes,
                           array $recommended_attributes,
                           array $disabled_attributes = [],
-                          array $unverified_attributes = []) {
+                          array $unverified_attributes = [],
+                          array $hidden_attributes = []) {
         $visible_attributes = $this->availableAttributes();
         $required_attributes  = array_fill_keys($required_attributes, true);
         $recommended_attributes  = array_fill_keys($recommended_attributes, true);
         $disabled_attributes = array_fill_keys($disabled_attributes, true);
         $unverified_attributes = array_fill_keys($unverified_attributes, true);
+        $hidden_attributes = array_fill_keys($hidden_attributes, true);
 
         $blocks = [];
         $added = [];
         foreach($visible_attributes as $attribute) {
+            if(isset($hidden_attributes[$attribute])) continue;
             $config = SchemaConfig::$attribute($user);
             $disabled = isset($disabled_attributes[$attribute]);
             $required = !$disabled && isset($required_attributes[$attribute]);

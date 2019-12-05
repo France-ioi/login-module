@@ -15,6 +15,7 @@ class Client extends \Laravel\Passport\Client
         'user_attributes',
         'verifiable_attributes',
         'recommended_attributes',
+        'hidden_attributes',
         'attributes_filter',
         'badge_api_id',
         'api_url',
@@ -32,6 +33,7 @@ class Client extends \Laravel\Passport\Client
         'user_attributes' => 'array',
         'verifiable_attributes' => 'array',
         'recommended_attributes' => 'array',
+        'hidden_attributes' => 'array',
         'attributes_filter' => 'array',
         'auth_order' => 'array',
         'autoapprove_authorization' => 'boolean',
@@ -41,6 +43,7 @@ class Client extends \Laravel\Passport\Client
     protected $attributes = [
         'auth_order' => '[]',
         'user_attributes' => '[]',
+        'hidden_attributes' => '[]',
         'recommended_attributes' => '[]',
         'verifiable_attributes' => '[]',
         'attributes_filter' => '[]'

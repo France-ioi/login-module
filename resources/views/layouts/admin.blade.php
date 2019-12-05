@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.pages.admin')
 
 @section('navigation')
     <nav class="navbar navbar-default">
-        <div class="container">
+        <div class="container-admin">
             <ul class="nav navbar-nav">
                 <li>
                     <a href="{{ url('/admin') }}">@lang('admin.dashboard')</a>
@@ -45,14 +45,14 @@
         </div>
     </nav>
     @if(session('status'))
-        <div class="container">
+        <div class="container-admin">
             <div class="alert alert-success">
                 {{ session('status') }}
             </div>
         </div>
     @endif
     @if(session('error'))
-        <div class="container">
+        <div class="container-admin">
             <div class="alert alert-danger">
                 {{ session('error') }}
             </div>

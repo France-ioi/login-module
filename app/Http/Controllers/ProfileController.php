@@ -60,7 +60,8 @@ class ProfileController extends Controller
             $required_attributes,
             $recommended_attributes,
             $disabled_attributes,
-            $unverified_attributes
+            $unverified_attributes,
+            $this->hiddenAttributes($user)
         );
 
         return view('profile.index', [
@@ -130,6 +131,21 @@ class ProfileController extends Controller
         if($client = $this->context->client()) {
             return $this->profile->getRequiredUserAttributes($user, $client);
             //return $client->user_attributes;
+        }
+        return [];
+    }
+
+
+    private function hiddenAttributes($user) {
+        if($client = $this->context->client()) {
+            $res = [];
+            foreach($client->hidden_attributes as $attr) {
+                $v = $user->getAttribute($attr);
+                if($v == '' || $v === null) {
+                    $res[] = $attr;
+                }
+            }
+            return $res;
         }
         return [];
     }

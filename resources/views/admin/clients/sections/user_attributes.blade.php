@@ -26,3 +26,18 @@
         </div>
     @endforeach
 </div>
+
+
+<h3>Hidden user attributes</h3>
+<div class="row">
+    @foreach($user_attributes as $attr)
+        <div class="col-sm-4 col-xs-6">
+            {!! BootForm::checkbox(
+                'hidden_attributes[]',
+                $attr,
+                $attr,
+                in_array($attr, $client->hidden_attributes)
+            )!!}
+        </div>
+    @endforeach
+</div>

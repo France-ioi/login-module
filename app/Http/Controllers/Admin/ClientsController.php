@@ -111,8 +111,14 @@ class ClientsController extends Controller
     public function update(StoreClientRequest $request, Client $client)
     {
         $client->fill($request->all());
+        if(!$request->has('user_attributes')) {
+            $client->user_attributes = [];
+        }
         if(!$request->has('verifiable_attributes')) {
             $client->verifiable_attributes = [];
+        }
+        if(!$request->has('hidden_attributes')) {
+            $client->hidden_attributes = [];
         }
         $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);

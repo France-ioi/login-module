@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.pages.customer')
 
 @include('layouts.components.tabs_menu')
 
