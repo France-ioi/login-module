@@ -24,6 +24,7 @@ return [
             'first_name',
             'last_name',
             'birthday',
+            'birthday_year',
             'gender',
             'student_id'
         ],

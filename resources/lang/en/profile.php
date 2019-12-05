@@ -34,6 +34,7 @@ return [
     'student_id' => 'Student ID',
     'graduation_year' => 'Graduation year',
     'birthday'  => 'Birthday',
+    'birthday_year'  => 'Year of birth',
     'gender' => 'Gender',
     'genders' => [
         'm' => 'Male',

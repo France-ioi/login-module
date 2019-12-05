@@ -300,6 +300,20 @@ class SchemaConfig {
     }
 
 
+    public static function birthday_year($user = null) {
+        $year = (int) date('Y');
+        return [
+            'type' => 'text',
+            'required' => 'required',
+            'valid' => [
+                'nullable',
+                'integer',
+                'between:'.($year - 100).','.$year
+            ]
+        ];
+    }
+
+
     public static function gender($user = null) {
         $options = trans('profile.genders');
         return [

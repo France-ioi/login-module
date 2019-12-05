@@ -36,6 +36,7 @@ class User extends Authenticatable
         'ministry_of_education',
         'ministry_of_education_fr',
         'birthday',
+        'birthday_year',
         'presentation',
         'gender',
         'graduation_year',
@@ -68,6 +69,7 @@ class User extends Authenticatable
     protected $casts = [
         'admin' => 'boolean',
         'ministry_of_education_fr' => 'boolean',
+        'birthday_year' => 'integer',
         'graduation_year' => 'integer',
         'logout_config' => 'array',
         'real_name_visible' => 'boolean',
@@ -103,6 +105,17 @@ class User extends Authenticatable
                 $model->login_updated_at = new \DateTime;
                 if($model->login_change_required && preg_match(config('profile.login_validator.new'), $model->login) == 1) {
                     $model->login_change_required = false;
+                }
+            }
+
+            // sync birthday and birthday_year
+            //
+            if($model->isDirty('birthday')) {
+                $model->birthday_year = (int) date('Y', strtotime($model->birthday));
+            }
+            if($model->isDirty('birthday_year')) {
+                if($model->birthday !== null) {
+                    $model->birthday = (new Carbon($model->birthday))->year($model->birthday_year);
                 }
             }
         });
