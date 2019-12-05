@@ -36,9 +36,15 @@ class ProfileFormRenderer {
 
 
     private static function section($name, $html) {
+        $descriptions = trans('profile.section_descriptions');
+        $description = '';
+        if(isset($descriptions[$name])) {
+            $description = '<div class="form-group"><p class="help-block">'.$descriptions[$name].'</p></div>';
+        }
         return
             '<fieldset id="section_'.$name.'">'.
                 '<legend class="sectionTitle"><i class="fas fa-'.trans('profile.icons.'.$name).' icon"></i>'.trans('profile.sections.'.$name).'</legend>'.
+                $description.
                 $html.
             '</fieldset>';
     }

@@ -102,6 +102,9 @@ return [
         'public' => 'Public information',
         'settings' => 'Parameters',
     ],
+    'section_descriptions' => [
+        'public' => 'The information below will be available on your public profile, which can be viewed by anyone.',
+    ],
     'icons' => [
         'personal' => 'user',
         'school' => 'graduation-cap',
