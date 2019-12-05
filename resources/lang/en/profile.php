@@ -20,6 +20,8 @@ return [
     'timezone' => 'Timezone',
     'primary_phone' => 'Primary phone',
     'secondary_phone' => 'Secondary phone',
+    'subscription_results' => 'I agree to receive emails to be informed about my qualification and results in the contests I participate in.',
+    'subscription_news' => 'I agree to receive very occasional emails about new content or events I might be interested in.',
     'role' => 'Role',
     'roles' => [
         'student' => 'Student',

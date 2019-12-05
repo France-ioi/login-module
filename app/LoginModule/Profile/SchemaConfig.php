@@ -274,6 +274,18 @@ class SchemaConfig {
         ];
     }
 
+    public static function subscription_results($user = null) {
+        return [
+            'type' => 'checkbox'
+        ];
+    }
+
+    public static function subscription_news($user = null) {
+        return [
+            'type' => 'checkbox'
+        ];
+    }
+
 
     public static function birthday($user = null) {
         return [

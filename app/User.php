@@ -45,7 +45,9 @@ class User extends Authenticatable
         'ip',
         'created_at',
         'last_password_recovery_at',
-        'nationality'
+        'nationality',
+        'subscription_results',
+        'subscription_news'
     ];
 
     protected $hidden = [
@@ -71,7 +73,9 @@ class User extends Authenticatable
         'real_name_visible' => 'boolean',
         'regular_password' => 'boolean',
         'teacher_verified' => 'boolean',
-        'graduation_grade_expire_at' => 'date'
+        'graduation_grade_expire_at' => 'date',
+        'subscription_results' => 'boolean',
+        'subscription_news' => 'boolean'
     ];
 
 

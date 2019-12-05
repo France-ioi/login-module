@@ -41,7 +41,9 @@ return [
             'city',
             'zipcode',
             'primary_phone',
-            'secondary_phone'
+            'secondary_phone',
+            'subscription_results',
+            'subscription_news'
         ],
         'public' => [
             'public_info',
