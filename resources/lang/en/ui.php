@@ -7,5 +7,6 @@ return [
     'close' => 'Close',
     'alert' => 'Alert',
     'delete' => 'Delete',
-    'ok' => 'OK'
+    'ok' => 'OK',
+    'yes' => 'Yes'
 ];

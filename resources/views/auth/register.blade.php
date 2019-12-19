@@ -21,6 +21,17 @@
                     @if($login_required)
                         {!! BootForm::text('login', false, array_get($values, 'login'),
                             ['placeholder' => trans('auth.login'), 'prefix' => BootForm::addonText('Aa')]) !!}
+
+                        @if($suggested_login)
+                            <div class="form-group" id="suggested_login_msg">
+                                <div class="alert alert-warning">
+                                    @lang('auth.suggested_login', [
+                                        'login' => '<strong id="suggested_login">'.$suggested_login.'</strong>'
+                                    ])
+                                    <a class="btn btn-default">@lang('ui.yes')</a>
+                                </div>
+                            </div>
+                        @endif
                     @endif
                     @if($email_required)
                         {!! BootForm::text('primary_email', false, array_get($values, 'email'),
@@ -55,6 +66,28 @@
                     el.parents('.form-group').append(icon);
                 }
             });
+
+            function initLoginHandlers(input) {
+                var sanitiser = window.components.login.sanitiser({!! json_encode($login_validator) !!})
+                function sanitizeLogin() {
+                    var str = input.val();
+                    str = sanitiser.sanitise(str);
+                    input.val(str);
+                }
+                input.on('keyup', sanitizeLogin);
+                input.on('mouseup', sanitizeLogin);
+
+                $('#suggested_login_msg').find('.btn').click(function() {
+                    input.val($('#suggested_login').text());
+                    $('#suggested_login_msg').remove();
+                });
+            }
+
+            var login_input = $('#login');
+            if(login_input.length) {
+                initLoginHandlers(login_input);
+            }
+
         });
     </script>
 @endsection

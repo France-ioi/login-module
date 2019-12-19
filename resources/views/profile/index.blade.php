@@ -75,6 +75,19 @@
             }
             form.init();
 
+
+
+            // login
+            var sanitiser = window.components.login.sanitiser({!! json_encode($login_validator) !!})
+            function sanitizeLogin() {
+                var str = $('#login').val();
+                str = sanitiser.sanitise(str);
+                $('#login').val(str);
+            }
+            $('#login').on('keyup', sanitizeLogin);
+            $('#login').on('mouseup', sanitizeLogin);
+
+
             $('#login').on('change', function(e) {
                 $('#login_change_limitations').show();
                 refreshPublicInfo();

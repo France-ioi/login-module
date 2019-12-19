@@ -10,6 +10,7 @@ return [
     ],
 
     'login_validator' => [
+        'filter' => "/[^a-z0-9-]/",
         'new' => "/^[a-z0-9-]+$/",
         'existing' => "/^[a-z0-9-_]+$/",
         'length' => [

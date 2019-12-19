@@ -9,8 +9,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\LoginModule\Locale;
+use App\LoginModule\LoginSuggestion;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Profile\SchemaConfig;
+use Illuminate\Http\Request;
 
 
 class RegisterController extends Controller
@@ -26,7 +28,9 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers {
+        register as protected traitRegister;
+    }
 
     /**
      * Where to redirect users after registration.
@@ -40,13 +44,14 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct(PlatformContext $context) {
+    public function __construct(PlatformContext $context, LoginSuggestion $login_suggestion) {
         $this->middleware('guest');
         $this->context = $context;
+        $this->login_suggestion = $login_suggestion;
     }
 
 
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
         $required = $this->requiredAttributes();
         $badge_data = $this->context->badge()->restoreData();
@@ -57,9 +62,23 @@ class RegisterController extends Controller
             'login_required' => array_search('login', $required) !== false,
             'email_required' => array_search('primary_email', $required) !== false,
             'platform_name' => $client ? $client->name : trans('app.name'),
-            'values' => $values
+            'values' => $values,
+            'login_validator' => config('profile.login_validator'),
+            'suggested_login' => $request->session()->get('suggested_login')
         ]);
     }
+
+    public function register(Request $request)
+    {
+        if($login = $request->get('login')) {
+            $suggested_login = $this->login_suggestion->get($login);
+            if($suggested_login != $login) {
+                return redirect()->back()->withInput()->with('suggested_login', $suggested_login);
+            }
+        }
+        return $this->traitRegister($request);
+    }
+
 
     /**
      * Get a validator for an incoming registration request.

@@ -2,21 +2,20 @@
 
 Route::get('/', function() { return redirect('/auth'); });
 
+// Auth
 Route::get('/password/reset/new', ['uses' => 'Auth\ResetPasswordController@showNewPasswordForm', 'as' => 'password.reset.new']);
 Auth::routes();
 Route::get('/password/emails/{login}', ['uses' => 'Auth\ForgotPasswordController@showEmails', 'as' => 'passwords.emails']);
 Route::post('/logout', 'Auth\LogoutController@logoutFinish');
-
 Route::post('/login_with_code', 'Auth\LoginWithCodeController@login');
-
 Route::get('/auth', 'Auth\IndexController@index');
-
 Route::get('/logout', 'Auth\LogoutController@getLogout');
 Route::post('/logout_start', 'Auth\LogoutController@logoutStart');
 Route::get('/logout_loop', 'Auth\LogoutController@logoutLoop');
 Route::get('/logout_finish', 'Auth\LogoutController@logoutFinish');
 Route::get('/session_expired', 'Auth\OAuthClientController@sessionExpired');
 
+// OAuth
 Route::get('/oauth_client/redirect/{provider}', 'Auth\OAuthClientController@redirect');
 Route::get('/oauth_client/preferences/{provider}', 'Auth\OAuthClientController@preferences');
 Route::get('/oauth_client/callback/{provider}', ['uses' => 'Auth\OAuthClientController@callback', 'as' => 'oauth_client_callback']);
@@ -24,11 +23,14 @@ Route::post('/oauth_client/remove/{provider}', ['uses' => 'Auth\OAuthClientContr
 Route::get('/oauth_client/email_exists', 'Auth\OAuthClientController@emailExists');
 Route::get('/oauth_client/logout/{provider}', 'Auth\OAuthClientController@logout');
 
+// LTI
 Route::post('/lti/entry', 'Auth\LTIEntryController@handle');
 Route::get('/lti', 'Auth\LTIController@login');
 
+// Misc
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);
 
+// Logged user
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/badges', 'BadgesController@index');
     Route::post('/badges/add', 'BadgesController@add');
@@ -37,7 +39,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/merging_accounts', 'MergingAccountsController@index');
     Route::post('/merging_accounts/accept', 'MergingAccountsController@acceptMerge');
     Route::post('/merging_accounts/decline', 'MergingAccountsController@declineMerge');
-
 
     Route::get('/collected_data/summary', 'CollectedDataController@summary');
     Route::get('/collected_data/export', 'CollectedDataController@export');
@@ -82,7 +83,7 @@ Route::group(['middleware' => ['auth']], function() {
     });
 });
 
-
+// Admin
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], 'namespace' => 'Admin'], function() {
     Route::get('/', 'DashboardController@index');
     Route::group(['middleware' => 'permission:admin.users.manager'], function() {

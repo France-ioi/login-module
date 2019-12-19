@@ -32,6 +32,7 @@ return [
     'login_password' => 'Login and password',
     'login_services' => 'With one of those services',
     'btn_login' => 'Login',
+    'suggested_login' => 'This login is already in use. Would you like to use :login instead?',
     'link_reset_pwd_label' => 'Forgot Your Password?',
     'link_reset_pwd_link' => 'Reinitialize',
     'not_member' => 'Not yet a member?',

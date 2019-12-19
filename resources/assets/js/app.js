@@ -16,3 +16,9 @@ require('bootstrap-3-typeahead');
 require('./jquery.sortable');
 require('../../../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js');
 require('../../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css');
+
+window.components = {};
+
+window.components.login = {
+    sanitiser: require('./login/sanitiser.js')
+}

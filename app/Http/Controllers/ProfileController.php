@@ -83,7 +83,8 @@ class ProfileController extends Controller
             'show_email_verification_alert' => $this->emailVerificationAvailable($user),
             'platform_name' => $client ? $client->name : trans('app.name'),
             'rejected_attributes' => $profile_filter->rejectedAttributes($user),
-            'profile_completed' => $this->profile->completed($user)
+            'profile_completed' => $this->profile->completed($user),
+            'login_validator' => config('profile.login_validator')
         ]);
     }
 
