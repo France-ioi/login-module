@@ -5,53 +5,72 @@
 @endsection
 
 @section('content')
-
-        <div class="alert-section">
-            @include('profile.alerts.filter')
-            @include('profile.alerts.profile_not_completed')
-            @include('profile.alerts.verification')
-            @include('profile.alerts.revalidation')
-            @include('profile.alerts.login_change_required')
-            @include('profile.alerts.pms_redirect')
-            @include('ui.status')
-            @include('ui.errors')
-        </div>
-        <div class="info-message">
-            @lang('profile.required_fields_explanation')
-            @if($schema->hasRequiredAttributes())
-                <div class="checkboxSwitch">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id="optional_fields_filter"/>
-                            @lang('profile.optional_fields_filter')
-                            <span class="bg"><span class="cursor"></span></span>
-                        </label>
-                    </div>
+    <div class="alert-section">
+        @include('profile.alerts.filter')
+        @include('profile.alerts.profile_not_completed')
+        @include('profile.alerts.verification')
+        @include('profile.alerts.revalidation')
+        @include('profile.alerts.login_change_required')
+        @include('profile.alerts.pms_redirect')
+        @include('ui.status')
+        @include('ui.errors')
+    </div>
+    <div class="info-message">
+        @lang('profile.required_fields_explanation')
+        @if($schema->hasRequiredAttributes())
+            <div class="checkboxSwitch">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="optional_fields_filter"/>
+                        @lang('profile.optional_fields_filter')
+                        <span class="bg"><span class="cursor"></span></span>
+                    </label>
                 </div>
+            </div>
+        @endif
+    </div>
+    <div class="panel-body">
+        {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm'])) !!}
+            @if($optional_fields_visible)
+                {!! BootForm::hidden('optional_fields_visible', 1) !!}
             @endif
-        </div>
-        <div class="panel-body">
-            {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm'])) !!}
-                @if($optional_fields_visible)
-                    {!! BootForm::hidden('optional_fields_visible', 1) !!}
+            {!! ProfileFormRenderer::render($schema) !!}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    @lang('ui.save')
+                </button>
+                @if($cancel_url)
+                    <a class="btn btn-link" href="{{ $cancel_url }}">
+                        @lang('ui.close')
+                    </a>
                 @endif
-                {!! ProfileFormRenderer::render($schema) !!}
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        @lang('ui.save')
-                    </button>
-                    @if($cancel_url)
-                        <a class="btn btn-link" href="{{ $cancel_url }}">
-                            @lang('ui.close')
-                        </a>
-                    @endif
-                </div>
-            {!! BootForm::close() !!}
-        </div>
+            </div>
+        {!! BootForm::close() !!}
+    </div>
 
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
+
+    @if($suggested_login)
+        <div id="suggested_login_text" style="dsiplay: none">
+            @lang('auth.suggested_login', [
+                'login' => '<strong>'.$suggested_login.'</strong>'
+            ])
+        </div>
+    @endif
+
     <script type="text/javascript">
         $(document).ready(function() {
+            if($('#suggested_login_text').length) {
+                var el = $('#suggested_login_msg');
+                el.find('span').text($('#suggested_login_text').text());
+                el.find('a').click(function() {
+                    $('#login').val($('#suggested_login_text').find('strong').text());
+                    el.remove();
+                });
+                el.show();
+            }
+
+
             var form = {
                 submit_available: true,
 

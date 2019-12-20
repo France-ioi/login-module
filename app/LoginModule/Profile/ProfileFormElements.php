@@ -45,6 +45,9 @@ class ProfileFormElements {
     public static function login($block, $label) {
         return
             self::text($block, $label).
+            '<div class="alert alert-warning" id="suggested_login_msg" style="display: none">'.
+                '<span></span><a class="btn btn-default">'.trans('ui.yes').'</a>'.
+            '</div>'.
             '<div class="alert alert-warning" id="login_change_limitations" style="display: none">'.
                 trans('profile.login_change_limitations').
             '</div>';

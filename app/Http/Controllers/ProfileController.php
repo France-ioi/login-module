@@ -13,6 +13,7 @@ use App\LoginModule\Profile\Verification\Verification;
 use App\LoginModule\Migrators\Merge\Group;
 use Carbon\Carbon;
 use App\LoginModule\Profile\ProfileFilter;
+use App\LoginModule\LoginSuggestion;
 
 class ProfileController extends Controller
 {
@@ -26,11 +27,13 @@ class ProfileController extends Controller
     public function __construct(PlatformContext $context,
                                 SchemaBuilder $schema_builder,
                                 UserProfile $profile,
-                                Verification $verification) {
+                                Verification $verification,
+                                LoginSuggestion $login_suggestion) {
         $this->context = $context;
         $this->schema_builder = $schema_builder;
         $this->profile = $profile;
         $this->verification = $verification;
+        $this->login_suggestion = $login_suggestion;
     }
 
 
@@ -84,13 +87,19 @@ class ProfileController extends Controller
             'platform_name' => $client ? $client->name : trans('app.name'),
             'rejected_attributes' => $profile_filter->rejectedAttributes($user),
             'profile_completed' => $this->profile->completed($user),
-            'login_validator' => config('profile.login_validator')
+            'login_validator' => config('profile.login_validator'),
+            'suggested_login' => $request->session()->get('suggested_login')
         ]);
     }
 
 
     public function update(Request $request) {
         $user = $request->user();
+        $login = $request->get('login');
+        if($user->login !== $login) {
+            $suggested_login = $this->login_suggestion->get($login);
+            return redirect()->back()->withInput()->with('suggested_login', $suggested_login);
+        }
 
         $is_pms_user = (bool) $user->authConnections()->where('provider', 'pms')->where('active', '1')->first();
         $required_attributes = $this->requiredAttributes($user);
