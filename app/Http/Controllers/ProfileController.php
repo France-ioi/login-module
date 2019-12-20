@@ -98,7 +98,9 @@ class ProfileController extends Controller
         $login = $request->get('login');
         if($user->login !== $login) {
             $suggested_login = $this->login_suggestion->get($login);
-            return redirect()->back()->withInput()->with('suggested_login', $suggested_login);
+            if($suggested_login !== $login) {
+                return redirect()->back()->withInput()->with('suggested_login', $suggested_login);
+            }
         }
 
         $is_pms_user = (bool) $user->authConnections()->where('provider', 'pms')->where('active', '1')->first();

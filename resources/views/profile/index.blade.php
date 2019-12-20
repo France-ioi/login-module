@@ -51,7 +51,7 @@
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
 
     @if($suggested_login)
-        <div id="suggested_login_text" style="dsiplay: none">
+        <div id="suggested_login_text" style="display: none">
             @lang('auth.suggested_login', [
                 'login' => '<strong>'.$suggested_login.'</strong>'
             ])
