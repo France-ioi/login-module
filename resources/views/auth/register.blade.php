@@ -28,7 +28,7 @@
                                     @lang('auth.suggested_login', [
                                         'login' => '<strong id="suggested_login">'.$suggested_login.'</strong>'
                                     ])
-                                    <a class="btn btn-default">@lang('ui.yes')</a>
+                                    <a class="btn btn-centered btn-default">@lang('ui.yes')</a>
                                 </div>
                             </div>
                         @endif

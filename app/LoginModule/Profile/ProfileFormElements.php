@@ -212,16 +212,16 @@ class ProfileFormElements {
 
 
     public static function public_info($block, $label) {
-        return self::help('Information provided in other sections:').
+        return self::help(trans('profile.provided_other_sections')).
             BootForm::staticField(
                 $block->name.'_login',
-                'Your login',
+                trans('profile.login'),
                 '',
                 ['id' => 'public_info_login']
             ).
             BootForm::staticField(
                 $block->name.'_grade',
-                'Your grade or graduation year',
+                trans('profile.grade_or_graduation_year'),
                 '',
                 ['id' => 'public_info_grade']
             );
@@ -231,13 +231,13 @@ class ProfileFormElements {
     public static function public_name($block, $label) {
         return BootForm::staticField(
                 $block->name.'_first_name',
-                'First name',
+                trans('profile.first_name'),
                 '',
                 ['id' => 'public_name_first_name']
             ).
             BootForm::staticField(
                 $block->name.'_grade',
-                'Last name',
+                trans('profile.last_name'),
                 '',
                 ['id' => 'public_name_last_name']
             );

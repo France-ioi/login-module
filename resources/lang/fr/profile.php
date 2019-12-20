@@ -14,12 +14,14 @@ return [
     'language' => 'Langue',
     'nationality' => 'Nationalité',
     'country_code' => 'Pays',
-    'address' => 'Addresse',
+    'address' => 'Adresse',
     'city' => 'Ville',
     'zipcode' => 'Code postal',
     'timezone' => 'Fuseau horaire',
     'primary_phone' => 'Numéro de téléphone principal',
     'secondary_phone' => 'Numéro de téléphone secondaire',
+    'subscription_results' => 'Je donne mon accord pour recevoir des courriels à propos de ma qualification et mes résultats aux concours auxquels je participe.',
+    'subscription_news' => 'Je donne mon accord pour recevoir des courriels très occasionnels à propos de nouveaux contenus ou événements qui pourraient m\'intéresser.',
     'role' => 'Rôle',
     'roles' => [
         'student' => 'Élève',
@@ -31,6 +33,7 @@ return [
     'school_grade' => 'Classe',
     'student_id' => "Numéro d'étudiant",
     'graduation_year' => 'Année du bac',
+    'grade_or_graduation_year' => 'Classe ou année du bac',
     'birthday'  => "Date d'anniversaire",
     'gender' => 'Genre',
     'genders' => [
@@ -54,6 +57,8 @@ return [
 
     'pms_redirect_msg' => "En tant qu'utilisateur PMS, vous devez éditer votre profil directement sur PMS. Veuillez ensuite utiliser le bouton \"Zurück zum JwInf\" afin de mettre à jour votre profil ici.",
     'pms_redirect_btn' => 'Continuer vers PMS',
+
+    'provided_other_sections' => 'Informations fournies dans les autres sections :',
 
     'teacher_domain_verified' => 'Avez-vous une adresse mail avec un nom de domaine reconnu ?',
     'teacher_domain_options' => [
@@ -99,12 +104,17 @@ return [
         'personal' => 'Informations personnelles',
         'school' => 'Informations sur les études',
         'contact' => 'Informations de contact',
+        'public' => 'Informations publiques',
         'settings' => 'Paramètres',
+    ],
+    'section_descriptions' => [
+        'public' => 'Les informations ci-dessous seront affichées sur votre profil public, et donc peuvent être vues par quiconque.',
     ],
     'icons' => [
         'personal' => 'user',
         'school' => 'graduation-cap',
         'contact' => 'envelope',
+        'public' => 'eye',
         'settings' => 'flag'
     ],
     'quick_menu' => 'Menu rapide'

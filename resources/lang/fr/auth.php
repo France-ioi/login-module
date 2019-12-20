@@ -32,6 +32,7 @@ return [
     'login_password' => 'Identifiant et mot de passe',
     'login_services' => 'Avec l\'un de ces services',
     'btn_login' => 'Se connecter',
+    'suggested_login' => 'Cet identifiant est déjà utilisé. Souhaitez-vous plutôt utiliser :login ?',
     'link_reset_pwd_label' => 'Mot de passe oublié ?',
     'link_reset_pwd_link' => 'Réinitialiser',
     'not_member' => 'Pas encore de compte ?',

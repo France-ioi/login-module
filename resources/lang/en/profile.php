@@ -33,6 +33,7 @@ return [
     'school_grade' => 'School grade',
     'student_id' => 'Student ID',
     'graduation_year' => 'Graduation year',
+    'grade_or_graduation_year' => 'Grade or graduation year',
     'birthday'  => 'Birthday',
     'birthday_year'  => 'Year of birth',
     'gender' => 'Gender',
@@ -57,6 +58,8 @@ return [
 
     'pms_redirect_msg' => 'As a PMS user, you must edit your profile directly on PMS. Please press the "Zurück zum JwInf" button afterwards to have your profile updated here.',
     'pms_redirect_btn' => 'Proceed to PMS',
+
+    'provided_other_sections' => 'Information provided in other sections :',
 
     'teacher_domain_verified' => 'Do you have an email from an authorized domain?',
     'teacher_domain_options' => [
@@ -113,6 +116,7 @@ return [
         'personal' => 'user',
         'school' => 'graduation-cap',
         'contact' => 'envelope',
+        'public' => 'eye',
         'settings' => 'flag'
     ],
     'quick_menu' => 'Quick menu'

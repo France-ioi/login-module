@@ -39,13 +39,13 @@ return [
         'contact' => [
             'primary_email',
             'secondary_email',
+            'subscription_results',
+            'subscription_news',
             'address',
             'city',
             'zipcode',
             'primary_phone',
-            'secondary_phone',
-            'subscription_results',
-            'subscription_news'
+            'secondary_phone'
         ],
         'public' => [
             'public_info',
