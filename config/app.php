@@ -96,6 +96,7 @@ return [
         'en' => 'English',
         'fr' => 'Français',
         'de' => 'Deutsch',
+        'sl' => 'Slovenščina',
         'ru' => 'Русский'
     ],
 

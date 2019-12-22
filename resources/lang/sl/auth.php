@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => ['Prijavni podatki so napačni.',
-    'throttle' => 'Preveč neuspešnih poizkusov. Prosim poizkusite ponovno čez :seconds sekund.'
+    'failed' => 'Prijavni podatki so napačni.',
+    'throttle' => 'Preveč neuspešnih poizkusov. Prosim poizkusite ponovno čez :seconds sekund.',
 
     'login_or_email' => 'Uporabniško ime ali e-pošta',
     'login_email_badge' => 'Uporabniško ime, e-poštni naslov, koda...',
@@ -25,7 +25,7 @@ return [
     'remember_me' => 'Zapomni si me',
     'name' => 'Ime',
 
-    'login_choice_header' => 'Prijavi se'
+    'login_choice_header' => 'Prijavi se',
     'login_choice_intro' => 'Izberi metodo za prijavo:',
     'login_pwd_header' => 'Poveži',
     'login_pwd_intro' => 'Prosim vnesite geslo',
