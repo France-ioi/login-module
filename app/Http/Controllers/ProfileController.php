@@ -96,7 +96,9 @@ class ProfileController extends Controller
     public function update(Request $request) {
         $user = $request->user();
         $login = $request->get('login');
-        if($user->login !== $login) {
+        if($login ? $user->login !== $login : !$user->login) {
+            // If the user is changing usernames and the new one is taken, or
+            // the user doesn't have one, suggest a username
             $suggested_login = $this->login_suggestion->get($login);
             if($suggested_login !== $login) {
                 return redirect()->back()->withInput()->with('suggested_login', $suggested_login);
