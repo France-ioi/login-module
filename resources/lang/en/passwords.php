@@ -18,6 +18,7 @@ return [
     'sent' => 'We have e-mailed your password reset token!',
     'token' => 'This password reset token is invalid.',
     'user' => "We can't find a user with that login or e-mail address.",
+    'reset_not_available' => 'There is no email associated with this login, password reinitialization can\'t be used',
     'reset_refused' => 'Password recovery refused.',
 
 ];

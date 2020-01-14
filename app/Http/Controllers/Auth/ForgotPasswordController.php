@@ -67,7 +67,7 @@ class ForgotPasswordController extends Controller
         })->get();
         if(!count($emails)) {
             return redirect()->route('password.request')
-                ->with('status', trans('passwords.user'));
+                ->with('status', trans('passwords.reset_not_available'));
         }
         return view('auth.passwords.emails_list', [
             'emails' => $emails

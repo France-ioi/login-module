@@ -18,6 +18,7 @@ return [
     'sent' => 'Un mail avec votre jeton de réinitialisation de mot de passe a été envoyé !',
     'token' => 'Ce jeton de réinitialisation de mot de passe est invalide.',
     'user' => "Aucun utilisateur avec cet identifiant ou adresse mail n'a été trouvé.",
+    'reset_not_available' => 'Il n\'y a pas d\'adresse email associée à cet identifiant, la récupération de mot de passe ne peut pas être utilisée',
     'reset_refused' => 'Réinitialisation du mot de passe refusée.',
 
 ];
