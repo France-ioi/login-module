@@ -56,6 +56,7 @@ class LoginWithCodeController extends Controller
 
         // attempt user badge code login
         if($badge = $this->findBadge($code)) {
+            $this->updateBadgeData($badge);
             if($badge->login_enabled) {
                 Auth::login($badge->user, $request->has('remember'));
                 return redirect($this->context->continueUrl());
@@ -92,6 +93,13 @@ class LoginWithCodeController extends Controller
         return false;
     }
 
+
+    private function updateBadgeData($badge) {
+        if($badge_data = $this->context->badge()->verify($badge->code)) {
+            $badge->data = $badge_data['user']['data'];
+            $badge->save();
+        }
+    }
 
 
     private function authWithBadge($badge_data) {
