@@ -17,7 +17,8 @@ class ResetPasswordNotification extends LocalizedNotification
 
     public function toMail($notifiable) {
         return $this->buildMessage('reset_password', $notifiable->user->language, [
-            'token' => $this->token
+            'token' => $this->token,
+            'login' => $notifiable->user->login
         ]);
     }
 
