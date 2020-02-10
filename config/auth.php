@@ -114,4 +114,6 @@ return [
         ],
     ],
 
+    'reset_password_token_length' => 20
+
 ];
