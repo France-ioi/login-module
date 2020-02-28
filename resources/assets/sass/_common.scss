@@ -461,9 +461,13 @@ fieldset .form-group {
 				color: $brand-primary;
 			}
 		}
-		.actionsButtons a {
-			color: $brand-primary;
-			margin-left: 20px;
+		.actionsButtons {
+			display: block;
+			text-align: right;
+			a {
+				color: $brand-primary;
+				margin-left: 20px;
+			}
 		}
 	}
 }

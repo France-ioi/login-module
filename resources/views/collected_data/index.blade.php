@@ -24,7 +24,7 @@
             <ul class="actionsList">
                 <li>
                     <span class="actionsLabel">@lang('collected_data.item_self'):</span>
-                    <span class="actionsButtons pull-right">
+                    <span class="actionsButtons">
                         <button type="button" class="btn-link" data-toggle="modal" data-target="#data-summary">
                             <i class="fas fa-eye icon"></i>
                             @lang('collected_data.summary')
