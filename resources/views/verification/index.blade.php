@@ -2,24 +2,27 @@
 
 @section('content')
     @if(count($unverified_attributes) && count($methods))
-        <div class="alert alert-danger">
-            <div>
-                @lang('verification.unverified_attributes', [
-                    'platform_name' => $platform_name
-                ])
+        <div class="alert-section">
+            <div class="alert alert-danger">
+                <div>
+                    @lang('verification.unverified_attributes', [
+                        'platform_name' => $platform_name
+                    ])
+                </div>
+                <strong>
+                    @foreach($unverified_attributes as $attr)
+                        @lang('profile.'.$attr)@if(!$loop->last), @endif
+                    @endforeach
+                </strong>
             </div>
-            <strong>
-                @foreach($unverified_attributes as $attr)
-                    @lang('profile.'.$attr)@if(!$loop->last), @endif
-                @endforeach
-            </strong>
-        </div>
+	</div>
     @endif
 
 
     @if(count($verifications))
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="panel-body">
+            <div class="sectionTitle">
+                <i class="fas fa-calendar-check icon"></i>
                 @lang('verification.header_verifications')
             </div>
             <ul class="list-group">
@@ -53,22 +56,23 @@
                                 <pre>{!! $verification->message !!}</pre>
                             @endif
                         @endif
-                        <div>
+                        <div class="txtright">
                             @include('verification.bars.'.$verification->method->name)
                         </div>
                     </li>
                 @endforeach
             </ul>
-        </div>
+	</div>
     @endif
 
     @if(count($methods))
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="panel-body">
+            <div class="sectionTitle">
+                <i class="fas fa-check icon"></i>
                 @lang('verification.header_methods')
             </div>
             <ul class="list-group">
-                @foreach($methods as $method)
+		@foreach($methods as $method)
                     <a href="/verification/{{$method->name}}" class="list-group-item">
                         <strong>@lang('verification.methods.'.$method->name)</strong>
                         <div>
@@ -77,21 +81,22 @@
                                 @lang('profile.'.$attr)@if(!$loop->last), @endif
                             @endforeach
                         </div>
-                    </a>
+		    </a>
+
                 @endforeach
             </ul>
         </div>
     @else
-        <div class="alert alert-success">@lang('verification.not_required')</div>
+        <div class="alert-section">
+            <div class="alert alert-success">@lang('verification.not_required')</div>
+        </div>
     @endif
 
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <a class="btn btn-default" href="/profile">@lang('verification.btn_profile')</a>
+    <div class="panel-body">
+        <a class="btn btn-default btn-primary" href="/profile">@lang('verification.btn_profile')</a>
 
-            @if(!count($unverified_attributes))
-                <a class="btn btn-default pull-right" href="{!! $continue_url !!}">@lang('ui.continue')</a>
-            @endif
-        </div>
+        @if(!count($unverified_attributes))
+            <a class="btn btn-default pull-right" href="{!! $continue_url !!}">@lang('ui.continue')</a>
+        @endif
     </div>
 @endsection

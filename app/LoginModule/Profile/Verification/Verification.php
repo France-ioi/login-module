@@ -214,15 +214,20 @@ class Verification {
     public static function stateLabel($verification) {
         if($verification->state == self::STATE_VERIFIED) {
             $c = 'label-success';
+            $i = 'fas fa-check';
         } else if($verification->state == self::STATE_IN_PROCESS) {
             $c = 'label-warning';
+            $i = 'fas fa-clock';
         } else if($verification->state == self::STATE_ACTION_REQUIRED) {
             $c = 'label-info';
+            $i = 'fas fa-exclamation';
         } else {
             $c = 'label-danger';
+            $i = 'fas fa-bell';
         }
         return
             '<span class="label '.$c.'">'.
+                '<i class="'.$i.' icon"></i>'.
                 trans('verification.states.'.$verification->state).
             '</span>';
     }

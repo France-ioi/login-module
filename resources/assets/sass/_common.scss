@@ -17,6 +17,9 @@ a {
 hr {
 	border-color: #D8D8D8;
 }
+.txtright {
+	text-align: right;
+}	
 .btn {
 	text-transform: uppercase;
 	font-weight: bold;
@@ -454,6 +457,8 @@ fieldset .form-group {
 		&:first-child {
 			border-top: none;
 		}
+	}
+}
 		.actionsLabel {
 			text-transform: uppercase;
 			font-weight: bold;
@@ -464,13 +469,11 @@ fieldset .form-group {
 		.actionsButtons {
 			display: block;
 			text-align: right;
-			a {
+			a, button {
 				color: $brand-primary;
 				margin-left: 20px;
 			}
 		}
-	}
-}
 .modal-header .close {
 	color: $brand-primary;
 	opacity: 1;
@@ -586,9 +589,15 @@ ul.alert {
 }
 .label {
 	font-weight: normal;
+	.icon {
+		padding-right: 5px;
+	}
 }
 .label-success {
 	color: $brand-success;
+}
+.label-warning {
+	color: $brand-warning;
 }
 .badgeList .selfToggleItem {
 	margin-right: 2em;
