@@ -1,19 +1,29 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+	@if(count($errors) > 0)
+		<div class="alert-section">
+			@include('ui.errors')
+		</div>
+	@endif
+
+    <div class="panel-body">
+		<div class="sectionTitle">
+			<i class="fas fa-landmark icon"></i>
             @lang('verification.methods.email_domain')
         </div>
-        <div class="panel-body">
-            <p>@lang('verification.email_domain.help')</p>
-            {!! BootForm::open(['url' => '/verification/email_domain']) !!}
-                {!! BootForm::select('role', trans('verification.email_domain.role'), $roles) !!}
-                {!! BootForm::text('account', trans('verification.email_domain.account')) !!}
-                {!! BootForm::select('domain', trans('verification.email_domain.domain'), $domains) !!}
-                {!! BootForm::submit(trans('ui.save')) !!}
-            {!! BootForm::close() !!}
-        </div>
+        <p class="help-block">@lang('verification.email_domain.help')</p>
+        {!! BootForm::open(['url' => '/verification/email_domain']) !!}
+            {!! BootForm::select('role', trans('verification.email_domain.role'), $roles) !!}
+            {!! BootForm::text('account', trans('verification.email_domain.account')) !!}
+            {!! BootForm::select('domain', trans('verification.email_domain.domain'), $domains) !!}
+			<div class="form-group text-center">
+				<button type="submit" class="btn btn-rounded btn-primary btn-centered">
+					<i class="fas fa-check icon"></i>
+					@lang('ui.save')
+				</button>
+				<a class="btn-link" href="/verification">@lang('ui.cancel')</a>
+			</div>
+        {!! BootForm::close() !!}
     </div>
-    <a class="btn btn-default" href="/verification">@lang('ui.cancel')</a>
 @endsection

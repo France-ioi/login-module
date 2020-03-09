@@ -1,8 +1,9 @@
 @extends('layouts.popup')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="panel-body">
+        <div class="sectionTitle">
+            <i class="fas fa-shield-alt icon"></i>
             @lang('verification.header_methods')
         </div>
         <ul class="list-group">

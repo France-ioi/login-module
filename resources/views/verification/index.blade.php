@@ -72,7 +72,7 @@
                 @lang('verification.header_methods')
             </div>
             <ul class="list-group">
-		@foreach($methods as $method)
+				@foreach($methods as $method)
                     <a href="/verification/{{$method->name}}" class="list-group-item">
                         <strong>@lang('verification.methods.'.$method->name)</strong>
                         <div>
@@ -81,8 +81,7 @@
                                 @lang('profile.'.$attr)@if(!$loop->last), @endif
                             @endforeach
                         </div>
-		    </a>
-
+				    </a>
                 @endforeach
             </ul>
         </div>
@@ -93,10 +92,10 @@
     @endif
 
     <div class="panel-body">
-        <a class="btn btn-default btn-primary" href="/profile">@lang('verification.btn_profile')</a>
+        <a class="btn btn-rounded btn-centered btn-primary" href="/profile">@lang('verification.btn_profile')</a>
 
         @if(!count($unverified_attributes))
-            <a class="btn btn-default pull-right" href="{!! $continue_url !!}">@lang('ui.continue')</a>
+            <a class="btn btn-default btn-centered btn-rounded" href="{!! $continue_url !!}">@lang('ui.continue')</a>
         @endif
     </div>
 @endsection

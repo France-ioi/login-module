@@ -17,9 +17,12 @@ a {
 hr {
 	border-color: #D8D8D8;
 }
-.txtright {
-	text-align: right;
-}	
+.text-lg {
+	font-size: 28px;
+}
+.text-colored {
+	color: $brand-primary;
+}
 .btn {
 	text-transform: uppercase;
 	font-weight: bold;
@@ -27,6 +30,9 @@ hr {
 	line-height: 1.5;
 	position: relative;
 	min-width: 160px;
+	&[type="submit"] {
+		margin-top: 2em;
+	}
 }
 .btn-wide {
 	width: 100%;
@@ -38,6 +44,7 @@ hr {
 .btn-centered {
 	margin: 10px auto 0;
 	display: block;
+	width: fit-content;
 }
 .btn .icon {
 	position: absolute;
@@ -59,7 +66,6 @@ hr {
 .form-group {
 	position: relative;
 	width: 100%;
-	display: inline-block;
 }
 .form-control {
 	background-color: $input-background;
@@ -67,7 +73,7 @@ hr {
 	box-shadow: none;
 }
 .form-control-static {
-	padding: 0;
+
 }
 
 
@@ -154,7 +160,7 @@ button:not([aria-expanded="true"]) {
 			height: 15px;
 			width: 50px;
 			position: absolute;
-			top: 3px;
+			top: 12px;
 			right: 0;
 			cursor: pointer;
 
@@ -413,6 +419,11 @@ fieldset .form-group {
 	font-size: $font-size-base * 1.375;
 	font-weight: lighter;
 	margin-bottom: 2rem;
+	&.sm {
+		font-size: $font-size-base;
+		font-weight: bold;
+		color: $text-color;
+	}
 	.icon {
 		font-size: $icon-small;
 		border-radius: 50%;
@@ -435,7 +446,6 @@ fieldset .form-group {
 		padding-left: 20px;
 		padding-right: 20px;
 		padding-top: 25px;
-		float: left;
 	}
 
 	img {
@@ -443,6 +453,28 @@ fieldset .form-group {
 		margin: 10px auto;
 	}
 }
+.verificationForm fieldset {
+	margin: 0 -20px;
+	padding-top: $panel-body-padding;
+	border-top: 1px solid $default-border-color;
+	&:nth-of-type(1) {
+		border-top: none;
+	}
+	legend.sectionTitle {
+		border-top: 1px solid $default-border-color;
+		padding-left: 70px;
+		padding-right: 20px;
+		padding-top: 25px;
+		&.sm {
+			margin-bottom: 0;
+		}
+	}
+	.list-group {
+		margin: 0 20px 0 70px;
+	}
+
+}
+
 .panel-content {
 	margin-left: 50px;
 }
