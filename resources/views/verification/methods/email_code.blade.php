@@ -20,8 +20,8 @@
             {!! BootForm::horizontal(['url' => '/verification/email_code', 'class' => 'form-horizontal verificationForm']) !!}
 		{!! BootForm::select('role', trans('verification.email_code.email'), $emails) !!}
 		{!! BootForm::text('code', trans('verification.email_code.code'), null, [
-			'prefix' => BootForm::addonText('Aa'),
-			'placeholder' => 'Ex: Qw3R7GsdQ'
+			'placeholder' => trans('badges.code'),
+			'prefix' => BootForm::addonIcon('key fas')
 		]) !!}
 		<button type="submit" class="btn btn-rounded btn-primary btn-centered">
 			<i class="fas fa-check icon"></i>

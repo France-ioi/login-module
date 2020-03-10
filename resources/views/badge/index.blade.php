@@ -7,7 +7,7 @@
                 @lang('badge.header')
             </div>
             {!! BootForm::open(['url' => '/badge/attach']) !!}
-                {!! BootForm::text('code', false, null, ['placeholder' => 'Ex: Qw3rY90Dfh', 'prefix' => BootForm::addonText('Aa')]) !!}
+                {!! BootForm::text('code', false, null, ['placeholder' => trans('badges.code'),  'prefix' => BootForm::addonIcon('key fas')]) !!}
                 <div class="form-group text-center">
 		    <button type="submit" class="btn btn-centered btn-rounded btn-primary">
 			<i class="fas fa-check icon"></i>

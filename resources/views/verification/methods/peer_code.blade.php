@@ -15,9 +15,9 @@
 	        </div>
 	        <p class="help-block">@lang('verification.peer.code_help')</p>
 	        {!! BootForm::horizontal(['url' => '/verification/peer_code/'.$verification->id, 'class' => 'form-horizontal verificationForm']) !!}
-			{!! BootForm::text('code', trans('verification.peer.code'), null, [		
-				'prefix' => BootForm::addonText('Aa'),
-				'placeholder' => 'Ex: Qw3R7GsdQ'
+			{!! BootForm::text('code', trans('verification.peer.code'), null, [
+				'placeholder' => trans('badges.code'),
+				'prefix' => BootForm::addonIcon('key fas')
 			]) !!}
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-rounded btn-primary btn-centered">
