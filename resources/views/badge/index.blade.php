@@ -2,16 +2,18 @@
 
 @section('content')
         <div class="panel-body">
-            <div class="sectionTitle">
+	    <div class="sectionTitle">
+		<i class="fas fa-user icon"></i>
                 @lang('badge.header')
             </div>
             {!! BootForm::open(['url' => '/badge/attach']) !!}
-                {!! BootForm::text('code', false) !!}
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
+                {!! BootForm::text('code', false, null, ['placeholder' => 'Ex: Qw3rY90Dfh', 'prefix' => BootForm::addonText('Aa')]) !!}
+                <div class="form-group text-center">
+		    <button type="submit" class="btn btn-centered btn-rounded btn-primary">
+			<i class="fas fa-check icon"></i>
                         @lang('badge.btn_verify_code')
                     </button>
-                    <button class="btn btn-link" id="btn_do_not_have">
+                    <button class="btn-link" id="btn_do_not_have">
                         @lang('badge.do_not_have')
                     </button>
                 </div>

@@ -30,13 +30,14 @@
         @endif
     </div>
     <div class="panel-body">
-        {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm'])) !!}
+        {!! BootForm::horizontal(array_merge($form, ['class' => 'profileForm form-horizontal'])) !!}
             @if($optional_fields_visible)
                 {!! BootForm::hidden('optional_fields_visible', 1) !!}
             @endif
             {!! ProfileFormRenderer::render($schema) !!}
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary btn-centered btn-rounded">
+					<i class="fas fa-check icon"></i>
                     @lang('ui.save')
                 </button>
                 @if($cancel_url)

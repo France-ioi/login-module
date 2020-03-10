@@ -29,10 +29,8 @@ hr {
 	border: none;
 	line-height: 1.5;
 	position: relative;
+	width: fit-content;
 	min-width: 160px;
-	&[type="submit"] {
-		margin-top: 2em;
-	}
 }
 .btn-wide {
 	width: 100%;
@@ -66,6 +64,7 @@ hr {
 .form-group {
 	position: relative;
 	width: 100%;
+	display: inline-block;
 }
 .form-control {
 	background-color: $input-background;
