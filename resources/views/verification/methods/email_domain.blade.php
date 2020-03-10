@@ -15,7 +15,10 @@
         <p class="help-block">@lang('verification.email_domain.help')</p>
         {!! BootForm::open(['url' => '/verification/email_domain']) !!}
             {!! BootForm::select('role', trans('verification.email_domain.role'), $roles) !!}
-            {!! BootForm::text('account', trans('verification.email_domain.account')) !!}
+	    {!! BootForm::text('account', trans('verification.email_domain.account'), null, [
+		'prefix' => BootForm::addonText('Aa'),
+		'placeholder' => 'Ex: Qw3R7GsdQ'
+		]) !!}
             {!! BootForm::select('domain', trans('verification.email_domain.domain'), $domains) !!}
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-rounded btn-primary btn-centered">

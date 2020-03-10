@@ -14,7 +14,10 @@
         </div>
             <p class="help-block">@lang('verification.peer.help')</p>
             {!! BootForm::horizontal(['url' => '/verification/peer', 'class' => 'form-horizontal verificationForm']) !!}
-                {!! BootForm::text('email', trans('verification.peer.email')) !!}
+		{!! BootForm::text('email', trans('verification.peer.email'), null, [
+			'prefix' => BootForm::addonText('Aa'),
+			'placeholder' => 'email@email.com / Eniac123'
+		]) !!}
 				<div class="form-group text-center">
 					<button type="submit" class="btn btn-rounded btn-primary btn-centered">
 						<i class="fas fa-check icon"></i>

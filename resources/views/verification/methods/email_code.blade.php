@@ -18,12 +18,15 @@
                 ])
             </p>
             {!! BootForm::horizontal(['url' => '/verification/email_code', 'class' => 'form-horizontal verificationForm']) !!}
-				{!! BootForm::select('role', trans('verification.email_code.email'), $emails) !!}
-                {!! BootForm::text('code', trans('verification.email_code.code')) !!}
-					<button type="submit" class="btn btn-rounded btn-primary btn-centered">
-						<i class="fas fa-check icon"></i>
-						@lang('ui.save')
-					</button>
+		{!! BootForm::select('role', trans('verification.email_code.email'), $emails) !!}
+		{!! BootForm::text('code', trans('verification.email_code.code'), null, [
+			'prefix' => BootForm::addonText('Aa'),
+			'placeholder' => 'Ex: Qw3R7GsdQ'
+		]) !!}
+		<button type="submit" class="btn btn-rounded btn-primary btn-centered">
+			<i class="fas fa-check icon"></i>
+			@lang('ui.save')
+		</button>
             {!! BootForm::close() !!}
         @else
             <div class="alert alert-warning">@lang('verification.email_code.no_emails')</div>
