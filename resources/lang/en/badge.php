@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'header' => 'Participation сode',
+    'header' => 'Participation code',
     'btn_verify_code' => 'Validate',
     'code_verification_fail' => 'Code verification failed',
     'code_registered' => 'Code registered by another user',
