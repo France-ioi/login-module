@@ -32,7 +32,7 @@ class LTILaunchController extends Controller
 
 
     private function getRedirect($url, $user_id) {
-        $url .= (strpos($url, '?') === false ? '?' : '&').'login_id='.urlencode($user_id);
+        $url .= (strpos($url, '?') === false ? '?' : '&').'user_id='.urlencode($user_id);
         return redirect($url, 303);
     }
 
