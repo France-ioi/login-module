@@ -25,6 +25,7 @@ Route::get('/oauth_client/logout/{provider}', 'Auth\OAuthClientController@logout
 
 // LTI
 Route::post('/lti/entry', 'Auth\LTIEntryController@handle');
+Route::post('/lti/launch', 'Auth\LTILaunchController@handle');
 Route::get('/lti', 'Auth\LTIController@login');
 
 // Misc
