@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Client;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class PlatformAPI
 {
@@ -16,6 +17,7 @@ class PlatformAPI
      */
     public function handle($request, Closure $next)
     {
+        $request->query = new ParameterBag([]);
         if(!$request->has('client_id')) {
             return response('client_id missed', 400);
         }
@@ -24,7 +26,7 @@ class PlatformAPI
         }
         $data = $this->decode($request->get('data'), $client->secret);
         $data['client'] = $client;
-        $request->merge($data);
+        $request->replace($data);
         return $next($request);
     }
 
