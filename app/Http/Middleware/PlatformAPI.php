@@ -26,6 +26,7 @@ class PlatformAPI
         }
         $data = $this->decode($request->get('data'), $client->secret);
         $data['client'] = $client;
+        $data['client_id'] = $client->id;
         $request->replace($data);
         return $next($request);
     }
