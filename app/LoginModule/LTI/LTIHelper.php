@@ -52,6 +52,7 @@ class LTIHelper {
         $lti_user_id = $lti_user->getId();
         $lti_context_id = $lti_user->getResourceLink()->lti_resource_link_id;
         $lti_consumer_key = $lti_user->getResourceLink()->getConsumer()->getKey();
+        $lti_content_id = $lti_user->getResourceLink()->lti_content_id;
 
         $lc = LtiConnection::where('lti_consumer_key', $lti_consumer_key)->where('lti_user_id', $lti_user_id)->first();
         if($lc) {
@@ -69,7 +70,8 @@ class LTIHelper {
             $conn = new \App\LtiConnection([
                 'lti_consumer_key' => $lti_consumer_key,
                 'lti_context_id' => $lti_context_id,
-                'lti_user_id' => $lti_user_id
+                'lti_user_id' => $lti_user_id,
+                'lti_content_id' => $lti_content_id
             ]);
             $conn->user()->associate($user);
             $conn->save();
@@ -115,15 +117,27 @@ class LTIHelper {
 
     public function sendResult($lti_connection_id, $score) {
         $this->connectPDO();
-        $lc = LtiConnection::find($lti_connection_id);
-        if(!$lc) {
+        $connection = LtiConnection::find($lti_connection_id);
+        return $this->sendConnectionResult($connection);
+    }
+
+
+    public function sendResultByContent($user_id, $lti_content_id, $score) {
+        $this->connectPDO();
+        $connection = LtiConnection::where('user_id', $user_id)->where('lti_content_id', $lti_content_id)->first();
+        return $this->sendConnectionResult($connection);
+    }
+
+
+    private function sendConnectionResult($connection, $score) {
+        if(!$connection) {
             return false;
         }
-        $consumer = new LTI_Tool_Consumer($lc['lti_consumer_key'], $this->data_connector);
-        $resourceLink = new LTI_Resource_Link($consumer, $lc['lti_context_id']);
+        $consumer = new LTI_Tool_Consumer($connection->lti_consumer_key, $this->data_connector);
+        $resourceLink = new LTI_Resource_Link($consumer, $connection->lti_context_id);
         $outcome = new LTI_Outcome();
         $outcome->setValue($score);
-        $user = new LTI_User($resourceLink, $lc['lti_user_id']);
+        $user = new LTI_User($resourceLink, $connection->lti_user_id);
         $res = $resourceLink->doOutcomesService(LTI_Resource_Link::EXT_WRITE, $outcome, $user);
         return $res;
     }
