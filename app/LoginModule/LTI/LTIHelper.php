@@ -52,7 +52,7 @@ class LTIHelper {
         $lti_user_id = $lti_user->getId();
         $lti_context_id = $lti_user->getResourceLink()->lti_resource_link_id;
         $lti_consumer_key = $lti_user->getResourceLink()->getConsumer()->getKey();
-        $lti_content_id = $lti_user->getResourceLink()->lti_content_id;
+        $content_id = $lti_user->getResourceLink()->content_id;
 
         $lc = LtiConnection::where('lti_consumer_key', $lti_consumer_key)->where('lti_user_id', $lti_user_id)->first();
         if($lc) {
@@ -71,7 +71,7 @@ class LTIHelper {
                 'lti_consumer_key' => $lti_consumer_key,
                 'lti_context_id' => $lti_context_id,
                 'lti_user_id' => $lti_user_id,
-                'lti_content_id' => $lti_content_id
+                'content_id' => $content_id
             ]);
             $conn->user()->associate($user);
             $conn->save();
@@ -118,14 +118,14 @@ class LTIHelper {
     public function sendResult($lti_connection_id, $score) {
         $this->connectPDO();
         $connection = LtiConnection::find($lti_connection_id);
-        return $this->sendConnectionResult($connection);
+        return $this->sendConnectionResult($connection, $score);
     }
 
 
-    public function sendResultByContent($user_id, $lti_content_id, $score) {
+    public function sendResultByContent($user_id, $content_id, $score) {
         $this->connectPDO();
-        $connection = LtiConnection::where('user_id', $user_id)->where('lti_content_id', $lti_content_id)->first();
-        return $this->sendConnectionResult($connection);
+        $connection = LtiConnection::where('user_id', $user_id)->where('content_id', $content_id)->first();
+        return $this->sendConnectionResult($connection, $score);
     }
 
 

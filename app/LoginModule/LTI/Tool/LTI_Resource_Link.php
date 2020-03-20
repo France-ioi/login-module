@@ -64,7 +64,7 @@ class LTI_Resource_Link {
 /**
  * @var string Content ID
  */
-  public $lti_content_id = NULL;
+  public $content_id = NULL;
 /**
  * @var string Context title.
  */

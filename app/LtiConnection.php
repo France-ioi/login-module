@@ -12,7 +12,7 @@ class LtiConnection extends Model
         'lti_user_id',
         'lti_context_id',
         'lti_consumer_key',
-        'lti_content_id'
+        'content_id'
     ];
 
 
