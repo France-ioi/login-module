@@ -14,7 +14,7 @@ class LtiConnectionContentId extends Migration
     public function up()
     {
         Schema::table('lti_connections', function (Blueprint $table) {
-            $table->string('lti_content_id')->nullable()->after('lti_consumer_key');
+            $table->string('content_id')->nullable()->after('lti_consumer_key');
         });
     }
 
@@ -26,7 +26,7 @@ class LtiConnectionContentId extends Migration
     public function down()
     {
         Schema::table('lti_connections', function (Blueprint $table) {
-            $table->dropColumn('lti_content_id');
+            $table->dropColumn('content_id');
         });
     }
 }
