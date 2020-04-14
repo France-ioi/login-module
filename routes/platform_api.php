@@ -10,5 +10,5 @@ Route::group(['middleware' => ['platform_api']], function() {
     Route::post('lti/entry', 'PlatformAPI\LtiInterfaceController@entry');
     Route::post('lti/send_result', 'PlatformAPI\LtiInterfaceController@sendResult');
 
-    Route::post('lti_request/send_result', 'PlatformAPI\LtiRequestController@sendResult');
+    Route::post('lti_request/send_result', 'PlatformAPI\LtiResultDispatcherController@sendResult');
 });

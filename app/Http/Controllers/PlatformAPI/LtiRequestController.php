@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\LoginModule\LTI\LTIHelper;
 
 
-class LtiRequestController extends PlatformAPIController
+class LtiResultDispatcherController extends PlatformAPIController
 {
 
     protected $lti;
