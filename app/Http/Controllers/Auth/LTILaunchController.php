@@ -18,21 +18,16 @@ class LTILaunchController extends Controller
             return response()->json($validator->errors(), 422);
         }
         $url = $request->get('redirect_url');
-        $lti_user_id = $request->get('user_id');
-        if($lti_user_id && Auth::check()) {
-            $user = Auth::user();
-            if($user->ltiConnections()->where('lti_user_id', $lti_user_id)->first()) {
-                return $this->getRedirect($url, $user->id);
-            }
-        }
         $lc = $lti->handleRequest();
         Auth::login($lc->user);
-        return $this->getRedirect($url, $lc->user->id);
+        return $this->getRedirect($url, $lc->user->id, $lc->content_id);
     }
 
 
-    private function getRedirect($url, $user_id) {
-        $url .= (strpos($url, '?') === false ? '?' : '&').'user_id='.urlencode($user_id);
+    private function getRedirect($url, $user_id, $content_id) {
+        $url .= (strpos($url, '?') === false ? '?' : '&').
+            'user_id='.urlencode($user_id).
+            'content_id='.urlencode($content_id);
         return redirect($url, 303);
     }
 
