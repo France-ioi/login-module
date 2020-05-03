@@ -62,7 +62,7 @@ class ClientsController extends Controller
         $client = new Client($request->all());
         $client->personal_access_client = false;
         $client->password_client = false;
-        $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
+        $auth_order = $request->filled('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
         $client->attributes_filter = $this->cleanAtrributesFilter($request);
         $client->save();
@@ -111,16 +111,16 @@ class ClientsController extends Controller
     public function update(StoreClientRequest $request, Client $client)
     {
         $client->fill($request->all());
-        if(!$request->has('user_attributes')) {
+        if(!$request->filled('user_attributes')) {
             $client->user_attributes = [];
         }
-        if(!$request->has('verifiable_attributes')) {
+        if(!$request->filled('verifiable_attributes')) {
             $client->verifiable_attributes = [];
         }
-        if(!$request->has('hidden_attributes')) {
+        if(!$request->filled('hidden_attributes')) {
             $client->hidden_attributes = [];
         }
-        $auth_order = $request->has('auth_order') ? $request->get('auth_order') : [];
+        $auth_order = $request->filled('auth_order') ? $request->get('auth_order') : [];
         $client->auth_order = $this->auth_list->normalize($auth_order);
         $client->attributes_filter = $this->cleanAtrributesFilter($request);
         $client->save();

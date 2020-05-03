@@ -82,6 +82,7 @@ class User extends Authenticatable
 
 
     protected static function boot() {
+        parent::boot();
         static::saving(function($model) {
             if(!is_null($model->password)) {
                 $model->regular_password = true;

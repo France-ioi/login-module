@@ -15,6 +15,7 @@ class LtiResult extends Model
 
 
     protected static function boot() {
+        parent::boot();
         static::creating(function($model) {
             $model->attempts = 0;
             $model->last_attempt = new \DateTime;

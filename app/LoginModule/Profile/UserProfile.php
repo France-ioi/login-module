@@ -17,7 +17,7 @@ class UserProfile {
 
 
     public function update($request, $fillable_attributes) {
-        $data = $request->only($fillable_attributes);
+        $data = $request->all($fillable_attributes);
         $request->user()->fill($data);
         $request->user()->login_revalidate_required = false;
         $request->user()->save();

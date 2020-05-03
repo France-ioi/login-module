@@ -90,7 +90,7 @@ class BadgeController extends Controller
         $api = $this->context->badge()->api();
         if($api && ($badge = Auth::user()->badges()->where('badge_api_id', $api->id)->first())) {
             $badge->comments = $request->get('comments');
-            $badge->override_profile = $request->has('override_profile');
+            $badge->override_profile = $request->filled('override_profile');
             $badge->save();
         }
         return redirect($this->context->continueUrl());

@@ -18,7 +18,7 @@ class PlatformAPI
     public function handle($request, Closure $next)
     {
         $request->query = new ParameterBag([]);
-        if(!$request->has('client_id')) {
+        if(!$request->filled('client_id')) {
             return response('client_id missed', 400);
         }
         if(!($client = Client::find($request->get('client_id')))) {

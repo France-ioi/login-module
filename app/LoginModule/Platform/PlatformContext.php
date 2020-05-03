@@ -31,7 +31,7 @@ class PlatformContext
 
     public function request($request) {
         $this->state->session($request->session());
-        if($request->has('redirect_uri') && $request->has('client_id')) {
+        if($request->filled('redirect_uri') && $request->filled('client_id')) {
             if($authorization = $request->is('oauth/authorize')) {
                 $this->handlePlatformParams($request);
             }
@@ -47,7 +47,7 @@ class PlatformContext
 
 
     private function handlePlatformParams($request) {
-        if($request->has('locale')) {
+        if($request->filled('locale')) {
             Locale::set($request->get('locale'));
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', function() { return redirect('/auth'); });
+Route::redirect('/', '/auth');
 
 // Auth
 Route::get('/password/reset/new', ['uses' => 'Auth\ResetPasswordController@showNewPasswordForm', 'as' => 'password.reset.new']);

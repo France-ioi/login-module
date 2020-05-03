@@ -57,7 +57,7 @@ class LogoutController extends Controller
 
 
     public function logoutLoop(Request $request) {
-        if($request->has('provider')) {
+        if($request->filled('provider')) {
             if($connection = Auth::user()->authConnections()->where('provider', $request->get('provider'))->first()) {
                 $connection->active = 0;
                 $connection->save();

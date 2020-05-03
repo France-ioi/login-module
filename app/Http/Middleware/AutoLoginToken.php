@@ -16,7 +16,7 @@ class AutoLoginToken
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if($request->has('login') && $request->has('auto_login_token')) {
+        if($request->filled('login') && $request->filled('auto_login_token')) {
             $auto_login = \App\AutoLoginToken::where('token', $request->get('auto_login_token'))->first();
             if($auto_login && $auto_login->user->login == $request->get('login')) {
                 Auth::guard($guard)->login($auto_login->user);

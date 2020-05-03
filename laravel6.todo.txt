@@ -1,0 +1,31 @@
+Package jakub-onderka/php-console-color is abandoned, you should avoid using it. Use php-parallel-lint/php-console-color instead.
+Package jakub-onderka/php-console-highlighter is abandoned, you should avoid using it. Use php-parallel-lint/php-console-highlighter instead.
+Package phpunit/phpunit-mock-objects is abandoned, you should avoid using it. No replacement was suggested.
+Package spomky-labs/jose is abandoned, you should avoid using it. Use web-token/jwt-framework instead.
+Package zendframework/zend-diactoros is abandoned, you should avoid using it. Use laminas/laminas-diactoros instead.
+
+
+5.4 -> 5.5
+The request helper will no longer retrieve nested keys. If needed, you may use the input method of the request to achieve this behavior:
+return request()->input('filters.date');
+
+
+
+
+
+//
+
+try to remove 
+"symfony/translation": "4.3.8",
+from composer.json after all updates
+
+
+
+
+data/ added to framework/cache
+mkdir -p storage/framework/cache/data
+
+
+
+test:
+validatorParticipationCodes

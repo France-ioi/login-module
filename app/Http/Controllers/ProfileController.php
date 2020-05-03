@@ -78,7 +78,7 @@ class ProfileController extends Controller
             'schema' => $schema,
             'pms_redirect' => $is_pms_user,
             'cancel_url' => $this->context->cancelUrl(),
-            'optional_fields_visible' => $request->has('optional_fields_visible') || count($required_attributes) == 0,
+            'optional_fields_visible' => $request->filled('optional_fields_visible') || count($required_attributes) == 0,
             'revalidation_fields' => Group::getRevalidationFields($user),
             'unverified_attributes' => $unverified_attributes,
             'verification_ready' => $verification_ready,

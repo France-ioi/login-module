@@ -60,7 +60,7 @@ class VerificationsController extends Controller
         }
         $verification->save();
 
-        if($request->has('page_url')) {
+        if($request->filled('page_url')) {
             return redirect($request->get('page_url'));
         }
         return redirect('/admin/verifications/edit');
