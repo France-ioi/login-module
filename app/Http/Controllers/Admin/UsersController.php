@@ -98,7 +98,7 @@ class UsersController extends Controller
         $token = Password::broker()->createToken($email);
         $body =
             'Follow this link to reset your password:'.PHP_EOL.
-            route('password.reset', $token);
+            route('password.reset', ['token' => $token]);
         $subject = 'Password reset';
         return view('admin.users.send_reset_link', [
             'subject' => $subject,
