@@ -32,6 +32,7 @@
             <tr>
                 <th>ID</th>
                 <th>Login</th>
+                <th>Email</th>
                 <th>Name</th>
                 <th>Role</th>
                 <th>Action</th>
@@ -42,7 +43,8 @@
                 <tr>
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->login }}</td>
-                    <td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                    <td>{{ $user->primary_email }} <br/> {{ $user->secondary_email }}</td>
+                    <td>{{ $user->first_name }} <br/> {{ $user->last_name }}</td>
                     <td>{{ $user->role }}</td>
                     <td>
                         <div class="btn-group">
