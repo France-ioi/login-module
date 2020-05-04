@@ -67,7 +67,8 @@ class Kernel extends HttpKernel
         'auto_authorization' => \App\Http\Middleware\AutoAuthorization::class,
         'merging_accounts' => \App\Http\Middleware\MergingAccounts::class,
         'platform_api' => \App\Http\Middleware\PlatformAPI::class,
-        'role' => \App\Http\Middleware\RoleMiddleware::class,
-        'permission' => \App\Http\Middleware\PermissionMiddleware::class
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,        
     ];
 }

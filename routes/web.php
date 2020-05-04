@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 // Admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth'], 'namespace' => 'Admin'], function() {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], function() {
     Route::get('/', 'DashboardController@index');
     Route::group(['middleware' => 'permission:admin.users.manager'], function() {
         Route::get('/users', 'UsersController@index');
