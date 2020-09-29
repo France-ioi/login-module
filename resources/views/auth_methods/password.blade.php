@@ -12,7 +12,7 @@
     </button>
 	<div class="collapse" id="edit-password">
 	    <div class="inline-form">
-	        @include('password.index')
+	        @include('auth_methods.password_form')
 	    </div>
 	</div>
 </li>
@@ -23,3 +23,12 @@
         $('#edit-password').addClass('in').attr('aria-expanded', true);
     </script>
 @endif
+
+<script type="text/javascript">
+    (function() {
+        var show_password_form = {!! request()->get('show_password_form') ? 'true' : 'false' !!}
+        if(show_password_form) {
+            $('#edit-password').collapse('show');
+        }
+    })();
+</script>
