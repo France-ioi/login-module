@@ -33,8 +33,8 @@ return [
     'login_services' => 'With one of those services',
     'btn_login' => 'Login',
     'suggested_login' => 'This login is already in use. Would you like to use :login instead?',
-    'link_reset_pwd_label' => 'Forgot Your Password?',
-    'link_reset_pwd_link' => 'Reinitialize',
+    'link_reset_pwd_label' => 'Forgot Your login or password?',
+    'link_reset_pwd_link' => 'Reset',
     'not_member' => 'Not yet a member?',
     'link_register' => 'Create an account',
     'show_more' => 'More services',
@@ -46,9 +46,9 @@ return [
     'btn_register' => 'Register',
 
 
-    'pwd_reset_header' => 'Password lost?',
-    'pwd_reset_receive_email_intro' => 'We\'ll send you an email to reinitialize.',
-    'pwd_reset_title' => 'Your login?',
+    'pwd_reset_header' => 'Account recovery',
+    'pwd_reset_receive_email_intro' => 'Please indicate your login or email address and we\'ll send you an email to reset your password.',
+    'pwd_reset_title' => 'Your login or email address?',
     'pwd_reset_intro' => 'Provide recovery token and reset your password',
     'btn_pwd_reset_email' => 'Receive a link',
     'btn_pwd_reset' => 'Reset password',

@@ -33,8 +33,8 @@ return [
     'login_services' => 'Avec l\'un de ces services',
     'btn_login' => 'Se connecter',
     'suggested_login' => 'Cet identifiant est déjà utilisé. Souhaitez-vous plutôt utiliser :login ?',
-    'link_reset_pwd_label' => 'Mot de passe oublié ?',
-    'link_reset_pwd_link' => 'Réinitialiser',
+    'link_reset_pwd_label' => 'Identifiant ou mot de passe oublié ?',
+    'link_reset_pwd_link' => 'Récupérer',
     'not_member' => 'Pas encore de compte ?',
     'link_register' => 'Créer un compte',
     'show_more' => 'Afficher plus',
@@ -46,9 +46,9 @@ return [
     'btn_register' => 'Créer un compte',
 
 
-    'pwd_reset_header' => 'Réinitialisation du mot de passe',
-    'pwd_reset_receive_email_intro' => 'Nous vous enverrons un mail pour réinitialiser votre mot de passe.',
-    'pwd_reset_title' => 'Votre nom d\'utilisateur ?',
+    'pwd_reset_header' => 'Récupération du compte',
+    'pwd_reset_receive_email_intro' => 'Veuillez indiquer votre nom d\'utilisateur ou votre adresse mail, et nous vous enverrons un mail pour réinitialiser votre mot de passe.',
+    'pwd_reset_title' => 'Votre nom d\'utilisateur ou adresse mail ?',
     'pwd_reset_intro' => 'Envoyer un jeton de réinitialisation de votre mot de passe',
     'btn_pwd_reset_email' => 'Envoyer le lien',
     'btn_pwd_reset' => 'Réinitialiser le mot de passe',
