@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\LoginModule\Platform\PlatformContext;
+
 
 class PasswordController extends Controller
 {
 
 
-    public function index(Request $request, PlatformContext $context) {
-        return view('password.index', [
-            'cancel_url' => $context->cancelUrl()
+    public function index(Request $request) {
+        $request->merge([
+            'show_password_form' => '1'
         ]);
+        $url = '/auth_methods?'.http_build_query($request->all());
+        return redirect($url);
     }
 
 
