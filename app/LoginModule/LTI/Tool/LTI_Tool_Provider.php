@@ -780,7 +780,7 @@ EOD;
           $this->resource_link->lti_context_id = trim($_POST['context_id']);
         }
         $this->resource_link->lti_resource_id = trim($_POST['resource_link_id']);
-        $this->resource_link->content_id = trim($_POST['content_id']);
+        $this->resource_link->content_id = isset($_POST['content_id']) ? trim($_POST['content_id']) : null;
         $title = '';
         if (isset($_POST['context_title'])) {
           $title = trim($_POST['context_title']);
