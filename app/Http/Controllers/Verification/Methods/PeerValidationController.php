@@ -42,7 +42,7 @@ class PeerValidationController extends Controller
             'method_id' => $method->id,
             'user_attributes' => $method->user_attributes,
             'status' => 'pending',
-            'code' => str_random(10)
+            'code' => $code
         ]);
         $request->user()->verifications()->save($verification);
         return redirect('/verification');
