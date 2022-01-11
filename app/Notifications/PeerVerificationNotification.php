@@ -15,7 +15,7 @@ class PeerVerificationNotification extends LocalizedNotification
 
     public function toMail($notifiable) {
         return $this->buildMessage('peer_verification', $notifiable->user->language, [
-            'code' => $notifiable->code
+            'code' => $this->code
         ]);
     }
 

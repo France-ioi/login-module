@@ -102,7 +102,7 @@ class User extends Authenticatable
                     $model->graduation_year = $year;
                 }
 //            }
-            if($model->isDirty('login')) {
+            if($model->isDirty('login') && $model->getOriginal('login')) {
                 $model->login_updated_at = new \DateTime;
                 if($model->login_change_required && preg_match(config('profile.login_validator.new'), $model->login) == 1) {
                     $model->login_change_required = false;

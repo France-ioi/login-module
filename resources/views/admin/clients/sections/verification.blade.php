@@ -27,7 +27,7 @@
                 {{ trans('verification.methods.'.$method->name) }}
             </td>
             <td>
-                {{ implode($method->user_attributes, ', ') }}
+                {{ implode(', ', $method->user_attributes) }}
             </td>
             <td>
                 {!! BootForm::checkbox(

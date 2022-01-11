@@ -119,9 +119,16 @@
     </div>
 
     <div class="highlightBlock">
+        <i class="fas fa-user-plus"></i>
         @lang('auth.not_member')
         <a class="btn-link" href="{{ route('register') }}">
             @lang('auth.link_register')
+        </a>
+        <br>
+        <i class="fas fa-user-lock"></i>
+        @lang('auth.link_reset_pwd_label')
+        <a class="btn-link" href="{{ route('password.request') }}">
+            @lang('auth.link_reset_pwd_link')
         </a>
     </div>
 
