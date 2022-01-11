@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Session;
 use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Platform\BadgeRequest;

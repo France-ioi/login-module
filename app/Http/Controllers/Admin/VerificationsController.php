@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Verification;
 use App\VerificationMethod;
-
+use Illuminate\Support\Facades\Storage;
 class VerificationsController extends Controller
 {
 
@@ -55,7 +55,7 @@ class VerificationsController extends Controller
         $verification->status = $request->get('status');
         $verification->confidence = $request->get('confidence');
         if(!is_null($verification->file)) {
-            \Storage::delete('/verifications/'.$verification->file);
+            Storage::delete('/verifications/'.$verification->file);
             $verification->file = null;
         }
         $verification->save();
