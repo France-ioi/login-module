@@ -43,5 +43,6 @@ class SendLTIResultsCommand extends Command
                 $result->save();
             }
         });
+        return 0;
     }
 }

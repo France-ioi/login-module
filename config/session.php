@@ -176,4 +176,7 @@ return [
 
     'http_only' => true,
 
+    // laravel 6 to 7 migration
+    'secure' => env('SESSION_SECURE_COOKIE', null),
+
 ];

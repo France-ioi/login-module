@@ -11,6 +11,7 @@ trait MigratorCommand
         $migrator = new $this->migrator_class($this, $connection);
         $migrator->run();
         ExternalDatabase::disconnect();
+        return 0;
     }
 
 }

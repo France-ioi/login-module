@@ -10,6 +10,7 @@ use App\LoginModule\Profile\Verification\VerifiableUser;
 use Carbon\Carbon;
 use App\LoginModule\Graduation;
 use Spatie\Permission\Traits\HasRoles;
+use DateTimeInterface;
 
 class User extends Authenticatable
 {
@@ -102,7 +103,7 @@ class User extends Authenticatable
                     $model->graduation_year = $year;
                 }
 //            }
-            if($model->isDirty('login') && $model->getOriginal('login')) {
+            if($model->isDirty('login') && $model->getRawOriginal('login')) {
                 $model->login_updated_at = new \DateTime;
                 if($model->login_change_required && preg_match(config('profile.login_validator.new'), $model->login) == 1) {
                     $model->login_change_required = false;
@@ -246,5 +247,10 @@ class User extends Authenticatable
     public function ltiConnections() {
         return $this->hasMany('App\LtiConnection');
     }
+
+
+    protected function serializeDate(DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }    
 
 }

@@ -31,5 +31,6 @@ class KeysCommand extends Command
     {
         Keys::generate();
         $this->info('Login module encryption keys generated successfully.');
+        return 0;
     }
 }
