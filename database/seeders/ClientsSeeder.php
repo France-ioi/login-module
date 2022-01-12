@@ -38,8 +38,8 @@ class ClientsSeeder extends Seeder
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 2,
-            'redirect' => 'http://login-module-example-client.mobydimk.space/callback_oauth.php',
-            //'badge_url' => 'http://login-module-example-client.mobydimk.space/dummy_badge.php',
+            'redirect' => 'http://login-module-example-client.mobydimk.xyz/callback_oauth.php',
+            //'badge_url' => 'http://login-module-example-client.mobydimk.xyz/dummy_badge.php',
             'name' => 'Example client - demo',
         ]));
 
@@ -72,8 +72,8 @@ class ClientsSeeder extends Seeder
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 4,
-            'redirect' => 'http://algorea-platform.mobydimk.space/login/callback_oauth.php',
-            //'badge_url' => 'http://login-module-example-client.mobydimk.space/dummy_badge.php',
+            'redirect' => 'http://algorea-platform.mobydimk.xyz/login/callback_oauth.php',
+            //'badge_url' => 'http://login-module-example-client.mobydimk.xyz/dummy_badge.php',
             'user_attributes' => $user_attributes,
             'name' => 'Algorea - demo',
         ]));
@@ -107,7 +107,7 @@ class ClientsSeeder extends Seeder
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 6,
-            'redirect' => 'http://france-ioi.mobydimk.space/user/callback_oauth.php',
+            'redirect' => 'http://france-ioi.mobydimk.xyz/user/callback_oauth.php',
             'user_attributes' => $user_attributes,
             'name' => 'franceioi - demo',
         ]));
@@ -131,11 +131,26 @@ class ClientsSeeder extends Seeder
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 8,
-            'redirect' => 'http://bebras.mobydimk.space/teacherInterface/login_module/callback_oauth.php',
+            'redirect' => 'http://bebras.mobydimk.xyz/teacherInterface/login_module/callback_oauth.php',
             'user_attributes' => $user_attributes,
             'name' => 'Bebras - demo',
         ]));
 
+
+
+        $user_attributes = ["first_name","last_name","role"];
+        \App\Client::create(array_merge($this->defaults, [
+            'id' => 20,
+            'redirect' => 'http://trophees-nsi.test/oauth_callback/login',
+            'user_attributes' => $user_attributes,
+            'name' => 'Trophees nsi dev',
+        ]));
+        \App\Client::create(array_merge($this->defaults, [
+            'id' => 21,
+            'redirect' => 'http://trophees-nsi.mobydimk.xyz/oauth_callback/login',
+            'user_attributes' => $user_attributes,
+            'name' => 'Trophees nsi demo',
+        ]));        
 
     }
 
