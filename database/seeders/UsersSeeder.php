@@ -26,6 +26,7 @@ class UsersSeeder extends Seeder
         ]));
         $user->syncRoles(['admin']);
 
+
         // user with email/pwd
         $user = \App\User::create([
             'password' => $pwd
@@ -40,12 +41,51 @@ class UsersSeeder extends Seeder
         ]));
 
 
-        // user with login/pwd
+        // nsi test
         $user = \App\User::create([
-            'login' => 'test1',
+            'login' => 'nsi-teacher1',
             'password' => $pwd
         ]);
+        $user->emails()->save(new \App\Email([
+            'email' => 'nsi-teacher1@test.test',
+            'role' => 'primary'
+        ]));
 
+        $user = \App\User::create([
+            'login' => 'nsi-teacher2',
+            'password' => $pwd
+        ]);
+        $user->emails()->save(new \App\Email([
+            'email' => 'nsi-teacher2@test.test',
+            'role' => 'primary'
+        ]));
+
+        $user = \App\User::create([
+            'login' => 'nsi-jury1',
+            'password' => $pwd
+        ]);
+        $user->emails()->save(new \App\Email([
+            'email' => 'nsi-jury1@test.test',
+            'role' => 'primary'
+        ]));        
+
+        $user = \App\User::create([
+            'login' => 'nsi-jury2',
+            'password' => $pwd
+        ]);
+        $user->emails()->save(new \App\Email([
+            'email' => 'nsi-jury2@test.test',
+            'role' => 'primary'
+        ]));
+
+        $user = \App\User::create([
+            'login' => 'nsi-admin1',
+            'password' => $pwd
+        ]);
+        $user->emails()->save(new \App\Email([
+            'email' => 'nsi-admin1@test.test',
+            'role' => 'primary'
+        ]));        
 
         // user with login/obsolete pwds
         $user = \App\User::create([
@@ -60,6 +100,7 @@ class UsersSeeder extends Seeder
             'password' => md5('123'.'123123'),
             'salt' => '123'
         ]));
-
     }
+
+
 }
