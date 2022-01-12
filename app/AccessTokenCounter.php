@@ -22,7 +22,7 @@ class AccessTokenCounter extends Model
     ];
 
 
-    protected function setKeysForSaveQuery(Builder $query) {
+    protected function setKeysForSaveQuery($query) {
         return $query
             ->where('user_id', $this->user_id)
             ->where('client_id', $this->client_id);

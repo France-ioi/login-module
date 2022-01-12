@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
             $other = str_replace('_', ' ', $parameters[0]);
             return str_replace([':other'], $other, $message);
         });
+        Paginator::useBootstrap();
     }
 
     /**

@@ -15,32 +15,31 @@
         "fruitcake/laravel-cors": "^2.0",
         "google/apiclient": "^2.1",
         "intervention/image": "^2.5",
-        "laravel/framework": "^7.0",
+        "laravel/framework": "^8.0",
         "laravel/helpers": "^1.2",
-        "laravel/passport": "^7.0",
+        "laravel/passport": "^10.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0",
+        "laravel/ui": "^3.0",
         "lcobucci/jwt": "3.3.3",
         "league/flysystem-aws-s3-v3": "^1.0",
         "league/oauth2-client": "^2.2",
         "namshi/jose": "^7.2",
         "spatie/laravel-permission": "^3.0",
         "spomky-labs/jose": "^6.1",
-        "watson/bootstrap-form": "^1.1"
+        "watson/bootstrap-form": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "laracasts/generators": "^1.1",
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^8.5",
+        "phpunit/phpunit": "^9.0",
         "filp/whoops": "~2.0"
     },
     "autoload": {
-        "classmap": [
-            "database"
-        ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
