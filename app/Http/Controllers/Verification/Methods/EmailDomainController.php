@@ -59,11 +59,13 @@ class EmailDomainController extends Controller
             $email->email = $v;
             $email->save();
         } else {
-            $request->user()->emails()->save(new Email([
+            $email = new Email([
                 'email' => $v,
                 'role' => $request->get('role')
-            ]));
+            ]);
+            $request->user()->emails()->save($email);
         }
+        $email->requireVerification();
 
         ProfileVerification::clear(
             $request->user(),
