@@ -62,6 +62,8 @@
     @endif
 
     <script type="text/javascript">
+        window.official_domains = {!! json_encode($official_domains->pluck('domain')) !!};
+
         $(document).ready(function() {
             if($('#suggested_login_text').length) {
                 var el = $('#suggested_login_msg');
@@ -149,10 +151,9 @@
             var emails = {
                 country_code: null,
                 is_teacher: false,
-                domains: [],
 
                 install: function() {
-                    if(this.country_code && this.is_teacher) {
+                    if(this.is_teacher) {
                         $('input[name=primary_email').typeahead({
                             source: this.source,
                             autoSelect: true
@@ -168,22 +169,10 @@
                 },
 
                 refresh: function() {
-                    var country_code = $('select[name=country_code]').val();
                     var is_teacher = $('select[name=role]').val() == 'teacher';
-                    if(this.country_code !== country_code || this.is_teacher !== is_teacher) {
-                        this.country_code = country_code;
+                    if(this.is_teacher !== is_teacher) {
                         this.is_teacher = is_teacher;
                         this.install();
-                        // TODO: check this
-                        $.ajax({
-                            url: '/official_domains',
-                            data: {
-                                country_code: this.country_code
-                            },
-                            success: function(domains) {
-                                emails.domains = domains;
-                            }
-                        });
                     }
                 },
 
@@ -192,8 +181,8 @@
                         return null;
                     }
                     var res = [];
-                    for(var i=0; i<emails.domains.length; i++) {
-                        res.push(value + '@' + emails.domains[i]);
+                    for(var i=0; i<window.official_domains.length; i++) {
+                        res.push(value + '@' + window.official_domains[i]);
                     }
                     callback(res);
                 }

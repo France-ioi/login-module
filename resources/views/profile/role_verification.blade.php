@@ -15,7 +15,7 @@
                 <div class="col-sm-4">
                     <div class="input-group">
                         <div class="input-group-addon">@</div>                
-                        <select class="form-control" id="inp_rv_domain">
+                        <select class="form-control" id="sel_rv_domain">
                             @foreach($official_domains as $domain)
                                 <option value="{{ $domain->domain }}">{{ $domain->domain }}</option>
                             @endforeach
@@ -67,12 +67,26 @@ $(document).ready(function() {
         var verified = false;
 
         
-        var sel_role = $('select#role');
+        // role change
         function refreshVisibility() {
-            form1.toggle(sel_role.val() == 'teacher' && !verified);
+            form1.toggle($(this).val() == 'teacher' && !verified);
         }
-        sel_role.on('change', refreshVisibility);
-        refreshVisibility();
+        $('select#role').on('change', refreshVisibility).trigger('change');
+
+
+
+        function refreshAccount() {
+            var email = $(this).val();
+            var tmp = email.split('@');
+            var account = tmp[0] || '';
+            var domain = tmp[1] || '';
+            if(window.official_domains.indexOf(domain) !== -1) {
+                $('#sel_rv_domain').val(domain);
+                $('#inp_rv_account').val(account);
+            }
+        }
+        $('#secondary_email').change(refreshAccount).trigger('change');
+        $('#primary_email').change(refreshAccount).trigger('change');
 
 
         var email;
@@ -85,7 +99,7 @@ $(document).ready(function() {
                 return;
             }
             form1.find('input select button').prop('disabled', true);
-            email = account + '@' + $('#inp_rv_domain').val();
+            email = account + '@' + $('#sel_rv_domain').val();
             $.ajax({
                 dataType: 'json',
                 url: '/profile_inline_verification/send_code',
