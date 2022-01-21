@@ -1,0 +1,14 @@
+- remove existing "verification by official domain" form
++ add ability to select platform countries in admin UI
+? attach FR to all existing platforms in DB
+- display country domains in verification form next to role input
+- prefill verification form with primary or secondary emails input values, if possible
+- ajax request to send code
+- ajax request to verify code
+- display message "verified using..." on success
+- on profile form submit create "role" verification record, and email verification record if verified email exists in submitted data
+
+
+- separate role verification by platforms
+
+- picture + colleagues verifications should be for one platform

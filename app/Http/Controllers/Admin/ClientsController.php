@@ -10,6 +10,7 @@ use App\LoginModule\Profile\SchemaBuilder;
 use App\LoginModule\AuthList;
 use App\VerificationMethod;
 use App\BadgeApi;
+use App\Country;
 use App\LoginModule\Profile\Verification\Verification;
 
 class ClientsController extends Controller
@@ -47,7 +48,9 @@ class ClientsController extends Controller
             'auth_methods' => $this->auth_list->all(),
             'verification_methods' => VerificationMethod::get(),
             'client_verification_methods' => [],
-            'badge_apis' => BadgeApi::get()->pluck('name', 'id')->toArray()
+            'badge_apis' => BadgeApi::get()->pluck('name', 'id')->toArray(),
+            'countries' => Country::orderBy('name')->get(),
+            'client_countries' => [],            
         ]);
     }
 
@@ -67,6 +70,7 @@ class ClientsController extends Controller
         $client->attributes_filter = $this->cleanAtrributesFilter($request);
         $client->save();
         $this->syncVerificationMethods($client, $request);
+        $this->syncCountries($client, $request);
         return redirect()
             ->route('admin.clients.index')
             ->with('status', 'New client added.');
@@ -97,7 +101,9 @@ class ClientsController extends Controller
             'auth_methods' => $this->auth_list->normalize($client->auth_order),
             'verification_methods' => VerificationMethod::get(),
             'client_verification_methods' => $client->verification_methods->pluck('pivot', 'id'),
-            'badge_apis' => BadgeApi::get()->pluck('name', 'id')->toArray()
+            'badge_apis' => BadgeApi::get()->pluck('name', 'id')->toArray(),
+            'countries' => Country::orderBy('name')->get(),
+            'client_countries' => $client->countries->pluck('pivot', 'id'),
         ]);
     }
 
@@ -125,6 +131,7 @@ class ClientsController extends Controller
         $client->attributes_filter = $this->cleanAtrributesFilter($request);
         $client->save();
         $this->syncVerificationMethods($client, $request);
+        $this->syncCountries($client, $request);
         return redirect()
             ->route('admin.clients.index')
             ->with('status', 'Client updated.');
@@ -157,6 +164,12 @@ class ClientsController extends Controller
             }
         }
         $client->verification_methods()->sync($data);
+    }
+
+
+    private function syncCountries($client, $request) {
+        $countries = $request->get('countries', []);
+        $client->countries()->sync($countries);
     }
 
 

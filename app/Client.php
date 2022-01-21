@@ -55,6 +55,9 @@ class Client extends \Laravel\Passport\Client
             ->withPivot('expiration');
     }
 
+    public function countries() {
+        return $this->belongsToMany('App\Country', 'oauth_client_country');
+    }    
 
     public function badgeApi() {
         return $this->belongsTo('App\BadgeApi');

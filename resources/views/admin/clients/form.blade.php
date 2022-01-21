@@ -28,6 +28,11 @@
                     </a>
                 </li>
                 <li role="presentation">
+                    <a href="#countries" aria-controls="countries" role="tab" data-toggle="tab">
+                        Countries
+                    </a>
+                </li>                
+                <li role="presentation">
                     <a href="#attributes_filter" aria-controls="attributes_filter" role="tab" data-toggle="tab">
                         Attributes filter
                     </a>
@@ -47,6 +52,9 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="verification">
                     @include('admin.clients.sections.verification')
+                </div>
+                <div role="tabpanel" class="tab-pane" id="countries">
+                    @include('admin.clients.sections.countries')
                 </div>
                 <div role="tabpanel" class="tab-pane" id="attributes_filter">
                     @include('admin.clients.sections.attributes_filter')
