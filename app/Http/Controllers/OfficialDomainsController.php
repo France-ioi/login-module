@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\OfficialDomain;
-
+use App\LoginModule\Platform\PlatformContext;
 class OfficialDomainsController extends Controller
 {
 
+    public function __construct(PlatformContext $context) {
+        $this->context = $context;
+    }    
+
+
     public function index(Request $request) {
-        return response()->json(OfficialDomain::where('country_code', $request->get('country_code'))->get()->pluck('domain'));
+        $res = [];
+        $client = $this->context->client();
+        if($client) {
+            $res = $client->official_domains->pluck('domain');
+        }
+        return response()->json($res);
     }
 
 }

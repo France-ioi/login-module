@@ -65,7 +65,7 @@ class EmailDomainController extends Controller
             ]);
             $request->user()->emails()->save($email);
         }
-        $email->requireVerification();
+        $email->sendVerificationCode();
 
         ProfileVerification::clear(
             $request->user(),

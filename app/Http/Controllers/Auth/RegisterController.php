@@ -130,7 +130,7 @@ class RegisterController extends Controller
                 'email' => $data['primary_email']
             ]);
             $user->emails()->save($email);
-            $email->requireVerification();
+            $email->sendVerificationCode();
         }
         if($badge_data = $this->context->badge()->restoreData()) {
             $user->badges()->save(new Badge([

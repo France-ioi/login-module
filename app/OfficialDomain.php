@@ -8,7 +8,7 @@ class OfficialDomain extends Model
 {
 
     protected $fillable = [
-        'country_code',
+        'country_id',
         'domain',
     ];
 

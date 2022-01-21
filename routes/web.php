@@ -63,6 +63,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@storeCode');
     Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');
 
+    Route::post('/profile_inline_verification/send_code', 'ProfileInlineVerificationController@sendCode');
+    Route::post('/profile_inline_verification/verify_code', 'ProfileInlineVerificationController@verifyCode');
+    
+    Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');    
+
     Route::group(['middleware' => ['merging_accounts']], function() {
         Route::get('/badge', 'BadgeController@index');
         Route::post('/badge/attach', 'BadgeController@attach');

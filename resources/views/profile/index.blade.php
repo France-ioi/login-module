@@ -47,6 +47,8 @@
                 @endif
             </div>
         {!! BootForm::close() !!}
+
+        @include('profile.role_verification')
     </div>
 
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
@@ -172,6 +174,7 @@
                         this.country_code = country_code;
                         this.is_teacher = is_teacher;
                         this.install();
+                        // TODO: check this
                         $.ajax({
                             url: '/official_domains',
                             data: {

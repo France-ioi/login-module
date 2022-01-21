@@ -14,4 +14,14 @@ class Country extends Model
         'code',
         'name'
     ];
+
+
+    public function officialDomains() {
+        return $this->hasMany('App\OfficialDomain');
+    }    
+
+    public function clients()
+    {
+        return $this->belongsToMany('App\Client')->using('App\Pivots\ClientCountry');
+    }    
 }

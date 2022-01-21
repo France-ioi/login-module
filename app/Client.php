@@ -56,7 +56,20 @@ class Client extends \Laravel\Passport\Client
     }
 
     public function countries() {
-        return $this->belongsToMany('App\Country', 'oauth_client_country');
+        //return $this->belongsToMany('App\Country', 'oauth_client_country');
+        return $this->hasMany('App\Country')->using('App\Pivots\ClientCountry');
+    }
+
+    public function official_domains() {
+        //return $this->hasMany('App\OfficialDomain')->using('App\Pivots\ClientCountry');
+        return $this->hasManyThrough(
+            'App\OfficialDomain',          // The model to access to
+            'App\Pivots\ClientCountry', // The intermediate table that connects the User with the Podcast.
+            'client_id',                 // The column of the intermediate table that connects to this model by its ID.
+            'country_id',              // The column of the intermediate table that connects the Podcast by its ID.
+            'id',                      // The column that connects this model with the intermediate model table.
+            'country_id'               // The column of the Audio Files table that ties it to the Podcast.
+        );        
     }    
 
     public function badgeApi() {

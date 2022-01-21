@@ -1,4 +1,7 @@
 <?php
+/*
+    Never used!
+*/
 namespace App\LoginModule\Profile\Verification;
 
 use App\LoginModule\Platform\PlatformContext;

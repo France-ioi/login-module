@@ -1,6 +1,6 @@
 @if(count($unverified_attributes))
     <div class="alert alert-danger">
-        @if($verification_ready)
+        @if($ready_for_verification)
             <div>
                 @lang('verification.unverified_attributes', [
                     'platform_name' => $platform_name

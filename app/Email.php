@@ -29,7 +29,7 @@ class Email extends Model implements CanResetPasswordContract
 
 
 
-    public function requireVerification() {
+    public function sendVerificationCode() {
         $this->code = str_random(10);
         $this->save();
         $this->notify(new EmailVerificationNotification());

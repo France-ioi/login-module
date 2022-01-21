@@ -2,15 +2,19 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\EmailVerificationNotification;
 
 class Verification extends Model
 {
 
+    use Notifiable;
 
     protected $fillable = [
         'user_id',
         'method_id',
+        'client_id',
         'user_attributes',
         'rejected_attributes',
         'status',
@@ -18,7 +22,8 @@ class Verification extends Model
         'confidence',
         'message',
         'file',
-        'code'
+        'code',
+        'email'
     ];
 
     protected $casts = [
@@ -47,4 +52,11 @@ class Verification extends Model
     public function user() {
         return $this->belongsTo('App\User');
     }
+
+
+    public function sendVerificationCode() {
+        $this->code = str_random(10);
+        $this->save();
+        $this->notify(new EmailVerificationNotification());
+    }    
 }

@@ -56,7 +56,7 @@ class ProfileController extends Controller
             $recommended_attributes = [];
         }
         $unverified_attributes = $this->verification->unverifiedAttributes($user);
-        $verification_ready = $this->profile->attributesCompleted($user, $unverified_attributes);
+        $ready_for_verification = $this->profile->attributesCompleted($user, $unverified_attributes);
 
         $schema = $this->schema_builder->build(
             $user,
@@ -66,6 +66,19 @@ class ProfileController extends Controller
             $unverified_attributes,
             $this->hiddenAttributes($user)
         );
+
+        $official_domains = [];
+        $role_verifications = [];
+        if($client) {
+            $official_domains = $client->official_domains;
+            $user_verifications = $user->verifications()->where('client_id', $client->id)->where('status', 'approved')->get();
+            foreach($user_verifications as $verification) {
+                if(array_search('role', $verification->user_attributes) !== false) {
+                    $role_verifications[] = $verification;
+                }
+            }
+        }
+        
 
         return view('profile.index', [
             'form' => [
@@ -81,14 +94,16 @@ class ProfileController extends Controller
             'optional_fields_visible' => $request->filled('optional_fields_visible') || count($required_attributes) == 0,
             'revalidation_fields' => Group::getRevalidationFields($user),
             'unverified_attributes' => $unverified_attributes,
-            'verification_ready' => $verification_ready,
+            'ready_for_verification' => $ready_for_verification,
             'verified_attributes' => $this->verification->verifiedAttributes($user),
             'show_email_verification_alert' => $this->emailVerificationAvailable($user),
             'platform_name' => $client ? $client->name : trans('app.name'),
             'rejected_attributes' => $profile_filter->rejectedAttributes($user),
             'profile_completed' => $this->profile->completed($user),
             'login_validator' => config('profile.login_validator'),
-            'suggested_login' => $request->session()->get('suggested_login')
+            'suggested_login' => $request->session()->get('suggested_login'),
+            'official_domains' => $official_domains,
+            'role_verifications' => $role_verifications
         ]);
     }
 
