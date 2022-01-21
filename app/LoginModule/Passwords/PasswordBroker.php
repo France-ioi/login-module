@@ -2,13 +2,14 @@
 
 namespace App\LoginModule\Passwords;
 
+use Closure;
 use Illuminate\Auth\Passwords\PasswordBroker as PasswordBrokerGeneric;
 
 class PasswordBroker extends PasswordBrokerGeneric {
 
     const RESET_REFUSED = 'passwords.reset_refused';
 
-    public function sendResetLink(array $credentials) {
+    public function sendResetLink(array $credentials, Closure $callback = null) {
         $email = $this->getUser($credentials);
         if (is_null($email)) {
             return static::INVALID_USER;
@@ -19,9 +20,13 @@ class PasswordBroker extends PasswordBrokerGeneric {
             return static::RESET_REFUSED;
         }
 
-        $email->sendPasswordResetNotification(
-            $this->tokens->create($email)
-        );
+        $token = $this->tokens->create($email);
+
+        if ($callback) {
+            $callback($email, $token);
+        } else {
+            $email->sendPasswordResetNotification($token);
+        }
         return static::RESET_LINK_SENT;
     }
 
