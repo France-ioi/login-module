@@ -15,6 +15,7 @@ class HideDomainVerificationMethod extends Migration
     public function up()
     {
         DB::table('verification_methods')->where('name', 'email_domain')->update(['public' => 0]);
+        DB::table('verification_methods')->where('name', 'id_upload')->update(['global' => 1]);
     }
 
     /**
@@ -25,5 +26,6 @@ class HideDomainVerificationMethod extends Migration
     public function down()
     {
         DB::table('verification_methods')->where('name', 'email_domain')->update(['public' => 1]);
+        DB::table('verification_methods')->where('name', 'id_upload')->update(['global' => 0]);
     }
 }

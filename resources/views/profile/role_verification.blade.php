@@ -17,7 +17,7 @@
                         <div class="input-group-addon">@</div>                
                         <select class="form-control" id="sel_rv_domain">
                             @foreach($official_domains as $domain)
-                                <option value="{{ $domain->domain }}">{{ $domain->domain }}</option>
+                                <option value="{{ $domain }}">{{ $domain }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -47,11 +47,12 @@
         </div>
     @else
         <div class="form-group">
-            @foreach($role_verifications as $verification)
-                @if($verification->email)
-                    <strong>Status verification:</strong> verified using email address {{ $verification->email }}
-                @endif
-            @endforeach
+            <strong>Status verified via method(s):</strong> 
+            <ul>
+                @foreach($role_verifications as $verification)                
+                    <li>@lang('verification.methods.'.$verification->method->name)</li>
+                @endforeach
+            </ul>
         </div>
 
     @endif

@@ -62,7 +62,7 @@
     @endif
 
     <script type="text/javascript">
-        window.official_domains = {!! json_encode($official_domains->pluck('domain')) !!};
+        window.official_domains = {!! json_encode($official_domains) !!};
 
         $(document).ready(function() {
             if($('#suggested_login_text').length) {

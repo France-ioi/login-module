@@ -1,4 +1,6 @@
 <?php
+/// legacy code
+
 
 namespace App\Http\Controllers\Verification\Methods;
 

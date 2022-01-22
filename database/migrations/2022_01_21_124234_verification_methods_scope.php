@@ -15,11 +15,11 @@ class VerificationMethodsScope extends Migration
     public function up()
     {
         Schema::table('verification_methods', function (Blueprint $table) {
-            $table->boolean('is_global')->default(false);
+            $table->boolean('global')->default(false);
         });
 
         VerificationMethod::where('name', '=', 'email_code')->update([
-            'is_global' => true
+            'global' => true
         ]);
 
         Schema::table('verifications', function (Blueprint $table) {
@@ -36,7 +36,7 @@ class VerificationMethodsScope extends Migration
     public function down()
     {
         Schema::table('verification_methods', function (Blueprint $table) {
-            $table->dropColumn('is_global');
+            $table->dropColumn('global');
         });
 
         Schema::table('verifications', function (Blueprint $table) {

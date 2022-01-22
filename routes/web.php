@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@code');
     Route::post('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@storeCode');
     Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');
+    Route::get('/verification/manual', 'Verification\Methods\ManualController@index');
 
     Route::post('/profile_inline_verification/send_code', 'ProfileInlineVerificationController@sendCode');
     Route::post('/profile_inline_verification/verify_code', 'ProfileInlineVerificationController@verifyCode');

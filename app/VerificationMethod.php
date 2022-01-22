@@ -11,7 +11,7 @@ class VerificationMethod extends Model
         'name',
         'user_attributes',
         'public',
-        'is_global'
+        'global'
     ];
 
     protected $casts = [

@@ -67,10 +67,9 @@ class ProfileController extends Controller
             $this->hiddenAttributes($user)
         );
 
-        $official_domains = [];
+
         $role_verifications = [];
         if($client) {
-            $official_domains = $client->official_domains;
             $user_verifications = $user->verifications()->where('client_id', $client->id)->where('status', 'approved')->get();
             foreach($user_verifications as $verification) {
                 if(array_search('role', $verification->user_attributes) !== false) {
@@ -102,7 +101,7 @@ class ProfileController extends Controller
             'profile_completed' => $this->profile->completed($user),
             'login_validator' => config('profile.login_validator'),
             'suggested_login' => $request->session()->get('suggested_login'),
-            'official_domains' => $official_domains,
+            'official_domains' => $client ? $client->official_domains->pluck('domain') : [],
             'role_verifications' => $role_verifications
         ]);
     }

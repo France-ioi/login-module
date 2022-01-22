@@ -51,13 +51,21 @@ class Verification {
 
     public function verifications($user) {
         if($this->verifications_cache === null) {
-            $this->verifications_cache = $user->verifications()
-                ->whereIn('method_id', $this->methods()->pluck('id'))
-                ->get()
-                ->map(function($verification) {
-                    $verification->state = $this->verificationState($verification);
-                    return $verification;
+            $q = $user->verifications()
+                ->whereIn('method_id', $this->methods()->pluck('id'));
+                
+            if($client = $this->context->client()) {
+                $q->where(function($q) use ($client) {
+                    $q->whereNull('client_id');
+                    $q->orWhere('client_id', $client->id);
                 });
+            } else {
+                $q->whereNull('client_id');
+            }
+            $this->verifications_cache = $q->get()->map(function($verification) {
+                $verification->state = $this->verificationState($verification);
+                return $verification;
+            });
         }
         return $this->verifications_cache;
     }

@@ -21,7 +21,8 @@ return [
         'id_upload' => 'Uploading a picture of user holding their ID and a code',
         'classroom_upload' => 'Uploading a picture of teacher in his classroom with a few students or colleagues, and holding a code',
         'peer' => 'Having a verified colleague confirm their status',
-        'imported_data' => 'Imported data'
+        'imported_data' => 'Imported data',
+        'manual' => 'Manual verification'
     ],
 
 
@@ -81,6 +82,10 @@ return [
         'file' => 'Select file',
         'file_size' => 'The size of file must not exceed :size megabyte(s). Allowed extensions: .gif .jpg .png',
         'link_view_file' => 'View file'
+    ],
+    
+    'manual' => [
+        'help' => 'Please send an email to <a href="mailto::client_email">:client_email</a>, and explain your situation. Provide the email you used for your registration in your message, and explain why you are not able to use the available automated verification system, and provide some evidence of your status or a way we can verify it. If we can check your status, we will validate it manually.'
     ]
 
 ];

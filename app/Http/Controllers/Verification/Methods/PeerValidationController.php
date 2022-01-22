@@ -8,9 +8,14 @@ use App\VerificationMethod;
 use App\Verification;
 use App\User;
 use App\Email;
-
+use App\LoginModule\Platform\PlatformContext;
 class PeerValidationController extends Controller
 {
+
+    public function __construct(PlatformContext $context) {
+        $this->context = $context;
+    }    
+
     public function index(Request $request) {
         return view('verification.methods.peer');
     }
@@ -40,6 +45,7 @@ class PeerValidationController extends Controller
         $method = VerificationMethod::where('name', 'peer')->firstOrFail();
         $verification = new Verification([
             'method_id' => $method->id,
+            'client_id' => $this->context->client()->id,
             'user_attributes' => $method->user_attributes,
             'status' => 'pending',
             'code' => $code

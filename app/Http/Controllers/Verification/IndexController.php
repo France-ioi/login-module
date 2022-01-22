@@ -19,8 +19,12 @@ class IndexController extends Controller
 
 
     public function index(Request $request, PlatformContext $context) {
-        $methods = $this->verification->methods()->filter(function($method) {
-            return $method->public;
+        $client = $context->client();
+        $methods = $this->verification->methods()->filter(function($method) use ($client) {
+            if($client) {
+                return $method->public;
+            }
+            return $method->public && $method->global;
         });
         $client = $context->client();
         return view('verification.index', [

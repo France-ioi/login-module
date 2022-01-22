@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\VerificationMethod;
 use App\Verification;
+use App\LoginModule\Platform\PlatformContext;
 
 class ClassroomUploadController extends Controller
 {
 
     const SESSION_KEY = 'verification.classroom_upload.code';
 
+
+    public function __construct(PlatformContext $context) {
+        $this->context = $context;
+    }    
 
     public function index(Request $request) {
         if(!($code = $request->session()->get(self::SESSION_KEY))) {
@@ -43,6 +48,7 @@ class ClassroomUploadController extends Controller
         $filename = str_random(40).'.'.$request->file('file')->extension();
         $verification = new Verification([
             'method_id' => $method->id,
+            'client_id' => $this->context->client()->id,
             'user_attributes' => $method->user_attributes,
             'status' => 'pending',
             'file' => $filename,
