@@ -29,6 +29,14 @@ class ProfileInlineVerificationController extends Controller
         $method = VerificationMethod::where('name', 'email_domain')->firstOrFail();
         $user = $request->user();
 
+
+        $user->verifications()
+            ->where('client_id', $client->id)
+            ->where('method_id', $method->id)
+            ->where('status', '<>', 'pending')
+            ->delete();
+
+
         $verification = new Verification([
             'client_id' => $client->id,
             'method_id' => $method->id,
