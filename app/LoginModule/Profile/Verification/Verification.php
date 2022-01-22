@@ -17,6 +17,18 @@ class Verification {
     const STATE_VERIFIED = 'VERIFIED';
     const STATE_REJECTED = 'REJECTED';
 
+    const ATTRIBUTES = [
+        'first_name',
+        'last_name',
+        'graduation_grade',
+        'graduation_year',
+        'country_code',
+        'role',
+        'primary_email',
+        'secondary_email',
+        'student_id',
+        'birthday'
+    ];    
 
     protected $context;
     protected $methods_cache = null;

@@ -56,8 +56,7 @@ class Client extends \Laravel\Passport\Client
     }
 
     public function countries() {
-        //return $this->belongsToMany('App\Country', 'oauth_client_country');
-        return $this->hasMany('App\Country')->using('App\Pivots\ClientCountry');
+        return $this->belongsToMany('App\Country', 'oauth_client_country');
     }
 
     public function official_domains() {
