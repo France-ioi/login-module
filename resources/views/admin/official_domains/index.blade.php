@@ -4,14 +4,23 @@
     <p>
         <a href="{{ route('admin.official_domains.create') }}" class="btn btn-default">Add</a>
     </p>
-
-    <div class="well">
-        {!! BootForm::inline(['method' => 'GET', 'url' => 'admin/official_domains']) !!}
-            {!! BootForm::select('country_code', false, $countries, request()->get('country_code')) !!}
+    
+    {!! BootForm::open(['method' => 'GET', 'url' => 'admin/official_domains']) !!}
+    <div class="row">
+        <div class="col-sm-4">
+            {!! BootForm::select('country_id', false, $countries, request()->get('country_id')) !!}
+        </div>
+        <div class="col-sm-4">
             {!! BootForm::text('domain', false, request()->get('domain'), ['placeholder' => 'Domain']) !!}
+        </div>
+        <div class="col-sm-2">            
             {!! BootForm::submit('Filter') !!}
-        {!! BootForm::close() !!}
+        </div>
+        <div class="col-sm-2">            
+            <a class="btn btn-primary" href="/admin/official_domains">Reset</a>
+        </div>
     </div>
+    {!! BootForm::close() !!}
 
     <table class="table table-bordered table-condensed">
         <thead>
@@ -26,7 +35,7 @@
             @foreach($models as $model)
                 <tr>
                     <td>{{ $model->id }}</td>
-                    <td>{{ $model->country_code }}</td>
+                    <td>{{ $model->country->name }}</td>
                     <td>{{ $model->domain }}</td>
                     <td>
                         <a href="{{ route('admin.official_domains.edit', $model->id) }}" class="btn btn-xs btn-primary">Edit</a>

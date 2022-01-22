@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\OfficialDomain;
+use App\Country;
 use App\Http\Requests\Admin\StoreOfficialDomainRequest;
 
 class OfficialDomainsController extends Controller
@@ -14,14 +15,15 @@ class OfficialDomainsController extends Controller
     public function index(Request $request)
     {
         $query = OfficialDomain::query();
-        if($request->get('country_code')) {
-            $query->where('country_code', $request->get('country_code'));
+        if($request->get('country_id')) {
+            $query->where('country_id', $request->get('country_id'));
         }
         if($request->get('domain')) {
             $query->where('domain', 'LIKE','%'.$request->get('domain').'%');
         }
+        $query->with('country');
         return view('admin.official_domains.index', [
-            'countries' => trans('countries'),
+            'countries' => Country::orderBy('name')->get()->pluck('name', 'id'),
             'models' => $query->paginate()
         ]);
     }

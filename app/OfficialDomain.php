@@ -17,4 +17,9 @@ class OfficialDomain extends Model
         $this->attributes['domain'] = mb_strtolower($domain);
     }
 
+
+    public function country() {
+        return $this->belongsTo('App\Country');
+    }
+
 }
