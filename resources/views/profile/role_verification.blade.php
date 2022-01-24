@@ -16,6 +16,7 @@
                     <div class="input-group">
                         <div class="input-group-addon">@</div>                
                         <select class="form-control" id="sel_rv_domain">
+                            <option value=""></option>
                             @foreach($official_domains as $domain)
                                 <option value="{{ $domain }}">{{ $domain }}</option>
                             @endforeach
@@ -100,7 +101,11 @@ $(document).ready(function() {
                 return;
             }
             form1.find('input select button').prop('disabled', true);
-            email = account + '@' + $('#sel_rv_domain').val();
+            var domain = $('#sel_rv_domain').val();
+            if(!domain) {
+                return;
+            }
+            email = account + '@' + domain;
             $.ajax({
                 dataType: 'json',
                 url: '/profile_inline_verification/send_code',
