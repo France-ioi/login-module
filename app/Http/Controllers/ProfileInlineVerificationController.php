@@ -33,7 +33,7 @@ class ProfileInlineVerificationController extends Controller
         $user->verifications()
             ->where('client_id', $client->id)
             ->where('method_id', $method->id)
-            ->where('status', '<>', 'pending')
+            ->where('status', 'pending')
             ->delete();
 
 
@@ -73,12 +73,13 @@ class ProfileInlineVerificationController extends Controller
             ->where('method_id', $method->id)
             ->where('client_id', $client->id)
             ->where('email', $email)
+            ->where('code', $code)
             ->first();
 
-        if($verification && $verification->code == $code) {
+        if($verification) {
             $verification->status = 'approved';
             $verification->save();
-            
+           
             $res = [
                 'success' => true,
                 'email' => $email
