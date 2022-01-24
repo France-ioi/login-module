@@ -4,6 +4,7 @@ namespace App\LoginModule\Profile\Verification;
 use App\LoginModule\Platform\PlatformContext;
 use App\VerificationMethod;
 use Carbon\Carbon;
+use App\Verification as VerificationModel;
 
 class Verification {
 
@@ -61,9 +62,21 @@ class Verification {
     }
 
 
+    public function getMethodByName($name) {
+        $methods = $this->methods();
+        foreach($methods as $method) {
+            if($method->name == $name) {
+                return $method;
+            }
+        }        
+        return false;
+    }
+
+
     public function verifications($user) {
         if($this->verifications_cache === null) {
             $q = $user->verifications()
+                ->with('method')
                 ->whereIn('method_id', $this->methods()->pluck('id'));
                 
             if($client = $this->context->client()) {
@@ -105,6 +118,9 @@ class Verification {
 
 
     public function authReady($user) {
+        if($client = $this->context->client()) {        
+            $this->autoVerificationAttempt($user, $client);
+        }
         $unverified_attributes = array_intersect(
             $this->attributes(),
             $this->unverifiedAttributes($user)
@@ -236,6 +252,64 @@ class Verification {
                 '<i class="'.$i.' icon"></i>'.
                 trans('verification.states.'.$verification->state).
             '</span>';
+    }
+
+
+
+    public function autoVerificationAttempt($user, $client) {
+        if($user->role != 'teacher') {
+            return;
+        }
+
+        // check if email_domain method available
+        $method = $this->getMethodByName('email_domain');
+        if(!$method) {
+            return;
+        }
+
+        // collect verified emails
+        $verifications = $this->verifications($user);
+        $verified_emails = [];
+        foreach($verifications as $verification) {
+            if($verification->status != 'approved') {
+                continue;
+            }
+            if($verification->method->name == 'email_domain') {
+                return;
+            }
+            if(array_search('primary_email', $verification->user_attributes) !== false) {
+                $verified_emails[] = $user->primary_email;
+            }
+            if(array_search('secondary_email', $verification->user_attributes) !== false) {
+                $verified_emails[] = $user->secondary_email;
+            }            
+        }
+
+        // find verified email from official domain
+        $official_domains = $client->official_domains->pluck('id', 'domain')->toArray();
+        $official_email = false;
+        foreach($verified_emails as $email) {
+            $tmp = explode('@', $email);
+            if(count($tmp) == 2 && isset($official_domains[$tmp[1]])) {
+                $official_email = $email;
+                break;
+            }
+        }
+
+        if($official_email !== false) {
+            // create verification
+            $verification = new VerificationModel([
+                'user_id' => $user->id,
+                'client_id' => $client->id,
+                'method_id' => $method->id,
+                'email' => $official_email,
+                'status' => 'approved',
+                'user_attributes' => $method->user_attributes
+            ]);
+            $verification->save();
+            //reset cache
+            $this->verifications_cache = null;
+        }
     }
 
 }
