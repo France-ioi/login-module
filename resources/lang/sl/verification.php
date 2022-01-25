@@ -4,7 +4,9 @@ return [
     'header' => 'Verification',
     'not_required' => 'No verifications are required to use this platform.',
     'header_verifications' => 'Recent verifications',
-    'header_methods' => 'Available verification methods',
+    'header_recommended_methods' => 'Recommended verification methods for required verifications',
+    'header_alternative_methods' => 'Alternative methods for required verifications',
+    'header_optional_methods' => 'Other methods, for optional verifications',
 
     'btn_verify' => 'Verify',
 

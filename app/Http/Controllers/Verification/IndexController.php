@@ -28,12 +28,27 @@ class IndexController extends Controller
             }
             return $method->public && $method->global;
         });
-        $client = $context->client();
+
+        $unverified_attributes = $this->verification->unverifiedAttributes($request->user());
+
+        $recommended_methods = $methods->filter(function($method) use ($unverified_attributes) {
+            return $method->pivot->recommended && count(array_intersect($unverified_attributes, $method->user_attributes));
+        });
+        $alternative_methods = $methods->filter(function($method) use ($unverified_attributes) {
+            return !$method->pivot->recommended && count(array_intersect($unverified_attributes, $method->user_attributes));;
+        });
+        $optional_methods = $methods->filter(function($method) use ($unverified_attributes) {
+            return count(array_intersect($unverified_attributes, $method->user_attributes)) == 0;
+        });
+
         return view('verification.index', [
             'unverified_attributes' => $this->verification->unverifiedAttributes($request->user()),
             'platform_name' => $client ? $client->name : trans('app.name'),
             'verifications' => $this->verification->verifications($request->user()),
-            'methods' => $methods,
+            'any_methods_available' => count($methods),
+            'recommended_methods' => $recommended_methods,
+            'alternative_methods' => $alternative_methods,
+            'optional_methods' => $optional_methods,
             'continue_url' => $context->continueURL()
         ]);
     }

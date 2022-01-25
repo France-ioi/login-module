@@ -1,7 +1,7 @@
 @extends('layouts.popup')
 
 @section('content')
-    @if(count($unverified_attributes) && count($methods))
+    @if(count($unverified_attributes) && $any_methods_available)
         <div class="alert-section">
             <div class="alert alert-danger">
                 <div>
@@ -15,7 +15,7 @@
                     @endforeach
                 </strong>
             </div>
-	</div>
+	    </div>
     @endif
 
 
@@ -65,26 +65,19 @@
 	</div>
     @endif
 
-    @if(count($methods))
-        <div class="panel-body">
-            <div class="sectionTitle">
-                <i class="fas fa-check icon"></i>
-                @lang('verification.header_methods')
-            </div>
-            <ul class="list-group">
-				@foreach($methods as $method)
-                    <a href="/verification/{{$method->name}}" class="list-group-item">
-                        <strong>@lang('verification.methods.'.$method->name)</strong>
-                        <div>
-                            @lang('verification.user_attributes'):
-                            @foreach($method->user_attributes as $attr)
-                                @lang('profile.'.$attr)@if(!$loop->last), @endif
-                            @endforeach
-                        </div>
-				    </a>
-                @endforeach
-            </ul>
-        </div>
+    @if($any_methods_available)
+        @include('verification.methods_list', [
+            'title' => trans('verification.header_recommended_methods'),
+            'methods' => $recommended_methods
+        ])
+        @include('verification.methods_list', [
+            'title' => trans('verification.header_alternative_methods'),
+            'methods' => $alternative_methods
+        ])
+        @include('verification.methods_list', [
+            'title' => trans('verification.header_optional_methods'),
+            'methods' => $optional_methods
+        ])
     @else
         <div class="alert-section">
             <div class="alert alert-success">@lang('verification.not_required')</div>
