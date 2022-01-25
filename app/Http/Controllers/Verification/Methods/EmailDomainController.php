@@ -8,42 +8,143 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\VerificationMethod;
 use App\Verification;
-use App\OfficialDomain;
-use App\Email;
-use App\LoginModule\TeacherDomain;
-use App\LoginModule\Profile\Verification\Verification as ProfileVerification;
-
+use App\LoginModule\Platform\PlatformContext;
 
 class EmailDomainController extends Controller
 {
 
+    public function __construct(PlatformContext $context) {
+        $this->context = $context;
+    }        
+
 
     public function index(Request $request) {
-        if(!$request->user()->country_code) {
-            return view('verification.methods.email_domain_alert', [
-                'alert' => 'user_country_empty'
+        $client = $this->context->client();
+        if(!$client) {
+            abort(403);
+        }
+        $official_domains = $client->official_domains->pluck('domain', 'domain')->toArray();
+
+        $user = $request->user();
+
+        $official_email = '';
+        if($this->testEmail($user->primary_email, $official_domains)) {
+            $official_email = $user->primary_email;
+        } else if($this->testEmail($user->secondary_email, $official_domains)) {
+            $official_email = $user->secondary_email;
+        }
+
+
+        list($account, $domain) = explode('@', $official_email);
+
+        return view('verification.methods.email_domain_step1', [
+            'account' => $account,
+            'domain' => $domain,
+            'official_domains' => $official_domains
+        ]);        
+    }
+
+
+    private function testEmail($email, $domains) {
+        $tmp = explode('@', $email);
+        return count($tmp) == 2 && isset($domains[$tmp[1]]);
+    }
+
+
+    public function sendCode(Request $request) {
+        $client = $this->context->client();
+        if(!$client) {
+            abort(403);
+        }
+
+        $this->validate($request, [
+            'account' => 'required',
+            'domain' => 'required'
+        ]);
+        $account = $request->get('account');
+        $domain = $request->get('domain');
+        
+        $official_domains = $client->official_domains->pluck('domain', 'domain')->toArray();
+        if(!isset($official_domains[$domain])) {
+            return redirect()->back()->withErrors([
+                'domain' => 'Wrong value'
             ]);
         }
-        $domains = OfficialDomain::where('country_code', $request->user()->country_code)->get();
-        if(!count($domains)) {
-            return view('verification.methods.email_domain_alert', [
-                'alert' => 'no_country_domains'
-            ]);
-        }
-        $domains_options = ['' => '...'];
-        foreach($domains as $domain) {
-            $domains_options[$domain->domain] = '@'.$domain->domain;
-        }
-        return view('verification.methods.email_domain', [
-            'roles' => [
-                'primary' => trans('profile.primary_email'),
-                'secondary' => trans('profile.secondary_email')
-            ],
-            'domains' => $domains_options
+
+        $method = VerificationMethod::where('name', 'email_domain')->firstOrFail();
+        $user = $request->user();
+
+        $user->verifications()
+            ->where('client_id', $client->id)
+            ->where('method_id', $method->id)
+            ->where('status', 'pending')
+            ->delete();
+
+        $verification = new Verification([
+            'client_id' => $client->id,
+            'method_id' => $method->id,
+            'user_attributes' => $method->user_attributes,
+            'status' => 'pending',
+            'email' => $account.'@'.$domain
+        ]);
+        $user->verifications()->save($verification);
+
+        $verification->sendVerificationCode();
+
+        return redirect('/verification/email_domain/input_code/'.$verification->id)->with([
+            'email' => $account.'@'.$domain
         ]);
     }
 
 
+    public function showInputCode($id, Request $request) {
+        $client = $this->context->client();
+        if(!$client) {
+            abort(403);
+        }
+        $user = $request->user();        
+        $method = VerificationMethod::where('name', 'email_domain')->firstOrFail();
+        
+        $verification = Verification::where('id', $id)
+            ->where('user_id', $user->id)
+            ->where('client_id', $client->id)
+            ->where('status', 'pending')
+            ->where('method_id', $method->id)
+            ->firstOrFail();
+        
+        return view('verification.methods.email_domain_step2', [
+            'verification' => $verification
+        ]);        
+    }
+
+
+    public function validateCode($id, Request $request) {
+        $client = $this->context->client();
+        if(!$client) {
+            abort(403);
+        }
+        $user = $request->user();        
+        $method = VerificationMethod::where('name', 'email_domain')->firstOrFail();
+        
+        $verification = Verification::where('id', $id)
+            ->where('user_id', $user->id)
+            ->where('method_id', $method->id)
+            ->where('client_id', $client->id)
+            ->where('code', $request->get('code'))
+            ->first();
+        
+            if($verification) {
+            $verification->status = 'approved';
+            $verification->save();
+            return redirect('/verification');
+        } 
+        return redirect()->back()->withErrors([
+            'code' => 'Wrong code'
+        ]);
+    }
+
+
+    /*
     public function store(Request $request) {
         $method = VerificationMethod::where('name', 'email_domain')->firstOrFail();
 
@@ -83,4 +184,5 @@ class EmailDomainController extends Controller
 
         return redirect('/verification');
     }
+    */
 }

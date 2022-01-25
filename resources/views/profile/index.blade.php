@@ -47,8 +47,6 @@
                 @endif
             </div>
         {!! BootForm::close() !!}
-
-        @include('profile.role_verification')
     </div>
 
     <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">

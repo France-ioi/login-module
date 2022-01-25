@@ -52,7 +52,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/verification/email_code', 'Verification\Methods\EmailCodeController@index');
     Route::post('/verification/email_code', 'Verification\Methods\EmailCodeController@store');
     Route::get('/verification/email_domain', 'Verification\Methods\EmailDomainController@index');
-    Route::post('/verification/email_domain', 'Verification\Methods\EmailDomainController@store');
+    Route::post('/verification/email_domain', 'Verification\Methods\EmailDomainController@sendCode');
+    Route::get('/verification/email_domain/input_code/{id}', 'Verification\Methods\EmailDomainController@showInputCode');
+    Route::post('/verification/email_domain/validate_code/{id}', 'Verification\Methods\EmailDomainController@validateCode');
     Route::get('/verification/id_upload', 'Verification\Methods\IdUploadController@index');
     Route::post('/verification/id_upload', 'Verification\Methods\IdUploadController@store');
     Route::get('/verification/classroom_upload', 'Verification\Methods\ClassroomUploadController@index');
@@ -63,10 +65,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@storeCode');
     Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');
     Route::get('/verification/manual', 'Verification\Methods\ManualController@index');
-
-    Route::post('/profile_inline_verification/send_code', 'ProfileInlineVerificationController@sendCode');
-    Route::post('/profile_inline_verification/verify_code', 'ProfileInlineVerificationController@verifyCode');
-    
     Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');    
 
     Route::group(['middleware' => ['merging_accounts']], function() {

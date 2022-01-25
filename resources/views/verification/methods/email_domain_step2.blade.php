@@ -12,18 +12,15 @@
 			<i class="fas fa-landmark icon"></i>
             @lang('verification.methods.email_domain')
         </div>
-        <p class="help-block">@lang('verification.email_domain.help')</p>
-        {!! BootForm::open(['url' => '/verification/email_domain']) !!}
-            {!! BootForm::select('role', trans('verification.email_domain.role'), $roles) !!}
-	    {!! BootForm::text('account', trans('verification.email_domain.account'), null, [
-		'prefix' => BootForm::addonText('Aa'),
-		'placeholder' => 'Ex: Qw3R7GsdQ'
-		]) !!}
-            {!! BootForm::select('domain', trans('verification.email_domain.domain'), $domains) !!}
+		<p>
+			Please check your email <a href="mailto:{{ $verification->email }}">{{ $verification->email }}</a> and enter code here.
+		</p>        
+		{!! BootForm::open(['url' => '/verification/email_domain/validate_code/'.$verification->id]) !!}
+			{!! BootForm::text('code', 'Code') !!}
+
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-rounded btn-primary btn-centered">
-					<i class="fas fa-check icon"></i>
-					@lang('ui.save')
+					<i class="fas fa-check icon"></i> Validate
 				</button>
 				<a class="btn-link" href="/verification">@lang('ui.cancel')</a>
 			</div>
