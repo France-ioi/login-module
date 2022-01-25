@@ -104,10 +104,10 @@ class UserProfile {
                 $attributes = array_merge($attributes, $client->recommended_attributes);
                 $attributes = array_unique($attributes);
             }
-            $v = $user->getAttribute('subscription_news');
             foreach($attributes as $attribute) {
                 $value = $user->getAttribute($attribute);
-                if(is_null($value) || $value === '' || $v === false) {
+                //if(is_null($value) || $value === '' || $v === false) {
+                if(is_null($value) || $value === '') {
                     return false;
                 }
             }
