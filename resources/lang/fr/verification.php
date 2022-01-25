@@ -5,25 +5,25 @@ return [
     'not_required' => 'Aucune vérification requise pour utiliser cette plateforme.',
     'header_verifications' => 'Vérifications récentes',
     //'header_methods' => 'Méthodes de vérification disponibles',
-    'header_recommended_methods' => 'Recommended verification methods for required verifications',
-    'header_alternative_methods' => 'Alternative methods for required verifications',
-    'header_optional_methods' => 'Other methods, for optional verifications',
+    'header_recommended_methods' => 'Méthodes recommandées',
+    'header_alternative_methods' => 'Méthodes pour les vérifications optionnelles',
+    'header_optional_methods' => 'Autres méthodes disponibles',
 
     'btn_verify' => 'Vérifier',
 
     'unverified_attributes' => 'Afin de vous donner accès à :platform_name, nous devons vérifier les informations suivantes :',
     'profile_not_completed' => 'Certaines champs nécessitent une vérification avant que vous ne puissiez continuer.',
-    'user_attributes' => 'Informations',
+    'user_attributes' => 'Permet de vérifier',
 
     'approved_attributes' => 'Informations vérifiées',
     'rejected_attributes' => 'Informations rejetées',
 
     'methods' => [
-        'email_code' => 'Envoi d\'un code par mail',
-        'email_domain' => 'Adresse mail d\'un domaine académique français',
+        'email_code' => 'Vous envoyer un email contenant un code de validation',
+        'email_domain' => 'Montrer que vous disposez d\'une adresse email académique',
         'id_upload' => 'Envoi d\'une photo de l\'utilisateur avec sa preuve d\'identité et un code',
         'classroom_upload' => 'Envoi d\'une photo de l\'enseignant dans sa classe avec quelques étudiants ou collègues, et tenant un code',
-        'peer' => 'Confirmation du statut par un collègue déjà vérifié',
+        'peer' => 'Faire vérifier votre statut par un collègue déjà vérifié',
         'imported_data' => 'Données importées'
     ],
 
