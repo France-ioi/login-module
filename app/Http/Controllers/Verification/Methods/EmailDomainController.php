@@ -34,9 +34,12 @@ class EmailDomainController extends Controller
             $official_email = $user->secondary_email;
         }
 
-
-        list($account, $domain) = explode('@', $official_email);
-
+        $account = '';
+        $domain = '';
+        $tmp = explode('@', $official_email);
+        if(count($tmp) == 2) {
+            list($account, $domain) = $tmp;
+        }
         return view('verification.methods.email_domain_step1', [
             'account' => $account,
             'domain' => $domain,
