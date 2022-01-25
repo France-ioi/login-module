@@ -12,10 +12,7 @@
 			<i class="fas fa-landmark icon"></i>
             @lang('verification.methods.email_domain')
         </div>
-		<p>
-			Please provide as email from one of proposed domains. We will then send a code to this address,
-			that you can then use to provide your status.
-		</p>
+		<p>@lang('verification.email_domain.step1_help')</p>
 		{!! BootForm::open(['url' => '/verification/email_domain']) !!}
 			<div class="row">
 				<div class="col-sm-6">
@@ -35,7 +32,7 @@
 			</div>
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-rounded btn-primary btn-centered">
-					<i class="fas fa-check icon"></i> Send code
+					<i class="fas fa-check icon"></i> @lang('verification.email_domain.send_code')
 				</button>
 				<a class="btn-link" href="/verification">@lang('ui.cancel')</a>
 			</div>

@@ -50,12 +50,13 @@ return [
     ],
 
     'email_domain' => [
-        'help' => 'Update your email address',
-        'role' => 'Which one',
+        'step1_help' => 'Please provide as email from one of proposed domains. We will then send a code to this address, that you can then use to provide your status.',
+        'wrong_code' => 'Wrong code',
         'account' => 'Account',
         'domain' => 'Accepted domains',
-        'user_country_empty' => 'Please go back and select country in your profile',
-        'no_country_domains' => 'No academic email domains available for your country',
+        'send_code' => 'Send code',
+        'step2_help' => 'Please check your email <a href="mailto::email">:email</a> and enter code here.',
+        'validate' => 'Validate code'
     ],
 
     'imported_data' => 'No actions available',

@@ -142,50 +142,8 @@ class EmailDomainController extends Controller
             return redirect('/verification');
         } 
         return redirect()->back()->withErrors([
-            'code' => 'Wrong code'
+            'code' => trans('verification.email_domain.wrong_code')
         ]);
     }
 
-
-    /*
-    public function store(Request $request) {
-        $method = VerificationMethod::where('name', 'email_domain')->firstOrFail();
-
-        if(!TeacherDomain::verifyDomain($request->get('domain'), $request->user()->country_code)) {
-            return redirect()->back()->withErrors([
-                'domain' => 'Wrong value'
-            ]);
-        }
-        $this->validate($request, [
-            'account' => 'required'
-        ]);
-
-        $v = $request->get('account').'@'.$request->get('domain');
-        if($email = $request->user()->emails()->where('role', $request->get('role'))->first()) {
-            $email->email = $v;
-            $email->save();
-        } else {
-            $email = new Email([
-                'email' => $v,
-                'role' => $request->get('role')
-            ]);
-            $request->user()->emails()->save($email);
-        }
-        $email->sendVerificationCode();
-
-        ProfileVerification::clear(
-            $request->user(),
-            $request->get('role').'_email'
-        );
-
-        $verification = new Verification([
-            'method_id' => $method->id,
-            'user_attributes' => ['role'],
-            'status' => 'approved'
-        ]);
-        $request->user()->verifications()->save($verification);
-
-        return redirect('/verification');
-    }
-    */
 }
