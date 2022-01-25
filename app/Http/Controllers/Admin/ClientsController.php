@@ -157,9 +157,11 @@ class ClientsController extends Controller
         $methods = $request->get('verification_methods');
         if(is_array($methods)) {
             $expiration = $request->get('verification_methods_expiration');
+            $recommended = $request->get('verification_methods_recommended');
             foreach($methods as $id) {
                 $data[$id] = [
-                    'expiration' => isset($expiration[$id]) ? (int) $expiration[$id] : null
+                    'expiration' => isset($expiration[$id]) ? (int) $expiration[$id] : null,
+                    'recommended' => isset($recommended[$id])
                 ];
             }
         }

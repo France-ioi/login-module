@@ -52,7 +52,7 @@ class Client extends \Laravel\Passport\Client
 
     public function verification_methods() {
         return $this->belongsToMany('App\VerificationMethod', 'oauth_client_verification_method')
-            ->withPivot('expiration');
+            ->withPivot('expiration', 'recommended');
     }
 
     public function countries() {

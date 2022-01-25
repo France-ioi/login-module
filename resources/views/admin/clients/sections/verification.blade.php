@@ -19,6 +19,7 @@
         <th class="col-md-5">Verification method</th>
         <th class="col-md-3">Attributes</th>
         <th class="col-md-2">Accepted</th>
+        <th class="col-md-2">Recommended</th>
         <th class="col-md-2">Expiration (days)</th>
     </tr>
     @foreach($verification_methods as $method)
@@ -37,6 +38,14 @@
                     isset($client_verification_methods[$method->id])
                 )!!}
             </td>
+            <td>
+                {!! BootForm::checkbox(
+                    'verification_methods_recommended['.$method->id.']',
+                    false,
+                    $method->id,
+                    isset($client_verification_methods[$method->id]) ? $client_verification_methods[$method->id]->recommended : false
+                )!!}
+            </td>            
             <td>
                 {!! BootForm::text(
                     'verification_methods_expiration['.$method->id.']',
