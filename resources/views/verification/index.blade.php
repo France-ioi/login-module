@@ -1,7 +1,11 @@
 @extends('layouts.popup')
 
 @section('content')
-    @if(count($unverified_attributes) && $any_methods_available)
+    @if(count($unverified_attributes) == 0)
+        <div class="alert-section">
+            <div class="alert alert-success">@lang('verification.completed')</div>
+        </div>
+    @elseif($any_methods_available)
         <div class="alert-section">
             <div class="alert alert-danger">
                 <div>
@@ -66,9 +70,11 @@
     @endif
 
     @if($any_methods_available)
-        <div class="panel-body">
-            <strong>@lang('verification.methods_header')</strong>
-        </div>
+        @if(count($unverified_attributes) > 0)    
+            <div class="panel-body">
+                <strong>@lang('verification.methods_header')</strong>
+            </div>
+        @endif
 
         @include('verification.methods_list', [
             'title' => trans('verification.header_recommended_methods'),

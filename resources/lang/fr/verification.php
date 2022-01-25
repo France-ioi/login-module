@@ -11,6 +11,8 @@ return [
     
     'btn_verify' => 'Vérifier',
 
+    'completed' => 'Toutes les vérifications requises sur votre profil ont été validées.',
+
     'unverified_attributes' => 'Afin de vous donner accès à :platform_name, nous devons vérifier les informations suivantes :',
     'profile_not_completed' => 'Certaines champs nécessitent une vérification avant que vous ne puissiez continuer.',
     'user_attributes' => 'Permet de vérifier',
