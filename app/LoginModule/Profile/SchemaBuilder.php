@@ -28,7 +28,8 @@ class SchemaBuilder {
             $disabled = isset($disabled_attributes[$attribute]);
             $required = !$disabled && isset($required_attributes[$attribute]);
             $recommended = !$disabled && isset($recommended_attributes[$attribute]);
-            $display_verification = !$disabled && isset($unverified_attributes[$attribute]);
+            //$display_verification = !$disabled && isset($unverified_attributes[$attribute]);
+            $display_verification = false;
             if(isset($config['prepend'])) {
                 foreach($config['prepend'] as $attr_ex) {
                     if(isset($added[$attr_ex])) continue;
