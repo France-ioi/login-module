@@ -30,15 +30,17 @@
         </div>
         <div id="rv_form2" class="form-group" style="display: none">
             <p>
-                Please check your email and enter code here.
+                Please check your email <a id="rv_email_preview"></a> and enter code here.
             </p>        
             <div class="row">
-                <div class="col-sm-4"></div>
                 <div class="col-sm-4">
                     <input class="form-control" id="inp_rv_code" placeholder="Enter code"/>
                 </div>
                 <div class="col-sm-4">
                     <button class="btn btn-primary" id="btn_rv_verify_code">Submit</button>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-primary" id="btn_rv_verify_cancel">Cancel</button>
                 </div>
             </div>
             <div class="alert alert-danger" id="rv_code_error" style="display: none">Wrong code</div>
@@ -117,11 +119,12 @@ $(document).ready(function() {
                 success: function(data) {
                     if(data.success) {
                         form1.hide();
-                        form2.show();
+                        $('#rv_email_preview').text(data.email).attr('href', 'mailto:' + data.email);
+                        form2.show();                        
                     }
                 }
             });
-        })
+        });
 
 
         $('#btn_rv_verify_code').click(function(e) {
@@ -157,6 +160,12 @@ $(document).ready(function() {
                 }
             });
         });
+
+        $('#btn_rv_verify_cancel').click(function(e) {
+            e.preventDefault();
+            form1.show();
+            form2.hide();                                    
+        })
 
     })();
 })
