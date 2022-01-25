@@ -31,7 +31,11 @@
             </div>
             <ul class="list-group">
                 @foreach($verifications as $verification)
-                    <li class="list-group-item">
+                    @if($verification->method->name == 'email_domain' && $verification->status == 'pending')
+                        <a class="list-group-item" href="/verification/email_domain/input_code/{{ $verification->id }}">
+                    @else
+                        <li class="list-group-item">
+                    @endif
                         <div class="pull-right">
                             {!! Verification::stateLabel($verification) !!}
                         </div>
@@ -63,7 +67,11 @@
                         <div class="txtright">
                             @include('verification.bars.'.$verification->method->name)
                         </div>
+                    @if($verification->method->name == 'email_domain' && $verification->status == 'pending')
+                    </a>
+                    @else
                     </li>
+                    @endif
                 @endforeach
             </ul>
 	</div>
