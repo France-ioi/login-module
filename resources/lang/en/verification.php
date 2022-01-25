@@ -17,6 +17,7 @@ return [
     'approved_attributes' => 'Verified informations',
     'rejected_attributes' => 'Rejected informations',
 
+    'methods_header' => 'Several methods are available:',
     'methods' => [
         'email_code' => 'Sending a code by email',
         'email_domain' => 'Providing a verified email from a french academy domain',

@@ -14,7 +14,7 @@
         </div>
 		<p>@lang('verification.email_domain.step2_help', ['email' => $verification->email])</p>        
 		{!! BootForm::open(['url' => '/verification/email_domain/validate_code/'.$verification->id]) !!}
-			{!! BootForm::text('code', 'Code') !!}
+			{!! BootForm::text('code', trans('verification.email_code.code')) !!}
 
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-rounded btn-primary btn-centered">

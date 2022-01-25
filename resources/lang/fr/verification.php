@@ -8,7 +8,7 @@ return [
     'header_recommended_methods' => 'Méthodes recommandées',
     'header_alternative_methods' => 'Méthodes pour les vérifications optionnelles',
     'header_optional_methods' => 'Autres méthodes disponibles',
-
+    
     'btn_verify' => 'Vérifier',
 
     'unverified_attributes' => 'Afin de vous donner accès à :platform_name, nous devons vérifier les informations suivantes :',
@@ -18,6 +18,7 @@ return [
     'approved_attributes' => 'Informations vérifiées',
     'rejected_attributes' => 'Informations rejetées',
 
+    'methods_header' => 'Nous vous proposons plusieurs méthodes:',
     'methods' => [
         'email_code' => 'Vous envoyer un email contenant un code de validation',
         'email_domain' => 'Montrer que vous disposez d\'une adresse email académique',
@@ -50,13 +51,13 @@ return [
     ],
 
     'email_domain' => [
-        'step1_help' => 'Please provide as email from one of proposed domains. We will then send a code to this address, that you can then use to provide your status.',
-        'wrong_code' => 'Wrong code',
+        'step1_help' => 'Veuillez fournir un email de l\'un des domaines proposés. Un code sera enoyé à cette adresse, que vous pourrez ensuite fournir pour valider votre statut.',
+        'wrong_code' => 'Code incorrect',
         'account' => 'Compte',
         'domain' => 'Domaines acceptés',
-        'send_code' => 'Send code',
-        'step2_help' => 'Please check your email <a href="mailto::email">:email</a> and enter code here.',
-        'validate' => 'Validate code'
+        'send_code' => 'Envoyer un code',
+        'step2_help' => 'Veuillez consulter votre email <a href="mailto::email">:email</a> et saisir le code ici.',
+        'validate' => 'Validaer le code'
     ],
 
     'imported_data' => 'Aucune action disponible',

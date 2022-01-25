@@ -66,6 +66,10 @@
     @endif
 
     @if($any_methods_available)
+        <div class="panel-body">
+            <strong>@lang('verification.methods_header')</strong>
+        </div>
+
         @include('verification.methods_list', [
             'title' => trans('verification.header_recommended_methods'),
             'methods' => $recommended_methods
