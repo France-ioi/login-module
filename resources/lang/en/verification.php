@@ -27,7 +27,7 @@ return [
         'classroom_upload' => 'Uploading a picture of teacher in his classroom with a few students or colleagues, and holding a code',
         'peer' => 'Having a verified colleague confirm their status',
         'imported_data' => 'Imported data',
-        'manual' => 'Manual verification'
+        'manual' => 'Ask for a manual verification'
     ],
 
 

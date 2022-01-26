@@ -27,7 +27,8 @@ return [
         'id_upload' => 'Envoi d\'une photo de l\'utilisateur avec sa preuve d\'identité et un code',
         'classroom_upload' => 'Envoi d\'une photo de l\'enseignant dans sa classe avec quelques étudiants ou collègues, et tenant un code',
         'peer' => 'Faire vérifier votre statut par un collègue déjà vérifié',
-        'imported_data' => 'Données importées'
+        'imported_data' => 'Données importées',
+        'manual' => 'Demander une vérification manuelle'
     ],
 
 
