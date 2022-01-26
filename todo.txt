@@ -1,0 +1,9 @@
+platform admin ui for manual verification:
+step 1: form to find login-module user 
+    - filter inputs (id, login, name, email)
+    - submit btn
+step 2: verification form
+    - display user attributes 
+    - checkboxes to select user attributes for verification
+    - drop down to select target platform     
+    - btn to create manual verification

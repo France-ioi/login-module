@@ -229,6 +229,12 @@ class User extends Authenticatable
     }
 
 
+    public function clients() {
+        return $this->belongsToMany('App\Client', 'oauth_client_user')
+            ->withPivot('last_activity', 'admin');        
+    }
+
+
     public function clearUserDataAttributes() {
         $values = [
             'boolean' => false,
@@ -251,6 +257,6 @@ class User extends Authenticatable
 
     protected function serializeDate(DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
-    }    
+    }
 
 }

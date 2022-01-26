@@ -127,4 +127,21 @@ class UsersController extends Controller
         ]);
     }
 
+
+    public function showClients($id) {
+        return view('admin.users.clients', [
+            'user' => User::with('clients')->findOrFail($id),
+        ]);
+    }    
+
+    public function updateClients($id, Request $request) {
+        $is_admin = $request->get('is_admin', []);
+        $clients = User::with('clients')->findOrFail($id)->clients;
+        foreach($clients as $client) {
+            $client->pivot->admin = isset($is_admin[$client->id]);
+            $client->pivot->save();
+        }
+        return redirect('/admin/users')->with('status', 'User clients status updated');
+    }        
+
 }

@@ -6,6 +6,7 @@ use App\Client;
 use App\LoginModule\Locale;
 use \Laravel\Passport\TokenRepository;
 
+
 class PlatformContext
 {
 
@@ -109,4 +110,10 @@ class PlatformContext
         return $this->platform_authorized;
     }
 
+
+    public function linkUser($user) {
+        if($client_id = $this->state->get('client_id')) {
+            PlatformUser::link($client_id, $user->id);
+        }        
+    }
 }

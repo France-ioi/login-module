@@ -102,6 +102,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'r
         Route::post('/users/create_reset_link', 'UsersController@createResetLink');
         Route::post('/users/send_reset_link', 'UsersController@sendResetLink');
         Route::delete('/users/{id}', 'UsersController@delete');
+        Route::get('/users/{id}/clients', 'UsersController@showClients');
+        Route::post('/users/{id}/clients', 'UsersController@updateClients');
         Route::get('/reset_passwords', 'ResetPasswordsController@index');
         Route::post('/reset_passwords', 'ResetPasswordsController@reset');
     });

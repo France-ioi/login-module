@@ -9,6 +9,8 @@ use App\LoginModule\Platform\PlatformContext;
 use App\LoginModule\Migrators\Merge\Group;
 use App\LoginModule\Profile\ProfileFilter;
 
+
+
 class AuthorizationAvailable
 {
 
@@ -37,6 +39,7 @@ class AuthorizationAvailable
     public function handle($request, Closure $next, $guard = null)
     {
         $user = $request->user();
+        $this->context->linkUser($user);        
         $completed = $this->profile->completed($user);
         $revalidated = !Group::revalidationRequired($user);
         $filter_passed = $this->filter->pass($user);
