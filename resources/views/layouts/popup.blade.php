@@ -67,7 +67,7 @@
                     var text = $('#set-locale-confirmation').text();
                     text = text.replace(':locale', link.text().trim())
                     if(confirm(text)) {
-                        url += '?update_profile=1';
+                        url += '?update_user=1';
                     }
                 }
                 location.href = url;
