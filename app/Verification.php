@@ -56,7 +56,12 @@ class Verification extends Model
 
     public function sendVerificationCode() {
         $this->code = str_random(10);
+        try {
+            $this->notify(new EmailVerificationNotification());
+        } catch (\Exception $e) {
+            return false;
+        }
         $this->save();
-        $this->notify(new EmailVerificationNotification());
+        return true;
     }    
 }

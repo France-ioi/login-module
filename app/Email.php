@@ -32,12 +32,22 @@ class Email extends Model implements CanResetPasswordContract
     public function sendVerificationCode() {
         $this->code = str_random(10);
         $this->save();
-        $this->notify(new EmailVerificationNotification());
+        try {
+            $this->notify(new EmailVerificationNotification());
+        } catch(\Exception $e) {
+            return false;
+        }
+        return true;
     }
 
 
     public function peerVerificationRequest($code) {
-        $this->notify(new PeerVerificationNotification($code));
+        try {
+            $this->notify(new PeerVerificationNotification($code));
+        } catch(\Exception $e) {
+            return false;
+        }
+        return true;        
     }
 
 
@@ -55,7 +65,12 @@ class Email extends Model implements CanResetPasswordContract
 
 
     public function sendPasswordResetNotification($token) {
-        $this->notify(new ResetPasswordNotification($token));
+        try {
+            $this->notify(new ResetPasswordNotification($token));
+        } catch(\Exception $e) {
+            return false;
+        }
+        return true;                
     }
 
 

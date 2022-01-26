@@ -9,5 +9,6 @@ return [
     'delete' => 'Delete',
     'ok' => 'OK',
     'yes' => 'Yes',
-    'locale_onchange_confirmation' => 'Do you also want to change the default language in your profile to :locale?'
+    'locale_onchange_confirmation' => 'Do you also want to change the default language in your profile to :locale?',
+    'wrong_value' => 'Wrong value'
 ];

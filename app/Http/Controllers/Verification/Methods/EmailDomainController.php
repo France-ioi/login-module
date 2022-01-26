@@ -70,7 +70,7 @@ class EmailDomainController extends Controller
         $official_domains = $client->official_domains->pluck('domain', 'domain')->toArray();
         if(!isset($official_domains[$domain])) {
             return redirect()->back()->withErrors([
-                'domain' => 'Wrong value'
+                'domain' => trans('ui.wrong_value')
             ]);
         }
 
@@ -90,9 +90,15 @@ class EmailDomainController extends Controller
             'status' => 'pending',
             'email' => $account.'@'.$domain
         ]);
-        $user->verifications()->save($verification);
+        $user->verifications()->save($verification);        
 
-        $verification->sendVerificationCode();
+        if(!$verification->sendVerificationCode()) {
+            $verification->delete();
+            return redirect()->back()->withErrors([
+                'account' => trans('ui.wrong_value')
+            ]);
+        }
+        
 
         return redirect('/verification/email_domain/input_code/'.$verification->id)->with([
             'email' => $account.'@'.$domain
