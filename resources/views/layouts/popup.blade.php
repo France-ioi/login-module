@@ -33,7 +33,7 @@
                         @foreach(config('app.locales') as $locale => $locale_name)
                             @if($locale != app()->getLocale())
                                 <li>
-                                    <a href="{{ route('set_locale', ['locale'=>$locale]) }}">
+                                    <a href="{{ route('set_locale', ['locale'=>$locale]) }}" class="link-set-locale">
                                         {{ $locale_name }}
                                     </a>
                                 </li>
@@ -54,4 +54,25 @@
             </div>
         </div>
     </div>
+
+    <div style="display: none" id="set-locale-confirmation">@lang('ui.locale_onchange_confirmation')</div>
+
+    <script>
+        $(document).ready(function(e) {
+            $('a.link-set-locale').on('click', function(e) {
+                e.preventDefault();
+                var link = $(this);
+                var url = link.attr('href');
+                if(window.user_logged) {
+                    var text = $('#set-locale-confirmation').text();
+                    text = text.replace(':locale', link.text().trim())
+                    if(confirm(text)) {
+                        url += '?update_profile=1';
+                    }
+                }
+                location.href = url;
+            })
+        })
+        
+    </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\LoginModule\Profile;
 use App\LoginModule\Platform\PlatformContext;
 use App\Email;
 use Carbon\Carbon;
+use App\LoginModule\Locale;
 
 class UserProfile {
 
@@ -38,6 +39,7 @@ class UserProfile {
         }
 
         $this->context->badge()->flushData();
+        Locale::set($request->user()->language);
         return true;
     }
 

@@ -10,6 +10,9 @@
     <script src="/js/app.js" charset="UTF-8"></script>
 </head>
 <body {!! Request::is('profile') ? 'data-spy="scroll" data-target="#contextualNav"' : '' !!}>
+    <script>
+        window.user_logged = {!! Auth::check() ? 'true' : 'false' !!};
+    </script>
     @yield('navigation')
     @yield('header')
     <div class="container">

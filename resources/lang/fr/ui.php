@@ -8,5 +8,6 @@ return [
     'alert' => 'Alerte',
     'delete' => 'Supprimer',
     'ok' => 'OK',
-    'yes' => 'Oui'
+    'yes' => 'Oui',
+    'locale_onchange_confirmation' => 'Souhaitez-vous également passer à :locale, la langue de votre profil?'
 ];

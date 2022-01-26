@@ -48,7 +48,7 @@ class PlatformContext
 
     private function handlePlatformParams($request) {
         if($request->filled('locale')) {
-            Locale::set($request->get('locale'));
+            Locale::setIfEmpty($request->get('locale'));
         }
     }
 
