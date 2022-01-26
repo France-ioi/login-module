@@ -47,7 +47,7 @@ class UsersController extends Controller {
         return view('client_admin.users.show', [
             'client' => $this->client,
             'user' => $user,
-            'refer_page' => $request->get('refer_page', '/client_admin/'.$client->id.'/users')
+            'refer_page' => $request->get('refer_page', '/client_admin/'.$this->client->id.'/users')
         ]);        
     }
 
