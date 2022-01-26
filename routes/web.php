@@ -86,7 +86,16 @@ Route::group(['middleware' => ['auth']], function() {
             Route::post('/password', 'PasswordController@updatePassword');
         });
     });
+
+    // Client admin
+    Route::group(['prefix' => 'client_admin/{client_id}', 'namespace' => 'ClientAdmin'], function() {
+        Route::get('/users', 'UsersController@index');
+        Route::get('/users/{user_id}', 'UsersController@show');
+        Route::post('/users/{user_id}/verify', 'UsersController@verify');
+    });    
 });
+
+
 
 // Admin
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], function() {

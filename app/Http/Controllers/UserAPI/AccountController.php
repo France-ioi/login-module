@@ -17,8 +17,9 @@ class AccountController extends Controller
     }
 
     public function show(Request $request) {
-        $client_id = $request->user()->token()->client_id;
-        $res = $request->user()->toArray();
+        $user = $request->user();
+        $client_id = $user->token()->client_id;
+        $res = $user->toArray();
         $res['badges'] = $this->getBadges($request->user());
         $res['client_id'] = $client_id;
         $platform_group = $request->user()->platformGroups()->where('client_id', $client_id)->first();
@@ -28,6 +29,7 @@ class AccountController extends Controller
         }
         $this->context->setClientId($client_id);
         $res['verification'] = $this->verification->attributesState($request->user());
+        $res['client_admin'] = $this->isClientAdmin($client_id, $user);
         return response()->json($res);
     }
 
@@ -40,6 +42,12 @@ class AccountController extends Controller
             })
             ->with('badgeApi')
             ->get();
+    }
+
+
+    private function isClientAdmin($client_id, $user) {
+        $res = $user->clients()->where('client_id', $client_id)->first();
+        return $res && $res->pivot->admin;
     }
 
 }
