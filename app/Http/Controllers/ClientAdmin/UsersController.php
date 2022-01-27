@@ -6,7 +6,8 @@ use App\Http\Controllers\ClientAdmin\Controller;
 use App\User;
 use App\Client;
 use App\VerificationMethod;
-use App\Verification;
+use App\Verification as Verification;
+
 
 class UsersController extends Controller {
 
@@ -44,38 +45,67 @@ class UsersController extends Controller {
 
     public function show($client_id, $user_id, Request $request) {
         $user = $this->getUser($user_id);
+        
+        $method = VerificationMethod::where('name', 'manual')->firstOrFail();
+        $admin_verification = $this->getAdminVerification($user, $method);
+
         return view('client_admin.users.show', [
             'client' => $this->client,
             'user' => $user,
+            'attributes' => $this->getMethodsAttributes($this->client->verification_methods),
+            'verification_required' => array_fill_keys($this->client->verifiable_attributes, 1),
+            'verified_attributes' => array_fill_keys($this->getUserVerifiedAttributes($user, $method->id), 1),
+            'admin_verified' => array_fill_keys($admin_verification->user_attributes, 1),
             'refer_page' => $request->get('refer_page', '/client_admin/'.$this->client->id.'/users')
         ]);        
     }
 
 
+    private function getMethodsAttributes($methods) {
+        $res = [];
+        foreach($methods as $method) {
+            $res += $method->user_attributes;
+        }
+        return array_unique($res);
+    }
+
+    private function getUserVerifiedAttributes($user, $exclude_method_id) {
+        $verifications = $user->verifications()
+            ->where('status', 'approved')
+            ->where('method_id', '<>', $exclude_method_id)
+            ->where(function($q) {
+                $q->whereNull('client_id');
+                $q->orWhere('client_id', $this->client->id);
+            })->get();
+        $res = [];
+        foreach($verifications as $verification) {
+            $res += $verification->user_attributes;
+        }
+        return array_unique($res);        
+    }
+
+
+
     public function verify($client_id, $user_id, Request $request) {
         $user = $this->getUser($user_id);
 
-        $verified_attributes = $request->get('verified_attributes', []);
+        $admin_verified = $request->get('admin_verified', []);
         $method = VerificationMethod::where('name', 'manual')->firstOrFail();
+        $attributes = $this->getMethodsAttributes($this->client->verification_methods);
         $user_attributes = [];
-        foreach($method->user_attributes as $attr) {
-            if(isset($verified_attributes[$attr])) {
+        foreach($attributes as $attr) {
+            if(isset($admin_verified[$attr])) {
                 $user_attributes[] = $attr;    
             }
         }
-
-        $res = redirect($request->get('refer_page'));
+        $admin_verification = $this->getAdminVerification($user, $method);
         if(count($user_attributes)) {
-            Verification::create([
-                'client_id' => $this->client->id,
-                'user_id' => $user->id,
-                'method_id' => $method->id,
-                'user_attributes' => $user_attributes,
-                'status' => 'approved'
-            ]);
-            $res->with(['status' => 'User attributes verified']);
+            $admin_verification->user_attributes = $user_attributes;
+            $admin_verification->save();
+        } else {
+            $admin_verification->delete();            
         }
-        return $res;
+        return redirect($request->get('refer_page'))->with(['status' => 'Admin verification udpated']);
     }    
 
 
@@ -84,5 +114,12 @@ class UsersController extends Controller {
         return User::where('id', $user_id)->whereHas('clients', function($q) {
             $q->where('client_id', $this->client_id);
         })->firstOrFail();
+    }
+
+    private function getAdminVerification($user, $method) {
+        return Verification::where('client_id', $this->client->id)
+            ->where('user_id', $user->id)
+            ->where('method_id', $method->id)
+            ->firstOrNew();
     }
 }
