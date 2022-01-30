@@ -64,7 +64,7 @@ class UsersController extends Controller {
     private function getMethodsAttributes($methods) {
         $res = [];
         foreach($methods as $method) {
-            $res += $method->user_attributes;
+            $res = array_merge($res, $method->user_attributes);
         }
         return array_unique($res);
     }
@@ -100,6 +100,8 @@ class UsersController extends Controller {
         }
         $admin_verification = $this->getAdminVerification($user, $method);
         if(count($user_attributes)) {
+            $admin_verification->client_id = $this->client->id;
+            $admin_verification->method_id = $method->id;
             $admin_verification->user_attributes = $user_attributes;
             $admin_verification->save();
         } else {
@@ -117,8 +119,8 @@ class UsersController extends Controller {
     }
 
     private function getAdminVerification($user, $method) {
-        return Verification::where('client_id', $this->client->id)
-            ->where('user_id', $user->id)
+        return $user->verifications()
+            ->where('client_id', $this->client->id)
             ->where('method_id', $method->id)
             ->firstOrNew();
     }
