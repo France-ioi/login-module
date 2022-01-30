@@ -4,7 +4,7 @@
     <h3>User {{ $user->id }}</h3>
     <p>{{ $user->first_name }} {{ $user->last_name }}</p>
 
-    {!! BootForm::open(['url' => '/client_admin/'.$client->id.'/users/'.$user->id.'/verify']) !!}
+    {!! BootForm::open(['url' => '/client_admin/'.$client->id.'/users/'.$user->id.'/verification']) !!}
         <input type="hidden" name="refer_page" value="{{ $refer_page }}"/>
         <table class="table table-bordered table-condensed">
             <thead>

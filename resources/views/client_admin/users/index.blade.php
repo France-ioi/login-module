@@ -36,7 +36,7 @@
                 <th>Login</th>
                 <th>Email</th>
                 <th>Name</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -47,7 +47,19 @@
                     <td>{{ $user->primary_email }} <br/> {{ $user->secondary_email }}</td>
                     <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                     <td>
-                        <a class="btn btn-default btn-xs" href="/client_admin/{{ $client->id }}/users/{{ $user->id }}?refer_page={{ $refer_page }}">View</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/verification?refer_page={{ $refer_page }}">Verification</a>
+                                </li>
+                                <li>
+                                    <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/ban?refer_page={{ $refer_page }}">Ban</a>
+                                </li>                        
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             @endforeach

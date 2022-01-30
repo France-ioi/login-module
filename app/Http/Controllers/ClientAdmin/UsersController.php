@@ -7,7 +7,7 @@ use App\User;
 use App\Client;
 use App\VerificationMethod;
 use App\Verification as Verification;
-
+use App\LoginModule\Platform\PlatformUser;
 
 class UsersController extends Controller {
 
@@ -43,13 +43,13 @@ class UsersController extends Controller {
     }
 
 
-    public function show($client_id, $user_id, Request $request) {
+    public function showVerification($client_id, $user_id, Request $request) {
         $user = $this->getUser($user_id);
         
         $method = VerificationMethod::where('name', 'manual')->firstOrFail();
         $admin_verification = $this->getAdminVerification($user, $method);
 
-        return view('client_admin.users.show', [
+        return view('client_admin.users.verification', [
             'client' => $this->client,
             'user' => $user,
             'attributes' => $this->getMethodsAttributes($this->client->verification_methods),
@@ -60,6 +60,60 @@ class UsersController extends Controller {
         ]);        
     }
 
+
+
+    public function updateVerification($client_id, $user_id, Request $request) {
+        $user = $this->getUser($user_id);
+
+        $admin_verified = $request->get('admin_verified', []);
+        $method = VerificationMethod::where('name', 'manual')->firstOrFail();
+        $attributes = $this->getMethodsAttributes($this->client->verification_methods);
+        $user_attributes = [];
+        foreach($attributes as $attr) {
+            if(isset($admin_verified[$attr])) {
+                $user_attributes[] = $attr;    
+            }
+        }
+        $admin_verification = $this->getAdminVerification($user, $method);
+        if(count($user_attributes)) {
+            $admin_verification->client_id = $this->client->id;
+            $admin_verification->method_id = $method->id;
+            $admin_verification->user_attributes = $user_attributes;
+            $admin_verification->save();
+        } else {
+            $admin_verification->delete();            
+        }
+        return redirect($request->get('refer_page'))->with(['status' => 'Admin verification udpated']);
+    }    
+
+
+    // ban form
+
+    public function showBan($client_id, $user_id, Request $request) {
+        $user = $this->getUser($user_id);
+        $link = PlatformUser::link($client_id, $user_id);
+        return view('client_admin.users.ban', [
+            'client' => $this->client,
+            'user' => $user,
+            'banned' => $link->banned,
+            'refer_page' => $request->get('refer_page', '/client_admin/'.$this->client->id.'/users')
+        ]);
+    }
+
+
+    public function updateBan($client_id, $user_id, Request $request) {
+        $user = $this->getUser($user_id);
+        PlatformUser::setBanned($this->client->id, $user->id, $request->get('banned') ? 1 : 0);
+        return redirect($request->get('refer_page'))->with(['status' => 'Ban status updated']);
+    }    
+
+
+    // misc
+    private function getUser($user_id) {
+        return User::where('id', $user_id)->whereHas('clients', function($q) {
+            $q->where('client_id', $this->client_id);
+        })->firstOrFail();
+    }    
 
     private function getMethodsAttributes($methods) {
         $res = [];
@@ -85,43 +139,13 @@ class UsersController extends Controller {
     }
 
 
-
-    public function verify($client_id, $user_id, Request $request) {
-        $user = $this->getUser($user_id);
-
-        $admin_verified = $request->get('admin_verified', []);
-        $method = VerificationMethod::where('name', 'manual')->firstOrFail();
-        $attributes = $this->getMethodsAttributes($this->client->verification_methods);
-        $user_attributes = [];
-        foreach($attributes as $attr) {
-            if(isset($admin_verified[$attr])) {
-                $user_attributes[] = $attr;    
-            }
-        }
-        $admin_verification = $this->getAdminVerification($user, $method);
-        if(count($user_attributes)) {
-            $admin_verification->client_id = $this->client->id;
-            $admin_verification->method_id = $method->id;
-            $admin_verification->user_attributes = $user_attributes;
-            $admin_verification->save();
-        } else {
-            $admin_verification->delete();            
-        }
-        return redirect($request->get('refer_page'))->with(['status' => 'Admin verification udpated']);
-    }    
-
-
-
-    private function getUser($user_id) {
-        return User::where('id', $user_id)->whereHas('clients', function($q) {
-            $q->where('client_id', $this->client_id);
-        })->firstOrFail();
-    }
-
     private function getAdminVerification($user, $method) {
         return $user->verifications()
             ->where('client_id', $this->client->id)
             ->where('method_id', $method->id)
             ->firstOrNew();
     }
+
+
+
 }

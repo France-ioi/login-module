@@ -113,7 +113,8 @@ class PlatformContext
 
     public function linkUser($user) {
         if($client_id = $this->state->get('client_id')) {
-            PlatformUser::link($client_id, $user->id);
-        }        
+            return PlatformUser::link($client_id, $user->id);
+        }
+        return false;
     }
 }

@@ -33,6 +33,8 @@ Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 's
 
 // Logged user
 Route::group(['middleware' => ['auth']], function() {
+    Route::get('/ban', 'BanController@index');
+
     Route::get('/badges', 'BadgesController@index');
     Route::post('/badges/add', 'BadgesController@add');
 
@@ -90,8 +92,10 @@ Route::group(['middleware' => ['auth']], function() {
     // Client admin
     Route::group(['prefix' => 'client_admin/{client_id}', 'namespace' => 'ClientAdmin'], function() {
         Route::get('/users', 'UsersController@index');
-        Route::get('/users/{user_id}', 'UsersController@show');
-        Route::post('/users/{user_id}/verify', 'UsersController@verify');
+        Route::get('/users/{user_id}/verification', 'UsersController@showVerification');
+        Route::post('/users/{user_id}/verification', 'UsersController@updateVerification');
+        Route::get('/users/{user_id}/ban', 'UsersController@showBan');
+        Route::post('/users/{user_id}/ban', 'UsersController@updateBan');        
     });    
 });
 

@@ -39,7 +39,10 @@ class AuthorizationAvailable
     public function handle($request, Closure $next, $guard = null)
     {
         $user = $request->user();
-        $this->context->linkUser($user);        
+        $link = $this->context->linkUser($user);        
+        if($link->banned) {
+            return redirect('/ban');
+        }
         $completed = $this->profile->completed($user);
         $revalidated = !Group::revalidationRequired($user);
         $filter_passed = $this->filter->pass($user);
