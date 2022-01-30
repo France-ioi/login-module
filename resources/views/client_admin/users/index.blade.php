@@ -4,24 +4,30 @@
     <form method="GET" action="/client_admin/{{ $client->id }}/users">
         <div class="form-group">
             <label>User ID</label>
-            <input type="text" class="form-control input-sm" name="id" value="{{ request()->input('id') }}"/>
+            <input type="text" class="form-control input-sm" name="id" value="{{ request()->get('id') }}"/>
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input type="text" class="form-control input-sm" name="email" value="{{ request()->input('email') }}"/>
+            <input type="text" class="form-control input-sm" name="email" value="{{ request()->get('email') }}"/>
         </div>
         <div class="form-group">
             <label>Login</label>
-            <input type="text" class="form-control input-sm" name="login" value="{{ request()->input('login') }}"/>
+            <input type="text" class="form-control input-sm" name="login" value="{{ request()->get('login') }}"/>
         </div>
         <div class="form-group">
             <label>First name</label>
-            <input type="text" class="form-control input-sm" name="first_name" value="{{ request()->input('first_name') }}"/>
+            <input type="text" class="form-control input-sm" name="first_name" value="{{ request()->get('first_name') }}"/>
         </div>
         <div class="form-group">
             <label>Last  name</label>
-            <input type="text" class="form-control input-sm" name="last_name" value="{{ request()->input('last_name') }}"/>
+            <input type="text" class="form-control input-sm" name="last_name" value="{{ request()->get('last_name') }}"/>
         </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="role_not_verified" {{ request()->has('role_not_verified') ? 'checked="checked"' : '' }}"/>
+                Role not verified
+            </label>
+        </div>        
         <button type="submit" class="btn btn-primary btn-sm">Filter</button>
         <a class="btn btn-primary btn-sm" href="/client_admin/{{ $client->id }}/users">Reset</a>
     </form>

@@ -31,6 +31,14 @@ class UsersController extends Controller {
                 $query->where('email', 'LIKE', '%'.$request->get('email').'%');
             });
         }
+        if($request->get('role_not_verified')) {
+            $query->whereDoesntHave('verifications', function($query) {
+                $query->where('client_id', $this->client->id)
+                    ->where('status', 'approved')
+                    ->where('user_attributes', 'LIKE', '%"role"%');
+            });
+        }
+        
         $query->whereHas('clients', function($query) {
             $query->where('client_id', $this->client_id);
         });
