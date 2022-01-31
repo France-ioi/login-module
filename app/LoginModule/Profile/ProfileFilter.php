@@ -33,7 +33,10 @@ class ProfileFilter {
         $res = [];
         foreach($data as $attr => $value) {
             if(isset($attributes[$attr]) && $attributes[$attr] !== $value) {
-                $res[] = $attr;
+                $res[$attr] = [
+                    'current_value' => $attributes[$attr],
+                    'required_value' => $value
+                ];
             }
         }
         return $res;
