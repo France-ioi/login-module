@@ -14,6 +14,8 @@ class ClientUser extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'user_id',
+        'client_id',
         'admin',
         'last_activity',
         'banned'
