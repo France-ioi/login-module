@@ -23,6 +23,32 @@
     @endif
 
 
+    @if($any_methods_available)
+        @if(count($unverified_attributes) > 0)    
+            <div class="panel-body">
+                <strong>@lang('verification.methods_header')</strong>
+            </div>
+        @endif
+
+        @include('verification.methods_list', [
+            'title' => trans('verification.header_recommended_methods'),
+            'methods' => $recommended_methods
+        ])
+        @include('verification.methods_list', [
+            'title' => trans('verification.header_alternative_methods'),
+            'methods' => $alternative_methods
+        ])
+        @include('verification.methods_list', [
+            'title' => trans('verification.header_optional_methods'),
+            'methods' => $optional_methods
+        ])
+    @else
+        <div class="alert-section">
+            <div class="alert alert-success">@lang('verification.not_required')</div>
+        </div>
+    @endif
+
+
     @if(count($verifications))
         <div class="panel-body">
             <div class="sectionTitle">
@@ -77,30 +103,6 @@
 	</div>
     @endif
 
-    @if($any_methods_available)
-        @if(count($unverified_attributes) > 0)    
-            <div class="panel-body">
-                <strong>@lang('verification.methods_header')</strong>
-            </div>
-        @endif
-
-        @include('verification.methods_list', [
-            'title' => trans('verification.header_recommended_methods'),
-            'methods' => $recommended_methods
-        ])
-        @include('verification.methods_list', [
-            'title' => trans('verification.header_alternative_methods'),
-            'methods' => $alternative_methods
-        ])
-        @include('verification.methods_list', [
-            'title' => trans('verification.header_optional_methods'),
-            'methods' => $optional_methods
-        ])
-    @else
-        <div class="alert-section">
-            <div class="alert alert-success">@lang('verification.not_required')</div>
-        </div>
-    @endif
 
     <div class="panel-body">
         <a class="btn btn-rounded btn-centered btn-primary" href="/profile">@lang('verification.btn_profile')</a>
