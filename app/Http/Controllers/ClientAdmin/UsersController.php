@@ -31,7 +31,8 @@ class UsersController extends Controller {
                 $query->where('email', 'LIKE', '%'.$request->get('email').'%');
             });
         }
-        if($request->get('role_not_verified')) {
+        if($request->get('teacher_not_verified')) {
+            $query->where('role', 'teacher');
             $query->whereDoesntHave('verifications', function($query) {
                 $query->where('client_id', $this->client->id)
                     ->where('status', 'approved')

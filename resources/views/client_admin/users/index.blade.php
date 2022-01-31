@@ -24,8 +24,8 @@
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="role_not_verified" {{ request()->has('role_not_verified') ? 'checked="checked"' : '' }}"/>
-                Role not verified
+                <input type="checkbox" name="teacher_not_verified" {{ request()->has('teacher_not_verified') ? 'checked="checked"' : '' }}"/>
+                Teacher role not verified
             </label>
         </div>        
         <button type="submit" class="btn btn-primary btn-sm">Filter</button>
