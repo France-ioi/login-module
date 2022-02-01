@@ -6,14 +6,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\LoginModule\Profile\Verification\Verification;
 use App\LoginModule\Platform\PlatformContext;
-
+use App\LoginModule\Platform\PlatformHelper;
 
 class IndexController extends Controller
 {
 
     protected $verification;
 
-    public function __construct(Verification $verification) {
+    public function __construct(Verification $verification, Request $request) {
+        $this->middleware(function($request, $next) {
+            if(PlatformHelper::navTabVisible('verification')) {
+                return $next($request);
+            }
+            return redirect('/profile');
+        });
         $this->verification = $verification;
     }
 

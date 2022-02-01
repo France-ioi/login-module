@@ -55,8 +55,20 @@ class ProfileController extends Controller
             $required_attributes = ['login'];
             $recommended_attributes = [];
         }
-        $unverified_attributes = $this->verification->unverifiedAttributes($user);
-        $ready_for_verification = $this->profile->attributesCompleted($user, $unverified_attributes);
+
+        $profile_completed = $this->profile->completed($user);
+        $filter_passed = $profile_filter->pass($user);
+        if($profile_completed && $filter_passed) {
+            $verified_attributes = $this->verification->verifiedAttributes($user);
+            $unverified_attributes = $this->verification->unverifiedAttributes($user);
+            $ready_for_verification = $this->profile->attributesCompleted($user, $unverified_attributes);        
+            $show_email_verification_alert = $this->emailVerificationAvailable($user);
+        } else {
+            $verified_attributes = [];
+            $unverified_attributes = [];
+            $ready_for_verification = false;
+            $show_email_verification_alert = false;
+        }
 
         $schema = $this->schema_builder->build(
             $user,
@@ -65,7 +77,7 @@ class ProfileController extends Controller
             $disabled_attributes,
             $unverified_attributes,
             $this->hiddenAttributes($user)
-        );
+        );        
 
         return view('profile.index', [
             'form' => [
@@ -80,13 +92,15 @@ class ProfileController extends Controller
             'cancel_url' => $this->context->cancelUrl(),
             'optional_fields_visible' => $request->filled('optional_fields_visible') || count($required_attributes) == 0,
             'revalidation_fields' => Group::getRevalidationFields($user),
+            
+            'verified_attributes' => $verified_attributes,
             'unverified_attributes' => $unverified_attributes,
             'ready_for_verification' => $ready_for_verification,
-            'verified_attributes' => $this->verification->verifiedAttributes($user),
-            'show_email_verification_alert' => $this->emailVerificationAvailable($user),
+            'show_email_verification_alert' => $show_email_verification_alert,
+
             'platform_name' => $client ? $client->name : trans('app.name'),
             'rejected_attributes' => $profile_filter->rejectedAttributes($user),
-            'profile_completed' => $this->profile->completed($user),
+            'profile_completed' => $profile_completed,
             'login_validator' => config('profile.login_validator'),
             'suggested_login' => $request->session()->get('suggested_login'),
             'official_domains' => $client ? $client->official_domains->pluck('domain') : [],

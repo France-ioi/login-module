@@ -2,6 +2,8 @@
 namespace App\LoginModule\Platform;
 
 use App\LoginModule\Profile\Verification\Verification;
+use App\LoginModule\Profile\UserProfile;
+use App\LoginModule\Profile\ProfileFilter;
 
 class PlatformHelper
 {
@@ -28,10 +30,20 @@ class PlatformHelper
         if($tab_name == 'profile') {
             return true;
         }
+       
         $context = \App::make(PlatformContext::class);
         if($tab_name == 'verification') {
+            $user = auth()->user();
+            $profile = new UserProfile($context);
+            if(!$profile->completed($user)) {
+                return false;
+            }
+            $filter = new ProfileFilter($context);
+            if(!$filter->pass($user)) {
+                return false;
+            }
             $verification = new Verification($context);
-            if(!$verification->authReady(auth()->user())) {
+            if(!$verification->authReady($user)) {
                 return true;
             }
         }
