@@ -108,8 +108,7 @@ class UserProfile {
             }
             foreach($attributes as $attribute) {
                 $value = $user->getAttribute($attribute);
-                if(is_null($value) || $value === '') {
-                //if(is_null($value) || $value === '' || $value === false) {
+                if(is_null($value) || $value === '' || $value === false) {
                     return false;
                 }
             }
