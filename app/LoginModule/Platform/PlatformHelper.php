@@ -42,10 +42,13 @@ class PlatformHelper
             if(!$filter->pass($user)) {
                 return false;
             }
+            return true;
+            /*
             $verification = new Verification($context);
             if(!$verification->authReady($user)) {
                 return true;
             }
+            */
         }
         if($tab_name == 'badge') {
             return (bool) $context->badge()->api();

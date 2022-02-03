@@ -110,8 +110,10 @@ class ProfileController extends Controller
 
     public function update(Request $request) {
         $user = $request->user();
+        $required_attributes = $this->requiredAttributes($user);
+
         $login = $request->get('login');
-        if($login ? $user->login !== $login : !$user->login) {
+        if($login ? $user->login !== $login : (array_search('login', $required_attributes) && !$user->login)) {
             // If the user is changing usernames and the new one is taken, or
             // the user doesn't have one, suggest a username
             $suggested_login = $this->login_suggestion->get($login);
@@ -121,7 +123,7 @@ class ProfileController extends Controller
         }
 
         $is_pms_user = (bool) $user->authConnections()->where('provider', 'pms')->where('active', '1')->first();
-        $required_attributes = $this->requiredAttributes($user);
+
         if($user->login_change_required) {
             $required_attributes = ['login'];
         }
