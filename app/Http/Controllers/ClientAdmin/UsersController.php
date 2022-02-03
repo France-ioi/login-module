@@ -88,6 +88,7 @@ class UsersController extends Controller {
             $admin_verification->client_id = $this->client->id;
             $admin_verification->method_id = $method->id;
             $admin_verification->user_attributes = $user_attributes;
+            $admin_verification->status = 'approved';
             $admin_verification->save();
         } else {
             $admin_verification->delete();            
