@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/users/{user_id}/verification', 'UsersController@updateVerification');
         Route::get('/users/{user_id}/ban', 'UsersController@showBan');
         Route::post('/users/{user_id}/ban', 'UsersController@updateBan');        
+        Route::get('/users_export', 'UsersController@export');
     });    
 });
 
