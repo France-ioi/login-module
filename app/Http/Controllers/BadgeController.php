@@ -72,7 +72,7 @@ class BadgeController extends Controller
                     'badge_user' => $badge_data['user']
                 ]);
             }
-            return redirect($this->context->continueUrl('/badge'));
+            return redirect('/redirect/continue?alternative_url='.urlencode('/badge'));
         }
         return $this->failedVerificationResponse($code, trans('badge.code_verification_fail'));
     }
@@ -93,7 +93,7 @@ class BadgeController extends Controller
             $badge->override_profile = $request->filled('override_profile');
             $badge->save();
         }
-        return redirect($this->context->continueUrl());
+        return redirect('/redirect/continue');
     }
 
 
@@ -122,7 +122,7 @@ class BadgeController extends Controller
                 'do_not_possess' => true
             ]));
         }
-        return redirect($this->context->continueUrl('/badge'));
+        return redirect('/redirect/continue?alternative_url='.urlencode('/badge'));
     }
 
 }

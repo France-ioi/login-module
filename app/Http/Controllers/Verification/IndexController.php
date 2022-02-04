@@ -55,7 +55,7 @@ class IndexController extends Controller
             'recommended_methods' => $recommended_methods,
             'alternative_methods' => $alternative_methods,
             'optional_methods' => $optional_methods,
-            'continue_url' => $context->continueURL()
+            'continue_url' => '/redirect/continue'
         ]);
     }
 

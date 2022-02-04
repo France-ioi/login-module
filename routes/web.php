@@ -97,7 +97,12 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/users/{user_id}/ban', 'UsersController@showBan');
         Route::post('/users/{user_id}/ban', 'UsersController@updateBan');        
         Route::get('/users_export', 'UsersController@export');
-    });    
+    });
+
+    // redirects
+    Route::group(['middleware' => ['authorization_available']], function() {
+        Route::get('/redirect/continue', 'RedirectController@continue');
+    });
 });
 
 

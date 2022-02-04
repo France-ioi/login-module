@@ -59,7 +59,7 @@ class LoginWithCodeController extends Controller
             $this->updateBadgeData($badge);
             if($badge->login_enabled) {
                 Auth::login($badge->user, $request->filled('remember'));
-                return redirect($this->context->continueUrl());
+                return redirect('/redirect/continue');
             }
             return false;
         }
@@ -130,7 +130,7 @@ class LoginWithCodeController extends Controller
         $this->context->badge()->update($badge_data['url'], $badge_data['code'], $user->id);
         Auth::login($user);
 
-        return redirect($this->context->continueUrl());
+        return redirect('/redirect/continue');
     }
 
 

@@ -24,7 +24,7 @@ class MergingAccountsController extends Controller
         //if($request->user()->origin_)
         $user = $request->user();
         if(!$group_user = $this->getGroupedUser($user)) {
-            return redirect($this->context->continueUrl());
+            return redirect('/redirect/continue');
         }
 
         return view('merging_accounts.index', [
@@ -36,14 +36,14 @@ class MergingAccountsController extends Controller
 
     public function acceptMerge(Request $request) {
         if(!$group_user = $this->getGroupedUser($request->user())) {
-            return redirect($this->context->continueUrl());
+            return redirect('/redirect/continue');
         }
 
         $merge_account_id = $request->session()->get('merge_account_id');
         if($merge_account_id && $request->user()->id === $merge_account_id)  {
             $request->session()->forget('merge_account_id');
             Group::mergeUsers($request->user(), $group_user);
-            return redirect($this->context->continueUrl());
+            return redirect('/redirect/continue');
         }
 
         $context_data = $this->context->getData();
@@ -60,7 +60,7 @@ class MergingAccountsController extends Controller
         if($group_user = $this->getGroupedUser($request->user())) {
             Group::reqireRevalidation($request->user(), collect([$group_user]));
         }
-        return redirect($this->context->continueUrl());
+        return redirect('/redirect/continue');
     }
 
 

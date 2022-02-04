@@ -80,7 +80,7 @@ class LoginController extends Controller
         if($user->hasRole('admin')) {
             return redirect('/admin');
         }
-        return redirect($this->context->continueUrl());
+        return redirect('/redirect/continue');
     }
 
 

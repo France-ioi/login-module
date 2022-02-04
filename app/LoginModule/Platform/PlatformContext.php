@@ -71,7 +71,10 @@ class PlatformContext
     }
 
 
-    public function continueUrl($alternative = '/profile') {
+    public function continueUrl($alternative) {
+        if(!$alternative) {
+            $alternative = '/profile';
+        }
         return $this->state->get('redirect_uri') ?: $alternative;
     }
 

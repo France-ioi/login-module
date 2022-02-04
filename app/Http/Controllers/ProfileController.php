@@ -142,7 +142,7 @@ class ProfileController extends Controller
         if(($result = $this->profile->update($request, $schema->fillableAttributes())) !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
-        return redirect($this->context->continueUrl());
+        return redirect('/redirect/continue');
     }
 
 
