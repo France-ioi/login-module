@@ -49,8 +49,6 @@
         {!! BootForm::close() !!}
     </div>
 
-    <link href="/css/bootstrap-datepicker3.css" rel="stylesheet">
-
     @if($suggested_login)
         <div id="suggested_login_text" style="display: none">
             @lang('auth.suggested_login', [

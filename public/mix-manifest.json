@@ -1,5 +1,6 @@
 {
-  "/js/app.js": "/js/app.js",
-  "/css/app.css": "/css/app.css",
-  "/css/bootstrap-datepicker3.css": "/css/bootstrap-datepicker3.css"
+    "/js/app.js": "/js/app.js?id=8face1b8d414dc011675",
+    "/js/manifest.js": "/js/manifest.js?id=dd099edf81bc7928c9b7",
+    "/js/vendor.js": "/js/vendor.js?id=7d9df31614879150506d",
+    "/css/app.css": "/css/app.css?id=4a6833ff0ab968628784"
 }

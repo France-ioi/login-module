@@ -1,26 +1,24 @@
 {
   "private": true,
   "scripts": {
-    "dev": "set NODE_ENV=development && webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "set NODE_ENV=development && webpack --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "production": "set NODE_ENV=development && webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    "dev": "npm run development",
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "prod": "npm run production",
+    "production": "mix --production"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.6.3",
-    "axios": "^0.18.1",
+    "bootstrap-3-typeahead": "^4.0.2",
     "bootstrap-datepicker": "^1.6.4",
     "bootstrap-sass": "^3.4.1",
     "bootstrap-slider": "^10.0.0",
-    "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master",
-    "cross-env": "^3.2.4",
-    "css-loader": "^0.26.1",
     "jquery": "^3.4.0",
-    "laravel-mix": "^0.10.0",
-    "lodash": "^4.17.13",
-    "style-loader": "^0.13.1",
-    "vue": "^2.0.1"
-  },
-  "dependencies": {
-    "bootstrap-3-typeahead": "^4.0.2"
+    "laravel-mix": "^6.0.6",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0"
   }
 }

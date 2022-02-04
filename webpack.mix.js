@@ -1,16 +1,17 @@
-const { mix } = require('laravel-mix');
+var mix = require('laravel-mix');
 
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
- |
- */
-
-mix.js('resources/assets/js/app.js', 'public/js')
-    .combine(['node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css'], 'public/css/bootstrap-datepicker3.css')
-    .sass('resources/assets/sass/app.scss', 'public/css');
+mix.setPublicPath('public')
+    .js('resources/assets/js/app.js', 'public/js')
+    .extract(
+        [
+            'jquery',
+            'bootstrap-sass',
+            'bootstrap-3-typeahead',
+            'bootstrap-datepicker',
+            'bootstrap-slider',
+            'style-loader'
+        ],
+        'public/js/vendor.js'
+    )
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .version();
