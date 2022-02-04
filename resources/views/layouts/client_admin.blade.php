@@ -8,6 +8,14 @@
                     <a href="/client_admin/{{ $client->id }}/users">{{ $client->name }} &raquo; Users manager</a>
                 </li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="{{ url('/profile') }}">@lang('profile.header')</a>
+                </li>                
+                <li>
+                    <a href="{{ url('/logout') }}">@lang('auth.logout')</a>
+                </li>
+            </ul>            
         </div>
     </nav>
     @if(session('status'))
