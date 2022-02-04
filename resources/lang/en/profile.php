@@ -3,7 +3,7 @@
 return [
     'header' => 'Profile',
     'optional_fields_filter' => 'Display required or recommended fields only',
-    'not_completed' => 'In order to proceed with logging in, please fill in the required fields.',
+    'not_completed' => 'In order to proceed with logging in, please fill in the required fields:',
 
     'login' => 'Login',
     'first_name' => 'First name',

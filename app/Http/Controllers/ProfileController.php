@@ -56,9 +56,9 @@ class ProfileController extends Controller
             $recommended_attributes = [];
         }
 
-        $profile_completed = $this->profile->completed($user);
+        $uncompleted_attributes = $this->profile->getUncompletedAttributes($user);
         $filter_passed = $profile_filter->pass($user);
-        if($profile_completed && $filter_passed) {
+        if(count($uncompleted_attributes) == 0 && $filter_passed) {
             $verified_attributes = $this->verification->verifiedAttributes($user);
             $unverified_attributes = $this->verification->unverifiedAttributes($user);
             $ready_for_verification = $this->profile->attributesCompleted($user, $unverified_attributes);        
@@ -95,12 +95,12 @@ class ProfileController extends Controller
             
             'verified_attributes' => $verified_attributes,
             'unverified_attributes' => $unverified_attributes,
+            'uncompleted_attributes' => $uncompleted_attributes,
             'ready_for_verification' => $ready_for_verification,
             'show_email_verification_alert' => $show_email_verification_alert,
 
             'platform_name' => $client ? $client->name : trans('app.name'),
             'rejected_attributes' => $profile_filter->rejectedAttributes($user),
-            'profile_completed' => $profile_completed,
             'login_validator' => config('profile.login_validator'),
             'suggested_login' => $request->session()->get('suggested_login'),
             'official_domains' => $client ? $client->official_domains->pluck('domain') : [],
@@ -160,7 +160,7 @@ class ProfileController extends Controller
 
     private function requiredAttributes($user) {
         if($client = $this->context->client()) {
-            return $this->profile->getRequiredUserAttributes($user, $client);
+            return $this->profile->getRequiredAttributes($user, $client);
             //return $client->user_attributes;
         }
         return [];

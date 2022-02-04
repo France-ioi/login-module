@@ -96,10 +96,17 @@ class UserProfile {
 
 
     public function completed($user) {
+        $attributes = $this->getUncompletedAttributes($user);
+        return count($attributes) == 0;
+    }
+
+
+    public function getUncompletedAttributes($user) {
+        $res = [];
         $attributes = SchemaBuilder::availableAttributes();
         if($client = $this->context->client()) {
             //$attributes = array_values(array_intersect($client->user_attributes, $attributes));
-            $attributes = $this->getRequiredUserAttributes($user, $client);
+            $attributes = $this->getRequiredAttributes($user, $client);
 
             //we would like to display the profile every time the user logs in and still has recommended fields that are empty
             if(session()->get('check_profile_recommended_attributes')) {
@@ -109,15 +116,15 @@ class UserProfile {
             foreach($attributes as $attribute) {
                 $value = $user->getAttribute($attribute);
                 if(is_null($value) || $value === '' || $value === false) {
-                    return false;
+                    $res[] = $attribute;
                 }
             }
         }
-        return true;
+        return $res;
     }
 
 
-    public function getRequiredUserAttributes($user, $client) {
+    public function getRequiredAttributes($user, $client) {
         $attributes = SchemaBuilder::availableAttributes();
         $attributes = array_values(array_intersect($client->user_attributes, $attributes));
         // We would like to require emails, but only for accounts that were not generated

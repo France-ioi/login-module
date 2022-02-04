@@ -6,12 +6,16 @@
                     'platform_name' => $platform_name
                 ])
             </div>
+            <a class="btn btn-danger btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>            
             <strong>
-                @foreach($unverified_attributes as $attr)
-                    @lang('profile.'.$attr)@if(!$loop->last), @endif
-                @endforeach
+                <ul>
+                    @foreach($unverified_attributes as $attr)
+                        <li>
+                            @lang('profile.'.$attr)
+                        </li>
+                    @endforeach
+                </ul>
             </strong>
-            <a class="btn btn-danger btn-xs pull-right" href="/verification">@lang('verification.btn_verify')</a>
         @else
             @lang('verification.profile_not_completed')
         @endif

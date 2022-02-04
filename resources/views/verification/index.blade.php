@@ -14,9 +14,13 @@
                     ])
                 </div>
                 <strong>
-                    @foreach($unverified_attributes as $attr)
-                        @lang('profile.'.$attr)@if(!$loop->last), @endif
-                    @endforeach
+                    <ul>
+                        @foreach($unverified_attributes as $attr)
+                            <li>
+                                @lang('profile.'.$attr)
+                            </li>
+                        @endforeach
+                    </ul>
                 </strong>
             </div>
 	    </div>

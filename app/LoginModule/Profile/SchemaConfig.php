@@ -117,7 +117,7 @@ class SchemaConfig {
         $options = trans('profile.roles');
             return [
                 'type' => 'select',
-                'options' => $options,
+                'options' => ['' => '...'] + $options,
                 'required' => 'required',
                 'valid' => 'in:'.implode(',', array_keys($options))
             ];

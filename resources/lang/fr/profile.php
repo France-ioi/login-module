@@ -3,7 +3,7 @@
 return [
     'header' => 'Profil',
     'optional_fields_filter' => "Afficher seulement les champs requis ou recommandés",
-    'not_completed' => 'Afin de vous connecter, veuillez remplir les champs requis.',
+    'not_completed' => 'Afin de vous connecter, veuillez remplir les champs requis:',
 
     'login' => 'Identifiant',
     'first_name' => 'Prénom',
