@@ -10800,7 +10800,7 @@ window.components.login = {
 
 module.exports = function (config) {
     var regex_test = eval(config.new);
-    var regex_filter = eval(config.filter);
+    var regex_filter = eval(config.filter + 'gi');
 
     return {
         test: function test(str) {
