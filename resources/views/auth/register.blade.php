@@ -74,7 +74,7 @@
                     str = sanitiser.sanitise(str);
                     input.val(str);
                 }
-                input.bind('input propertychange', sanitizeLogin);
+                input.bind('input propertychange change keyup paste', sanitizeLogin);
 
                 $('#suggested_login_msg').find('.btn').click(function() {
                     input.val($('#suggested_login').text());
