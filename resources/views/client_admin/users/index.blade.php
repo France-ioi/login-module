@@ -2,7 +2,7 @@
 
 @section('content')
     <p>
-        <a class="btn btn-primary" href="/client_admin/{{ $client->id }}/users_export" target="_blank">Export users</a>
+        <a class="btn btn-primary" href="/client_admin/{{ $client->id }}/export/users" target="_blank">Export users</a>
     </p>
 
     <form method="GET" action="/client_admin/{{ $client->id }}/users">
