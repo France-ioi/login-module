@@ -84,7 +84,7 @@
 @section('content')
     <div class="row">
         @if($left_panel_visible)
-            <div class="{{ $right_panel_visible ? 'col-sm-6 hasBorder' : 'col-sm-10 col-sm-offset-1' }}">
+            <div class="{{ $right_panel_visible ? 'col-sm-6 hasBorder' : 'col-sm-6 col-sm-offset-3' }}">
                 <div class="panelTitle">@lang('auth.login_email_badge')</div>
                 @foreach($methods['visible'] as $method)
                     @if ($method == 'login_email_code' )
@@ -94,7 +94,7 @@
             </div>
         @endif
         @if($right_panel_visible)
-            <div class="{{ $left_panel_visible ? 'col-sm-6' : 'col-sm-10 col-sm-offset-1' }}">
+            <div class="{{ $left_panel_visible ? 'col-sm-6' : 'col-sm-6 col-sm-offset-3' }}">
                 <div class="panelTitle">@lang('auth.login_services')</div>
                 @foreach($methods['visible'] as $method)
                     @if ($method == 'login_email_code' )
