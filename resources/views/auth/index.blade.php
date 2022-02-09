@@ -83,39 +83,42 @@
 
 @section('content')
     <div class="row">
-        <div class="col-sm-6 hasBorder">
-            <div class="panelTitle">@lang('auth.login_email_badge')</div>
-            @foreach($methods['visible'] as $method)
-                @if ($method == 'login_email_code' )
+        @if($left_panel_visible)
+            <div class="{{ $right_panel_visible ? 'col-sm-6 hasBorder' : 'col-sm-10 col-sm-offset-1' }} pb-20">
+                <div class="panelTitle">@lang('auth.login_email_badge')</div>
+                @foreach($methods['visible'] as $method)
+                    @if ($method == 'login_email_code' )
+                            @stack($method)
+                    @endif
+                @endforeach
+            </div>
+        @endif
+        @if($right_panel_visible)
+            <div class="{{ $left_panel_visible ? 'col-sm-6' : 'col-sm-10 col-sm-offset-1' }} pb-20">
+                <div class="panelTitle">@lang('auth.login_services')</div>
+                @foreach($methods['visible'] as $method)
+                    @if ($method == 'login_email_code' )
+                        @continue
+                    @endif
                         @stack($method)
-                @endif
-            @endforeach
-        </div>
-        <div class="col-sm-6">
-            <div class="panelTitle">@lang('auth.login_services')</div>
-            @foreach($methods['visible'] as $method)
-                @if ($method == 'login_email_code' )
-                    @continue
-                @endif
-                    @stack($method)
-            @endforeach
+                @endforeach
 
-            @if(count($methods['hidden']))
-                <div id="box-show-hidden">
-                    <hr>
-                    <div id="btn-show-hidden">
-                        @lang('auth.show_more')
-                        <i class="fa fa-2x fa-angle-down"></i>
+                @if(count($methods['hidden']))
+                    <div id="box-show-hidden">
+                        <hr>
+                        <div id="btn-show-hidden">
+                            @lang('auth.show_more')
+                            <i class="fa fa-2x fa-angle-down"></i>
+                        </div>
                     </div>
-                </div>
-                <div id="auth-hidden" class="collapse">
-                    @foreach($methods['hidden'] as $method)
-                        @stack($method)
-                    @endforeach
-                </div>
-            @endif
-
-        </div>
+                    <div id="auth-hidden" class="collapse">
+                        @foreach($methods['hidden'] as $method)
+                            @stack($method)
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        @endif
     </div>
 
     <div class="highlightBlock">
