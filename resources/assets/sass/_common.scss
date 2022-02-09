@@ -288,7 +288,8 @@ fieldset .form-group {
 
 	.row {
 		margin: 0;
-		.col-sm-6 {
+		.col-sm-6,
+		.col-sm-10 {
 			padding: 10px 20px 10px;
 		}
 	}
@@ -637,9 +638,4 @@ ul.alert {
 .navbar-nav > li > a {
 	padding-left: 10px;
 	padding-right: 10px;
-}
-
-
-.pb-20 {
-	padding-bottom: 20px;
 }
