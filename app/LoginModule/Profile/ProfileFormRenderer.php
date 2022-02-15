@@ -4,14 +4,14 @@ namespace App\LoginModule\Profile;
 
 class ProfileFormRenderer {
 
-    public static function render($schema) {
+    public static function render($schema, $user) {
         $html = '';
         $sections = config('profile.sections');
         foreach($sections as $section => $attributes) {
             $section_html = '';
             foreach($attributes as $attr) {
                 if($block = $schema->block($attr)) {
-                    $block_html = ProfileFormElements::{$block->type}($block, self::label($block));
+                    $block_html = ProfileFormElements::{$block->type}($block, self::label($block), $user);
                     if($block->help) {
                         $block_html .= ProfileFormElements::help($block->help);
                     }

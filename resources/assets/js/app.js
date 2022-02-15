@@ -17,8 +17,8 @@ require('./jquery.sortable');
 require('../../../node_modules/bootstrap-slider/dist/bootstrap-slider.min.js');
 require('../../../node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css');
 
-window.components = {};
+window.components = {
+    login_sanitiser: require('./components/login_sanitiser.js'),
+    profile_editor: require('./components/profile_editor.js'),
+};
 
-window.components.login = {
-    sanitiser: require('./login/sanitiser.js')
-}

@@ -68,7 +68,7 @@
             });
 
             function initLoginHandlers(input) {
-                var sanitiser = window.components.login.sanitiser({!! json_encode($login_validator) !!})
+                var sanitiser = window.components.login_sanitiser({!! json_encode(config('profile.login_validator')) !!})
                 function sanitizeLogin() {
                     var str = input.val();
                     str = sanitiser.sanitise(str);

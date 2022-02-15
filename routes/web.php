@@ -92,10 +92,12 @@ Route::group(['middleware' => ['auth']], function() {
     // Client admin
     Route::group(['prefix' => 'client_admin/{client_id}', 'namespace' => 'ClientAdmin'], function() {
         Route::get('/users', 'UsersController@index');
+        Route::get('/users/{user_id}/edit', 'UsersController@edit');
+        Route::post('/users/{user_id}/edit', 'UsersController@update');
         Route::get('/users/{user_id}/verification', 'UsersController@showVerification');
         Route::post('/users/{user_id}/verification', 'UsersController@updateVerification');
         Route::get('/users/{user_id}/ban', 'UsersController@showBan');
-        Route::post('/users/{user_id}/ban', 'UsersController@updateBan');        
+        Route::post('/users/{user_id}/ban', 'UsersController@updateBan');
         Route::get('/export/users', 'ExportController@users');
     });
 

@@ -80,6 +80,7 @@ class ProfileController extends Controller
         );        
 
         return view('profile.index', [
+            'user' => $user,
             'form' => [
                 'model' => $user,
                 'url' => '/profile',
@@ -101,7 +102,6 @@ class ProfileController extends Controller
 
             'platform_name' => $client ? $client->name : trans('app.name'),
             'rejected_attributes' => $profile_filter->rejectedAttributes($user),
-            'login_validator' => config('profile.login_validator'),
             'suggested_login' => $request->session()->get('suggested_login'),
             'official_domains' => $client ? $client->official_domains->pluck('domain') : [],
         ]);
@@ -139,7 +139,12 @@ class ProfileController extends Controller
 
         $this->clearVerifications($user, $request);
 
-        if(($result = $this->profile->update($request, $schema->fillableAttributes())) !== true) {
+        $result = $this->profile->update(
+            $user,
+            $request, 
+            $schema->fillableAttributes()
+        );
+        if($result !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
         return redirect('/redirect/continue');

@@ -63,7 +63,6 @@ class RegisterController extends Controller
             'email_required' => array_search('primary_email', $required) !== false,
             'platform_name' => $client ? $client->name : trans('app.name'),
             'values' => $values,
-            'login_validator' => config('profile.login_validator'),
             'suggested_login' => $request->session()->get('suggested_login')
         ]);
     }

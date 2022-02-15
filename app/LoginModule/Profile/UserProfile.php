@@ -17,20 +17,20 @@ class UserProfile {
     }
 
 
-    public function update($request, $fillable_attributes) {
+    public function update($user, $request, $fillable_attributes) {
         $data = $request->all($fillable_attributes);
-        $request->user()->fill($data);
-        $request->user()->login_revalidate_required = false;
-        $request->user()->save();
+        $user->fill($data);
+        $user->login_revalidate_required = false;
+        $user->save();
 
         if($request->hasFile('picture')) {
-            $this->storePicture($request->user(), $request->file('picture'));
+            $this->storePicture($user, $request->file('picture'));
         }
 
         $errors = [];
         foreach(['primary', 'secondary'] as $role) {
             if(array_search($role.'_email', $fillable_attributes) !== false) {
-                $errors = array_merge($errors, $this->updateEmail($request, $role));
+                $errors = array_merge($errors, $this->updateEmail($user, $request, $role));
             }
         }
 
@@ -39,21 +39,21 @@ class UserProfile {
         }
 
         $this->context->badge()->flushData();
-        Locale::set($request->user()->language);
+        Locale::set($user->language);
         return true;
     }
 
 
 
-    private function updateEmail($request, $role) {
+    private function updateEmail($user, $request, $role) {
         $new_value = $request->input($role.'_email');
 
         if(!$new_value) {
-            $request->user()->emails()->where('role', $role)->delete();
+            $user->emails()->where('role', $role)->delete();
             return [];
         }
 
-        if($email = $request->user()->emails()->where('role', $role)->first()) {
+        if($email = $user->emails()->where('role', $role)->first()) {
             $errors = [];
             if($email->email != $new_value) {
                 $email->email = $new_value;
@@ -73,7 +73,7 @@ class UserProfile {
             'email' => $new_value,
             'role' => $role
         ]);
-        $request->user()->emails()->save($email);
+        $user->emails()->save($email);
         $email->sendVerificationCode();
         return [];
     }

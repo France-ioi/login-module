@@ -148,7 +148,7 @@ class ProfileFormElements {
     }
 
 
-    public static function picture($block, $label) {
+    public static function picture($block, $label, $user) {
         $max_file_size = config('ui.profile_picture.max_file_size');
         $opts = [
             'accept' => '.gif,.jpg,.png',
@@ -157,8 +157,9 @@ class ProfileFormElements {
         if($block->disabled) {
             $opts[] = 'disabled';
         }
-        if(request()->user()->hasPicture) {
-            $url = request()->user()->picture.'?t='.strtotime(request()->user()->updated_at);
+        //BootForm::class
+        if($user && $user->hasPicture) {
+            $url = $user->picture.'?t='.strtotime($user->updated_at);
             $picture = '<img src='.$url.'\>';
         } else {
             $picture = '';

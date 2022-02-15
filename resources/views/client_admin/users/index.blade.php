@@ -63,11 +63,14 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
+                                    <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/edit?refer_page={{ $refer_page }}">Edit</a>
+                                </li>                                
+                                <li>
                                     <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/verification?refer_page={{ $refer_page }}">Verification</a>
                                 </li>
                                 <li>
                                     <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/ban?refer_page={{ $refer_page }}">Ban</a>
-                                </li>                        
+                                </li>
                             </ul>
                         </div>
                     </td>

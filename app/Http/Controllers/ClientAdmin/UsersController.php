@@ -8,6 +8,8 @@ use App\Client;
 use App\VerificationMethod;
 use App\Verification as Verification;
 use App\LoginModule\Platform\PlatformUser;
+use App\LoginModule\Profile\SchemaBuilder;
+use App\LoginModule\Profile\UserProfile;
 
 class UsersController extends Controller {
 
@@ -65,7 +67,7 @@ class UsersController extends Controller {
             'verification_required' => array_fill_keys($this->client->verifiable_attributes, 1),
             'verified_attributes' => array_fill_keys($this->getUserVerifiedAttributes($user, $method->id), 1),
             'admin_verified' => array_fill_keys($admin_verification->user_attributes, 1),
-            'refer_page' => $request->get('refer_page', '/client_admin/'.$this->client->id.'/users')
+            'refer_page' => $this->getReferPage($request)
         ]);        
     }
 
@@ -93,7 +95,7 @@ class UsersController extends Controller {
         } else {
             $admin_verification->delete();            
         }
-        return redirect($request->get('refer_page'))->with(['status' => 'Admin verification udpated']);
+        return redirect($this->getReferPage($request))->with(['status' => 'Admin verification udpated']);
     }    
 
 
@@ -106,7 +108,7 @@ class UsersController extends Controller {
             'client' => $this->client,
             'user' => $user,
             'banned' => $link->banned,
-            'refer_page' => $request->get('refer_page', '/client_admin/'.$this->client->id.'/users')
+            'refer_page' => $this->getReferPage($request)
         ]);
     }
 
@@ -114,10 +116,48 @@ class UsersController extends Controller {
     public function updateBan($client_id, $user_id, Request $request) {
         $user = $this->getUser($user_id);
         PlatformUser::setBanned($this->client->id, $user->id, $request->get('banned') ? 1 : 0);
-        return redirect($request->get('refer_page'))->with(['status' => 'Ban status updated']);
+        return redirect($this->getReferPage($request))->with(['status' => 'Ban status updated']);
     }    
 
 
+
+    // edit user
+    public function edit($client_id, $user_id, Request $request, SchemaBuilder $schema_builder) {
+        $user = $this->getUser($user_id);
+        $schema = $schema_builder->build($user, [], []);
+        return view('client_admin.users.edit', [
+            'client' => $this->client,
+            'user' => $user,
+            'form' => [
+                'model' => $user,
+                'url' => '/client_admin/'.$this->client->id.'/users/'.$user->id.'/edit',
+                'method' => 'post',
+                'files' => true,
+                'id' => 'profile'
+            ],
+            'schema' => $schema,
+            'official_domains' => $this->client->official_domains->pluck('domain'),
+            'refer_page' => $this->getReferPage($request)            
+        ]);
+    }
+
+
+    public function update($client_id, $user_id, Request $request, SchemaBuilder $schema_builder, UserProfile $profile) {
+        $user = $this->getUser($user_id);
+        $schema = $schema_builder->build($user, [], []);
+        $this->validate($request, $schema->rules());
+        // $this->clearVerifications($user, $request); ??
+
+        $result = $profile->update(
+            $user,
+            $request, 
+            $schema->fillableAttributes()
+        );
+        if($result !== true) {
+            return redirect()->back()->withInput()->withErrors($result);
+        }
+        return redirect($request->get('refer_page'))->with(['status' => 'User updated']);
+    }    
 
 
 
@@ -160,5 +200,8 @@ class UsersController extends Controller {
             ->firstOrNew();
     }
 
+    private function getReferPage($request) {
+        return $request->get('refer_page', '/client_admin/'.$this->client->id.'/users');
+    }
 
 }
