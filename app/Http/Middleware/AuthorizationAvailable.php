@@ -40,7 +40,7 @@ class AuthorizationAvailable
     {
         $user = $request->user();
         $link = $this->context->linkUser($user);        
-        if($link->banned) {
+        if($link && $link->banned) {
             return redirect('/ban');
         }
         $completed = $this->profile->completed($user);

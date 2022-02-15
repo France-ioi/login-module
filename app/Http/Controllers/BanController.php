@@ -13,7 +13,7 @@ class BanController extends Controller
     public function index(PlatformContext $context, Request $request) {
         $client = $context->client();
         $link = PlatformUser::link($client->id, $request->user()->id);
-        if(!$link->banned) {
+        if(!$link || !$link->banned) {
             return redirect('/profile');
         }
         return view('ban.index', [
