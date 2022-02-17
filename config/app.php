@@ -247,6 +247,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'PlatformHelper' => App\LoginModule\Platform\PlatformHelper::class,
         'Verification' => App\LoginModule\Profile\Verification\Verification::class,
+        'SortableTable' => App\Helpers\SortableTable::class,
     ],
 
 ];

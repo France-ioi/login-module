@@ -10,48 +10,78 @@ use App\Verification as Verification;
 use App\LoginModule\Platform\PlatformUser;
 use App\LoginModule\Profile\SchemaBuilder;
 use App\LoginModule\Profile\UserProfile;
+use Illuminate\Support\Facades\DB;
+use App\Helpers\SortableTable;
 
 class UsersController extends Controller {
 
 
-    public function index(Request $request) {
-        $query = User::query();
-        if($request->get('id')) {
-            $query->where('id', $request->get('id'));
-        }
-        if($request->get('login')) {
-            $query->where('login', 'LIKE', '%'.$request->get('login').'%');
-        }
-        if($request->get('first_name')) {
-            $query->where('first_name', 'LIKE','%'.$request->get('first_name').'%');
-        }
-        if($request->get('last_name')) {
-            $query->where('last_name', 'LIKE', '%'.$request->get('last_name').'%');
-        }
-        if($request->get('email')) {
-            $query->whereHas('emails', function($query) use ($request) {
-                $query->where('email', 'LIKE', '%'.$request->get('email').'%');
-            });
-        }
-        if($request->get('teacher_not_verified')) {
-            $query->where('role', 'teacher');
-            $query->whereDoesntHave('verifications', function($query) {
-                $query->where('client_id', $this->client->id)
-                    ->where('status', 'approved')
-                    ->where('user_attributes', 'LIKE', '%"role"%');
-            });
-        }
-        
-        $query->whereHas('clients', function($query) {
-            $query->where('client_id', $this->client_id);
-        });
+    private $sort_fields = [
+        'id' => 'users.id',
+        'created_at' => 'users.created_at',
+        'last_activity' => 'oauth_client_user.last_activity',
+        'login' => 'users.login',
+        'emails' => 'emails',
+        'name' => 'name',
+    ];    
 
+    public function index(Request $request) {
+        $q = $this->getUsersQuery($request);
+        SortableTable::orderBy($q, $this->sort_fields);
         return view('client_admin.users.index', [
             'client' => $this->client,
-            'users' => $query->paginate(),
+            'rows' => $q->paginate()->appends($request->all()),
             'refer_page' => $request->fullUrl()
         ]);
     }
+
+
+    private function getUsersQuery($request) {
+        $q = DB::table('users')
+            ->select(DB::raw('
+                users.*, 
+                CONCAT_WS(" ", users.first_name, users.last_name) as name,
+                oauth_client_user.last_activity,
+                (SELECT GROUP_CONCAT(emails.email SEPARATOR "\\n") FROM emails WHERE emails.user_id = users.id) as emails
+            '))
+            ->join('oauth_client_user', 'oauth_client_user.user_id', '=', 'users.id')
+            ->where('oauth_client_user.client_id', $this->client->id);
+
+        if($request->get('id')) {
+            $q->where('users.id', $request->get('id'));
+        }
+        if($request->get('login')) {
+            $q->where('users.login', 'LIKE', '%'.$request->get('login').'%');
+        }
+        if($request->get('first_name')) {
+            $q->where('users.first_name', 'LIKE','%'.$request->get('first_name').'%');
+        }
+        if($request->get('last_name')) {
+            $q->where('users.last_name', 'LIKE', '%'.$request->get('last_name').'%');
+        }
+        if($request->get('email')) {
+            $q->whereExists(function($q) use ($request) {
+                $q->select(DB::raw(1))
+                    ->from('emails')
+                    ->whereRaw('emails.user_id = users.id')
+                    ->where('emails.email', 'LIKE', '%'.$request->get('email').'%');
+            });
+        }
+        if($request->get('teacher_not_verified')) {
+            $q->where('users.role', 'teacher');
+            $q->whereNotExists(function($q) use ($request) {
+                $q->select(DB::raw(1))
+                    ->from('verifications')
+                    ->whereRaw('verifications.user_id = users.id')
+                    ->where('verifications.client_id', $this->client->id)
+                    ->where('verifications.status', 'approved')
+                    ->where('verifications.user_attributes', 'LIKE', '%"role"%');
+            });
+        }            
+
+        return $q;
+    }
+
 
 
     public function showVerification($client_id, $user_id, Request $request) {

@@ -6,6 +6,12 @@
     </p>
 
     <form method="GET" action="/client_admin/{{ $client->id }}/users">
+        @if(request()->has('sort_field'))
+            <input type="hidden" name="sort_field" value="{{ request()->get('sort_field') }}">
+        @endif
+        @if(request()->has('sort_order'))
+            <input type="hidden" name="sort_order" value="{{ request()->get('sort_order') }}">
+        @endif        
         <div class="form-group">
             <label>User ID</label>
             <input type="text" class="form-control input-sm" name="id" value="{{ request()->get('id') }}"/>
@@ -42,20 +48,24 @@
     <table class="table table-bordered table-condensed">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Login</th>
-                <th>Email</th>
-                <th>Name</th>
+                <th>{!! SortableTable::th('id', 'ID') !!}</th>
+                <th>{!! SortableTable::th('created_at', 'Created at') !!}</th>
+                <th>{!! SortableTable::th('last_activity', 'Last activity') !!}</th>
+                <th>{!! SortableTable::th('login', 'Login') !!}</th>
+                <th>{!! SortableTable::th('emails', 'Email') !!}</th>
+                <th>{!! SortableTable::th('name', 'Name') !!}</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($users as $user)
+            @foreach($rows as $row)
                 <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->login }}</td>
-                    <td>{{ $user->primary_email }} <br/> {{ $user->secondary_email }}</td>
-                    <td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                    <td>{{ $row->id }}</td>
+                    <td>{{ $row->created_at }}</td>
+                    <td>{{ $row->last_activity }}</td>
+                    <td>{{ $row->login }}</td>
+                    <td>{!! nl2br($row->emails) !!}</td>
+                    <td>{{ $row->name }}</td>
                     <td>
                         <div class="btn-group">
                             <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,13 +73,13 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/edit?refer_page={{ $refer_page }}">Edit</a>
+                                    <a href="/client_admin/{{ $client->id }}/users/{{ $row->id }}/edit?refer_page={{ $refer_page }}">Edit</a>
                                 </li>                                
                                 <li>
-                                    <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/verification?refer_page={{ $refer_page }}">Verification</a>
+                                    <a href="/client_admin/{{ $client->id }}/users/{{ $row->id }}/verification?refer_page={{ $refer_page }}">Verification</a>
                                 </li>
                                 <li>
-                                    <a href="/client_admin/{{ $client->id }}/users/{{ $user->id }}/ban?refer_page={{ $refer_page }}">Ban</a>
+                                    <a href="/client_admin/{{ $client->id }}/users/{{ $row->id }}/ban?refer_page={{ $refer_page }}">Ban</a>
                                 </li>
                             </ul>
                         </div>
@@ -79,5 +89,5 @@
         </tbody>
     </table>
 
-    {{ $users->links() }}
+    {{ $rows->links() }}
 @endsection
