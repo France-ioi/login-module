@@ -190,6 +190,22 @@ class UsersController extends Controller {
     }    
 
 
+    // password reset
+    public function showPassword($client_id, $user_id, Request $request) {
+        $user = $this->getUser($user_id);
+        return view('client_admin.users.password', [
+            'client' => $this->client,
+            'user' => $user,
+            'refer_page' => $this->getReferPage($request)            
+        ]);
+    }
+
+    public function updatePassword($client_id, $user_id, Request $request) {
+        $user = $this->getUser($user_id);
+        $user->password = \Hash::make($request->get('password'));
+        $user->save();
+        return redirect($this->getReferPage($request))->with(['status' => 'Password changed']);
+    }    
 
 
     // misc

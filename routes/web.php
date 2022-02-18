@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/users/{user_id}/verification', 'UsersController@updateVerification');
         Route::get('/users/{user_id}/ban', 'UsersController@showBan');
         Route::post('/users/{user_id}/ban', 'UsersController@updateBan');
+        Route::get('/users/{user_id}/password', 'UsersController@showPassword');
+        Route::post('/users/{user_id}/password', 'UsersController@updatePassword');        
         Route::get('/export/users', 'ExportController@users');
     });
 
