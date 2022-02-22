@@ -24,7 +24,7 @@ class StoreOfficialDomainRequest extends FormRequest
     public function rules()
     {
         return [
-            'country_code' => 'required|in:,'.implode(',', array_keys(trans('countries'))),
+            'country_id' => 'required|exists:countries,id',
             'domain' => 'required'
         ];
     }

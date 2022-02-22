@@ -32,7 +32,8 @@ class OfficialDomainsController extends Controller
     public function create()
     {
         return view('admin.official_domains.form', [
-            'official_domain' => new OfficialDomain
+            'official_domain' => new OfficialDomain,
+            'countries' => Country::orderBy('name')->get()->pluck('name', 'id')
         ]);
     }
 
@@ -56,6 +57,7 @@ class OfficialDomainsController extends Controller
     {
         return view('admin.official_domains.form', [
             'official_domain' => $official_domain,
+            'countries' => Country::orderBy('name')->get()->pluck('name', 'id')
         ]);
     }
 
