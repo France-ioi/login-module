@@ -16,14 +16,14 @@
 		{!! BootForm::open(['url' => '/verification/email_domain']) !!}
 			<div class="row">
 				<div class="col-sm-6">
-					{!! BootForm::text('account', trans('verification.email_domain.account'), $account) !!}			
+					{!! BootForm::text('account', trans('verification.email_domain.account'), $email['account']) !!}			
 				</div>
 				<div class="col-sm-6">
 					{!! BootForm::select(
 						'domain', 
 						trans('verification.email_domain.domain'), 
 						['' => ''] + $official_domains, 
-						$domain, 
+						$email['domain'], 
 						[
 							'prefix' => BootForm::addonText('@')
 						]
@@ -32,7 +32,7 @@
 			</div>
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-rounded btn-primary btn-centered">
-					<i class="fas fa-check icon"></i> @lang('verification.email_domain.send_code')
+					<i class="fas fa-check icon"></i> @lang('verification.email_code.send_code')
 				</button>
 				<a class="btn-link" href="/verification">@lang('ui.cancel')</a>
 			</div>

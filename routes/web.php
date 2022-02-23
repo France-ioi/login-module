@@ -48,26 +48,42 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/collected_data', 'CollectedDataController@index');
     Route::post('/collected_data/delete', 'CollectedDataController@delete');
 
+    // verification 
     Route::get('/verification', 'Verification\IndexController@index');
     Route::get('/verification/select_method/{attribute}', 'Verification\IndexController@selectMethod')->name('verification/select_method');;
     Route::post('/verification/delete/{id}', 'Verification\IndexController@delete');
+
+    // email_code
     Route::get('/verification/email_code', 'Verification\Methods\EmailCodeController@index');
-    Route::post('/verification/email_code', 'Verification\Methods\EmailCodeController@store');
+    Route::post('/verification/email_code', 'Verification\Methods\EmailCodeController@sendCode');
+    Route::get('/verification/email_code/input_code/{role}', 'Verification\Methods\EmailCodeController@showInputCode')->name('verification.email_code.input_code');
+    Route::post('/verification/email_code/validate_code/{role}', 'Verification\Methods\EmailCodeController@validateCode');    
+
+    // email_domain
     Route::get('/verification/email_domain', 'Verification\Methods\EmailDomainController@index');
     Route::post('/verification/email_domain', 'Verification\Methods\EmailDomainController@sendCode');
-    Route::get('/verification/email_domain/input_code/{id}', 'Verification\Methods\EmailDomainController@showInputCode');
+    Route::get('/verification/email_domain/input_code/{id}', 'Verification\Methods\EmailDomainController@showInputCode')->name('verification.email_domain.input_code');
     Route::post('/verification/email_domain/validate_code/{id}', 'Verification\Methods\EmailDomainController@validateCode');
+
+    // id_upload
     Route::get('/verification/id_upload', 'Verification\Methods\IdUploadController@index');
     Route::post('/verification/id_upload', 'Verification\Methods\IdUploadController@store');
+
+    // classroom_upload
     Route::get('/verification/classroom_upload', 'Verification\Methods\ClassroomUploadController@index');
     Route::post('/verification/classroom_upload', 'Verification\Methods\ClassroomUploadController@store');
+
+    // peer
     Route::get('/verification/peer', 'Verification\Methods\PeerValidationController@index');
     Route::post('/verification/peer', 'Verification\Methods\PeerValidationController@store');
     Route::get('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@code');
     Route::post('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@storeCode');
+
+    // imported_data
     Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');
-    Route::get('/verification/manual', 'Verification\Methods\ManualController@index');
-    Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');    
+
+    // manual
+    Route::get('/verification/manual', 'Verification\Methods\ManualController@index');    
 
     Route::group(['middleware' => ['merging_accounts']], function() {
         Route::get('/badge', 'BadgeController@index');

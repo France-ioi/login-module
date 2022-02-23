@@ -12,9 +12,15 @@
 			<i class="fas fa-landmark icon"></i>
             @lang('verification.methods.email_domain')
         </div>
-		<p>@lang('verification.email_domain.step2_help', ['email' => $verification->email])</p>        
+		<p>
+			@lang('verification.email_domain.step2_help', ['email' => $verification->email])
+			<a href="/verification/email_domain?email={!! urlencode($verification->email) !!}">@lang('verification.email_code.resend_code')</a>
+		</p>        
 		{!! BootForm::open(['url' => '/verification/email_domain/validate_code/'.$verification->id]) !!}
-			{!! BootForm::text('code', trans('verification.email_code.code')) !!}
+			{!! BootForm::text('code', trans('verification.email_code.code'), $code, [
+				'placeholder' => trans('verification.email_code.code'),
+				'prefix' => BootForm::addonIcon('key fas')
+			]) !!}			
 
 			<div class="form-group text-center">
 				<button type="submit" class="btn btn-rounded btn-primary btn-centered">

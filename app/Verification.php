@@ -64,4 +64,9 @@ class Verification extends Model
         $this->save();
         return true;
     }    
+
+
+    public function getCodeInputUrl() {
+        return route('verification.email_domain.input_code', ['id' => $this->id]).'?code='.urlencode($this->code);
+    }
 }

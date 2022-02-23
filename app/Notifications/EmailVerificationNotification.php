@@ -10,7 +10,8 @@ class EmailVerificationNotification extends LocalizedNotification
 
     public function toMail($notifiable) {
         return $this->buildMessage('email_verification', $notifiable->user->language, [
-            'code' => $notifiable->code
+            'code' => $notifiable->code,
+            'url' => $notifiable->getCodeInputUrl(),
         ]);
     }
 

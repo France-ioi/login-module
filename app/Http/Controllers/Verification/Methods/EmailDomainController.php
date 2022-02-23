@@ -23,34 +23,45 @@ class EmailDomainController extends Controller
         if(!$client) {
             abort(403);
         }
-        $official_domains = $client->official_domains->pluck('domain', 'domain')->toArray();
-
-        $user = $request->user();
-
-        $official_email = '';
-        if($this->testEmail($user->primary_email, $official_domains)) {
-            $official_email = $user->primary_email;
-        } else if($this->testEmail($user->secondary_email, $official_domains)) {
-            $official_email = $user->secondary_email;
-        }
-
-        $account = '';
-        $domain = '';
-        $tmp = explode('@', $official_email);
-        if(count($tmp) == 2) {
-            list($account, $domain) = $tmp;
-        }
+        $official_domains = $client->official_domains->pluck('domain', 'domain')->toArray();        
         return view('verification.methods.email_domain_step1', [
-            'account' => $account,
-            'domain' => $domain,
+            'email' => $this->getEmailDetails($request, $official_domains),
             'official_domains' => $official_domains
         ]);        
     }
 
 
-    private function testEmail($email, $domains) {
+
+    private function getEmailDetails($request, $official_domains) {
+        $email = $request->get('email');
+        if($res = $this->testOfficialEmail($email, $official_domains)) {
+            return $res;
+        }
+        $user = $request->user();
+        if($res = $this->testOfficialEmail($user->primary_email, $official_domains)) {
+            return $res;
+        }
+        if($res = $this->testOfficialEmail($user->secondary_email, $official_domains)) {
+            return $res;
+        }            
+        return [
+            'account' => '',
+            'domain' => ''
+        ];
+    }
+
+
+    private function testOfficialEmail($email, $domains) {
+        if(empty($email)) {
+            return false;
+        }
         $tmp = explode('@', $email);
-        return count($tmp) == 2 && isset($domains[$tmp[1]]);
+        if(count($tmp) == 2 && isset($domains[$tmp[1]])) {
+            return [
+                'account' => $tmp[0],
+                'domain' => $tmp[1]
+            ];
+        };
     }
 
 
@@ -122,8 +133,9 @@ class EmailDomainController extends Controller
             ->firstOrFail();
         
         return view('verification.methods.email_domain_step2', [
-            'verification' => $verification
-        ]);        
+            'verification' => $verification,
+            'code' => $request->get('code')
+        ]);
     }
 
 
@@ -145,7 +157,9 @@ class EmailDomainController extends Controller
             if($verification) {
             $verification->status = 'approved';
             $verification->save();
-            return redirect('/verification');
+            return redirect('/verification')->with([
+                'last_verification_attributes' => $verification->user_attributes
+            ]);
         } 
         return redirect()->back()->withErrors([
             'code' => trans('verification.email_domain.wrong_code')

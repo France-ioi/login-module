@@ -5,7 +5,7 @@
 @endcomponent
 @endslot
 
-{{ $body }}
+{!! $body !!}
 
 @slot('subcopy')
 @isset($subcopy)

@@ -55,7 +55,8 @@ class IndexController extends Controller
             'recommended_methods' => $recommended_methods,
             'alternative_methods' => $alternative_methods,
             'optional_methods' => $optional_methods,
-            'continue_url' => '/redirect/continue'
+            'continue_url' => '/redirect/continue',
+            'last_verification_attributes' => session()->get('last_verification_attributes')
         ]);
     }
 

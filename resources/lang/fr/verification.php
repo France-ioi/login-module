@@ -46,11 +46,13 @@ return [
     'btn_profile' => 'Retour au profil',
 
     'email_code' => [
-        'help' => 'Veuillez entrer le code reçu par mail. Si vous n\'avez jamais reçu le code, veuillez vous assurer que l\'adresse mail fournie est correcte, vérifier votre dossier de pourriels, et sinon contactez-nous à :email depuis cette adresse mail.',
+        'step1_help' => 'Sélectionnez l\'adresse e-mail.',
         'email' => 'Adresse mail',
         'code' => 'Code',
+        'send_code' => 'Envoyer un code',        
         'error' => 'Mauvais code de vérification.',
-        'no_emails' => 'Vous devez ajouter une adresse mail à votre profil avant de pouvoir utiliser cette méthode de vérification.'
+        'no_emails' => 'Vous devez ajouter une adresse mail à votre profil avant de pouvoir utiliser cette méthode de vérification.',
+        'step2_help' => 'Veuillez entrer le code reçu par mail. Si vous n\'avez jamais reçu le code, veuillez vous assurer que l\'adresse mail fournie est correcte, vérifier votre dossier de pourriels, et sinon contactez-nous à :admin_email depuis cette adresse mail.',
     ],
 
     'email_domain' => [
@@ -58,7 +60,6 @@ return [
         'wrong_code' => 'Code incorrect',
         'account' => 'Compte',
         'domain' => 'Domaines acceptés',
-        'send_code' => 'Envoyer un code',
         'step2_help' => 'Veuillez consulter votre email <a href="mailto::email">:email</a> et saisir le code ici.',
         'validate' => 'Validaer le code'
     ],

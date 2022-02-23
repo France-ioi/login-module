@@ -41,6 +41,11 @@ class Email extends Model implements CanResetPasswordContract
     }
 
 
+    public function getCodeInputUrl() {
+        return route('verification.email_code.input_code', ['role' => $this->role]).'?code='.urlencode($this->code);
+    }    
+
+
     public function peerVerificationRequest($code) {
         try {
             $this->notify(new PeerVerificationNotification($code));

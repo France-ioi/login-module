@@ -44,12 +44,17 @@ return [
 
     'btn_profile' => 'Back to profile',
 
+    'msg_verification_added' => 'Done! Verified informations:',
+
     'email_code' => [
-        'help' => 'Input the code received on your email. If you never received it, make sure the email address provided is correct, check your spam folder, then contact us at :email from that email address.',
+        'step1_help' => 'Select email address.',
+        'no_emails' => 'You need to edit your profile and add an email, before using the email verification.',
         'email' => 'Email',
         'code' => 'Code',
+        'send_code' => 'Send code',
+        'resend_code' => 'Click here to send code again.',
         'error' => 'Wrong email verification code.',
-        'no_emails' => 'You need to edit your profile and add an email, before using the email verification.'
+        'step2_help' => 'Input the code received on your email. If you never received it, make sure the email address provided is correct, check your spam folder, then contact us at :admin_email from that email address.',
     ],
 
     'email_domain' => [
@@ -57,7 +62,6 @@ return [
         'wrong_code' => 'Wrong code',
         'account' => 'Account',
         'domain' => 'Accepted domains',
-        'send_code' => 'Send code',
         'step2_help' => 'Please check your email <a href="mailto::email">:email</a> and enter code here.',
         'validate' => 'Validate code'
     ],

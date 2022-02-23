@@ -13,20 +13,15 @@
         </div>
         @if(count($emails))
             <p class="help-block">
-                @lang('verification.email_code.help', [
-                    'email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
+                @lang('verification.email_code.step1_help', [
+                    'admin_email' => '<a href="mailto:'.config('mail.from.address').'">'.config('mail.from.address').'</a>'
                 ])
             </p>
             {!! BootForm::horizontal(['url' => '/verification/email_code', 'class' => 'form-horizontal verificationForm']) !!}
-		{!! BootForm::select('role', trans('verification.email_code.email'), $emails) !!}
-		{!! BootForm::text('code', trans('verification.email_code.code'), null, [
-			'placeholder' => trans('badges.code'),
-			'prefix' => BootForm::addonIcon('key fas')
-		]) !!}
-		<button type="submit" class="btn btn-rounded btn-primary btn-centered">
-			<i class="fas fa-check icon"></i>
-			@lang('ui.save')
-		</button>
+				{!! BootForm::select('role', trans('verification.email_code.email'), $emails) !!}
+				<button type="submit" class="btn btn-rounded btn-primary btn-centered">
+					<i class="fas fa-check icon"></i> @lang('verification.email_code.send_code')
+				</button>
             {!! BootForm::close() !!}
         @else
             <div class="alert alert-warning">@lang('verification.email_code.no_emails')</div>

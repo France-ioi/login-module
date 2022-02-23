@@ -1,6 +1,23 @@
 @extends('layouts.popup')
 
 @section('content')
+    @if($last_verification_attributes)
+        <div class="alert-section">
+            <div class="alert alert-success">
+                @lang('verification.msg_verification_added')
+                <strong>
+                    <ul>
+                        @foreach($last_verification_attributes as $attr)
+                            <li>
+                                @lang('profile.'.$attr)
+                            </li>
+                        @endforeach
+                    </ul>
+                </strong>                
+            </div>
+        </div>
+    @endif
+
     @if(count($unverified_attributes) == 0)
         <div class="alert-section">
             <div class="alert alert-success">@lang('verification.completed')</div>
@@ -75,6 +92,9 @@
                         <strong>
                             @lang('verification.methods.'.$verification->method->name)
                         </strong>
+                        @if($verification->email)
+                            <div>@lang('verification.email_code.email'): {!! $verification->email !!}</div>
+                        @endif                        
                         <div>
                             @lang('verification.approved_attributes'):
                             @foreach($verification->user_attributes as $attr)
