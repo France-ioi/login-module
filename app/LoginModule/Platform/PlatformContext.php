@@ -15,6 +15,7 @@ class PlatformContext
     protected $badge;
     protected $platform_api;
     protected $platform_authorized;
+    protected $user;
 
     public function __construct(PlatformContextState $state) {
         $this->state = $state;
@@ -86,7 +87,7 @@ class PlatformContext
 
     public function badge() {
         if(!$this->badge) {
-            $this->badge = new Badge($this->client(), auth()->user());
+            $this->badge = new Badge($this->client(), $this->getUser());
         }
         return $this->badge;
     }
@@ -104,7 +105,7 @@ class PlatformContext
         if($this->platform_authorized === null) {
             $this->platform_authorized = true;
             $client = $this->client();
-            $user = auth()->user();
+            $user = $this->getUser();
             if($user && $client) {
                 $token_repository = new TokenRepository();
                 $this->platform_authorized = !!$token_repository->getValidToken($user, $client);
@@ -120,4 +121,14 @@ class PlatformContext
         }
         return false;
     }
+
+
+    public function getUser() {
+        return $this->user ? $this->user : auth()->user();
+    }
+
+
+    public function setUser($user) {
+        $this->user = $user;
+    }    
 }

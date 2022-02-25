@@ -38,6 +38,7 @@ class UserProfile {
             return $errors;
         }
 
+        $this->context->setUser($user);
         $this->context->badge()->flushData();
         Locale::set($user->language);
         return true;
