@@ -29,7 +29,7 @@ class UsersController extends Controller {
         $q = $this->getUsersQuery($request);
         SortableTable::orderBy($q, $this->sort_fields);
         return view('client_admin.users.index', [
-            'client' => $this->client,
+            'client' => $this->context->client(),
             'rows' => $q->paginate()->appends($request->all()),
             'refer_page' => $request->fullUrl()
         ]);
@@ -45,7 +45,7 @@ class UsersController extends Controller {
                 (SELECT GROUP_CONCAT(emails.email SEPARATOR "\\n") FROM emails WHERE emails.user_id = users.id) as emails
             '))
             ->join('oauth_client_user', 'oauth_client_user.user_id', '=', 'users.id')
-            ->where('oauth_client_user.client_id', $this->client->id);
+            ->where('oauth_client_user.client_id', $this->context->client()->id);
 
         if($request->get('id')) {
             $q->where('users.id', $request->get('id'));
@@ -73,7 +73,7 @@ class UsersController extends Controller {
                 $q->select(DB::raw(1))
                     ->from('verifications')
                     ->whereRaw('verifications.user_id = users.id')
-                    ->where('verifications.client_id', $this->client->id)
+                    ->where('verifications.client_id', $this->context->client()->id)
                     ->where('verifications.status', 'approved')
                     ->where('verifications.user_attributes', 'LIKE', '%"role"%');
             });
@@ -91,10 +91,10 @@ class UsersController extends Controller {
         $admin_verification = $this->getAdminVerification($user, $method);
 
         return view('client_admin.users.verification', [
-            'client' => $this->client,
+            'client' => $this->context->client(),
             'user' => $user,
-            'attributes' => $this->getMethodsAttributes($this->client->verification_methods),
-            'verification_required' => array_fill_keys($this->client->verifiable_attributes, 1),
+            'attributes' => $this->getMethodsAttributes($this->context->client()->verification_methods),
+            'verification_required' => array_fill_keys($this->context->client()->verifiable_attributes, 1),
             'verified_attributes' => array_fill_keys($this->getUserVerifiedAttributes($user, $method->id), 1),
             'admin_verified' => array_fill_keys($admin_verification->user_attributes, 1),
             'refer_page' => $this->getReferPage($request)
@@ -108,7 +108,7 @@ class UsersController extends Controller {
 
         $admin_verified = $request->get('admin_verified', []);
         $method = VerificationMethod::where('name', 'manual')->firstOrFail();
-        $attributes = $this->getMethodsAttributes($this->client->verification_methods);
+        $attributes = $this->getMethodsAttributes($this->context->client()->verification_methods);
         $user_attributes = [];
         foreach($attributes as $attr) {
             if(isset($admin_verified[$attr])) {
@@ -117,7 +117,7 @@ class UsersController extends Controller {
         }
         $admin_verification = $this->getAdminVerification($user, $method);
         if(count($user_attributes)) {
-            $admin_verification->client_id = $this->client->id;
+            $admin_verification->client_id = $this->context->client()->id;
             $admin_verification->method_id = $method->id;
             $admin_verification->user_attributes = $user_attributes;
             $admin_verification->status = 'approved';
@@ -135,7 +135,7 @@ class UsersController extends Controller {
         $user = $this->getUser($user_id);
         $link = PlatformUser::link($client_id, $user_id);
         return view('client_admin.users.ban', [
-            'client' => $this->client,
+            'client' => $this->context->client(),
             'user' => $user,
             'banned' => $link->banned,
             'refer_page' => $this->getReferPage($request)
@@ -145,8 +145,17 @@ class UsersController extends Controller {
 
     public function updateBan($client_id, $user_id, Request $request) {
         $user = $this->getUser($user_id);
-        PlatformUser::setBanned($this->client->id, $user->id, $request->get('banned') ? 1 : 0);
-        return redirect($this->getReferPage($request))->with(['status' => 'Ban status updated']);
+        PlatformUser::setBanned(
+            $this->context->client()->id,
+            $user->id, 
+            $request->get('banned') ? 1 : 0
+        );
+        $request->session()->flash('status', 'Ban status updated');
+        $url = $this->context->adminIntarface()->userLogout(
+            $user_id,
+            $this->getReferPage($request)
+        );
+        return redirect($url);
     }    
 
 
@@ -156,17 +165,17 @@ class UsersController extends Controller {
         $user = $this->getUser($user_id);
         $schema = $schema_builder->build($user, [], []);
         return view('client_admin.users.edit', [
-            'client' => $this->client,
+            'client' => $this->context->client(),
             'user' => $user,
             'form' => [
                 'model' => $user,
-                'url' => '/client_admin/'.$this->client->id.'/users/'.$user->id.'/edit',
+                'url' => '/client_admin/'.$this->context->client()->id.'/users/'.$user->id.'/edit',
                 'method' => 'post',
                 'files' => true,
                 'id' => 'profile'
             ],
             'schema' => $schema,
-            'official_domains' => $this->client->official_domains->pluck('domain'),
+            'official_domains' => $this->context->client()->official_domains->pluck('domain'),
             'refer_page' => $this->getReferPage($request)            
         ]);
     }
@@ -186,7 +195,11 @@ class UsersController extends Controller {
         if($result !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
-        return redirect($request->get('refer_page'))->with(['status' => 'User updated']);
+        $url = $this->context->adminIntarface()->userRefresh(
+            $user_id,
+            $this->getReferPage($request)
+        );        
+        return redirect($url);
     }    
 
 
@@ -194,7 +207,7 @@ class UsersController extends Controller {
     public function showPassword($client_id, $user_id, Request $request) {
         $user = $this->getUser($user_id);
         return view('client_admin.users.password', [
-            'client' => $this->client,
+            'client' => $this->context->client(),
             'user' => $user,
             'refer_page' => $this->getReferPage($request)            
         ]);
@@ -208,12 +221,14 @@ class UsersController extends Controller {
     }    
 
 
+
     // misc
     private function getUser($user_id) {
         return User::where('id', $user_id)->whereHas('clients', function($q) {
-            $q->where('client_id', $this->client_id);
+            $q->where('client_id', $this->context->client()->id);
         })->firstOrFail();
     }    
+
 
     private function getMethodsAttributes($methods) {
         $res = [];
@@ -223,13 +238,14 @@ class UsersController extends Controller {
         return array_unique($res);
     }
 
+
     private function getUserVerifiedAttributes($user, $exclude_method_id) {
         $verifications = $user->verifications()
             ->where('status', 'approved')
             ->where('method_id', '<>', $exclude_method_id)
             ->where(function($q) {
                 $q->whereNull('client_id');
-                $q->orWhere('client_id', $this->client->id);
+                $q->orWhere('client_id', $this->context->client()->id);
             })->get();
         $res = [];
         foreach($verifications as $verification) {
@@ -241,13 +257,14 @@ class UsersController extends Controller {
 
     private function getAdminVerification($user, $method) {
         return $user->verifications()
-            ->where('client_id', $this->client->id)
+            ->where('client_id', $this->context->client()->id)
             ->where('method_id', $method->id)
             ->firstOrNew();
     }
 
+
     private function getReferPage($request) {
-        return $request->get('refer_page', '/client_admin/'.$this->client->id.'/users');
+        return $request->get('refer_page', '/client_admin/'.$this->context->client()->id.'/users');
     }
 
 }

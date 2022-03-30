@@ -29,7 +29,7 @@ class ExportController extends Controller
 
             User::with('emails', 'clients')
                 ->whereHas('clients', function($query) {
-                    $query->where('client_id', $this->client_id);
+                    $query->where('client_id', $this->context->client()->id);
                 })->chunk(100, function($users) use ($fh) {
                     foreach($users as $user) {
                         $row = [
@@ -50,7 +50,7 @@ class ExportController extends Controller
                 });
             fclose($fh);
         };
-        $file = preg_replace('/[^a-z0-9]+/', '_', strtolower($this->client->name)).date('Y-m-d_H:i:s').'.csv';
+        $file = preg_replace('/[^a-z0-9]+/', '_', strtolower($this->context->client()->name)).'_'.date('Ymd_His').'.csv';
         return $this->outputFile($file, $callback);
     }
 

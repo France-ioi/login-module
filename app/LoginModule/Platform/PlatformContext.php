@@ -16,6 +16,7 @@ class PlatformContext
     protected $platform_api;
     protected $platform_authorized;
     protected $user;
+    protected $admin_interface; 
 
     public function __construct(PlatformContextState $state) {
         $this->state = $state;
@@ -99,6 +100,14 @@ class PlatformContext
         }
         return $this->platform_api;
     }
+
+
+    public function adminIntarface() {
+        if(!$this->admin_interface) {
+            $this->admin_interface = new AdminInterface($this->client());
+        }
+        return $this->admin_interface;
+    }    
 
 
     public function platformAuthorized() {

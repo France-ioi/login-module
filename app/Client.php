@@ -74,4 +74,10 @@ class Client extends \Laravel\Passport\Client
     public function badgeApi() {
         return $this->belongsTo('App\BadgeApi');
     }
+
+
+    public function makeURL($path) {
+        $p = parse_url($this->redirect);
+        return $p['scheme'].'://'.$p['host'].'/'.ltrim($path, '/');
+    }
 }
