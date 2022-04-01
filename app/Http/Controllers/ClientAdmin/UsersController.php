@@ -12,6 +12,8 @@ use App\LoginModule\Profile\SchemaBuilder;
 use App\LoginModule\Profile\UserProfile;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\SortableTable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller {
 
@@ -220,6 +222,22 @@ class UsersController extends Controller {
         return redirect($this->getReferPage($request))->with(['status' => 'Password changed']);
     }    
 
+    // login
+    public function login($client_id, $user_id, Request $request) {
+        $user = $this->getUser($user_id);
+        $user_clients = $user->clients->pluck('id');
+        $admin_clients = $request->user()->clients->pluck('id');
+        //dd($user_clients, $admin_clients);
+        $diff = count($user_clients->diff($admin_clients));
+        if($diff) {
+            return redirect($this->getReferPage($request))->withError('You must be admins of all the platforms that the user has visited');
+        }
+        Auth::logout();
+        Session::flush();
+        Auth::login($user);
+        $url = $this->context->adminIntarface()->userLogin($user_id);        
+        return redirect($url);        
+    }
 
 
     // misc
@@ -249,7 +267,7 @@ class UsersController extends Controller {
             })->get();
         $res = [];
         foreach($verifications as $verification) {
-            $res += $verification->user_attributes;
+            $res = array_merge($res, $verification->user_attributes);
         }
         return array_unique($res);        
     }

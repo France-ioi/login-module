@@ -24,11 +24,18 @@ class AdminInterface {
     }
 
 
-    private function makeURL($cmd, $user_id, $redirect_url) {
+    public function userLogin($user_id) {
+        return $this->makeURL('login', $user_id);
+    }    
+
+
+    private function makeURL($cmd, $user_id, $redirect_url = null) {
         $params = [
-            'user_id' => $user_id,
-            'redirect_url' => $redirect_url
+            'user_id' => $user_id
         ];
+        if($redirect_url !== null) {
+            $params['redirect_url'] = $redirect_url;
+        }
         return $this->client->makeURL(SELF::PATH.$cmd).'?'.http_build_query($params);
     }
 

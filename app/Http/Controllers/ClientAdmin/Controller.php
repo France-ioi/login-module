@@ -14,17 +14,20 @@ class Controller extends BaseController {
     {
         $this->context = $context;
         $this->middleware(function($request, $next) {
-            $client_id = $request->route('client_id');
-            $this->context->setClientId($client_id);
-            $client = $this->context->client();
-            if($client) {
-                $user = auth()->user();
-                $user_client = $user->clients()->where('client_id', $client_id)->firstOrFail();
-                if($user_client && $user_client->pivot->admin) {
-                    return $next($request);
+            $user = $request->user();            
+            if($user) {
+                $this->context->setClientId(
+                    $request->route('client_id')
+                );
+                $client = $this->context->client();
+                if($client) {
+                    $user_client = $user->clients()->where('client_id', $client->id)->firstOrFail();
+                    if($user_client && $user_client->pivot->admin) {
+                        return $next($request);
+                    }
                 }
             }
-            abort(403);
+            return redirect('/auth');
         });
     }    
 }
