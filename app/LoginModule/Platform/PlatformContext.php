@@ -101,8 +101,9 @@ class PlatformContext
         return $this->platform_api;
     }
 
+    
 
-    public function adminIntarface() {
+    public function adminInterface() {
         if(!$this->admin_interface) {
             $this->admin_interface = new AdminInterface($this->client());
         }

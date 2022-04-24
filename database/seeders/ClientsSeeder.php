@@ -34,12 +34,14 @@ class ClientsSeeder extends Seeder
             'id' => 1,
             'redirect' => 'http://login-module-example-client.test/callback_oauth.php',
             //'badge_url' => 'http://login-module-example-client.test/dummy_badge.php',
+            'admin_interface_url' => 'http://login-module-example-client.test/admin_interface',
             'name' => 'Example client - dev',
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 2,
             'redirect' => 'http://login-module-example-client.mobydimk.xyz/callback_oauth.php',
             //'badge_url' => 'http://login-module-example-client.mobydimk.xyz/dummy_badge.php',
+            'admin_interface_url' => 'http://login-module-example-client.mobydimk.xyz/admin_interface',
             'name' => 'Example client - demo',
         ]));
 
@@ -142,12 +144,14 @@ class ClientsSeeder extends Seeder
         \App\Client::create(array_merge($this->defaults, [
             'id' => 20,
             'redirect' => 'http://trophees-nsi.test/oauth_callback/login',
+            'admin_interface_url' => 'http://trophees-nsi.test/admin_interface',
             'user_attributes' => $user_attributes,
             'name' => 'Trophees nsi dev',
         ]));
         \App\Client::create(array_merge($this->defaults, [
             'id' => 21,
             'redirect' => 'http://trophees-nsi.mobydimk.xyz/oauth_callback/login',
+            'admin_interface_url' => 'http://trophees-nsi.mobydimk.xyz/admin_interface',
             'user_attributes' => $user_attributes,
             'name' => 'Trophees nsi demo',
         ]));        

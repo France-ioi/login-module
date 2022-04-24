@@ -107,7 +107,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     // Client admin
     Route::group(['prefix' => 'client_admin/{client_id}', 'namespace' => 'ClientAdmin'], function() {
-        Route::get('/users', 'UsersController@index');
+        Route::get('/users', 'UsersController@index')->name('client_admin.users');
         Route::get('/users/{user_id}/edit', 'UsersController@edit');
         Route::post('/users/{user_id}/edit', 'UsersController@update');
         Route::get('/users/{user_id}/verification', 'UsersController@showVerification');
@@ -116,8 +116,14 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/users/{user_id}/ban', 'UsersController@updateBan');
         Route::get('/users/{user_id}/password', 'UsersController@showPassword');
         Route::post('/users/{user_id}/password', 'UsersController@updatePassword');        
-        Route::get('/users/{user_id}/login', 'UsersController@login');        
+        Route::get('/users/{user_id}/login', 'UsersController@login');
         Route::get('/export/users', 'ExportController@users');
+        
+        Route::get('/user_delete/{user_id}', 'UserDeleteController@index')->name('client_admin.user_delete');
+        Route::post('/user_delete/{user_id}/client_redirect', 'UserDeleteController@platformRedirect')->name('client_admin.user_delete_redirect');
+        Route::get('/user_delete/{user_id}/unlink_user', 'UserDeleteController@unlinkUser')->name('client_admin.user_delete_unlink');
+        
+        Route::post('/user_delete/{user_id}', 'UserDeleteController@delete');
     });
 
     // redirects

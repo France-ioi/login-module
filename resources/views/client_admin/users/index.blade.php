@@ -86,6 +86,9 @@
                                 </li>
                                 <li>
                                     <a href="/client_admin/{{ $client->id }}/users/{{ $row->id }}/login?refer_page={{ $refer_page }}">Login as user</a>
+                                </li>
+                                <li>
+                                    <a href="/client_admin/{{ $client->id }}/user_delete/{{ $row->id }}">Delete</a>
                                 </li>                                
                             </ul>
                         </div>

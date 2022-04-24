@@ -5,7 +5,7 @@
         <div class="container-admin">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/client_admin/{{ $client->id }}/users">{{ $client->name }} &raquo; Users manager</a>
+                    <a href="{{ route('client_admin.users', $client->id) }}">{{ $client->name }} &raquo; Users manager</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

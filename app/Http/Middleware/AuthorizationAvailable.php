@@ -40,8 +40,13 @@ class AuthorizationAvailable
     {
         $user = $request->user();
         $link = $this->context->linkUser($user);        
-        if($link && $link->banned) {
-            return redirect('/ban');
+        if($link) {
+            if($link->deleted) {
+                abort(403);
+            }            
+            if($link->banned) {
+                return redirect('/ban');
+            }
         }
         $completed = $this->profile->completed($user);
         $revalidated = !Group::revalidationRequired($user);

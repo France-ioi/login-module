@@ -4,7 +4,8 @@ namespace App\Http\Controllers\ClientAdmin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as BaseController;
 use App\LoginModule\Platform\PlatformContext;
-
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class Controller extends BaseController {
 
@@ -29,5 +30,17 @@ class Controller extends BaseController {
             }
             return redirect('/auth');
         });
+    }    
+
+
+    public function getUser($user_id) {
+        $user = User::findOrFail($user_id);
+        $user_client_ids = $user->clients->pluck('id');
+        $admin_client_ids = Auth::user()->clients()->where('admin', 1)->pluck('id');
+        $valid_ids = $user_client_ids->intersect($admin_client_ids);
+        if($valid_ids->count() != $user_client_ids->count()) {
+            abort(404);
+        }
+        return $user;
     }    
 }

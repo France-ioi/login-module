@@ -26,6 +26,13 @@ class PlatformUser {
     }
 
 
+    public static function delete($client_id, $user_id) {
+        ClientUser::where('client_id', $client_id)->where('user_id', $user_id)->update([
+            'deleted' => true
+        ]);
+    }       
+
+
     public static function setBanned($client_id, $user_id, $banned) {
         $rec = ClientUser::where('client_id', $client_id)->where('user_id', $user_id)->first();
         $rec->banned = $banned;

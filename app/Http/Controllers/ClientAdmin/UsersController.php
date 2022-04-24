@@ -153,7 +153,7 @@ class UsersController extends Controller {
             $request->get('banned') ? 1 : 0
         );
         $request->session()->flash('status', 'Ban status updated');
-        $url = $this->context->adminIntarface()->userLogout(
+        $url = $this->context->adminInterface()->userLogout(
             $user_id,
             $this->getReferPage($request)
         );
@@ -197,7 +197,7 @@ class UsersController extends Controller {
         if($result !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
-        $url = $this->context->adminIntarface()->userRefresh(
+        $url = $this->context->adminInterface()->userRefresh(
             $user_id,
             $this->getReferPage($request)
         );        
@@ -222,6 +222,7 @@ class UsersController extends Controller {
         return redirect($this->getReferPage($request))->with(['status' => 'Password changed']);
     }    
 
+
     // login
     public function login($client_id, $user_id, Request $request) {
         $user = $this->getUser($user_id);
@@ -235,18 +236,22 @@ class UsersController extends Controller {
         Auth::logout();
         Session::flush();
         Auth::login($user);
-        $url = $this->context->adminIntarface()->userLogin($user_id);        
+        $url = $this->context->adminInterface()->userLogin($user_id);
         return redirect($url);        
     }
 
 
-    // misc
-    private function getUser($user_id) {
-        return User::where('id', $user_id)->whereHas('clients', function($q) {
-            $q->where('client_id', $this->context->client()->id);
-        })->firstOrFail();
-    }    
+    // delete
+    public function delete($client_id, $user_id, Request $request) {
+        $url = $this->context->adminInterface()->userDelete(
+            $user_id,
+            $this->getReferPage($request)
+        );        
+        return redirect($url);
+    }
 
+
+    // misc
 
     private function getMethodsAttributes($methods) {
         $res = [];
@@ -282,7 +287,10 @@ class UsersController extends Controller {
 
 
     private function getReferPage($request) {
-        return $request->get('refer_page', '/client_admin/'.$this->context->client()->id.'/users');
+        return $request->get(
+            'refer_page', 
+            route('client_admin.users', $this->context->client()->id)
+        );
     }
 
 }

@@ -19,6 +19,7 @@ class Client extends \Laravel\Passport\Client
         'attributes_filter',
         'badge_api_id',
         'api_url',
+        'admin_interface_url',
         'badge_required',
         'autoapprove_authorization',
         'email'
@@ -60,24 +61,19 @@ class Client extends \Laravel\Passport\Client
     }
 
     public function official_domains() {
-        //return $this->hasMany('App\OfficialDomain')->using('App\Pivots\ClientCountry');
         return $this->hasManyThrough(
-            'App\OfficialDomain',          // The model to access to
-            'App\Pivots\ClientCountry', // The intermediate table that connects the User with the Podcast.
-            'client_id',                 // The column of the intermediate table that connects to this model by its ID.
-            'country_id',              // The column of the intermediate table that connects the Podcast by its ID.
-            'id',                      // The column that connects this model with the intermediate model table.
-            'country_id'               // The column of the Audio Files table that ties it to the Podcast.
+            'App\OfficialDomain',
+            'App\Pivots\ClientCountry',
+            'client_id',
+            'country_id',
+            'id',
+            'country_id'
         );        
     }    
+
 
     public function badgeApi() {
         return $this->belongsTo('App\BadgeApi');
     }
 
-
-    public function makeURL($path) {
-        $p = parse_url($this->redirect);
-        return $p['scheme'].'://'.$p['host'].'/'.ltrim($path, '/');
-    }
 }

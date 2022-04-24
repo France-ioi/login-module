@@ -231,7 +231,7 @@ class User extends Authenticatable
 
     public function clients() {
         return $this->belongsToMany('App\Client', 'oauth_client_user')
-            ->withPivot('last_activity', 'admin', 'banned');        
+            ->withPivot('last_activity', 'admin', 'banned', 'deleted');        
     }
 
 
