@@ -11,7 +11,7 @@ class AppLocale
 
 
     public function handle($request, Closure $next) {
-        App::setLocale(Locale::get());
+        App::setLocale(Locale::get($request));
         return $next($request);
     }
 
