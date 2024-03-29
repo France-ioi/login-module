@@ -63,6 +63,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/verification/peer_code/{id}', 'Verification\Methods\PeerValidationController@storeCode');
     Route::get('/verification/imported_data/{id}', 'Verification\Methods\ImportedDataController@index');
 
+    Route::get('/group_admin/password', ['uses' => 'GroupAdmin\PasswordController@index', 'as' => 'group_admin.password']);
+    Route::post('/group_admin/password', 'GroupAdmin\PasswordController@modifyPassword');
+
     Route::group(['middleware' => ['merging_accounts']], function() {
         Route::get('/badge', 'BadgeController@index');
         Route::post('/badge/attach', 'BadgeController@attach');
