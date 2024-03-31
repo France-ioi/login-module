@@ -55,3 +55,9 @@
         </div>
     </div>
 @endsection
+
+@section('footer')
+    <div class="footer">
+        {!! PlatformHelper::platformFooter() !!}
+    </div>
+@endsection

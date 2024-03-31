@@ -6,5 +6,6 @@
             'width' => 200,
             'height' => 200,
             'max_file_size' => 1 //Mb
-        ]
+        ],
+        'footer' => env('UI_FOOTER', ''),
     ];

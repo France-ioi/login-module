@@ -16,5 +16,6 @@
         @yield('aside')
         @include('layouts.components.content_wrapper')
     </div>
+    @yield('footer')
 </body>
 </html>

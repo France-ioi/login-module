@@ -20,6 +20,11 @@ class PlatformHelper
         return $context->platformAuthorized();
     }
 
+    public static function platformFooter() {
+        $context = \App::make(PlatformContext::class);
+        $footer = $context->client() ? $context->client()->footer : null;
+        return $footer ? $footer : config('ui.footer');
+    }
 
     public static function navTabVisible($tab_name) {
         if(self::platformAuthorized()) {

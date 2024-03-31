@@ -21,7 +21,8 @@ class Client extends \Laravel\Passport\Client
         'api_url',
         'badge_required',
         'autoapprove_authorization',
-        'email'
+        'email',
+        'footer'
     ];
 
     protected $casts = [
