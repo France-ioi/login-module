@@ -67,6 +67,7 @@ return [
         'no' => 'No, I don\'t have one'
     ],
     'teacher_domain_alert' => 'Please contact :email and explain why you don\'t have an authorized email.',
+    'login_protected_warning' => "Your login was automatically created; if you change it, you won't be able to revert to this login. Do you want to continue?",
     'login_change_limitations' => 'If you change your login, after one hour, you won\'t be able to change it again for a year',
     'login_change_required' => 'Sorry, we need to you to pick a new login. This one was already used or doesn\'t follow the rules. Only lowercase letters, digits and -  are allowed',
 

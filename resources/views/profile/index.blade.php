@@ -99,9 +99,20 @@
 
             // login
             var sanitiser = window.components.login.sanitiser({!! json_encode($login_validator) !!})
+            var originalLogin = $('#login').val();
+            var originalLoginProtected = sanitiser.sanitise(originalLogin) !== originalLogin;
             function sanitizeLogin() {
                 var str = $('#login').val();
+                if(str == originalLogin) { return; }
                 str = sanitiser.sanitise(str);
+                if(originalLoginProtected && str != originalLogin) {
+                    var unprotect = confirm('@lang('profile.login_protected_warning')');
+                    if(unprotect) {
+                        originalLoginProtected = false;
+                    } else {
+                        str = originalLogin;
+                    }
+                }
                 $('#login').val(str);
             }
             $('#login').on('keyup', sanitizeLogin);

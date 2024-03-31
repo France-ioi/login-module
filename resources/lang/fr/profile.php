@@ -66,6 +66,7 @@ return [
         'no' => "Non, je n'en ai pas"
     ],
     'teacher_domain_alert' => "Veuillez contacter :email en expliquant pourquoi vous n'avez pas d'adresse mail avec un nom de domaine reconnu.",
+    'login_protected_warning' => "Votre identifiant a été créé automatiquement ; si vous le modifiez, vous ne pourrez plus revenir à cet identifiant. Voulez-vous continuer ?",
     'login_change_limitations' => "Si vous changez d'identifiant, après une heure, vous ne pourrez plus le changer pendant une année.",
     'login_change_required' => 'Veuillez nous excuser, vous devez choisir un nouvel identifiant. Celui que vous avez choisi est déjà pris, ou bien ne respecte pas les règles. Seules les lettres minuscules, les chiffres et le tiret - sont autorisés.',
 
