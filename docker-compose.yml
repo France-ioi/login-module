@@ -1,7 +1,6 @@
 ###############################################################################
 #                          Generated on phpdocker.io                          #
 ###############################################################################
-version: "3.1"
 services:
     mailhog:
       image: mailhog/mailhog:latest
@@ -43,5 +42,5 @@ services:
       working_dir: /application
       volumes:
         - .:/application
-        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php5/fpm/conf.d/99-overrides.ini
+        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
 
