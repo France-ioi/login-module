@@ -77,7 +77,13 @@
 @section('header')
     <div class="pageTitle_wrapper">
         <div class="pageTitle">@lang('auth.login_choice_header')</div>
-        <div class="subtitle">@lang('auth.login_choice_intro')</div>
+        <div class="subtitle">
+            @if ($client['login_text'])
+                {!! $client['login_text'] !!}
+            @else
+                @lang('auth.login_choice_intro')
+            @endif
+        </div>
     </div>
 @endsection
 

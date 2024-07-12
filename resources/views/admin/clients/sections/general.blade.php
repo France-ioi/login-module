@@ -7,6 +7,7 @@
 {!! Bootform::hidden('badge_required', 0) !!}
 {!! BootForm::checkbox('badge_required', 'Badge code required.') !!}
 {!! BootForm::text('api_url', 'Access code verification service url') !!}
+{!! BootForm::text('login_text', 'Text to be displayed on login page') !!}
 {!! BootForm::text('email', 'Email') !!}
 
 

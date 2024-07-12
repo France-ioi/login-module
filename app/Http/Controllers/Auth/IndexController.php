@@ -20,6 +20,7 @@ class IndexController extends Controller
     public function index(Request $request) {
         $client = $this->context->client();
         return view('auth.index', [
+            'client' => $client,
             'methods' => $this->auth_list->split($client ? $client->auth_order : null),
             'platform_name' => $client ? $client->name : trans('app.name')
         ]);
