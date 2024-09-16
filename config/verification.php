@@ -2,5 +2,6 @@
 return [
 
     //Verification needs to be refreshed: if it was verified before, but is getting obsolete soon
-    'expiration_alert_interval' => 5 //days
+    'expiration_alert_interval' => 5, //days
+    'email_code_interval' => 60 //seconds
 ];

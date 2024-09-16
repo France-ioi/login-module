@@ -125,6 +125,12 @@ class ProfileController extends Controller
         if(($result = $this->profile->update($request, $schema->fillableAttributes())) !== true) {
             return redirect()->back()->withInput()->withErrors($result);
         }
+
+        $goto = $request->get('_goto');
+        if($goto) {
+            return redirect($goto);
+        }
+
         return redirect($this->context->continueUrl());
     }
 

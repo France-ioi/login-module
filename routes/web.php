@@ -28,6 +28,9 @@ Route::post('/lti/entry', 'Auth\LTIEntryController@handle');
 Route::post('/lti/launch', 'Auth\LTILaunchController@handle');
 Route::get('/lti', 'Auth\LTIController@login');
 
+Route::get('/email_verification', ['uses' => 'Verification\Standalone\EmailCodeStandaloneController@index', 'as' => 'email_verification']);
+
+
 // Misc
 Route::get('/set_locale/{locale}', ['uses' => 'LocaleController@set', 'as' => 'set_locale']);
 

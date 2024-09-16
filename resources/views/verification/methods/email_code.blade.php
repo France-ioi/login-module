@@ -6,6 +6,13 @@
 			@include('ui.errors')
 		</div>
 	@endif
+	@if(session('status'))
+		<div class="alert-section">
+			<div class="alert {{ session('type') }}">
+				{{ session('status') }}
+			</div>
+		</div>
+	@endif
     <div class="panel-body">
         <div class="sectionTitle">
             <i class="fas fa-envelope icon"></i>
@@ -27,6 +34,11 @@
 			<i class="fas fa-check icon"></i>
 			@lang('ui.save')
 		</button>
+		<input type="hidden" name="resend" value="">
+		<button type="submit" class="btn btn-rounded btn-default btn-centered btn-resend">
+			<i class="fas fa-envelope icon"></i>
+			@lang('verification.email_code.resend')
+		</button>
             {!! BootForm::close() !!}
         @else
             <div class="alert alert-warning">@lang('verification.email_code.no_emails')</div>
@@ -35,4 +47,13 @@
 			<a class="btn-link" href="/verification">@lang('ui.close')</a>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.btn-resend').click(function(e) {
+				$('input[name="resend"]').val('1');
+				$('.verificationForm').submit();
+				e.preventDefault();
+			});
+		});
+	</script>
 @endsection

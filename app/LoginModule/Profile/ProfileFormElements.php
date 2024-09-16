@@ -12,11 +12,11 @@ class ProfileFormElements {
             'attribute' => $name
         ]);
         $opts = [
-            'class' => 'btn-danger',
-            'onclick' => 'location.href=\''.$url.'\';'
+            'class' => 'btn-danger btn-goto btn-nonempty',
+            'data-target' => $url
         ];
         return BootForm::addonButton(
-            trans('verification.btn_verify').'  <i class="fas fa-check"></i>',
+            trans('verification.btn_verify').'&nbsp;<i class="fas fa-check"></i>',
             $opts
         );
     }

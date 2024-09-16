@@ -10,9 +10,9 @@ return [
     'password' => 'Mot de passe',
 
     'badges_header' => 'Codes de qualification',
-    'badge_title' => 'Code de qualitifaction',
-    'label_enabled_login' => 'Actif pour',
-    'label_disabled_login' => 'Pour',
+    'badge_title' => 'Code de qualification',
+    'label_enabled_login' => 'Actif',
+    'label_disabled_login' => 'Non actif',
     'badge_code_toggle' => 'Voir',
     'btn_enable_login' => 'Activer la connexion',
     'btn_disable_login' => 'Désactiver la connexion',

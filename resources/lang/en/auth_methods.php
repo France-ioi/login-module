@@ -11,8 +11,8 @@ return [
 
     'badges_header' => 'Qualification codes',
     'badge_title' => 'Qualification code',
-    'label_enabled_login' => 'Active for',
-    'label_disabled_login' => 'For',
+    'label_enabled_login' => 'Active',
+    'label_disabled_login' => 'Inactive',
     'badge_code_toggle' => 'See',
     'btn_enable_login' => 'Enable login',
     'btn_disable_login' => 'Disable login',

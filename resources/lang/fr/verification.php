@@ -43,7 +43,10 @@ return [
         'email' => 'Adresse mail',
         'code' => 'Code',
         'error' => 'Mauvais code de vérification.',
-        'no_emails' => 'Vous devez ajouter une adresse mail à votre profil avant de pouvoir utiliser cette méthode de vérification.'
+        'no_emails' => 'Vous devez ajouter une adresse mail à votre profil avant de pouvoir utiliser cette méthode de vérification.',
+        'resend' => 'Envoyer un nouveau code',
+        'resend_success' => 'Un nouveau code a été envoyé à :email.',
+        'resend_wait' => 'Veuillez attendre quelques minutes avant de demander un nouveau code.'
     ],
 
     'email_domain' => [

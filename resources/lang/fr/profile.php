@@ -53,7 +53,9 @@ return [
     'secondary_email_verification_code' => "Code de vérification de l'adresse mail secondaire",
     'email_verification_help' => "Veuillez entrer le code reçu par mail. Si vous ne l'avez pas reçu, veuillez vérifier que l'adresse mail est correcte, que le courrier n'est pas dans votre boîte spam, puis contactez-nous à :email depuis cette adresse mail.",
     'email_verified' => 'Vérifiée',
+    'email_verification_request_error' => 'Ce lien de vérification est invalide.',
     'email_verification_code_error' => 'Mauvais code de vérification.',
+    'email_verification_success' => 'Adresse mail vérifiée avec succès.',
 
     'pms_redirect_msg' => "En tant qu'utilisateur PMS, vous devez éditer votre profil directement sur PMS. Veuillez ensuite utiliser le bouton \"Zurück zum JwInf\" afin de mettre à jour votre profil ici.",
     'pms_redirect_btn' => 'Continuer vers PMS',

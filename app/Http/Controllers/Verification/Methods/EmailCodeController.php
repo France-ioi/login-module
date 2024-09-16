@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Verification\Methods;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\VerificationMethod;
 use App\Verification;
@@ -18,6 +19,9 @@ class EmailCodeController extends Controller
 
 
     public function store(Request $request) {
+        if($request->get('resend') == '1') {
+            return $this->resend($request);
+        }
         $method = VerificationMethod::where('name', 'email_code')->firstOrFail();
 
         $email = $request->user()->emails()->where('role', $request->get('role'))->firstOrFail();
@@ -34,6 +38,19 @@ class EmailCodeController extends Controller
         ]);
         $request->user()->verifications()->save($verification);
         return redirect('/verification');
+    }
+
+    private function resend(Request $request) {
+        $email = $request->user()->emails()->where('role', $request->get('role'))->firstOrFail();
+
+        $interval = config('verification.email_code_interval');
+        if(!is_null($email->last_code_at) && $interval && Carbon::now()->timestamp - strtotime($email->last_code_at) < $interval) {
+            return redirect()->back()->with('status', trans('verification.email_code.resend_wait'))->with('type', 'alert-danger');
+        }
+
+        $email->requireVerification();
+
+        return redirect()->back()->with('status', trans('verification.email_code.resend_success', ['email' => $email->email]))->with('type', 'alert-success');
     }
 
 

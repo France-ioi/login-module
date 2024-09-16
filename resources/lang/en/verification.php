@@ -43,7 +43,10 @@ return [
         'email' => 'Email',
         'code' => 'Code',
         'error' => 'Wrong email verification code.',
-        'no_emails' => 'You need to edit your profile and add an email, before using the email verification.'
+        'no_emails' => 'You need to edit your profile and add an email, before using the email verification.',
+        'resend' => 'Resend code',
+        'resend_success' => 'A new code has been sent to :email.',
+        'resend_wait' => 'Please wait a few minutes before requesting a new code.'
     ],
 
     'email_domain' => [

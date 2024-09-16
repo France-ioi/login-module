@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Carbon\Carbon;
 use App\Notifications\EmailVerificationNotification;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\PeerVerificationNotification;
@@ -20,6 +21,7 @@ class Email extends Model implements CanResetPasswordContract
         'email',
         'role',
         'verification_code',
+        'last_code_at',
         'login_enabled'
     ];
 
@@ -31,6 +33,7 @@ class Email extends Model implements CanResetPasswordContract
 
     public function requireVerification() {
         $this->code = str_random(10);
+        $this->last_code_at = Carbon::now();
         $this->save();
         $this->notify(new EmailVerificationNotification());
     }

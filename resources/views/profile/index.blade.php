@@ -35,6 +35,7 @@
                 {!! BootForm::hidden('optional_fields_visible', 1) !!}
             @endif
             {!! ProfileFormRenderer::render($schema) !!}
+            {!! BootForm::hidden('_goto', '') !!}
             <div class="form-group">
 				<button type="submit" class="btn btn-primary btn-centered btn-rounded">
 					<i class="fas fa-check icon"></i>
@@ -217,9 +218,9 @@
                     $('#profile fieldset').each(function(idx, el) {
                         el = $(el);
                         var setVisible = visible || el.find('div[role=block]:visible').length > 0;
-                            el.toggle(setVisible);
+                        el.toggle(setVisible);
                         $('div.left-menu a[href="#' + el.attr('id') + '"]').toggle(setVisible);
-                                            });
+                    });
                 }
                 el.click(toggleOptionalFields);
                 el.prop('checked', {!! $optional_fields_visible ? 'false' : 'true' !!});
@@ -382,6 +383,25 @@
                     })
                     label.parents('.form-group').append(icon);
                 }
+            });
+
+            $('button.btn-goto').click(function() {
+                var btn = $(this);
+                if(btn.hasClass('btn-nonempty')) {
+                    var empty = false;
+                    btn.parents('.input-group').find('input').each(function() {
+                        if($(this).val() == '') {
+                            empty = true;
+                            $(this).focus();
+                            return false;
+                        }
+                    });
+                    if(empty) {
+                        return;
+                    }
+                }
+                $('input[name=_goto]').val(btn.data('target') || "");
+                form.el.submit();
             });
 
         });
