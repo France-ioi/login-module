@@ -98,9 +98,19 @@ class BadgeController extends Controller
 
 
     private function findBadge($code) {
-        return Badge::where('code', $code)->where(function($q) use ($code) {
+        $api = $this->context->badge()->api();
+        $badges = Badge::where('code', $code)->where(function($q) use ($code) {
             $q->where('code', '')->orWhere('code', $code);
-        })->first();
+        });
+        $badge = null;
+        if($api) {
+            // Prioritize the badge from the API the client is requesting
+            $badge = $badges->where('badge_api_id', $api->id)->first();
+        }
+        if(!$badge) {
+            $badge = $badges->first();
+        }
+        return $badge;
     }
 
 
