@@ -216,13 +216,10 @@
                     $('#profile div[optional_field=1]').toggle(visible);
                     $('#profile fieldset').each(function(idx, el) {
                         el = $(el);
-                        if(visible) {
-                            el.show();
-                        } else {
-                            var has_visible_blocks = el.find('div[role=block]:visible').length > 0;
-                            el.toggle(has_visible_blocks);
-                        }
-                    });
+                        var setVisible = visible || el.find('div[role=block]:visible').length > 0;
+                            el.toggle(setVisible);
+                        $('div.left-menu a[href="#' + el.attr('id') + '"]').toggle(setVisible);
+                                            });
                 }
                 el.click(toggleOptionalFields);
                 el.prop('checked', {!! $optional_fields_visible ? 'false' : 'true' !!});
