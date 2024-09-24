@@ -15,7 +15,7 @@ class PasswordBroker extends PasswordBrokerGeneric {
         }
 
         $interval = config('auth.password_recovery_interval');
-        if(!is_null($email->user->last_password_recovery_at) && $interval && time() - strtotime($email->user->last_password_recovery_at) > $interval) {
+        if(!is_null($email->user->last_password_recovery_at) && $interval && time() - strtotime($email->user->last_password_recovery_at) < $interval) {
             return static::RESET_REFUSED;
         }
 
