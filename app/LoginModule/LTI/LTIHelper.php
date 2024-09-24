@@ -131,11 +131,12 @@ class LTIHelper {
 
     private function sendConnectionResult($connection, $score) {
         if(!$connection) {
-            return false;
+            return null;
         }
         $consumer = new LTI_Tool_Consumer($connection->lti_consumer_key, $this->data_connector);
         $resourceLink = new LTI_Resource_Link($consumer, $connection->lti_context_id);
         $outcome = new LTI_Outcome();
+        if($score > 1) { $score = $score / 100; }
         $outcome->setValue($score);
         $user = new LTI_User($resourceLink, $connection->lti_user_id);
         $res = $resourceLink->doOutcomesService(LTI_Resource_Link::EXT_WRITE, $outcome, $user);
