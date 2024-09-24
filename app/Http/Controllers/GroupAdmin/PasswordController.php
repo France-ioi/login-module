@@ -22,7 +22,8 @@ class PasswordController extends Controller
             $query = [
                 'client_id' => $request->get('client_id'),
                 'token' => $request->get('token'),
-                'return_url' => $request->get('return_url')
+                'return_url' => $request->get('return_url'),
+                'alg' => $request->get('alg')
             ];
         } else {
             $query = $request->session()->get('group_admin_query');
@@ -70,19 +71,27 @@ class PasswordController extends Controller
         }
 
         try {
-            $token = json_decode(openssl_decrypt($query['token'], 'AES-128-ECB', $client->secret));
+            if($query['alg'] == 'AES-256-GCM') {
+                $cipher = hex2bin($query['token']);
+                $iv = substr($cipher, 0, 12);
+                $cipherText = substr($cipher, 12, -16);
+                $tag = substr($cipher, -16);
+                $token = json_decode(openssl_decrypt($cipherText, 'aes-256-gcm', substr($client->secret, 0, 32), OPENSSL_RAW_DATA, $iv, $tag));
+            } else {
+                $token = json_decode(openssl_decrypt($query['token'], 'AES-128-ECB', $client->secret));
+            }
         } catch (\Exception $e) {
             return response('Invalid token', 400);
         }
         if(!$token) {
-            return response('Invalid token ' . $query['token'], 400);
+            return response('Invalid token', 400);
         }
 
         if(!isset($token->requester_id) || $token->requester_id != $request->user()->id) {
             return response('Invalid token (invalid requesting user)', 400);
         }
 
-        if(!isset($token->expires) || $token->expires < time()) {
+        if(!isset($token->exp) || $token->exp < time()) {
             return response('Invalid token (expired)', 400);
         }
 
