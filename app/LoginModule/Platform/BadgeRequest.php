@@ -46,6 +46,9 @@ class BadgeRequest {
                 $graduation_grade = null;
             }
 
+            $gender = strtolower(substr(array_get($res, 'sSex'), 0, 1));
+            if($gender == '') { $gender = null; }            
+
             return [
                 'id' => isset($res['franceioiID']) ? $res['franceioiID'] : null,
                 'login' => array_get($res, 'sLogin'),
@@ -53,7 +56,7 @@ class BadgeRequest {
                 'first_name' => array_get($res, 'sFirstName'),
                 'last_name' => array_get($res, 'sLastName'),
                 'student_id' => array_get($res, 'sStudentId'),
-                'gender' => strtolower(substr(array_get($res, 'sSex'), 0, 1)),
+                'gender' => $gender,
                 'data' => array_get($res, 'data'),
                 'graduation_grade' => $graduation_grade
             ];
