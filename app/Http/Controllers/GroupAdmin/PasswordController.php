@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Client;
 use App\User;
 use App\Email;
+use App\PasswordChange;
 use App\LoginModule\Badges;
 use App\LoginModule\Platform\BadgeRequest;
 use Illuminate\Support\Facades\Password;
@@ -55,6 +56,11 @@ class PasswordController extends Controller
 
         $this->validate($request, [
             'password' => 'required|confirmed|min:6'
+        ]);
+
+        PasswordChange::create([
+            'requester_user_id' => $request->user()->id,
+            'target_user_id' => $user->id
         ]);
 
         $user->update([
