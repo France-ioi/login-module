@@ -58,16 +58,44 @@ class PasswordController extends Controller
             'password' => 'required|confirmed|min:6'
         ]);
 
+        $status = 'done';
+        if(in_array($user->login, config('auth.password_changes.forbidden'))) {
+            $status = 'rejected';
+        }
+
+        // Throttle
+        $throttle_interval = config('auth.password_changes.throttle_interval');
+        $throttle_user = PasswordChange::query()
+            ->where('requester_user_id', '=', $request->user()->id)
+            ->where('created_at', '>', \Carbon\Carbon::now()->subSeconds($throttle_interval))
+            ->whereIn('status', ['done', 'rejected']) // Also count rejected
+            ->count();
+        
+        if($throttle_user >= config('auth.password_changes.throttle_user_limit')) {
+            $status = 'throttled';
+        } else {
+            $throttle_global = PasswordChange::query()
+                ->where('created_at', '>', \Carbon\Carbon::now()->subSeconds($throttle_interval))
+                ->where('status', '=', 'done')
+                ->count();
+            if($throttle_global >= config('auth.password_changes.throttle_global_limit')) {
+                $status = 'throttled';
+            }
+        }
+
         PasswordChange::create([
             'requester_user_id' => $request->user()->id,
-            'target_user_id' => $user->id
+            'target_user_id' => $user->id,
+            'status' => $status
         ]);
 
-        $user->update([
-            'password' => \Hash::make($request->input('password'))
-        ]);
+        if($status == 'done') {
+            $user->update([
+                'password' => \Hash::make($request->input('password'))
+            ]);
+        }
 
-        return redirect()->route('group_admin.password')->with('status', 'Mot de passe mis à jour.');
+        return redirect()->route('group_admin.password')->with('status', $status);
     }
 
     private function checkQueryParameters(Request $request, $query) {

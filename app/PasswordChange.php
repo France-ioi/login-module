@@ -10,7 +10,8 @@ class PasswordChange extends Model
 
     protected $fillable = [
         'requester_user_id',
-        'target_user_id'
+        'target_user_id',
+        'status'
     ];
 
     public function requester() {

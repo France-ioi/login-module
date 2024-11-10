@@ -114,6 +114,19 @@ return [
         ],
     ],
 
-    'reset_password_token_length' => 20
+    'reset_password_token_length' => 20,
 
+    'password_changes' => [
+        // Time interval in seconds
+        'throttle_interval' => 60 * 60,
+        // How many changes an user can make during that interval
+        'throttle_user_limit' => 5,
+        // How many changes all users can make during that interval
+        'throttle_global_limit' => 15,
+
+        // List of user logins whose password cannot be changed through the interface
+        'forbidden' => [
+            'admin',
+        ]
+    ],
 ];
