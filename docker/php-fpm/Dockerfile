@@ -8,8 +8,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install some packages
 RUN apt-get update \
-    && apt-get -y install libpng-dev libgmp-dev git python2.7 \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+    && apt-get -y install libpng-dev libgmp-dev git python2.7
 
 # Install needed PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql gd gmp
@@ -24,6 +23,13 @@ RUN mkdir -p /usr/src/php/ext/redis \
 # Install Xdebug
 ENV PHP_IDE_CONFIG "serverName=Docker"
 RUN pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug
+
+# Install zip extension
+RUN apt-get install -y libzip-dev
+RUN pecl install zip && docker-php-ext-enable zip
+
+# Clean APT caches
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
