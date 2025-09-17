@@ -27,6 +27,7 @@ class AccountController extends Controller
             $platform_group->delete();
         }
         $this->context->setClientId($client_id);
+        $res['profile'] = ['first_name' => $request->user()->first_name, 'last_name' => $request->user()->last_name];
         $res['verification'] = $this->verification->attributesState($request->user());
         return response()->json($res);
     }
