@@ -32,6 +32,9 @@ class Email extends Model implements CanResetPasswordContract
 
 
     public function requireVerification() {
+        if($this->verified) {
+            return;
+        }
         $this->code = str_random(10);
         $this->last_code_at = Carbon::now();
         $this->save();

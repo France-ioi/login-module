@@ -49,13 +49,13 @@ class Group
             if(count($group_users) < 2) {
                 return true;
             }
-            self::reqireRevalidation($user, $group_users);
+            self::requireRevalidation($user, $group_users);
         }
         return false;
     }
 
 
-    public static function reqireRevalidation($user, $group_users) {
+    public static function requireRevalidation($user, $group_users) {
         $user->merge_group_id = null;
         $group_users->map(function($group_user) use ($user) {
             if(!is_null($user->login) && $user->login === $group_user->login) {

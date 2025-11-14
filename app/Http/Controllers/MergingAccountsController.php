@@ -58,7 +58,7 @@ class MergingAccountsController extends Controller
     public function declineMerge(Request $request) {
         $request->session()->forget('merge_account_id');
         if($group_user = $this->getGroupedUser($request->user())) {
-            Group::reqireRevalidation($request->user(), collect([$group_user]));
+            Group::requireRevalidation($request->user(), collect([$group_user]));
         }
         return redirect($this->context->continueUrl());
     }

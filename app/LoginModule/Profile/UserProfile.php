@@ -55,7 +55,10 @@ class UserProfile {
             $errors = [];
             if($email->email != $new_value) {
                 $email->email = $new_value;
-                $email->requireVerification();
+                if($email->verified) {
+                    $email->verified = false;
+                    $email->requireVerification();
+                }
             } else if($verification_code = $request->input($role.'_email_verification_code')) {
                 if(!$email->verifyCode($verification_code)) {
                     $errors[$role.'_email_verification_code'] = trans('profile.email_verification_code_error');

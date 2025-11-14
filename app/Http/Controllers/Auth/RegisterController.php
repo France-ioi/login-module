@@ -119,17 +119,19 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'language' => Locale::get()
         ];
-        if(array_search('login', $required) !== false) {
-            $user_data['login'] = $data['login'];
-        }
+        $user_data['login'] = $data['login'];
         $user = User::create($user_data);
-
-        if(array_search('primary_email', $required) !== false) {
+        if($data['primary_email']) {
             $email = new Email([
                 'role' => 'primary',
                 'email' => $data['primary_email']
             ]);
             $user->emails()->save($email);
+        }
+
+        $client = $this->context->client();
+        if($client && array_search('primary_email', $required) !== false) {
+            // Only require verification if email is required by client
             $email->requireVerification();
         }
         if($badge_data = $this->context->badge()->restoreData()) {
