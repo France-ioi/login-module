@@ -121,7 +121,7 @@ class RegisterController extends Controller
         ];
         $user_data['login'] = $data['login'];
         $user = User::create($user_data);
-        if($data['primary_email']) {
+        if(isset($data['primary_email']) && $data['primary_email']) {
             $email = new Email([
                 'role' => 'primary',
                 'email' => $data['primary_email']
