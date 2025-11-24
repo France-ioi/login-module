@@ -31,9 +31,8 @@ class Locale
         if(Auth::check()) {
             Auth::user()->language = $locale;
             Auth::user()->save();
-        } else {
-            Session::put(self::SESSION_KEY, $locale);
         }
+        Session::put(self::SESSION_KEY, $locale);
     }
 
 
