@@ -2,7 +2,7 @@
 return [
     'header' => 'Authentications',
     'title' => 'Authentication methods',
-    'alert' => 'We recommend that you create an account with password as it is the most secured solution.',
+    'alert' => 'We recommend adding a password to your account to ensure you can always log in.',
     'active' => 'Active',
     'btn_add' => 'Add',
     'btn_remove' => 'Remove',

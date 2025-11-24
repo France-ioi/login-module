@@ -2,7 +2,7 @@
 return [
     'header' => "Méthodes d'authentification",
     'title' => "Méthodes d'authentification",
-    'alert' => "Nous recommendons la création d'un compte avec mot de passe.",
+    'alert' => "Nous recommendons l'ajout d'un mot de passe à votre compte afin de vous assurer de toujours pouvoir vous connecter.",
     'active' => 'Actif',
     'btn_add' => 'Ajouter',
     'btn_remove' => 'Supprimer',

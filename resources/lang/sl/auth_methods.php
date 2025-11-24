@@ -2,7 +2,7 @@
 return [
     'header' => 'Authentications',
     'title' => 'Authentication methods',
-    'alert' => 'We recommend that you create an account with password as it is the most secured solution.',
+    'alert' => 'Priporočamo, da svojemu računu dodate geslo, da se boste vedno lahko prijavili.',
     'active' => 'Active',
     'btn_add' => 'Add',
     'btn_remove' => 'Remove',
