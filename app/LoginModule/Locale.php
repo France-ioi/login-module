@@ -15,9 +15,11 @@ class Locale
         $locale = '';
         if(Auth::check()) {
             $locale = Auth::user()->language;
-        } else if(Session::has(self::SESSION_KEY)) {
+        }
+        if(!$locale && Session::has(self::SESSION_KEY)) {
             $locale = Session::get(self::SESSION_KEY);
-        } else if($request !== null) {
+        }
+        if(!$locale && $request !== null) {
             $locale = $request->getPreferredLanguage(array_keys(config('app.locales')));
         }
         return self::validate($locale);
