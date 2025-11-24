@@ -60,6 +60,9 @@
         </div>
     @endif
 
+    <div id="login_protected_warning_text" style="display: none;">
+        @lang('profile.login_protected_warning')
+    </div>
     <script type="text/javascript">
         $(document).ready(function() {
             if($('#suggested_login_text').length) {
@@ -107,7 +110,7 @@
                 if(str == originalLogin) { return; }
                 str = sanitiser.sanitise(str);
                 if(originalLoginProtected && str != originalLogin) {
-                    var unprotect = confirm('@lang('profile.login_protected_warning')');
+                    var unprotect = confirm($('#login_protected_warning_text').text());
                     if(unprotect) {
                         originalLoginProtected = false;
                     } else {
