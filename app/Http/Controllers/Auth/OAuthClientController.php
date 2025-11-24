@@ -18,6 +18,12 @@ class OAuthClientController extends Controller
         return redirect($url);
     }
 
+    public function add($provider) {
+        // Like redirect, but when returning, go back to auth_methods
+        $url = Manager::provider($provider)->getAuthorizationURL();
+        Session::put('auth_add_method', true);
+        return redirect($url);
+    }
 
     public function preferences($provider) {
         $auth_connection = Auth::user()->authConnections()->where('provider', $provider)->firstOrFail();
@@ -32,12 +38,10 @@ class OAuthClientController extends Controller
         if($auth = Manager::provider($provider)->callback($request)) {
             $auth['provider'] = $provider;
             if($user = AuthConnector::connect($auth)) {
-                //TODO: check user group here???
-                if($user_was_logged) {
-                    $pms_profile_callback = session()->pull('pms_profile_callback', 1);
-                    return $pms_profile_callback ? redirect('/profile') : redirect('/auth_methods');
+                if(Session::pull('auth_add_method', false)) {
+                    return redirect('/auth_methods');
                 }
-                return redirect()->intended('/auth_methods');
+                return redirect()->intended('/profile');
             }
             return redirect('/oauth_client/email_exists');
         }

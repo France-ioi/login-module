@@ -17,6 +17,7 @@ Route::get('/session_expired', 'Auth\OAuthClientController@sessionExpired');
 
 // OAuth
 Route::get('/oauth_client/redirect/{provider}', 'Auth\OAuthClientController@redirect');
+Route::get('/oauth_client/add/{provider}', 'Auth\OAuthClientController@add');
 Route::get('/oauth_client/preferences/{provider}', 'Auth\OAuthClientController@preferences');
 Route::get('/oauth_client/callback/{provider}', ['uses' => 'Auth\OAuthClientController@callback', 'as' => 'oauth_client_callback']);
 Route::post('/oauth_client/remove/{provider}', ['uses' => 'Auth\OAuthClientController@remove', 'middleware' => 'auth']);

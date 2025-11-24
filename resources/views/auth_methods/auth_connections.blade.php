@@ -17,7 +17,7 @@
             @endif
 
         @else
-            <a class="btn-link pull-right" href="/oauth_client/redirect/{{ $provider }}">
+            <a class="btn-link pull-right" href="/oauth_client/add/{{ $provider }}">
                 <i class="fas fa-plus icon"></i>
                 @lang('auth_methods.btn_add')
             </a>
