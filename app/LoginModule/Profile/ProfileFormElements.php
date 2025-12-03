@@ -53,6 +53,7 @@ class ProfileFormElements {
                     '<div class="col-sm-9">'.
                         '<div class="input-group">'.
                             '<input type="text" class="form-control" value="'.$user->login.'" disabled>'.
+                            '<input type="hidden" name="login" value="'.$user->login.'">'.
                             '<span class="input-group-btn">'.
                                 '<a href="/profile/username" class="btn btn-default">'.
                                     '<i class="fas fa-edit"></i> '.trans('profile.change').
