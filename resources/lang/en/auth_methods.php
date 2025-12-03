@@ -3,6 +3,7 @@ return [
     'header' => 'Authentications',
     'title' => 'Authentication methods',
     'alert' => 'We recommend adding a password to your account to ensure you can always log in.',
+    'badge_alert' => 'We recommend adding a password instead of your qualification code to secure your account.',
     'active' => 'Active',
     'btn_add' => 'Add',
     'btn_remove' => 'Remove',

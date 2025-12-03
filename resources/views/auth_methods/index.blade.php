@@ -7,6 +7,12 @@
                     @lang('auth_methods.alert')
                 </div>
             </div>
+        @elseif($display_badge_alert)
+            <div class="alert-section">
+                <div class="alert alert-info">
+                    @lang('auth_methods.badge_alert')
+                </div>
+            </div>
         @endif
         <div class="panel-body">
             <div class="sectionTitle">

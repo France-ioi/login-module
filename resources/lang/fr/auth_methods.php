@@ -3,6 +3,7 @@ return [
     'header' => "Méthodes d'authentification",
     'title' => "Méthodes d'authentification",
     'alert' => "Nous recommendons l'ajout d'un mot de passe à votre compte afin de vous assurer de toujours pouvoir vous connecter.",
+    'badge_alert' => "Nous recommendons l'ajout d'un mot de passe à la place de votre code de qualification afin de sécuriser votre compte.",
     'active' => 'Actif',
     'btn_add' => 'Ajouter',
     'btn_remove' => 'Supprimer',

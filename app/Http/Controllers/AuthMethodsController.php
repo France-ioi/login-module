@@ -13,14 +13,18 @@ class AuthMethodsController extends Controller
 
     public function index(PlatformContext $context) {
         $badges = Auth::user()->badges()->where('do_not_possess', false)->whereNotNull('code')->get();
+        $hasEnabledBadge = $badges->where('login_enabled', true)->isNotEmpty();
+        $hasPassword = Auth::user()->has_password;
+        
         return view('auth_methods.index', [
             'providers'  => Manager::providers(),
             'support_remove'  => array_flip(Manager::SUPPORT_REMOVE),
             'connected' => Auth::user()->authConnections()->get()->pluck('id', 'provider')->toArray(),
             'badges' => $badges,
             'cancel_url' => $context->cancelUrl(),
-            'has_password' => Auth::user()->has_password,
-            'display_alert' => !Auth::user()->has_password && $badges->isEmpty()
+            'has_password' => $hasPassword,
+            'display_alert' => !$hasPassword && !$hasEnabledBadge,
+            'display_badge_alert' => !$hasPassword && $hasEnabledBadge
         ]);
     }
 

@@ -3,6 +3,7 @@ return [
     'header' => 'Authentications',
     'title' => 'Authentication methods',
     'alert' => 'Priporočamo, da svojemu računu dodate geslo, da se boste vedno lahko prijavili.',
+    'badge_alert' => 'Priporočamo, da dodate geslo namesto kvalifikacijske kode za zaščito svojega računa.',
     'active' => 'Active',
     'btn_add' => 'Add',
     'btn_remove' => 'Remove',
