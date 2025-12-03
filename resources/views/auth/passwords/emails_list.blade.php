@@ -14,15 +14,27 @@
         </div>
         <div class="panel-body">
             <div class="panelTitle">@lang('auth.emails_list_header')</div>
-            <div class="row">
-                <div class="col-sm-6 col-centered">
-                    @foreach($emails as $email)
-                        {!! BootForm::open(['route' => 'password.email', 'class' => 'reset-psw']) !!}
-                            {!! BootForm::hidden('email_id', $email->id) !!}
-                            <a href="#" role="submit">{{ EmailMasker::mask($email->email) }}</a>
-                        {!! BootForm::close() !!}
-                    @endforeach
+            <div class="text-center">
+                <div class="alert-section">
+                    @if(session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    @if($errors->any())
+                        <ul class="alert alert-danger">
+                            @foreach($errors->all() as $error)
+                                <li>{{$error}}</li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
+                @foreach($emails as $email)
+                    {!! BootForm::open(['route' => 'password.email', 'class' => 'reset-psw']) !!}
+                        {!! BootForm::hidden('email_id', $email->id) !!}
+                        <a href="#" role="submit">{{ EmailMasker::mask($email->email) }}</a>
+                    {!! BootForm::close() !!}
+                @endforeach
             </div>
         </div>
 

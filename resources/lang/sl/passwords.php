@@ -18,6 +18,7 @@ return [
     'sent' => 'Po E-pošti smo Vam poslali kodo za ponastavitev gesla.',
     'token' => 'Koda za ponastavitev gesla ni veljavna.',
     'user' => "Uporabnik s tem uporabniškim imenom ali E-pošto ne obstaja.",
-    'reset_refused' => 'Zahtevek za ponastavitev gesla je zavrnjen.',
+    'reset_not_available' => 'S tem uporabniškim imenom ni povezanega e-poštnega naslova, zato obnovitve gesla ni mogoče uporabiti.',
+    'reset_refused' => 'Nedavno ste dokončali obnovitev gesla. Počakajte 24 ur, preden poskusite znova.',
 
 ];
