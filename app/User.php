@@ -246,4 +246,8 @@ class User extends Authenticatable
         return $this->hasMany('App\LtiConnection');
     }
 
+    public function usernameChanges() {
+        return $this->hasMany('App\UsernameChange');
+    }
+
 }

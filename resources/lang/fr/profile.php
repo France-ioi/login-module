@@ -68,11 +68,19 @@ return [
         'no' => "Non, je n'en ai pas"
     ],
     'teacher_domain_alert' => "Veuillez contacter :email en expliquant pourquoi vous n'avez pas d'adresse mail avec un nom de domaine reconnu.",
-    'login_protected_warning' => "Votre identifiant a été créé automatiquement ; si vous le modifiez, vous ne pourrez plus revenir à cet identifiant. Voulez-vous continuer ?",
-    'login_change_limitations' => "Si vous changez d'identifiant, après une heure, vous ne pourrez plus le changer pendant une année.",
-    'login_change_required' => 'Veuillez nous excuser, vous devez choisir un nouvel identifiant. Celui que vous avez choisi est déjà pris, ou bien ne respecte pas les règles. Seules les lettres minuscules, les chiffres et le tiret - sont autorisés.',
+    'login_protected_warning' => "Votre login a été créé automatiquement ; si vous le changez, vous ne pourrez plus revenir à ce login. Voulez-vous continuer ?",
+    'login_change_limitations' => 'Si vous changez votre login, vous ne pourrez plus le changer pendant un an',
+    'login_change_required' => 'Désolé, vous devez choisir un nouveau login. Celui-ci a déjà été utilisé ou ne suit pas les règles. Seuls les lettres minuscules, chiffres et - sont autorisés',
+    'login_fixed' => 'Votre login ne peut pas être modifié.',
+    'login_change_restricted' => 'Vous ne pouvez pas modifier votre login à nouveau avant le :date.',
+    'login_updated' => 'Votre nom d\'utilisateur a été mis à jour avec succès.',
+    'current_login' => 'Nom d\'utilisateur actuel',
+    'new_login' => 'Nouveau nom d\'utilisateur',
+    'change_username' => 'Changer le nom d\'utilisateur',
+    'change' => 'Modifier',
+    'username_change_explanation' => 'Vous pouvez changer votre nom d\'utilisateur ici. Une fois changé, vous ne pourrez pas le changer à nouveau pendant un an. Votre ancien nom d\'utilisateur ne pourra pas être réutilisé.',
 
-    'verification_alert_p1' => "Cette information a été vérifiée. Si vous la modifiez, vous devrez refaire le processus de vérification ou vous pourriez perdre l'accès à certaines plateformes ou fonctionnalités : ",
+    'verification_alert_p1' => 'Les informations suivantes ont été vérifiées. Si vous les modifiez, vous devrez peut-être les faire vérifier à nouveau ou vous risquez de perdre l\'accès à certaines plateformes ou fonctionnalités : ',
     'verification_alert_p2' => 'Voulez-vous vraiment les changer ?',
 
     'email_verification_alert' => 'Adresse mail non vérifiée',

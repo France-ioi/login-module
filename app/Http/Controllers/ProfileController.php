@@ -181,10 +181,9 @@ class ProfileController extends Controller
         }
         $login_change_restricted = false;
         if(!is_null($user->login) && !is_null($user->login_updated_at) && $login_change_available = config('profile.login_change_available')) {
-            $first = (new \DateTime($user->login_updated_at))->add(new \DateInterval($login_change_available['first_interval']));
             $second = (new \DateTime($user->login_updated_at))->add(new \DateInterval($login_change_available['second_interval']));
             $now = new \DateTime;
-            $login_change_restricted = $now > $first && $now < $second;
+            $login_change_restricted = $now < $second;
         }
         if($login_fixed || $login_change_restricted) {
             $res[] = 'login';

@@ -52,6 +52,14 @@ return [
     ],
     'teacher_domain_alert' => 'Bitte kontaktieren Sie :email und geben Sie an, warum Sie keine authorisierte E-Mail-Adresse haben.',
     'login_protected_warning' => "Ihr Benutzername wurde automatisch erstellt. Wenn Sie ihn ändern, können Sie nicht mehr zu diesem Benutzernamen zurückkehren. Möchten Sie fortfahren?",
-    'login_change_limitations' => 'Falls Sie Ihren Benutzernamen ändern, werden Sie nach einer Stunde für ein Jahr lang keine Möglichkeit haben, ihn nochmal zu ändern',
-    'login_change_required' => 'Verzeihung, wir müssen Sie leider bitten, einen neuen Benutzernamen auszuwählen. Der angegebene wird bereits verwendet oder entspricht nicht den Vorgaben. Es sind nur Kleinbuchstaben, Ziffern und Bindestriche erlaubt.'
+    'login_change_limitations' => 'Falls Sie Ihren Benutzernamen ändern, werden Sie für ein Jahr lang keine Möglichkeit haben, ihn nochmal zu ändern',
+    'login_change_required' => 'Verzeihung, wir müssen Sie leider bitten, einen neuen Benutzernamen auszuwählen. Der angegebene wird bereits verwendet oder entspricht nicht den Vorgaben. Es sind nur Kleinbuchstaben, Ziffern und Bindestriche erlaubt.',
+    'login_fixed' => 'Ihr Benutzername kann nicht geändert werden.',
+    'login_change_restricted' => 'Sie können Ihren Benutzernamen erst wieder ab dem :date ändern.',
+    'login_updated' => 'Ihr Benutzername wurde erfolgreich aktualisiert.',
+    'current_login' => 'Aktueller Benutzername',
+    'new_login' => 'Neuer Benutzername',
+    'change_username' => 'Benutzernamen ändern',
+    'change' => 'Ändern',
+    'username_change_explanation' => 'Sie können Ihren Benutzernamen hier ändern. Sobald er geändert wurde, können Sie ihn für ein Jahr nicht mehr ändern. Ihr alter Benutzername kann nicht wiederverwendet werden.'
 ];

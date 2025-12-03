@@ -43,6 +43,26 @@ class ProfileFormElements {
 
 
     public static function login($block, $label) {
+        $user = request()->user();
+        
+        // Must use the username change form if already has a login
+        if($user && $user->login) {
+            return
+                '<div class="form-group">'.
+                    '<label class="col-sm-3 control-label">'.$label.'</label>'.
+                    '<div class="col-sm-9">'.
+                        '<div class="input-group">'.
+                            '<input type="text" class="form-control" value="'.$user->login.'" disabled>'.
+                            '<span class="input-group-btn">'.
+                                '<a href="/profile/username" class="btn btn-default">'.
+                                    '<i class="fas fa-edit"></i> '.trans('profile.change').
+                                '</a>'.
+                            '</span>'.
+                        '</div>'.
+                    '</div>'.
+                '</div>';
+        }
+        
         return
             self::text($block, $label).
             '<div class="alert alert-warning" id="suggested_login_msg" style="display: none">'.

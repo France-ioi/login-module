@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/badge/confirm_difference', 'BadgeController@confirmDifference');
         Route::get('/profile', 'ProfileController@index');
         Route::post('/profile', 'ProfileController@update');
+        Route::get('/profile/username', 'UsernameChangeController@index');
+        Route::post('/profile/username', 'UsernameChangeController@update');
         Route::get('/official_domains', 'OfficialDomainsController@index');
         Route::get('/timezone', 'TimezoneController@index');
         Route::get('/reauthentication', 'Auth\ReauthenticationController@index');

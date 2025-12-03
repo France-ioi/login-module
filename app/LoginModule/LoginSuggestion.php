@@ -34,12 +34,17 @@ class LoginSuggestion
 
 
     private function exists($login) {
+        // Check if login exists in current users
         $q = User::where('login', $login);
         $user = auth()->user();
         if($user) {
             $q->where('id', '<>', $user->id);
         }
-        return !!$q->first();
+        if($q->first()) {
+            return true;
+        }
+        
+        return \App\UsernameChange::where('old_login', $login)->exists();
     }
 
 }

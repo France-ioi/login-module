@@ -20,6 +20,9 @@ class SchemaConfig {
         } else {
             $valid[] = Rule::unique('users');
         }
+        
+        // Check that the login is not a past username
+        $valid[] = 'not_historical_username';
 
         return [
             'type' => 'login',
