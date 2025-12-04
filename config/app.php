@@ -186,7 +186,7 @@ return [
         App\LoginModule\Passwords\PasswordResetServiceProvider::class,
         App\LoginModule\Platform\PlatformContextServiceProvider::class,
         App\LoginModule\Profile\UserProfileServiceProvider::class,
-        Laravel\Passport\PassportServiceProvider::class,
+        App\Providers\PassportServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Watson\BootstrapForm\BootstrapFormServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
