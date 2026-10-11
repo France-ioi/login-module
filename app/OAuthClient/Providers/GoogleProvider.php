@@ -17,6 +17,7 @@
             $client->setClientId(config('oauth_client.google.client_id'));
             $client->setClientSecret(config('oauth_client.google.client_secret'));
             $client->setScopes(['openid', 'profile', 'email']);
+            $client->setPrompt('select_account');
             $calback_url = route('oauth_client_callback', ['provider' => 'google']);
             $client->setRedirectUri($calback_url);
             return $client;
