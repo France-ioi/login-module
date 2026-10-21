@@ -1,3 +1,5 @@
+The developer documentation is in [docs/](docs/README.md).
+
 # Requirements
 
 - PHP 8.5.12+ (or 8.4.27+) with the openssl, pdo_mysql, mbstring, gd, sodium, curl, fileinfo and bcmath extensions.

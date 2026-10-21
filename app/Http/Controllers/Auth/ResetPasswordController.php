@@ -39,6 +39,17 @@ class ResetPasswordController extends Controller
     }
 
 
+    // laravel/ui requires Password::defaults() (8 characters): keep the
+    // Laravel 5.4 rule, like the other password forms of the module
+    protected function rules() {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:6',
+        ];
+    }
+
+
     public function showNewPasswordForm(Request $request) {
         return view('auth.passwords.reset', [
             'token' => $request->get('token'),

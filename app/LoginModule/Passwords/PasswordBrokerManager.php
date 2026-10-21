@@ -37,7 +37,10 @@ class PasswordBrokerManager extends PasswordBrokerManagerGeneric {
             $this->app['hash'],
             $config['table'],
             $key,
-            $config['expire']
+            // config is in minutes, the repository expects seconds since Laravel 7
+            $config['expire'] * 60,
+            // no "recently created" throttling: PasswordBroker uses auth.password_recovery_interval
+            0
         );
     }
 

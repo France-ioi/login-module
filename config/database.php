@@ -50,7 +50,7 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => true,
-            'engine' => null,
+            'engine' => env('DB_ENGINE'),
         ],
 
 
@@ -65,7 +65,7 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => true,
-            'engine' => null,
+            'engine' => env('DB_ENGINE'),
             'modes' => [
                 'ONLY_FULL_GROUP_BY',
                 'STRICT_TRANS_TABLES',
