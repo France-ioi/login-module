@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BadgeApi extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
     protected $fillable = [
         'name',
         'url',

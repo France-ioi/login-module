@@ -9,6 +9,7 @@ namespace App\LoginModule\LTI\Tool;
  * @version 2.5.00
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3
  */
+#[\AllowDynamicProperties]
 class LTI_HTTP_Message {
 
 /**
@@ -128,7 +129,7 @@ class LTI_HTTP_Message {
         $resp = -1;
       }
       $this->request_headers = str_replace("\r\n", "\n", curl_getinfo($ch, CURLINFO_HEADER_OUT));
-      curl_close($ch);
+      unset($ch); // curl_close() is a no-op since PHP 8.0 and deprecated since PHP 8.5
       $this->response = $resp;
     } else {
 // Try using fopen if curl was not available

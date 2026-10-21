@@ -9,6 +9,7 @@ namespace App\LoginModule\LTI\Tool;
  * @version 2.5.00
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3
  */
+#[\AllowDynamicProperties]
 abstract class LTI_Data_Connector {
 
 /**
@@ -205,7 +206,7 @@ abstract class LTI_Data_Connector {
   static function getDataConnector($data_connector, $db = NULL, $type = NULL) {
 
     if (!is_null($data_connector)) {
-      if (!is_object($data_connector) || !is_subclass_of($data_connector, get_class())) {
+      if (!is_object($data_connector) || !is_subclass_of($data_connector, self::class)) {
         $prefix = NULL;
         if (is_string($data_connector)) {
           $prefix = $data_connector;

@@ -2,11 +2,10 @@
 
 namespace App\LoginModule\Passwords;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class PasswordResetServiceProvider extends ServiceProvider{
-
-    protected $defer = true;
+class PasswordResetServiceProvider extends ServiceProvider implements DeferrableProvider {
 
 
     public function register() {

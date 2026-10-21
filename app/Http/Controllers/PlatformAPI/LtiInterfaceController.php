@@ -9,6 +9,7 @@ use App\LoginModule\LTI\LTITokenGenerator;
 
 class LtiInterfaceController extends PlatformAPIController
 {
+    protected $tokenizer;
 
     protected $lti;
 

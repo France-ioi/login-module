@@ -12,7 +12,7 @@ class PasswordBrokerManager extends PasswordBrokerManagerGeneric {
         $config = $this->getConfig($name);
 
         if (is_null($config)) {
-            throw new InvalidArgumentException("Password resetter [{$name}] is not defined.");
+            throw new \InvalidArgumentException("Password resetter [{$name}] is not defined.");
         }
 
         return new PasswordBroker(
@@ -37,7 +37,10 @@ class PasswordBrokerManager extends PasswordBrokerManagerGeneric {
             $this->app['hash'],
             $config['table'],
             $key,
-            $config['expire']
+            // config is in minutes, the repository expects seconds since Laravel 7
+            $config['expire'] * 60,
+            // no "recently created" throttling: PasswordBroker uses auth.password_recovery_interval
+            0
         );
     }
 

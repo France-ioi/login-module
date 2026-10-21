@@ -12,6 +12,7 @@ namespace App\LoginModule\LTI\Tool;
  * @version 2.5.00
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3
  */
+#[\AllowDynamicProperties]
 class LTI_Context_Share extends LTI_Resource_Link_Share {
 
 /**

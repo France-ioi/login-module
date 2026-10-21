@@ -3,9 +3,6 @@
 
 namespace App\LoginModule\Shared;
 
-use Namshi\JOSE\JWS;
-use Namshi\JOSE\SimpleJWS;
-
 /**
  * Generates task token
  */
@@ -22,18 +19,14 @@ class TokenGenerator
 
    function __construct($platform, $privateKey) {
       $this->platform = $platform;
-      $this->privateKey = openssl_pkey_get_private($privateKey);
+      $this->privateKey = $privateKey;
    }
    /**
     * Low level token encryption function
     */
    private function encodeToken($params)
    {
-      //$jws  = new JWS('RS512');
-      $jws  = new SimpleJWS(['alg' => 'RS512']);
-      $jws->setPayload($params);
-      $jws->sign($this->privateKey);
-      return $jws->getTokenString();
+      return Jws::sign($params, $this->privateKey);
    }
    /**
     * Generates the token. Expects the following parameters:

@@ -1,5 +1,5 @@
 FROM node:14 AS node
-FROM php:7.1-fpm
+FROM php:8.5.12-fpm
 WORKDIR "/application"
 
 # Fix debconf warnings upon build
@@ -11,18 +11,14 @@ RUN apt-get update \
     && apt-get -y install libpng-dev libgmp-dev git python2.7
 
 # Install needed PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql gd gmp
+RUN docker-php-ext-install pdo pdo_mysql gd gmp bcmath
 
 # Install Redis
-ENV PHPREDIS_VERSION 3.0.0
-RUN mkdir -p /usr/src/php/ext/redis \
-    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
-    && echo 'redis' >> /usr/src/php-available-exts \
-    && docker-php-ext-install redis
+RUN pecl install redis && docker-php-ext-enable redis
 
 # Install Xdebug
 ENV PHP_IDE_CONFIG "serverName=Docker"
-RUN pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 # Install zip extension
 RUN apt-get install -y libzip-dev

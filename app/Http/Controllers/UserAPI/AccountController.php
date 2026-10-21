@@ -10,6 +10,8 @@ use App\LoginModule\Profile\Verification\Verification;
 
 class AccountController extends Controller
 {
+    protected $context;
+    protected $verification;
 
     public function __construct(PlatformContext $context, Verification $verification) {
         $this->context = $context;

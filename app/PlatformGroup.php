@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlatformGroup extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
     protected $fillable = [
         'participation_code',
         'group_code',

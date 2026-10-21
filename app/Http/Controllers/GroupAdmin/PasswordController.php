@@ -99,7 +99,8 @@ class PasswordController extends Controller
     }
 
     private function checkQueryParameters(Request $request, $query) {
-        $client = Client::find($query['client_id']);
+        // no query in session: PHP < 7.4 silently returned null here
+        $client = Client::find($query['client_id'] ?? null);
         if(!$client) {
             return response('Invalid client_id', 404);
         }

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmailVerificationToken extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
 
     protected $primaryKey = 'token'; // or null
     public $incrementing = false;

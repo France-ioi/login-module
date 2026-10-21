@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class UsernameChange extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
     protected $fillable = ['user_id', 'old_login'];
 
     /**

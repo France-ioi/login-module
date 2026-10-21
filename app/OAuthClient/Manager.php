@@ -31,7 +31,7 @@
         }
 
         static function provider($name) {
-            $provider = self::PROVIDERS[$name] ? self::PROVIDERS[$name] : self::DEFAULT_PROVIDER;
+            $provider = self::PROVIDERS[$name] ?? self::DEFAULT_PROVIDER;
             return new $provider;
         }
 

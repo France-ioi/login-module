@@ -2,6 +2,7 @@
 
 namespace App\LoginModule\LTI\Tool;
 
+#[\AllowDynamicProperties]
 class OAuthToken {
   // access tokens and request tokens
   public $key;

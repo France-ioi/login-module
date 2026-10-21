@@ -13,7 +13,7 @@ services:
       container_name: login-module-redis
 
     mysql:
-      image: mysql:5.6
+      image: mysql:8.0
       container_name: login-module-mysql
       working_dir: /application
       volumes:

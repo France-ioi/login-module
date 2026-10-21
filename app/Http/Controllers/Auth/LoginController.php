@@ -51,7 +51,7 @@ class LoginController extends Controller
     {
         $credentials = $this->credentials($request);
         $credentials['origin_instance_id'] = null;
-        $remember = $request->has('remember');
+        $remember = $request->filled('remember');
         if($res = $this->guard()->attempt($credentials, $remember)) {
             return $res;
         }

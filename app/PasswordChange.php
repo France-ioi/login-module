@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PasswordChange extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
     // Logs password changes requested by group admins
 
     protected $fillable = [

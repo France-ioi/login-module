@@ -1,0 +1,32 @@
+{
+    "name": "france-ioi/bootstrap-form",
+    "description": "Vendored copy of watson/bootstrap-form v1.1.15 (abandoned upstream; the version used before the Laravel 12 upgrade), kept for Laravel 12 compatibility.",
+    "license": "MIT",
+    "version": "1.1.15",
+    "require": {
+        "php": ">=8.4",
+        "illuminate/config": "^12.0",
+        "illuminate/session": "^12.0",
+        "illuminate/support": "^12.0",
+        "france-ioi/laravelcollective-html": "^6.4",
+        "laravel/helpers": "^1.7"
+    },
+    "replace": {
+        "watson/bootstrap-form": "1.1.15"
+    },
+    "autoload": {
+        "psr-4": {
+            "Watson\\BootstrapForm\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Watson\\BootstrapForm\\BootstrapFormServiceProvider"
+            ],
+            "aliases": {
+                "BootForm": "Watson\\BootstrapForm\\Facades\\BootstrapForm"
+            }
+        }
+    }
+}

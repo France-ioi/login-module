@@ -2,8 +2,6 @@
 
 namespace App\LoginModule;
 
-use phpseclib\Crypt\RSA;
-
 class Keys
 {
 
@@ -30,12 +28,17 @@ class Keys
 
 
     static function generate() {
-        // TODO :: make it work; it's currently NOT working properly
-        // LTI will NOT work without proper keys
-        $rsa = new RSA;
-        $keys = $rsa->createKey(512);
-        file_put_contents(self::getPath('private'), array_get($keys, 'privatekey'));
-        file_put_contents(self::getPath('public'), array_get($keys, 'publickey'));
+        // 2048 bits: RS512 signatures do not fit in smaller keys
+        $key = openssl_pkey_new([
+            'private_key_bits' => 2048,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+        ]);
+        if($key === false) {
+            throw new \RuntimeException('Cannot generate the keys: '.openssl_error_string());
+        }
+        openssl_pkey_export($key, $private);
+        file_put_contents(self::getPath('private'), $private);
+        file_put_contents(self::getPath('public'), openssl_pkey_get_details($key)['key']);
     }
 
 }

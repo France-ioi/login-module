@@ -9,6 +9,7 @@ namespace App\LoginModule\LTI\Tool;
  * @version 2.5.00
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3
  */
+#[\AllowDynamicProperties]
 class LTI_Tool_Provider {
 
 /**
@@ -175,7 +176,7 @@ class LTI_Tool_Provider {
  * @param mixed   $data_connector  Object containing a database connection object (optional, default is a blank prefix and MySQL)
  * @param mixed   $callbackHandler String containing name of callback function for launch request, or associative array of callback functions for each request type
  */
-  function __construct($data_connector = '', $callbackHandler = NULL, $origin) {
+  function __construct($data_connector, $callbackHandler, $origin) {
     $this->origin = $origin;
 
 // For backward compatibility the parameters may be in the opposite order, but the recommended practice is to just pass a data connector object and

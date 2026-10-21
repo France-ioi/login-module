@@ -2,6 +2,7 @@
 
 namespace App\LoginModule\LTI\Tool;
 
+#[\AllowDynamicProperties]
 class OAuthRequest {
   protected $parameters;
   protected $http_method;

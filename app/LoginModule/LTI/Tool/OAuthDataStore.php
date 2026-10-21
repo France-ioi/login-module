@@ -2,6 +2,7 @@
 
 namespace App\LoginModule\LTI\Tool;
 
+#[\AllowDynamicProperties]
 class OAuthDataStore {
   function lookup_consumer($consumer_key) {
     // implement me

@@ -8,6 +8,7 @@ use App\LoginModule\LTI\LTIHelper;
 
 class SendLTIResultsCommand extends Command
 {
+    protected $lti;
 
     protected $signature = 'lti:send';
     protected $description = 'Sent LTI results';

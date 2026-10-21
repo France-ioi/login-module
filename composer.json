@@ -1,37 +1,39 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "~7.1",
-        "doctrine/dbal": "^2.5",
-        "facebook/graph-sdk": "^5.4",
-        "google/apiclient": "^2.1",
-        "intervention/image": "^2.4",
-        "laravel/framework": "5.4.*",
-        "laravel/passport": "4.*",
-        "laravel/tinker": "~1.0",
-        "league/flysystem-aws-s3-v3": "^1.0",
-        "league/oauth2-client": "^2.2",
-        "namshi/jose": "^7.2",
-        "spatie/laravel-permission": "^1",
-        "spomky-labs/jose": "^6.1",
-        "watson/bootstrap-form": "^1.1"
+        "php": "^8.4",
+        "france-ioi/bootstrap-form": "^1.1",
+        "france-ioi/laravelcollective-html": "^6.4",
+        "google/apiclient": "^2.15",
+        "guzzlehttp/guzzle": "^7.8",
+        "intervention/image": "^2.7",
+        "laravel/framework": "^12.0",
+        "laravel/helpers": "^1.7",
+        "laravel/passport": "^12.4",
+        "laravel/tinker": "^2.10",
+        "laravel/ui": "^4.6",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "league/oauth2-client": "^2.7",
+        "league/oauth2-facebook": "^2.2",
+        "spatie/laravel-permission": "^6.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "laracasts/generators": "^1.1",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7"
+        "fakerphp/faker": "^1.23",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.1",
+        "phpunit/phpunit": "^11.5"
     },
     "autoload": {
-        "classmap": [
-            "database"
-        ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
@@ -40,23 +42,49 @@
         }
     },
     "scripts": {
+        "pre-autoload-dump": [
+            "Google\\Task\\Composer::cleanup"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
         "post-root-package-install": [
-            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "php artisan key:generate"
-        ],
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
-        ],
-        "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "@php artisan key:generate --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/passport"
+            ]
+        },
+        "google/apiclient-services": [
+            "Oauth2"
         ]
     },
     "config": {
         "preferred-install": "dist",
-        "sort-packages": true
-    }
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.4.0"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*",
+            "options": {
+                "symlink": false
+            }
+        }
+    ]
 }

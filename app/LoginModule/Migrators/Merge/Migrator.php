@@ -14,6 +14,7 @@ use App\LoginModule\Migrators\MySqlInsertIgnoreGrammar;
 
 class Migrator
 {
+    public $origin_instance;
 
     const CHUNK_SIZE = 100;
 

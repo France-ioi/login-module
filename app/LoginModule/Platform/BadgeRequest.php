@@ -18,7 +18,7 @@ class BadgeRequest {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($request));
         $res = curl_exec($ch);
-        curl_close($ch);
+        unset($ch); // curl_close() is a no-op since PHP 8.0 and deprecated since PHP 8.5
         $res = json_decode($res, true);
         return json_last_error() === JSON_ERROR_NONE ? $res : false;
     }

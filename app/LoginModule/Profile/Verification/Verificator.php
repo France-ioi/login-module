@@ -6,6 +6,7 @@ use App\VerificationMethod;
 use Carbon\Carbon;
 
 class Verificator {
+    public $context;
 
 //pending, accepted, rejected
     const STATUS_NOT_VERIFIED = 'NOT_VERIFIED';

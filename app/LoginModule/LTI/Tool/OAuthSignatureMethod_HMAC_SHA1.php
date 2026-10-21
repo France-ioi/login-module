@@ -9,6 +9,7 @@ namespace App\LoginModule\LTI\Tool;
  * character (ASCII code 38) even if empty.
  *   - Chapter 9.2 ("HMAC-SHA1")
  */
+#[\AllowDynamicProperties]
 class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod {
   function get_name() {
     return "HMAC-SHA1";
