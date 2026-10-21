@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class VerificationMethod extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
     protected $fillable = [
         'id',
         'name',

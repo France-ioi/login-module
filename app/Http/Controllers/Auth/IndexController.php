@@ -9,6 +9,8 @@ use App\LoginModule\AuthList;
 
 class IndexController extends Controller
 {
+    protected $auth_list;
+    protected $context;
 
     public function __construct(PlatformContext $context,
                                 AuthList $auth_list) {

@@ -11,3 +11,5 @@
 Homestead.json
 Homestead.yaml
 .env
+/.phpunit.cache
+.phpunit.result.cache

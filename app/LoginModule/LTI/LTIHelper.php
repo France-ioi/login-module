@@ -21,6 +21,10 @@ http://login-module.test/lti/entry?redirectUrl=http%3A%2F%2Falgorea-platform.tes
 
 
 class LTIHelper {
+    public $connected;
+    public $data_connector;
+    public $db;
+    public $pdo;
 
 
     public function __construct(LTIPDO $pdo) {

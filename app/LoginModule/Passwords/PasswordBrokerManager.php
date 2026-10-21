@@ -12,7 +12,7 @@ class PasswordBrokerManager extends PasswordBrokerManagerGeneric {
         $config = $this->getConfig($name);
 
         if (is_null($config)) {
-            throw new InvalidArgumentException("Password resetter [{$name}] is not defined.");
+            throw new \InvalidArgumentException("Password resetter [{$name}] is not defined.");
         }
 
         return new PasswordBroker(

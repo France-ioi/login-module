@@ -10,6 +10,7 @@ use App\LoginModule\Platform\PlatformContext;
 
 class LogoutController extends Controller
 {
+    protected $context;
 
     public function __construct(PlatformContext $context) {
         $this->middleware('auth', ['except' => ['getLogout']]);
@@ -57,7 +58,7 @@ class LogoutController extends Controller
 
 
     public function logoutLoop(Request $request) {
-        if($request->has('provider')) {
+        if($request->filled('provider')) {
             if($connection = Auth::user()->authConnections()->where('provider', $request->get('provider'))->first()) {
                 $connection->active = 0;
                 $connection->save();

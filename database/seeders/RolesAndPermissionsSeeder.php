@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -12,16 +14,16 @@ class RolesAndPermissionsSeeder extends Seeder
         app()['cache']->forget('spatie.permission.cache');
 
         // create permissions
-        Permission::create(['name' => 'admin.users.manager']);
-        Permission::create(['name' => 'admin.verifications.manager']);
-        Permission::create(['name' => 'admin.verifications.verify']);
-        Permission::create(['name' => 'admin.clients.manager']);
-        Permission::create(['name' => 'admin.domains.manager']);
-        Permission::create(['name' => 'admin.lm_instances.manager']);
+        Permission::findOrCreate('admin.users.manager');
+        Permission::findOrCreate('admin.verifications.manager');
+        Permission::findOrCreate('admin.verifications.verify');
+        Permission::findOrCreate('admin.clients.manager');
+        Permission::findOrCreate('admin.domains.manager');
+        Permission::findOrCreate('admin.lm_instances.manager');
 
         // create roles and assign created permissions
-        $role = Role::create(['name' => 'admin']);
-        $role->givePermissionTo(Permission::all());
+        $role = Role::findOrCreate('admin');
+        $role->syncPermissions(Permission::all());
 
         // create admin user
         $user = \App\User::where('login', 'admin')->first();

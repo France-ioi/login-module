@@ -35,7 +35,7 @@ class ForgotPasswordController extends Controller
 
 
     public function sendResetLinkEmail(Request $request) {
-        if($request->has('email_id')) {
+        if($request->filled('email_id')) {
             $credentials = $request->only('email_id');
         } else {
             $this->validate($request, ['login_or_email' => 'required']);

@@ -10,6 +10,7 @@ use App\LoginModule\Platform\PlatformContext;
 
 class BadgesController extends Controller
 {
+    protected $context;
 
     public function __construct(PlatformContext $context) {
         $this->context = $context;

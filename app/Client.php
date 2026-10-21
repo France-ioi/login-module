@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends \Laravel\Passport\Client
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
 
     protected $fillable = [
         'name',

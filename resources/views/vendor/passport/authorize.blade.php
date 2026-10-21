@@ -35,6 +35,7 @@
 
                     <input type="hidden" name="state" value="{{ $request->state }}">
                     <input type="hidden" name="client_id" value="{{ $client->id }}">
+                    <input type="hidden" name="auth_token" value="{{ $authToken }}">
                     <button type="submit" class="btn btn-success btn-approve">@lang('passport.btn_authorize')</button>
                 </form>
 
@@ -45,6 +46,7 @@
 
                     <input type="hidden" name="state" value="{{ $request->state }}">
                     <input type="hidden" name="client_id" value="{{ $client->id }}">
+                    <input type="hidden" name="auth_token" value="{{ $authToken }}">
                     <button class="btn btn-danger">@lang('ui.cancel')</button>
                 </form>
             </div>

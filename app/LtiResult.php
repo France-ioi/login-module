@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LtiResult extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
     protected $fillable = [
         'lti_connection_id',
         'score',
@@ -15,6 +17,8 @@ class LtiResult extends Model
 
 
     protected static function boot() {
+        parent::boot();
+
         static::creating(function($model) {
             $model->attempts = 0;
             $model->last_attempt = new \DateTime;

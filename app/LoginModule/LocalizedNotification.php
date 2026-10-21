@@ -19,6 +19,9 @@ class LocalizedNotification extends Notification
         $data = array_merge($this->defaultData(), $data);
         $subject = trans('notifications/'.$localization.'.subject', $data, $language);
         $body = trans('notifications/'.$localization.'.body', $data, $language);
+        // CommonMark (Laravel 7+) reads the "-- " signature separator as a
+        // heading underline: escape it so it is displayed as before
+        $body = preg_replace('/^--[ \t]*(\r?)$/m', '\-\- $1', $body);
         return (new MailMessage)
             ->subject($subject)
             ->markdown('notifications.layout', array_merge($data, ['body' => $body]));

@@ -2,6 +2,7 @@
 
 namespace App\LoginModule\LTI\Tool;
 
+#[\AllowDynamicProperties]
 class OAuthUtil {
   public static function urlencode_rfc3986($input) {
   if (is_array($input)) {

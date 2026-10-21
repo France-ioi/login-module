@@ -5,6 +5,7 @@ namespace App\LoginModule\Platform;
 use Session;
 
 class Badge {
+    public $user;
 
     const SESSION_KEY = 'BADGE';
     protected $client;

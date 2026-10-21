@@ -13,6 +13,8 @@ use App\Notifications\PeerVerificationNotification;
 
 class Email extends Model implements CanResetPasswordContract
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
 
     use Notifiable;
 

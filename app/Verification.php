@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Verification extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
 
 
     protected $fillable = [
@@ -32,6 +34,8 @@ class Verification extends Model
     ];
 
     protected static function boot() {
+        parent::boot();
+
         static::saving(function($model) {
             if($model->isDirty('status') && $model->status == 'approved') {
                 $model->approved_at = new \DateTime;

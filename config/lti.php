@@ -1,10 +1,11 @@
 <?php
 return [
     'db' => [
-        'host' => '127.0.0.1',
-        'database' => 'lti-to-bebras',
-        'user' => 'root',
-        'password' => 'buddy',
+        'host' => env('LTI_DB_HOST', '127.0.0.1'),
+        'port' => env('LTI_DB_PORT', 3306),
+        'database' => env('LTI_DB_DATABASE', 'lti-to-bebras'),
+        'user' => env('LTI_DB_USERNAME', 'root'),
+        'password' => env('LTI_DB_PASSWORD', 'buddy'),
     ],
 
     'default_login_prefix' => 'lti_',

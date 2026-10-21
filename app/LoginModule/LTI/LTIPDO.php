@@ -5,6 +5,8 @@ use App\LoginModule\LTI\Tool\LTI_Data_Connector;
 use PDO;
 
 class LTIPDO {
+    public $connected;
+    public $db;
 
     public function __construct() {
         $this->connected = false;
@@ -36,8 +38,8 @@ class LTIPDO {
         try {
             $pdo_options = [];
             $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-            $pdo_options[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES utf8";
-            $connexionString = "mysql:host=".$conf['host'].";dbname=".$conf['database'].";charset=utf8";
+            $pdo_options[\Pdo\Mysql::ATTR_INIT_COMMAND] = "SET NAMES utf8";
+            $connexionString = "mysql:host=".$conf['host'].";port=".(isset($conf['port']) ? $conf['port'] : 3306).";dbname=".$conf['database'].";charset=utf8";
             $db = new PDO($connexionString, $conf['user'], $conf['password'], $pdo_options);
             $db->exec("SET time_zone='".$offset."';");
         } catch (PDOException $e) {

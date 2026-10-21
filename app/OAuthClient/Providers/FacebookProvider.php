@@ -3,77 +3,63 @@
     namespace App\OAuthClient\Providers;
 
     use App\OAuthClient\Providers\ProviderInterface;
-    use Facebook\PersistentData\PersistentDataInterface;
-    use Facebook\Url\UrlDetectionInterface;
+    use League\OAuth2\Client\Provider\Facebook;
+    use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 
 
-    class PersistentDataHandler implements PersistentDataInterface {
-
-        const PREFIX = 'FB_PDH_';
-
-        public function get($key) {
-            return session()->pull(self::PREFIX.$key);
-        }
-
-        public function set($key, $value) {
-            session()->put(self::PREFIX.$key, $value);
-        }
-    }
-
-
-    class UrlDetectionHandler implements UrlDetectionInterface {
-
-        public function getCurrentUrl() {
-            return \Request::url();
-        }
-
-    }
-
-
+    // Uses league/oauth2-facebook since the PHP 8 port (facebook/graph-sdk is
+    // abandoned and does not support PHP 8)
     class FacebookProvider implements ProviderInterface {
+
+        const STATE_SESSION_KEY = 'FB_PDH_state';
 
 
         private function getClient() {
-            return new \Facebook\Facebook([
-                'app_id' => config('oauth_client.facebook.client_id'),
-                'app_secret' => config('oauth_client.facebook.client_secret'),
-                'default_graph_version' => 'v2.3',
-                'persistent_data_handler' => new PersistentDataHandler(),
-                'url_detection_handler' => new UrlDetectionHandler()
+            return new Facebook([
+                'clientId' => config('oauth_client.facebook.client_id'),
+                'clientSecret' => config('oauth_client.facebook.client_secret'),
+                'redirectUri' => route('oauth_client_callback', ['provider' => 'facebook']),
+                'graphApiVersion' => config('oauth_client.facebook.graph_api_version', 'v2.3'),
+                'fields' => ['id', 'name', 'email']
             ]);
         }
 
 
-        private function getToken($client) {
-            $helper = $client->getRedirectLoginHelper();
-            try {
-                $token = $helper->getAccessToken();
-            } catch(\Facebook\Exceptions\FacebookResponseException $e) {
-                return false;
-            } catch(Facebook\Exceptions\FacebookSDKException $e) {
+        private function getToken($client, $request) {
+            $state = session()->pull(self::STATE_SESSION_KEY);
+            if(!$state || $request->get('state') !== $state || !$request->get('code')) {
                 return false;
             }
-            return $token;
+            try {
+                return $client->getAccessToken('authorization_code', [
+                    'code' => $request->get('code')
+                ]);
+            } catch(IdentityProviderException $e) {
+                return false;
+            } catch(\UnexpectedValueException $e) {
+                return false;
+            }
         }
 
 
         private function getGraph($client, $token) {
             try {
-                $response = $client->get('/me?fields=id,name,email', $token);
-            } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+                return $client->getResourceOwner($token)->toArray();
+            } catch(IdentityProviderException $e) {
                 return false;
-            } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            } catch(\UnexpectedValueException $e) {
                 return false;
             }
-            return $response->getGraphNode();
         }
 
 
         public function getAuthorizationURL() {
             $client = $this->getClient();
-            $helper = $client->getRedirectLoginHelper();
-            $calback_url = route('oauth_client_callback', ['provider' => 'facebook']);
-            return $helper->getLoginUrl($calback_url, ['public_profile', 'email']);
+            $url = $client->getAuthorizationUrl([
+                'scope' => ['public_profile', 'email']
+            ]);
+            session()->put(self::STATE_SESSION_KEY, $client->getState());
+            return $url;
         }
 
 
@@ -84,16 +70,16 @@
 
         public function callback(\Illuminate\Http\Request $request) {
             $client = $this->getClient();
-            if($token = $this->getToken($client)) {
+            if($token = $this->getToken($client, $request)) {
                 if($graph = $this->getGraph($client, $token)) {
-                    list($first_name, $last_name) = explode(' ', $graph->getField('name', ''), 2);
-                    $id = $graph->getField('id');
+                    $names = explode(' ', array_get($graph, 'name', ''), 2);
+                    $id = array_get($graph, 'id');
                     return  [
                         'uid' => $id,
-                        'access_token' => $token->getValue(),
-                        'email' => $graph->getField('email', null),
-                        'first_name' => $first_name,
-                        'last_name' => $last_name,
+                        'access_token' => $token->getToken(),
+                        'email' => array_get($graph, 'email'),
+                        'first_name' => $names[0],
+                        'last_name' => isset($names[1]) ? $names[1] : null,
                         'picture' => 'http://graph.facebook.com/'.$id.'/picture'
                     ];
                 }
@@ -103,9 +89,10 @@
 
 
         public function getLogoutURL($access_token, $redirect_url) {
-            $client = $this->getClient();
-            $helper = $client->getRedirectLoginHelper();
-            return $helper->getLogoutUrl($access_token, $redirect_url);
+            return 'https://www.facebook.com/logout.php?'.http_build_query([
+                'next' => $redirect_url,
+                'access_token' => $access_token
+            ], '', '&');
         }
 
 

@@ -14,6 +14,9 @@ use App\LoginModule\UserDataGenerator;
 
 class LoginWithCodeController extends Controller
 {
+    protected $accounts_manager;
+    protected $context;
+    protected $generator;
 
 
     public function __construct(PlatformContext $context,
@@ -32,13 +35,13 @@ class LoginWithCodeController extends Controller
             'identity' => 'required|string'
         ]);
 
-        if($request->has('try_code')) {
+        if($request->filled('try_code')) {
             $res = $this->attemptCodeLogin($request);
             if($res !== false) {
                 return $res;
             }
         }
-        if($request->has('try_password')) {
+        if($request->filled('try_password')) {
             if(strpos($request->input('identity'), '@') !== false) {
                 return $this->sendLoginPasswordResponse($request);
             }
@@ -58,7 +61,7 @@ class LoginWithCodeController extends Controller
         if($badge = $this->findBadge($code)) {
             $this->updateBadgeData($badge);
             if($badge->login_enabled) {
-                Auth::login($badge->user, $request->has('remember'));
+                Auth::login($badge->user, $request->filled('remember'));
                 return redirect($this->context->continueUrl());
             }
             return false;

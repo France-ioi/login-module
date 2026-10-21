@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuthConnection extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
 
     protected $fillable = [
         'provider',

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PmsAdminBadge extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
     protected $fillable = [
         'pms_id',
         'badge',

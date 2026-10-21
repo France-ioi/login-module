@@ -4,7 +4,8 @@
 
         'facebook' => [
             'client_id' => env('FACEBOOK_ID'),
-            'client_secret' => env('FACEBOOK_SECRET')
+            'client_secret' => env('FACEBOOK_SECRET'),
+            'graph_api_version' => env('FACEBOOK_GRAPH_API_VERSION', 'v2.3')
         ],
 
         'google' => [

@@ -176,4 +176,18 @@ return [
 
     'http_only' => true,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Same-Site Cookies
+    |--------------------------------------------------------------------------
+    |
+    | Laravel 5.4 did not send a SameSite attribute; Laravel 7+ defaults to
+    | "lax". Keep the previous behaviour unless configured otherwise.
+    |
+    | Supported: "lax", "strict", "none", null
+    |
+    */
+
+    'same_site' => env('SESSION_SAME_SITE', null),
+
 ];

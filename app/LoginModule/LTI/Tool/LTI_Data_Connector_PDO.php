@@ -8,6 +8,7 @@ use PDO;
 ###  Class to represent a PDO LTI Data Connector
 ###
 
+#[\AllowDynamicProperties]
 class LTI_Data_Connector_PDO extends LTI_Data_Connector {
 
   private $db = NULL;

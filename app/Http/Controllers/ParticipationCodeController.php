@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class ParticipationCodeController extends Controller
 {
+    protected $context;
 
     public function __construct(PlatformContext $context) {
         $this->context = $context;

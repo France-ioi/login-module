@@ -10,6 +10,7 @@ use App\LoginModule\UserDataGenerator;
 
 class ResetPasswordsController extends Controller
 {
+    protected $generator;
 
     const DEFAULT_PWD_LENGTH = 8;
 

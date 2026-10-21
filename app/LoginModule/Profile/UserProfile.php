@@ -17,7 +17,13 @@ class UserProfile {
 
 
     public function update($request, $fillable_attributes) {
-        $data = $request->only($fillable_attributes);
+        // Since Laravel 5.5, $request->only() skips missing keys; keep the 5.4
+        // behaviour (missing attributes are set to null, e.g. unchecked boxes)
+        $input = $request->all();
+        $data = [];
+        foreach($fillable_attributes as $key) {
+            \Illuminate\Support\Arr::set($data, $key, data_get($input, $key));
+        }
         $request->user()->fill($data);
         $request->user()->login_revalidate_required = false;
         $request->user()->save();

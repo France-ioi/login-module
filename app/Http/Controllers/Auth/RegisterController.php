@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
+    protected $context;
+    protected $login_suggestion;
     /*
     |--------------------------------------------------------------------------
     | Register Controller

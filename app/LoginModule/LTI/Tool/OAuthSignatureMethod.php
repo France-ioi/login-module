@@ -6,6 +6,7 @@ namespace App\LoginModule\LTI\Tool;
  * A class for implementing a Signature Method
  * See section 9 ("Signing Requests") in the spec
  */
+#[\AllowDynamicProperties]
 abstract class OAuthSignatureMethod {
   /**
    * Needs to return the name of the Signature Method (ie HMAC-SHA1)
@@ -48,7 +49,7 @@ abstract class OAuthSignatureMethod {
     // Avoid a timing leak with a (hopefully) time insensitive compare
     $result = 0;
     for ($i = 0; $i < strlen($signature); $i++) {
-      $result |= ord($built{$i}) ^ ord($signature{$i});
+      $result |= ord($built[$i]) ^ ord($signature[$i]);
     }
 
     return $result == 0;

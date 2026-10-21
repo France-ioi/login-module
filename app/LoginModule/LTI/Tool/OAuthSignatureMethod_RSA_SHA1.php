@@ -10,6 +10,7 @@ namespace App\LoginModule\LTI\Tool;
  * specification.
  *   - Chapter 9.3 ("RSA-SHA1")
  */
+#[\AllowDynamicProperties]
 abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
   public function get_name() {
     return "RSA-SHA1";
@@ -43,7 +44,7 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
     $ok = openssl_sign($base_string, $signature, $privatekeyid);
 
     // Release the key resource
-    openssl_free_key($privatekeyid);
+    // openssl_free_key($privatekeyid) is deprecated since PHP 8.0: keys are freed automatically
 
     return base64_encode($signature);
   }
@@ -63,7 +64,7 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
     $ok = openssl_verify($base_string, $decoded_sig, $publickeyid);
 
     // Release the key resource
-    openssl_free_key($publickeyid);
+    // openssl_free_key($publickeyid) is deprecated since PHP 8.0: keys are freed automatically
 
     return $ok == 1;
   }

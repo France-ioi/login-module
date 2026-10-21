@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AccessTokenCounter extends Model
 {
+    use \App\LoginModule\Shared\SerializesLegacyDates;
+
 
     protected $primaryKey = ['user_id', 'client_id'];
 
@@ -22,7 +24,7 @@ class AccessTokenCounter extends Model
     ];
 
 
-    protected function setKeysForSaveQuery(Builder $query) {
+    protected function setKeysForSaveQuery($query) {
         return $query
             ->where('user_id', $this->user_id)
             ->where('client_id', $this->client_id);
